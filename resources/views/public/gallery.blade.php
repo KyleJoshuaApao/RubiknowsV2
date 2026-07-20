@@ -27,11 +27,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-7">
                 @forelse($media as $item)
+                    @php($imageUrl = asset($item->url))
                     <div x-data x-intersect.once="$el.classList.add('animate-scale-in')"
                          class="opacity-0-initial group relative aspect-square bg-white border border-gray-100 rounded-[1.5rem] overflow-hidden cursor-pointer hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-700"
-                         @click="modalOpen = true; currentImage = '{{ Storage::url($item->file_path) }}'; currentTitle = '{{ addslashes($item->title) }}'"
+                         @click="modalOpen = true; currentImage = '{{ $imageUrl }}'; currentTitle = '{{ addslashes($item->title) }}'"
                          style="animation-delay: {{ $loop->index * 0.05 }}s">
-                        <img src="{{ Storage::url($item->file_path) }}" alt="{{ $item->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-105">
+                        <img src="{{ $imageUrl }}" alt="{{ $item->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                             <span class="text-white font-bold text-base truncate">{{ $item->title }}</span>
                             <span class="text-orange-300 text-[10px] font-mono font-bold uppercase tracking-wider mt-1">{{ $item->category }}</span>

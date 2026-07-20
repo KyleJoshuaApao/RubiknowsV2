@@ -1,0 +1,4 @@
+bootstrap/cache/*.php
+storage/app/public/**
+public/storage
+vercel-dry.json
