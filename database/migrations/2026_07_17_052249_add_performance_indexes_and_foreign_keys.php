@@ -21,8 +21,10 @@ return new class extends Migration
             $table->index('is_featured');
         });
 
-        Schema::table('jobs', function (Blueprint $table) {
-            $table->index('is_archived');
+        Schema::table('career_jobs', function (Blueprint $table) {
+            if (Schema::hasColumn('career_jobs', 'is_archived')) {
+                $table->index('is_archived');
+            }
         });
 
         Schema::table('job_applications', function (Blueprint $table) {
@@ -59,7 +61,7 @@ return new class extends Migration
             $table->dropIndex(['is_featured']);
         });
 
-        Schema::table('jobs', function (Blueprint $table) {
+        Schema::table('career_jobs', function (Blueprint $table) {
             $table->dropIndex(['is_archived']);
         });
 
