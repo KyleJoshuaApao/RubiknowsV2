@@ -4,6 +4,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
 use Illuminate\Support\Facades\Route;
 
+// TEMPORARY ROUTE TO MIGRATE SUPABASE ON VERCEL
+Route::get('/migrate-supabase', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+        return 'Database Migrated Successfully! You can now visit the homepage.';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
 // Public Website Routes
 Route::get('/', [PublicController::class, 'index'])->name('public.home');
 Route::get('/about', [PublicController::class, 'about'])->name('public.about');
