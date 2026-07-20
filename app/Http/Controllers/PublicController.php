@@ -77,9 +77,9 @@ class PublicController extends Controller
             'portfolio'    => 'nullable|file|mimes:pdf,zip|max:10240',
         ]);
 
-        // Store on the PRIVATE 'local' disk — not publicly accessible
-        $resumePath    = $request->file('resume')->store('applications/resumes', 'local');
-        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', 'local') : null;
+        // Store on the default configured disk
+        $resumePath    = $request->file('resume')->store('applications/resumes');
+        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios') : null;
 
         $application = JobApplication::create([
             'job_id' => $job->id,
@@ -158,7 +158,7 @@ class PublicController extends Controller
         ]);
 
         // Store attachment privately; serve only via authenticated admin route
-        $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('quotations', 'local') : null;
+        $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('quotations') : null;
 
         $quotation = QuotationRequest::create([
             'name' => $data['name'],

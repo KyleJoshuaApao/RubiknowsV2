@@ -63,23 +63,23 @@ Route::middleware('auth')->group(function () {
 
         // Protected file downloads — files are on private disk, auth required
         Route::get('applications/{application}/resume', function(\App\Models\JobApplication $application) {
-            $path = storage_path('app/' . $application->resume_path);
-            abort_unless(file_exists($path), 404);
-            return response()->download($path);
+            $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+            abort_unless($disk->exists($application->resume_path), 404);
+            return $disk->download($application->resume_path);
         })->name('admin.applications.resume.download');
 
         Route::get('applications/{application}/portfolio', function(\App\Models\JobApplication $application) {
             abort_unless($application->portfolio_path, 404);
-            $path = storage_path('app/' . $application->portfolio_path);
-            abort_unless(file_exists($path), 404);
-            return response()->download($path);
+            $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+            abort_unless($disk->exists($application->portfolio_path), 404);
+            return $disk->download($application->portfolio_path);
         })->name('admin.applications.portfolio.download');
 
         Route::get('quotations/{quotation}/attachment', function(\App\Models\QuotationRequest $quotation) {
             abort_unless($quotation->attachment_path, 404);
-            $path = storage_path('app/' . $quotation->attachment_path);
-            abort_unless(file_exists($path), 404);
-            return response()->download($path);
+            $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+            abort_unless($disk->exists($quotation->attachment_path), 404);
+            return $disk->download($quotation->attachment_path);
         })->name('admin.quotations.attachment.download');
     });
 });
