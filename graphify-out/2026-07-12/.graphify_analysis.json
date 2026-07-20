@@ -1,0 +1,1300 @@
+{
+  "communities": {
+    "0": [
+      "app_models_user",
+      "app_models_user_user",
+      "app_models_user_user_casts",
+      "authenticatable",
+      "basetestcase",
+      "config_auth",
+      "notifiable",
+      "refreshdatabase",
+      "tests_feature_auth_authenticationtest",
+      "tests_feature_auth_authenticationtest_authenticationtest",
+      "tests_feature_auth_authenticationtest_authenticationtest_test_login_screen_can_be_rendered",
+      "tests_feature_auth_authenticationtest_authenticationtest_test_users_can_authenticate_using_the_login_screen",
+      "tests_feature_auth_authenticationtest_authenticationtest_test_users_can_logout",
+      "tests_feature_auth_authenticationtest_authenticationtest_test_users_can_not_authenticate_with_invalid_password",
+      "tests_feature_auth_emailverificationtest",
+      "tests_feature_auth_emailverificationtest_emailverificationtest",
+      "tests_feature_auth_emailverificationtest_emailverificationtest_test_email_can_be_verified",
+      "tests_feature_auth_emailverificationtest_emailverificationtest_test_email_is_not_verified_with_invalid_hash",
+      "tests_feature_auth_emailverificationtest_emailverificationtest_test_email_verification_screen_can_be_rendered",
+      "tests_feature_auth_passwordconfirmationtest",
+      "tests_feature_auth_passwordconfirmationtest_passwordconfirmationtest",
+      "tests_feature_auth_passwordconfirmationtest_passwordconfirmationtest_test_confirm_password_screen_can_be_rendered",
+      "tests_feature_auth_passwordconfirmationtest_passwordconfirmationtest_test_password_can_be_confirmed",
+      "tests_feature_auth_passwordconfirmationtest_passwordconfirmationtest_test_password_is_not_confirmed_with_invalid_password",
+      "tests_feature_auth_passwordresettest",
+      "tests_feature_auth_passwordresettest_passwordresettest",
+      "tests_feature_auth_passwordresettest_passwordresettest_test_password_can_be_reset_with_valid_token",
+      "tests_feature_auth_passwordresettest_passwordresettest_test_reset_password_link_can_be_requested",
+      "tests_feature_auth_passwordresettest_passwordresettest_test_reset_password_link_screen_can_be_rendered",
+      "tests_feature_auth_passwordresettest_passwordresettest_test_reset_password_screen_can_be_rendered",
+      "tests_feature_auth_passwordupdatetest",
+      "tests_feature_auth_passwordupdatetest_passwordupdatetest",
+      "tests_feature_auth_passwordupdatetest_passwordupdatetest_test_correct_password_must_be_provided_to_update_password",
+      "tests_feature_auth_passwordupdatetest_passwordupdatetest_test_password_can_be_updated",
+      "tests_feature_auth_registrationtest",
+      "tests_feature_auth_registrationtest_registrationtest",
+      "tests_feature_auth_registrationtest_registrationtest_test_new_users_can_register",
+      "tests_feature_auth_registrationtest_registrationtest_test_registration_screen_can_be_rendered",
+      "tests_feature_exampletest",
+      "tests_feature_exampletest_exampletest",
+      "tests_feature_exampletest_exampletest_test_the_application_returns_a_successful_response",
+      "tests_feature_profiletest",
+      "tests_feature_profiletest_profiletest",
+      "tests_feature_profiletest_profiletest_test_correct_password_must_be_provided_to_delete_account",
+      "tests_feature_profiletest_profiletest_test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged",
+      "tests_feature_profiletest_profiletest_test_profile_information_can_be_updated",
+      "tests_feature_profiletest_profiletest_test_profile_page_is_displayed",
+      "tests_feature_profiletest_profiletest_test_user_can_delete_their_account",
+      "tests_testcase",
+      "tests_testcase_testcase",
+      "tests_unit_exampletest",
+      "tests_unit_exampletest_exampletest",
+      "tests_unit_exampletest_exampletest_test_that_true_is_true"
+    ],
+    "1": [
+      "app_http_controllers_auth_confirmablepasswordcontroller",
+      "app_http_controllers_auth_confirmablepasswordcontroller_confirmablepasswordcontroller",
+      "app_http_controllers_auth_confirmablepasswordcontroller_confirmablepasswordcontroller_show",
+      "app_http_controllers_auth_confirmablepasswordcontroller_confirmablepasswordcontroller_store",
+      "app_http_controllers_auth_confirmablepasswordcontroller_php_redirectresponse",
+      "app_http_controllers_auth_confirmablepasswordcontroller_php_request",
+      "app_http_controllers_auth_confirmablepasswordcontroller_php_view",
+      "app_http_controllers_auth_emailverificationnotificationcontroller",
+      "app_http_controllers_auth_emailverificationnotificationcontroller_emailverificationnotificationcontroller",
+      "app_http_controllers_auth_emailverificationnotificationcontroller_emailverificationnotificationcontroller_store",
+      "app_http_controllers_auth_emailverificationnotificationcontroller_php_redirectresponse",
+      "app_http_controllers_auth_emailverificationnotificationcontroller_php_request",
+      "app_http_controllers_auth_emailverificationpromptcontroller",
+      "app_http_controllers_auth_emailverificationpromptcontroller_emailverificationpromptcontroller",
+      "app_http_controllers_auth_emailverificationpromptcontroller_emailverificationpromptcontroller_invoke",
+      "app_http_controllers_auth_emailverificationpromptcontroller_php_redirectresponse",
+      "app_http_controllers_auth_emailverificationpromptcontroller_php_request",
+      "app_http_controllers_auth_emailverificationpromptcontroller_php_view",
+      "app_http_controllers_auth_newpasswordcontroller",
+      "app_http_controllers_auth_newpasswordcontroller_newpasswordcontroller",
+      "app_http_controllers_auth_newpasswordcontroller_newpasswordcontroller_create",
+      "app_http_controllers_auth_newpasswordcontroller_newpasswordcontroller_store",
+      "app_http_controllers_auth_newpasswordcontroller_php_redirectresponse",
+      "app_http_controllers_auth_newpasswordcontroller_php_request",
+      "app_http_controllers_auth_newpasswordcontroller_php_view",
+      "app_http_controllers_auth_passwordcontroller",
+      "app_http_controllers_auth_passwordcontroller_passwordcontroller",
+      "app_http_controllers_auth_passwordcontroller_passwordcontroller_update",
+      "app_http_controllers_auth_passwordcontroller_php_redirectresponse",
+      "app_http_controllers_auth_passwordcontroller_php_request",
+      "app_http_controllers_auth_passwordresetlinkcontroller",
+      "app_http_controllers_auth_passwordresetlinkcontroller_passwordresetlinkcontroller",
+      "app_http_controllers_auth_passwordresetlinkcontroller_passwordresetlinkcontroller_create",
+      "app_http_controllers_auth_passwordresetlinkcontroller_passwordresetlinkcontroller_store",
+      "app_http_controllers_auth_passwordresetlinkcontroller_php_redirectresponse",
+      "app_http_controllers_auth_passwordresetlinkcontroller_php_request",
+      "app_http_controllers_auth_passwordresetlinkcontroller_php_view",
+      "app_http_controllers_auth_registeredusercontroller",
+      "app_http_controllers_auth_registeredusercontroller_php_redirectresponse",
+      "app_http_controllers_auth_registeredusercontroller_php_request",
+      "app_http_controllers_auth_registeredusercontroller_php_view",
+      "app_http_controllers_auth_registeredusercontroller_registeredusercontroller",
+      "app_http_controllers_auth_registeredusercontroller_registeredusercontroller_create",
+      "app_http_controllers_auth_registeredusercontroller_registeredusercontroller_store",
+      "app_http_controllers_auth_verifyemailcontroller",
+      "app_http_controllers_auth_verifyemailcontroller_php_redirectresponse",
+      "app_http_controllers_auth_verifyemailcontroller_verifyemailcontroller",
+      "app_http_controllers_auth_verifyemailcontroller_verifyemailcontroller_invoke",
+      "app_http_controllers_controller",
+      "app_http_controllers_controller_controller",
+      "emailverificationrequest",
+      "routes_auth"
+    ],
+    "2": [
+      "app_http_controllers_admin_contactmessagecontroller",
+      "app_http_controllers_admin_contactmessagecontroller_contactmessagecontroller",
+      "app_http_controllers_admin_contactmessagecontroller_contactmessagecontroller_destroy",
+      "app_http_controllers_admin_contactmessagecontroller_contactmessagecontroller_index",
+      "app_http_controllers_admin_contactmessagecontroller_contactmessagecontroller_show",
+      "app_http_controllers_admin_contactmessagecontroller_contactmessagecontroller_update",
+      "app_http_controllers_admin_contactmessagecontroller_php_request",
+      "app_http_controllers_admin_jobapplicationcontroller",
+      "app_http_controllers_admin_jobapplicationcontroller_jobapplicationcontroller",
+      "app_http_controllers_admin_jobapplicationcontroller_jobapplicationcontroller_destroy",
+      "app_http_controllers_admin_jobapplicationcontroller_jobapplicationcontroller_index",
+      "app_http_controllers_admin_jobapplicationcontroller_jobapplicationcontroller_show",
+      "app_http_controllers_admin_jobapplicationcontroller_jobapplicationcontroller_update",
+      "app_http_controllers_admin_jobapplicationcontroller_php_request",
+      "app_http_controllers_admin_settingcontroller",
+      "app_http_controllers_admin_settingcontroller_php_request",
+      "app_http_controllers_admin_settingcontroller_settingcontroller",
+      "app_http_controllers_admin_settingcontroller_settingcontroller_index",
+      "app_http_controllers_admin_settingcontroller_settingcontroller_store",
+      "app_http_controllers_admin_testimonialcontroller",
+      "app_http_controllers_admin_testimonialcontroller_php_request",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller_create",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller_destroy",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller_edit",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller_index",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller_store",
+      "app_http_controllers_admin_testimonialcontroller_testimonialcontroller_update",
+      "app_models_client",
+      "app_models_contactmessage",
+      "app_models_contactmessage_contactmessage",
+      "app_models_gallerymedia",
+      "app_models_jobapplication",
+      "app_models_jobapplication_jobapplication",
+      "app_models_jobapplication_jobapplication_job",
+      "app_models_service",
+      "app_models_setting",
+      "app_models_setting_setting",
+      "app_models_testimonial",
+      "app_models_testimonial_testimonial",
+      "hasfactory",
+      "model"
+    ],
+    "3": [
+      "composer",
+      "composer_allow_plugins_pestphp_pest_plugin",
+      "composer_allow_plugins_php_http_discovery",
+      "composer_autoload",
+      "composer_autoload_dev",
+      "composer_autoload_dev_psr_4",
+      "composer_autoload_psr_4",
+      "composer_config",
+      "composer_config_allow_plugins",
+      "composer_config_optimize_autoloader",
+      "composer_config_preferred_install",
+      "composer_config_sort_packages",
+      "composer_description",
+      "composer_extra",
+      "composer_extra_laravel",
+      "composer_keywords",
+      "composer_laravel_dont_discover",
+      "composer_license",
+      "composer_minimum_stability",
+      "composer_name",
+      "composer_prefer_stable",
+      "composer_psr_4_app",
+      "composer_psr_4_database_factories",
+      "composer_psr_4_database_seeders",
+      "composer_psr_4_tests",
+      "composer_require",
+      "composer_require_dev",
+      "composer_require_dev_fakerphp_faker",
+      "composer_require_dev_laravel_breeze",
+      "composer_require_dev_laravel_pail",
+      "composer_require_dev_laravel_pao",
+      "composer_require_dev_laravel_pint",
+      "composer_require_dev_mockery_mockery",
+      "composer_require_dev_nunomaduro_collision",
+      "composer_require_dev_phpunit_phpunit",
+      "composer_require_laravel_framework",
+      "composer_require_laravel_tinker",
+      "composer_require_php",
+      "composer_schema",
+      "composer_type",
+      "ref_framework",
+      "ref_laravel"
+    ],
+    "4": [
+      "app_http_controllers_admin_projectcontroller",
+      "app_http_controllers_admin_projectcontroller_php_request",
+      "app_http_controllers_admin_projectcontroller_projectcontroller",
+      "app_http_controllers_admin_projectcontroller_projectcontroller_create",
+      "app_http_controllers_admin_projectcontroller_projectcontroller_destroy",
+      "app_http_controllers_admin_projectcontroller_projectcontroller_edit",
+      "app_http_controllers_admin_projectcontroller_projectcontroller_index",
+      "app_http_controllers_admin_projectcontroller_projectcontroller_store",
+      "app_http_controllers_admin_projectcontroller_projectcontroller_update",
+      "app_http_controllers_admin_servicecontroller",
+      "app_http_controllers_admin_servicecontroller_php_request",
+      "app_http_controllers_admin_servicecontroller_servicecontroller",
+      "app_http_controllers_admin_servicecontroller_servicecontroller_create",
+      "app_http_controllers_admin_servicecontroller_servicecontroller_destroy",
+      "app_http_controllers_admin_servicecontroller_servicecontroller_edit",
+      "app_http_controllers_admin_servicecontroller_servicecontroller_index",
+      "app_http_controllers_admin_servicecontroller_servicecontroller_store",
+      "app_http_controllers_admin_servicecontroller_servicecontroller_update",
+      "app_http_controllers_publiccontroller_php_request",
+      "app_http_controllers_publiccontroller_publiccontroller",
+      "app_http_controllers_publiccontroller_publiccontroller_about",
+      "app_http_controllers_publiccontroller_publiccontroller_applyforjob",
+      "app_http_controllers_publiccontroller_publiccontroller_contact",
+      "app_http_controllers_publiccontroller_publiccontroller_index",
+      "app_http_controllers_publiccontroller_publiccontroller_projectdetails",
+      "app_http_controllers_publiccontroller_publiccontroller_projects",
+      "app_http_controllers_publiccontroller_publiccontroller_services",
+      "app_http_controllers_publiccontroller_publiccontroller_submitcontact",
+      "app_http_controllers_publiccontroller_publiccontroller_submitquotation",
+      "app_models_project",
+      "app_models_project_project",
+      "app_models_service_service"
+    ],
+    "5": [
+      "app_http_controllers_publiccontroller",
+      "app_mail_newcontactmessagenotification",
+      "app_mail_newcontactmessagenotification_newcontactmessagenotification",
+      "app_mail_newcontactmessagenotification_newcontactmessagenotification_attachments",
+      "app_mail_newcontactmessagenotification_newcontactmessagenotification_construct",
+      "app_mail_newcontactmessagenotification_newcontactmessagenotification_content",
+      "app_mail_newcontactmessagenotification_newcontactmessagenotification_envelope",
+      "app_mail_newcontactmessagenotification_php_content",
+      "app_mail_newcontactmessagenotification_php_envelope",
+      "app_mail_newjobapplicationnotification",
+      "app_mail_newjobapplicationnotification_newjobapplicationnotification",
+      "app_mail_newjobapplicationnotification_newjobapplicationnotification_attachments",
+      "app_mail_newjobapplicationnotification_newjobapplicationnotification_construct",
+      "app_mail_newjobapplicationnotification_newjobapplicationnotification_content",
+      "app_mail_newjobapplicationnotification_newjobapplicationnotification_envelope",
+      "app_mail_newjobapplicationnotification_php_content",
+      "app_mail_newjobapplicationnotification_php_envelope",
+      "app_mail_newquotationrequestnotification",
+      "app_mail_newquotationrequestnotification_newquotationrequestnotification",
+      "app_mail_newquotationrequestnotification_newquotationrequestnotification_attachments",
+      "app_mail_newquotationrequestnotification_newquotationrequestnotification_construct",
+      "app_mail_newquotationrequestnotification_newquotationrequestnotification_content",
+      "app_mail_newquotationrequestnotification_newquotationrequestnotification_envelope",
+      "app_mail_newquotationrequestnotification_php_content",
+      "app_mail_newquotationrequestnotification_php_envelope",
+      "config_mail",
+      "mailable",
+      "queueable",
+      "serializesmodels"
+    ],
+    "6": [
+      "app_http_controllers_admin_clientcontroller",
+      "app_http_controllers_admin_clientcontroller_clientcontroller",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_construct",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_create",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_destroy",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_edit",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_index",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_store",
+      "app_http_controllers_admin_clientcontroller_clientcontroller_update",
+      "app_http_controllers_admin_clientcontroller_php_request",
+      "app_http_controllers_admin_gallerymediacontroller",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_construct",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_create",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_destroy",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_edit",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_index",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_store",
+      "app_http_controllers_admin_gallerymediacontroller_gallerymediacontroller_update",
+      "app_http_controllers_admin_gallerymediacontroller_php_request",
+      "app_http_controllers_publiccontroller_publiccontroller_gallery",
+      "app_models_client_client",
+      "app_models_gallerymedia_gallerymedia",
+      "app_services_fileuploadservice",
+      "app_services_fileuploadservice_fileuploadservice",
+      "app_services_fileuploadservice_fileuploadservice_delete",
+      "app_services_fileuploadservice_fileuploadservice_upload",
+      "uploadedfile"
+    ],
+    "7": [
+      "app_http_controllers_auth_authenticatedsessioncontroller",
+      "app_http_controllers_auth_authenticatedsessioncontroller_authenticatedsessioncontroller",
+      "app_http_controllers_auth_authenticatedsessioncontroller_authenticatedsessioncontroller_create",
+      "app_http_controllers_auth_authenticatedsessioncontroller_authenticatedsessioncontroller_destroy",
+      "app_http_controllers_auth_authenticatedsessioncontroller_authenticatedsessioncontroller_store",
+      "app_http_controllers_auth_authenticatedsessioncontroller_php_redirectresponse",
+      "app_http_controllers_auth_authenticatedsessioncontroller_php_request",
+      "app_http_controllers_auth_authenticatedsessioncontroller_php_view",
+      "app_http_controllers_profilecontroller",
+      "app_http_controllers_profilecontroller_php_redirectresponse",
+      "app_http_controllers_profilecontroller_php_request",
+      "app_http_controllers_profilecontroller_php_view",
+      "app_http_controllers_profilecontroller_profilecontroller",
+      "app_http_controllers_profilecontroller_profilecontroller_destroy",
+      "app_http_controllers_profilecontroller_profilecontroller_edit",
+      "app_http_controllers_profilecontroller_profilecontroller_update",
+      "app_http_requests_auth_loginrequest",
+      "app_http_requests_auth_loginrequest_loginrequest",
+      "app_http_requests_auth_loginrequest_loginrequest_authenticate",
+      "app_http_requests_auth_loginrequest_loginrequest_authorize",
+      "app_http_requests_auth_loginrequest_loginrequest_ensureisnotratelimited",
+      "app_http_requests_auth_loginrequest_loginrequest_rules",
+      "app_http_requests_auth_loginrequest_loginrequest_throttlekey",
+      "app_http_requests_profileupdaterequest",
+      "app_http_requests_profileupdaterequest_profileupdaterequest",
+      "app_http_requests_profileupdaterequest_profileupdaterequest_rules",
+      "formrequest",
+      "routes_web"
+    ],
+    "8": [
+      "alpinejs",
+      "autoprefixer",
+      "concurrently",
+      "laravel_vite_plugin",
+      "package",
+      "package_devdependencies",
+      "package_devdependencies_alpinejs",
+      "package_devdependencies_autoprefixer",
+      "package_devdependencies_concurrently",
+      "package_devdependencies_laravel_vite_plugin",
+      "package_devdependencies_postcss",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tailwindcss_forms",
+      "package_devdependencies_tailwindcss_vite",
+      "package_devdependencies_vite",
+      "package_private",
+      "package_schema",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_type",
+      "postcss",
+      "tailwindcss",
+      "tailwindcss_forms",
+      "tailwindcss_vite",
+      "vite"
+    ],
+    "9": [
+      "composer_scripts",
+      "composer_scripts_dev",
+      "composer_scripts_post_autoload_dump",
+      "composer_scripts_post_create_project_cmd",
+      "composer_scripts_post_root_package_install",
+      "composer_scripts_post_update_cmd",
+      "composer_scripts_pre_package_uninstall",
+      "composer_scripts_setup",
+      "composer_scripts_test",
+      "ref_composer_config_disableprocesstimeout",
+      "ref_composer_install",
+      "ref_illuminate_foundation_composerscripts_postautoloaddump",
+      "ref_illuminate_foundation_composerscripts_prepackageuninstall",
+      "ref_npm_install_ignore_scripts",
+      "ref_npm_run_build",
+      "ref_npx_concurrently_c_93c5fd_c4b5fd_fb7185_fdba74_php_artisan_serve_php_artisan_queue_listen_tries_1_timeout_0_php_artisan_pail_timeout_0_npm_run_dev_names_server_queue_logs_vite_kill_others",
+      "ref_php_artisan_config_clear_ansi_no_additional_args",
+      "ref_php_artisan_key_generate",
+      "ref_php_artisan_key_generate_ansi",
+      "ref_php_artisan_migrate_force",
+      "ref_php_artisan_migrate_graceful_ansi",
+      "ref_php_artisan_package_discover_ansi",
+      "ref_php_artisan_test",
+      "ref_php_artisan_vendor_publish_tag_laravel_assets_ansi_force",
+      "ref_php_r_file_exists_database_database_sqlite_touch_database_database_sqlite",
+      "ref_php_r_file_exists_env_copy_env_example_env"
+    ],
+    "10": [
+      "app_http_controllers_admin_jobcontroller",
+      "app_http_controllers_admin_jobcontroller_jobcontroller",
+      "app_http_controllers_admin_jobcontroller_jobcontroller_create",
+      "app_http_controllers_admin_jobcontroller_jobcontroller_destroy",
+      "app_http_controllers_admin_jobcontroller_jobcontroller_edit",
+      "app_http_controllers_admin_jobcontroller_jobcontroller_index",
+      "app_http_controllers_admin_jobcontroller_jobcontroller_store",
+      "app_http_controllers_admin_jobcontroller_jobcontroller_update",
+      "app_http_controllers_admin_jobcontroller_php_request",
+      "app_http_controllers_publiccontroller_publiccontroller_careers",
+      "app_models_job",
+      "app_models_job_job",
+      "app_models_job_job_applications"
+    ],
+    "11": [
+      "app_view_components_applayout",
+      "app_view_components_applayout_applayout",
+      "app_view_components_applayout_applayout_render",
+      "app_view_components_applayout_php_view",
+      "app_view_components_guestlayout",
+      "app_view_components_guestlayout_guestlayout",
+      "app_view_components_guestlayout_guestlayout_render",
+      "app_view_components_guestlayout_php_view",
+      "app_view_components_publiclayout",
+      "app_view_components_publiclayout_php_view",
+      "app_view_components_publiclayout_publiclayout",
+      "app_view_components_publiclayout_publiclayout_render",
+      "component"
+    ],
+    "12": [
+      "app_http_controllers_admin_quotationrequestcontroller",
+      "app_http_controllers_admin_quotationrequestcontroller_php_request",
+      "app_http_controllers_admin_quotationrequestcontroller_quotationrequestcontroller",
+      "app_http_controllers_admin_quotationrequestcontroller_quotationrequestcontroller_destroy",
+      "app_http_controllers_admin_quotationrequestcontroller_quotationrequestcontroller_index",
+      "app_http_controllers_admin_quotationrequestcontroller_quotationrequestcontroller_show",
+      "app_http_controllers_admin_quotationrequestcontroller_quotationrequestcontroller_update",
+      "app_models_quotationrequest",
+      "app_models_quotationrequest_quotationrequest",
+      "app_models_quotationrequest_quotationrequest_assignedengineer"
+    ],
+    "13": [
+      "app_providers_appserviceprovider",
+      "app_providers_appserviceprovider_appserviceprovider",
+      "app_providers_appserviceprovider_appserviceprovider_boot",
+      "app_providers_appserviceprovider_appserviceprovider_register",
+      "bootstrap_providers",
+      "serviceprovider"
+    ],
+    "14": [
+      "database_factories_userfactory",
+      "database_factories_userfactory_userfactory",
+      "database_factories_userfactory_userfactory_definition",
+      "database_factories_userfactory_userfactory_unverified",
+      "factory",
+      "static"
+    ],
+    "15": [
+      "database_seeders_databaseseeder",
+      "database_seeders_databaseseeder_databaseseeder",
+      "database_seeders_databaseseeder_databaseseeder_run",
+      "seeder",
+      "withoutmodelevents"
+    ],
+    "16": [
+      "profile_partials_delete_user_form",
+      "profile_partials_update_password_form",
+      "profile_partials_update_profile_information_form",
+      "resources_views_profile_edit_blade"
+    ],
+    "17": [
+      "database_migrations_0001_01_01_000000_create_users_table",
+      "database_migrations_0001_01_01_000000_create_users_table_down",
+      "database_migrations_0001_01_01_000000_create_users_table_up"
+    ],
+    "18": [
+      "database_migrations_0001_01_01_000001_create_cache_table",
+      "database_migrations_0001_01_01_000001_create_cache_table_down",
+      "database_migrations_0001_01_01_000001_create_cache_table_up"
+    ],
+    "19": [
+      "database_migrations_0001_01_01_000002_create_jobs_table",
+      "database_migrations_0001_01_01_000002_create_jobs_table_down",
+      "database_migrations_0001_01_01_000002_create_jobs_table_up"
+    ],
+    "20": [
+      "database_migrations_2026_07_09_071618_create_projects_table",
+      "database_migrations_2026_07_09_071618_create_projects_table_down",
+      "database_migrations_2026_07_09_071618_create_projects_table_up"
+    ],
+    "21": [
+      "database_migrations_2026_07_09_071618_create_services_table",
+      "database_migrations_2026_07_09_071618_create_services_table_down",
+      "database_migrations_2026_07_09_071618_create_services_table_up"
+    ],
+    "22": [
+      "database_migrations_2026_07_09_071619_create_gallery_media_table",
+      "database_migrations_2026_07_09_071619_create_gallery_media_table_down",
+      "database_migrations_2026_07_09_071619_create_gallery_media_table_up"
+    ],
+    "23": [
+      "database_migrations_2026_07_09_071619_create_project_updates_table",
+      "database_migrations_2026_07_09_071619_create_project_updates_table_down",
+      "database_migrations_2026_07_09_071619_create_project_updates_table_up"
+    ],
+    "24": [
+      "database_migrations_2026_07_09_071620_create_clients_table",
+      "database_migrations_2026_07_09_071620_create_clients_table_down",
+      "database_migrations_2026_07_09_071620_create_clients_table_up"
+    ],
+    "25": [
+      "database_migrations_2026_07_09_071620_create_jobs_table",
+      "database_migrations_2026_07_09_071620_create_jobs_table_down",
+      "database_migrations_2026_07_09_071620_create_jobs_table_up"
+    ],
+    "26": [
+      "database_migrations_2026_07_09_071620_create_testimonials_table",
+      "database_migrations_2026_07_09_071620_create_testimonials_table_down",
+      "database_migrations_2026_07_09_071620_create_testimonials_table_up"
+    ],
+    "27": [
+      "database_migrations_2026_07_09_071621_create_contact_messages_table",
+      "database_migrations_2026_07_09_071621_create_contact_messages_table_down",
+      "database_migrations_2026_07_09_071621_create_contact_messages_table_up"
+    ],
+    "28": [
+      "database_migrations_2026_07_09_071621_create_job_applications_table",
+      "database_migrations_2026_07_09_071621_create_job_applications_table_down",
+      "database_migrations_2026_07_09_071621_create_job_applications_table_up"
+    ],
+    "29": [
+      "database_migrations_2026_07_09_071622_create_audit_logs_table",
+      "database_migrations_2026_07_09_071622_create_audit_logs_table_down",
+      "database_migrations_2026_07_09_071622_create_audit_logs_table_up"
+    ],
+    "30": [
+      "database_migrations_2026_07_09_071622_create_quotation_requests_table",
+      "database_migrations_2026_07_09_071622_create_quotation_requests_table_down",
+      "database_migrations_2026_07_09_071622_create_quotation_requests_table_up"
+    ],
+    "31": [
+      "database_migrations_2026_07_09_071622_create_settings_table",
+      "database_migrations_2026_07_09_071622_create_settings_table_down",
+      "database_migrations_2026_07_09_071622_create_settings_table_up"
+    ],
+    "32": [
+      "artisan",
+      "routes_console"
+    ],
+    "33": [
+      "bootstrap_app"
+    ],
+    "34": [
+      "bootstrap_cache_packages"
+    ],
+    "35": [
+      "bootstrap_cache_services"
+    ],
+    "36": [
+      "config_app"
+    ],
+    "37": [
+      "config_cache"
+    ],
+    "38": [
+      "config_database"
+    ],
+    "39": [
+      "config_filesystems"
+    ],
+    "40": [
+      "config_logging"
+    ],
+    "41": [
+      "config_queue"
+    ],
+    "42": [
+      "config_services"
+    ],
+    "43": [
+      "config_session"
+    ],
+    "44": [
+      "postcss_config"
+    ],
+    "45": [
+      "public_index"
+    ],
+    "46": [
+      "resources_js_app"
+    ],
+    "47": [
+      "resources_views_admin_applications_index_blade"
+    ],
+    "48": [
+      "resources_views_admin_applications_show_blade"
+    ],
+    "49": [
+      "resources_views_admin_clients_create_blade"
+    ],
+    "50": [
+      "resources_views_admin_clients_edit_blade"
+    ],
+    "51": [
+      "resources_views_admin_clients_index_blade"
+    ],
+    "52": [
+      "resources_views_admin_gallery_create_blade"
+    ],
+    "53": [
+      "resources_views_admin_gallery_edit_blade"
+    ],
+    "54": [
+      "resources_views_admin_gallery_index_blade"
+    ],
+    "55": [
+      "resources_views_admin_jobs_create_blade"
+    ],
+    "56": [
+      "resources_views_admin_jobs_edit_blade"
+    ],
+    "57": [
+      "resources_views_admin_jobs_index_blade"
+    ],
+    "58": [
+      "resources_views_admin_messages_index_blade"
+    ],
+    "59": [
+      "resources_views_admin_messages_show_blade"
+    ],
+    "60": [
+      "resources_views_admin_projects_create_blade"
+    ],
+    "61": [
+      "resources_views_admin_projects_edit_blade"
+    ],
+    "62": [
+      "resources_views_admin_projects_index_blade"
+    ],
+    "63": [
+      "resources_views_admin_quotations_index_blade"
+    ],
+    "64": [
+      "resources_views_admin_quotations_show_blade"
+    ],
+    "65": [
+      "resources_views_admin_services_create_blade"
+    ],
+    "66": [
+      "resources_views_admin_services_edit_blade"
+    ],
+    "67": [
+      "resources_views_admin_services_index_blade"
+    ],
+    "68": [
+      "resources_views_admin_settings_index_blade"
+    ],
+    "69": [
+      "resources_views_admin_testimonials_create_blade"
+    ],
+    "70": [
+      "resources_views_admin_testimonials_edit_blade"
+    ],
+    "71": [
+      "resources_views_admin_testimonials_index_blade"
+    ],
+    "72": [
+      "resources_views_auth_confirm_password_blade"
+    ],
+    "73": [
+      "resources_views_auth_forgot_password_blade"
+    ],
+    "74": [
+      "resources_views_auth_login_blade"
+    ],
+    "75": [
+      "resources_views_auth_register_blade"
+    ],
+    "76": [
+      "resources_views_auth_reset_password_blade"
+    ],
+    "77": [
+      "resources_views_auth_verify_email_blade"
+    ],
+    "78": [
+      "resources_views_components_application_logo_blade"
+    ],
+    "79": [
+      "resources_views_components_auth_session_status_blade"
+    ],
+    "80": [
+      "resources_views_components_danger_button_blade"
+    ],
+    "81": [
+      "resources_views_components_dropdown_blade"
+    ],
+    "82": [
+      "resources_views_components_dropdown_link_blade"
+    ],
+    "83": [
+      "resources_views_components_input_error_blade"
+    ],
+    "84": [
+      "resources_views_components_input_label_blade"
+    ],
+    "85": [
+      "resources_views_components_modal_blade"
+    ],
+    "86": [
+      "resources_views_components_nav_link_blade"
+    ],
+    "87": [
+      "resources_views_components_primary_button_blade"
+    ],
+    "88": [
+      "resources_views_components_responsive_nav_link_blade"
+    ],
+    "89": [
+      "resources_views_components_secondary_button_blade"
+    ],
+    "90": [
+      "resources_views_components_text_input_blade"
+    ],
+    "91": [
+      "resources_views_dashboard_blade"
+    ],
+    "92": [
+      "resources_views_emails_contact_new_blade"
+    ],
+    "93": [
+      "resources_views_emails_job_new_blade"
+    ],
+    "94": [
+      "resources_views_emails_quotation_new_blade"
+    ],
+    "95": [
+      "resources_views_layouts_app_blade"
+    ],
+    "96": [
+      "resources_views_layouts_guest_blade"
+    ],
+    "97": [
+      "resources_views_layouts_navigation_blade"
+    ],
+    "98": [
+      "resources_views_layouts_public_blade"
+    ],
+    "99": [
+      "resources_views_profile_partials_delete_user_form_blade"
+    ],
+    "100": [
+      "resources_views_profile_partials_update_password_form_blade"
+    ],
+    "101": [
+      "resources_views_profile_partials_update_profile_information_form_blade"
+    ],
+    "102": [
+      "resources_views_public_about_blade"
+    ],
+    "103": [
+      "resources_views_public_careers_blade"
+    ],
+    "104": [
+      "resources_views_public_contact_blade"
+    ],
+    "105": [
+      "resources_views_public_gallery_blade"
+    ],
+    "106": [
+      "resources_views_public_home_blade"
+    ],
+    "107": [
+      "resources_views_public_project_details_blade"
+    ],
+    "108": [
+      "resources_views_public_projects_blade"
+    ],
+    "109": [
+      "resources_views_public_services_blade"
+    ],
+    "110": [
+      "resources_views_vendor_mail_html_button_blade"
+    ],
+    "111": [
+      "resources_views_vendor_mail_html_footer_blade"
+    ],
+    "112": [
+      "resources_views_vendor_mail_html_header_blade"
+    ],
+    "113": [
+      "resources_views_vendor_mail_html_layout_blade"
+    ],
+    "114": [
+      "resources_views_vendor_mail_html_message_blade"
+    ],
+    "115": [
+      "resources_views_vendor_mail_html_panel_blade"
+    ],
+    "116": [
+      "resources_views_vendor_mail_html_subcopy_blade"
+    ],
+    "117": [
+      "resources_views_vendor_mail_html_table_blade"
+    ],
+    "118": [
+      "resources_views_vendor_mail_text_button_blade"
+    ],
+    "119": [
+      "resources_views_vendor_mail_text_footer_blade"
+    ],
+    "120": [
+      "resources_views_vendor_mail_text_header_blade"
+    ],
+    "121": [
+      "resources_views_vendor_mail_text_layout_blade"
+    ],
+    "122": [
+      "resources_views_vendor_mail_text_message_blade"
+    ],
+    "123": [
+      "resources_views_vendor_mail_text_panel_blade"
+    ],
+    "124": [
+      "resources_views_vendor_mail_text_subcopy_blade"
+    ],
+    "125": [
+      "resources_views_vendor_mail_text_table_blade"
+    ],
+    "126": [
+      "storage_framework_views_03844ba5f9f4671609d11de33b05119a"
+    ],
+    "127": [
+      "storage_framework_views_09358739ff2bccb398282abb4db16750"
+    ],
+    "128": [
+      "storage_framework_views_0cc96ad43133cc5a34fc4bb87c40d7e2"
+    ],
+    "129": [
+      "storage_framework_views_13d264671a6db1189085c584cd00d878"
+    ],
+    "130": [
+      "storage_framework_views_1adaaf6bfc90a70358e0dc537d8b331d"
+    ],
+    "131": [
+      "storage_framework_views_1d1d71212402a7ffae912b692e755418"
+    ],
+    "132": [
+      "storage_framework_views_1ede485038a3049db96db7f8ecf1e0a5"
+    ],
+    "133": [
+      "storage_framework_views_1f4ffb1d9a4a8b31c44c77a29467ab08"
+    ],
+    "134": [
+      "storage_framework_views_20992b088c1990b0a75abed98b4656fd"
+    ],
+    "135": [
+      "storage_framework_views_2304a92cb91f3348714cd285c8b69635"
+    ],
+    "136": [
+      "storage_framework_views_23be2217ce976a071cf2e8dd0ecb6778"
+    ],
+    "137": [
+      "storage_framework_views_2675973df398fcb0482d3fbc6e5d3789"
+    ],
+    "138": [
+      "storage_framework_views_2ee547e5b84a0e439851a96d25de552e"
+    ],
+    "139": [
+      "storage_framework_views_3112a9c89878a589eaa36c050a4103c2"
+    ],
+    "140": [
+      "storage_framework_views_3cabefd9590f89a66ab21dbb2e461bd6"
+    ],
+    "141": [
+      "storage_framework_views_3e183e0586b01789499b71d57675a5d0"
+    ],
+    "142": [
+      "storage_framework_views_4ac4c85612e38fe05f53a6c7ab5dc004"
+    ],
+    "143": [
+      "storage_framework_views_4d0d60cfeb1cc47373d8c58ddcc9b151"
+    ],
+    "144": [
+      "storage_framework_views_51e1244246608d94a530ae40ff9ecaf9"
+    ],
+    "145": [
+      "storage_framework_views_5c039f896ba1d56994f011785b7fa143"
+    ],
+    "146": [
+      "storage_framework_views_5c82ea9447f1ea6dbe121e4b1e2ae3ee"
+    ],
+    "147": [
+      "storage_framework_views_63c489b34f5746ef097cae1ae3f8dd37"
+    ],
+    "148": [
+      "storage_framework_views_6589ae77576e5f963c09d63827d7a0e3"
+    ],
+    "149": [
+      "storage_framework_views_73d944489a98c0e8c2127dd009c2a8ab"
+    ],
+    "150": [
+      "storage_framework_views_792eb88d438836d64a0674b70163d7b2"
+    ],
+    "151": [
+      "storage_framework_views_7d71237272b782198f1b03d6fae3529b"
+    ],
+    "152": [
+      "storage_framework_views_7deea77351f6dc19d6a32c90ed8d8752"
+    ],
+    "153": [
+      "storage_framework_views_7df7ef33ece97729cc0fb5f73adf7f96"
+    ],
+    "154": [
+      "storage_framework_views_7e477fe3862c2f1f152b6bec580bd024"
+    ],
+    "155": [
+      "storage_framework_views_83b008f7cdda92b06caf4b2574986a6f"
+    ],
+    "156": [
+      "storage_framework_views_881b0224b4c7a0146771878ff900492a"
+    ],
+    "157": [
+      "storage_framework_views_8b06040ff579be6c50b945dcc93c3b89"
+    ],
+    "158": [
+      "storage_framework_views_8d6254b6aa2bda8afd2068bad1e075bf"
+    ],
+    "159": [
+      "storage_framework_views_90d0cc7e9a63be8c0b352dd64073ff82"
+    ],
+    "160": [
+      "storage_framework_views_926b870a85b65ada946a60e8b23a53ee"
+    ],
+    "161": [
+      "storage_framework_views_92972507b9ba21ac46e5544fb23e1340"
+    ],
+    "162": [
+      "storage_framework_views_98563da052594d2377741ac63d5476a9"
+    ],
+    "163": [
+      "storage_framework_views_9ec86e4dbfda7fd68c1b67b2ce95e210"
+    ],
+    "164": [
+      "storage_framework_views_a0cfc4c7b29daf6b0c40c806e0f6f38c"
+    ],
+    "165": [
+      "storage_framework_views_a7d0f0bf0a8368d8f477dc5b06e8daa6"
+    ],
+    "166": [
+      "storage_framework_views_a981de94b5d7f91e9dafcff7a4994af4"
+    ],
+    "167": [
+      "storage_framework_views_ab2ebd0f412130e104c75a5606c291f7"
+    ],
+    "168": [
+      "storage_framework_views_ad367c13df1f1eb2f2c2c6ba53685219"
+    ],
+    "169": [
+      "storage_framework_views_b73d24ecd81228b28066c6e77ea3419d"
+    ],
+    "170": [
+      "storage_framework_views_bd5539d48cf90997304a3454261d421d"
+    ],
+    "171": [
+      "storage_framework_views_c06add52375f1f9aed561c82ada0d49e"
+    ],
+    "172": [
+      "storage_framework_views_c32431551f27305d54f89442604d5875"
+    ],
+    "173": [
+      "storage_framework_views_c56af0a780bac4c61bdc505150427295"
+    ],
+    "174": [
+      "storage_framework_views_d34bf0a5c903124ea8391f1b455a4bcd"
+    ],
+    "175": [
+      "storage_framework_views_d45264c43d4b29edf0ab34022c354f0b"
+    ],
+    "176": [
+      "storage_framework_views_d6bc283bfe0972eb085ee92c45d42596"
+    ],
+    "177": [
+      "storage_framework_views_d9dc60aaaa171298f731ab05e11da157"
+    ],
+    "178": [
+      "storage_framework_views_dc76257b5f2ac747e3552570485f0622"
+    ],
+    "179": [
+      "storage_framework_views_df8f23c6f219dcaa8770156907092246"
+    ],
+    "180": [
+      "storage_framework_views_e4075f685357f1142b9609f352a34782"
+    ],
+    "181": [
+      "storage_framework_views_e452fe262f2af2725d191bd445c0d96c"
+    ],
+    "182": [
+      "storage_framework_views_e4d52fc7bf7f7bd7e79137aa7ee89610"
+    ],
+    "183": [
+      "storage_framework_views_e8744e36832a999651e8f516e84571e4"
+    ],
+    "184": [
+      "storage_framework_views_f1928c22f90d5040077486c80d9a8111"
+    ],
+    "185": [
+      "storage_framework_views_f400dac5d9b237af65b8ce4cf489c0fe"
+    ],
+    "186": [
+      "tailwind_config"
+    ],
+    "187": [
+      "vite_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.07256894049346879,
+    "1": 0.06636500754147813,
+    "2": 0.08826945412311266,
+    "3": 0.047619047619047616,
+    "4": 0.10080645161290322,
+    "5": 0.1206896551724138,
+    "6": 0.11904761904761904,
+    "7": 0.11375661375661375,
+    "8": 0.07692307692307693,
+    "9": 0.08,
+    "10": 0.24358974358974358,
+    "11": 0.23076923076923078,
+    "12": 0.3333333333333333,
+    "13": 0.4,
+    "14": 0.4666666666666667,
+    "15": 0.6,
+    "16": 0.5,
+    "17": 0.6666666666666666,
+    "18": 0.6666666666666666,
+    "19": 0.6666666666666666,
+    "20": 0.6666666666666666,
+    "21": 0.6666666666666666,
+    "22": 0.6666666666666666,
+    "23": 0.6666666666666666,
+    "24": 0.6666666666666666,
+    "25": 0.6666666666666666,
+    "26": 0.6666666666666666,
+    "27": 0.6666666666666666,
+    "28": 0.6666666666666666,
+    "29": 0.6666666666666666,
+    "30": 0.6666666666666666,
+    "31": 0.6666666666666666,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0,
+    "67": 1.0,
+    "68": 1.0,
+    "69": 1.0,
+    "70": 1.0,
+    "71": 1.0,
+    "72": 1.0,
+    "73": 1.0,
+    "74": 1.0,
+    "75": 1.0,
+    "76": 1.0,
+    "77": 1.0,
+    "78": 1.0,
+    "79": 1.0,
+    "80": 1.0,
+    "81": 1.0,
+    "82": 1.0,
+    "83": 1.0,
+    "84": 1.0,
+    "85": 1.0,
+    "86": 1.0,
+    "87": 1.0,
+    "88": 1.0,
+    "89": 1.0,
+    "90": 1.0,
+    "91": 1.0,
+    "92": 1.0,
+    "93": 1.0,
+    "94": 1.0,
+    "95": 1.0,
+    "96": 1.0,
+    "97": 1.0,
+    "98": 1.0,
+    "99": 1.0,
+    "100": 1.0,
+    "101": 1.0,
+    "102": 1.0,
+    "103": 1.0,
+    "104": 1.0,
+    "105": 1.0,
+    "106": 1.0,
+    "107": 1.0,
+    "108": 1.0,
+    "109": 1.0,
+    "110": 1.0,
+    "111": 1.0,
+    "112": 1.0,
+    "113": 1.0,
+    "114": 1.0,
+    "115": 1.0,
+    "116": 1.0,
+    "117": 1.0,
+    "118": 1.0,
+    "119": 1.0,
+    "120": 1.0,
+    "121": 1.0,
+    "122": 1.0,
+    "123": 1.0,
+    "124": 1.0,
+    "125": 1.0,
+    "126": 1.0,
+    "127": 1.0,
+    "128": 1.0,
+    "129": 1.0,
+    "130": 1.0,
+    "131": 1.0,
+    "132": 1.0,
+    "133": 1.0,
+    "134": 1.0,
+    "135": 1.0,
+    "136": 1.0,
+    "137": 1.0,
+    "138": 1.0,
+    "139": 1.0,
+    "140": 1.0,
+    "141": 1.0,
+    "142": 1.0,
+    "143": 1.0,
+    "144": 1.0,
+    "145": 1.0,
+    "146": 1.0,
+    "147": 1.0,
+    "148": 1.0,
+    "149": 1.0,
+    "150": 1.0,
+    "151": 1.0,
+    "152": 1.0,
+    "153": 1.0,
+    "154": 1.0,
+    "155": 1.0,
+    "156": 1.0,
+    "157": 1.0,
+    "158": 1.0,
+    "159": 1.0,
+    "160": 1.0,
+    "161": 1.0,
+    "162": 1.0,
+    "163": 1.0,
+    "164": 1.0,
+    "165": 1.0,
+    "166": 1.0,
+    "167": 1.0,
+    "168": 1.0,
+    "169": 1.0,
+    "170": 1.0,
+    "171": 1.0,
+    "172": 1.0,
+    "173": 1.0,
+    "174": 1.0,
+    "175": 1.0,
+    "176": 1.0,
+    "177": 1.0,
+    "178": 1.0,
+    "179": 1.0,
+    "180": 1.0,
+    "181": 1.0,
+    "182": 1.0,
+    "183": 1.0,
+    "184": 1.0,
+    "185": 1.0,
+    "186": 1.0,
+    "187": 1.0
+  },
+  "gods": [
+    {
+      "id": "app_http_controllers_controller_controller",
+      "label": "Controller",
+      "degree": 41
+    },
+    {
+      "id": "app_models_user_user",
+      "label": "User",
+      "degree": 28
+    },
+    {
+      "id": "tests_testcase_testcase",
+      "label": "TestCase",
+      "degree": 20
+    },
+    {
+      "id": "app_http_controllers_publiccontroller_publiccontroller",
+      "label": "PublicController",
+      "degree": 13
+    },
+    {
+      "id": "app_models_job_job",
+      "label": "Job",
+      "degree": 13
+    },
+    {
+      "id": "app_models_gallerymedia_gallerymedia",
+      "label": "GalleryMedia",
+      "degree": 12
+    },
+    {
+      "id": "app_models_project_project",
+      "label": "Project",
+      "degree": 12
+    },
+    {
+      "id": "app_models_client_client",
+      "label": "Client",
+      "degree": 11
+    },
+    {
+      "id": "app_models_jobapplication_jobapplication",
+      "label": "JobApplication",
+      "degree": 11
+    },
+    {
+      "id": "app_models_quotationrequest_quotationrequest",
+      "label": "QuotationRequest",
+      "degree": 11
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ClientController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/Admin/ClientController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "ContactMessageController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/Admin/ContactMessageController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "GalleryMediaController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/Admin/GalleryMediaController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "JobApplicationController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/Admin/JobApplicationController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "JobController",
+      "target": "Controller",
+      "source_files": [
+        "app/Http/Controllers/Admin/JobController.php",
+        "app/Http/Controllers/Controller.php"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "inherits",
+      "why": "bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
