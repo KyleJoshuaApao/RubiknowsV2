@@ -69,16 +69,17 @@ class PublicController extends Controller
     public function applyForJob(Request $request, Job $job)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'cover_letter' => 'nullable|string',
-            'resume' => 'required|file|mimes:pdf,doc,docx|max:5120',
-            'portfolio' => 'nullable|file|mimes:pdf,zip|max:10240',
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|email|max:255',
+            'phone'        => 'nullable|string|max:20',
+            'cover_letter' => 'nullable|string|max:5000',
+            'resume'       => 'required|file|mimes:pdf,doc,docx|max:5120',
+            'portfolio'    => 'nullable|file|mimes:pdf,zip|max:10240',
         ]);
 
-        $resumePath = $request->file('resume')->store('applications/resumes', 'public');
-        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', 'public') : null;
+        // Store on the PRIVATE 'local' disk — not publicly accessible
+        $resumePath    = $request->file('resume')->store('applications/resumes', 'local');
+        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', 'local') : null;
 
         $application = JobApplication::create([
             'job_id' => $job->id,
@@ -104,6 +105,14 @@ class PublicController extends Controller
     {
         $testimonials = Testimonial::where('is_published', true)->latest()->get();
         return view('public.testimonials', compact('testimonials'));
+    }
+
+    public function clients()
+    {
+        $clients  = Client::whereIn('type', ['Client', 'client'])->orWhereNull('type')->latest()->get();
+        $partners = Client::whereIn('type', ['Partner', 'partner'])->latest()->get();
+        $sponsors = Client::whereIn('type', ['Sponsor', 'sponsor'])->latest()->get();
+        return view('public.clients', compact('clients', 'partners', 'sponsors'));
     }
 
     public function contact()
@@ -136,19 +145,20 @@ class PublicController extends Controller
     public function submitQuotation(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'company' => 'nullable|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'service_needed' => 'required|string|max:255',
+            'name'             => 'required|string|max:255',
+            'company'          => 'nullable|string|max:255',
+            'email'            => 'required|email|max:255',
+            'phone'            => 'nullable|string|max:20',
+            'service_needed'   => 'required|string|max:255',
             'project_location' => 'required|string|max:255',
-            'budget' => 'nullable|string|max:100',
-            'timeline' => 'nullable|string|max:100',
-            'description' => 'required|string',
-            'attachment' => 'nullable|file|mimes:pdf,doc,docx,jpg,png,zip|max:10240',
+            'budget'           => 'nullable|string|max:100',
+            'timeline'         => 'nullable|string|max:100',
+            'description'      => 'required|string|max:10000',
+            'attachment'       => 'nullable|file|mimes:pdf,doc,docx,jpg,png,zip|max:10240',
         ]);
 
-        $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('quotations', 'public') : null;
+        // Store attachment privately; serve only via authenticated admin route
+        $attachmentPath = $request->hasFile('attachment') ? $request->file('attachment')->store('quotations', 'local') : null;
 
         $quotation = QuotationRequest::create([
             'name' => $data['name'],

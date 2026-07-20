@@ -2,7 +2,7 @@
     <x-slot name="title">Contact Us</x-slot>
 
     <!-- Header -->
-    <div class="relative bg-white pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden">
+    <div class="relative bg-white pt-24 pb-16 lg:pt-40 lg:pb-32 overflow-hidden">
         <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(ellipse at top right, rgba(224,123,42,0.08), transparent 55%);"></div>
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
 
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Contact Content -->
-    <div class="py-32 lg:py-44 bg-white">
+    <div class="py-20 lg:py-44 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
 

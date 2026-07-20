@@ -9,7 +9,8 @@ class Setting extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    // Explicit fillable to prevent mass assignment attacks
+    protected $fillable = ['key', 'value', 'description', 'group'];
 
     /**
      * Get a setting value by key.

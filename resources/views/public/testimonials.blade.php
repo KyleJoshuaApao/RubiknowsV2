@@ -2,7 +2,7 @@
     <x-slot name="title">Testimonials</x-slot>
 
     <!-- Header -->
-    <div class="relative bg-white pt-24 pb-20 overflow-hidden">
+    <div class="relative bg-white pt-24 pb-16 lg:pb-20 overflow-hidden">
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.04] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -22,29 +22,24 @@
     </div>
 
     <!-- Testimonials Grid -->
-    <div class="py-24 lg:py-32 bg-white">
+    <div class="py-20 lg:py-32 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse($testimonials as $testimonial)
                 <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
                      class="opacity-0-initial group p-6 lg:p-8 bg-white rounded-3xl border border-gray-100 hover:border-orange-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-500"
                      style="animation-delay: {{ $loop->index * 0.1 }}s">
-                    <div class="flex items-center gap-1 mb-6">
-                        @for ($i = 0; $i < 5; $i++)
-                            <svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921,1.603-.921,1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0,1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                        @endfor
-                    </div>
-                    <p class="text-gray-700 italic text-sm leading-relaxed mb-8">"{{ $testimonial->content }}"</p>
+                    <p class="text-gray-700 italic text-sm leading-relaxed mb-8">"{{ $testimonial->quote }}"</p>
                     <div class="flex items-center pt-6 border-t border-gray-100">
                         @if($testimonial->avatar_path)
-                        <img class="h-14 w-14 rounded-full object-cover mr-5 ring-4 ring-orange-100" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->name }}">
+                        <img class="h-14 w-14 rounded-full object-cover mr-5 ring-4 ring-orange-100" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
                         @else
                         <div class="h-14 w-14 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-xl mr-5 shadow-lg shadow-orange-500/30">
-                            {{ substr($testimonial->name, 0, 1) }}
+                            {{ substr($testimonial->client_name, 0, 1) }}
                         </div>
                         @endif
                         <div>
-                            <h4 class="text-base font-bold text-black group-hover:text-orange-600 transition-colors duration-300">{{ $testimonial->name }}</h4>
+                            <h4 class="text-base font-bold text-black group-hover:text-orange-600 transition-colors duration-300">{{ $testimonial->client_name }}</h4>
                             <p class="text-xs text-gray-500">{{ $testimonial->role }} @if($testimonial->company) &bull; {{ $testimonial->company }} @endif</p>
                         </div>
                     </div>
@@ -58,10 +53,21 @@
         </div>
     </div>
 
-    <!-- CTA Section -->
-    <div class="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black py-20 lg:py-28 overflow-hidden border-t border-slate-700">
-        <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.1] pointer-events-none"></div>
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <!-- Premium 3D CTA Section -->
+    <div class="relative bg-white py-20 lg:py-32 overflow-hidden">
+        <!-- 3D Perspective Grid -->
+        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none" style="transform: perspective(1000px) rotateX(60deg) scale(2.5); transform-origin: top; mask-image: linear-gradient(to bottom, transparent, black 40%, transparent);"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- 3D Glassmorphic Card -->
+            <div class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-[#0a0a0a] rounded-[2.5rem] p-6 sm:p-8 lg:p-20 overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.05),inset_0_-1px_0_rgba(255,255,255,0.02)] border border-white/10 group transform hover:-translate-y-2 transition-transform duration-700">
+                
+                <!-- Inner 3D Lighting -->
+                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3 group-hover:bg-brand-500/20 transition-colors duration-700"></div>
+                <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/3 translate-y-1/3 group-hover:bg-amber-500/15 transition-colors duration-700"></div>
+                <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+
+                <div class="relative z-20 text-center max-w-4xl mx-auto">
             <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
                 <div class="flex items-center justify-center gap-2 mb-6">
                     <div class="h-px w-12 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
@@ -85,5 +91,7 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 </x-public-layout>

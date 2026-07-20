@@ -7,25 +7,23 @@
                     {{ __('Dashboard Overview') }}
                 </h2>
             </div>
-            <span class="hidden sm:inline-flex text-[10px] font-mono text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200/60">
+            <span class="hidden sm:inline-flex text-[10px] font-mono text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full border border-gray-200">
                 {{ date('l, F j, Y') }}
             </span>
         </div>
     </x-slot>
 
     <!-- Welcome Section -->
-    <div class="mb-8 relative overflow-hidden rounded-2xl">
-        <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"></div>
-        <div class="absolute inset-0 bg-grid-pattern-dark-fine opacity-20"></div>
+    <div class="mb-8 relative overflow-hidden rounded-2xl border border-gray-100 shadow-sm bg-white">
         <!-- Decorative gradient orbs -->
-        <div class="absolute -right-16 -top-16 w-72 h-72 bg-brand-500/20 rounded-full blur-[100px]"></div>
-        <div class="absolute -left-8 -bottom-8 w-48 h-48 bg-brand-500/10 rounded-full blur-[80px]"></div>
+        <div class="absolute -right-16 -top-16 w-72 h-72 bg-brand-500/10 rounded-full blur-[80px]"></div>
+        <div class="absolute -left-8 -bottom-8 w-48 h-48 bg-blue-500/10 rounded-full blur-[80px]"></div>
         
         <div class="relative z-10 p-8 sm:p-10">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div class="space-y-2">
                     <div class="flex items-center gap-3">
-                        <h3 class="text-2xl sm:text-3xl font-bold font-['Roboto_Slab'] tracking-tight text-white">
+                        <h3 class="text-2xl sm:text-3xl font-bold font-['Roboto_Slab'] tracking-tight text-gray-900">
                             Welcome back, {{ Auth::user()->name }}
                         </h3>
                         <span class="hidden sm:inline-flex text-lg">👋</span>
@@ -49,7 +47,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                         New Project
                     </a>
-                    <a href="{{ url('/') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white text-sm font-medium rounded-xl border border-white/10 transition-all duration-200">
+                    <a href="{{ url('/') }}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-700 hover:text-gray-900 text-sm font-medium rounded-xl border border-gray-200 transition-all duration-200">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         View Site
                     </a>
@@ -125,11 +123,26 @@
                 ];
                 $colors = $colorMap[$stat['color']] ?? $colorMap['brand'];
             @endphp
-            <div class="bg-white rounded-xl border border-gray-100 p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 hover:border-gray-200 group animate-slide-up">
+            <div class="bg-white rounded-xl border border-gray-100 p-5 transition-all duration-300 shadow-sm hover:shadow-md hover:shadow-brand-500/5 hover:-translate-y-0.5 hover:border-gray-200 group animate-slide-up">
                 <div class="flex items-start justify-between mb-3">
                     <div class="flex-1 min-w-0">
                         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $stat['label'] }}</p>
-                        <p class="text-2xl font-bold text-gray-900 mt-1.5 font-['Roboto_Slab']">{{ $stat['value'] }}</p>
+                        <!-- Alpine Counter -->
+                        <p class="text-2xl font-bold text-gray-900 mt-1.5 font-['Roboto_Slab']" x-data="{ count: 0, target: {{ $stat['value'] }} }" x-init="
+                            let start = 0;
+                            const duration = 1500;
+                            const starttime = performance.now();
+                            const animate = (time) => {
+                                let progress = (time - starttime) / duration;
+                                if (progress < 1) {
+                                    count = Math.floor(target * progress);
+                                    requestAnimationFrame(animate);
+                                } else {
+                                    count = target;
+                                }
+                            };
+                            requestAnimationFrame(animate);
+                        " x-text="count"></p>
                     </div>
                     <div class="w-11 h-11 rounded-xl {{ $colors['bg'] }} flex items-center justify-center {{ $colors['text'] }} {{ $colors['iconHover'] }} group-hover:text-white transition-all duration-300 flex-shrink-0">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,12 +158,12 @@
                                 {{ $stat['trend'] }}
                             </span>
                         @elseif($stat['trend'])
-                            <span class="font-medium text-gray-600">{{ $stat['trend'] }}</span>
+                            <span class="font-medium text-gray-900">{{ $stat['trend'] }}</span>
                         @endif
-                        <span class="text-gray-400">{{ $stat['trendLabel'] }}</span>
+                        <span class="text-gray-500">{{ $stat['trendLabel'] }}</span>
                     </div>
                     @if($stat['sparkline'])
-                        <div class="sparkline text-brand-500 group-hover:opacity-100 opacity-60 transition-opacity">
+                        <div class="sparkline text-brand-500 group-hover:opacity-100 opacity-40 transition-opacity">
                             <div class="bar"></div>
                             <div class="bar"></div>
                             <div class="bar"></div>
@@ -168,6 +181,22 @@
         @endforeach
     </div>
 
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+            <h3 class="font-semibold text-gray-900 text-sm mb-4">Project Activity</h3>
+            <div class="relative h-[250px] w-full">
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+            <h3 class="font-semibold text-gray-900 text-sm mb-4">Inquiries Overview</h3>
+            <div class="relative h-[250px] w-full">
+                <canvas id="inquiriesChart"></canvas>
+            </div>
+        </div>
+    </div>
+
     <!-- Recent Activity & Quick Actions -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Recent Projects (2/3 width) -->
@@ -177,18 +206,18 @@
                     <span class="w-2 h-2 rounded-full bg-brand-500"></span>
                     <h3 class="font-semibold text-gray-900 text-sm">Recent Projects</h3>
                     @php $projectCount = \App\Models\Project::count(); @endphp
-                    <span class="text-[11px] font-mono text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">{{ $projectCount }} total</span>
+                    <span class="text-[11px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">{{ $projectCount }} total</span>
                 </div>
                 <a href="{{ route('admin.projects.index') }}" class="inline-flex items-center gap-1.5 text-xs font-medium text-brand-600 hover:text-brand-700 transition-colors group">
                     View All
                     <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
             </div>
-            <div class="divide-y divide-gray-50">
+            <div class="divide-y divide-gray-100">
                 @forelse(\App\Models\Project::latest()->take(5)->get() as $project)
-                    <div class="px-6 py-3.5 hover:bg-gray-50/80 transition-colors flex items-center justify-between group/item">
+                    <div class="px-6 py-3.5 hover:bg-gray-50/50 transition-colors flex items-center justify-between group/item">
                         <div class="flex items-center gap-4 min-w-0 flex-1">
-                            <div class="flex-shrink-0 w-9 h-9 bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 group-hover/item:bg-brand-50 group-hover/item:text-brand-500 transition-all">
+                            <div class="flex-shrink-0 w-9 h-9 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 group-hover/item:bg-brand-50 group-hover/item:text-brand-600 transition-all border border-gray-100">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                             </div>
                             <div class="min-w-0">
@@ -206,7 +235,7 @@
                     </div>
                 @empty
                     <div class="px-6 py-10 text-center">
-                        <div class="w-14 h-14 mx-auto bg-gray-50 rounded-2xl flex items-center justify-center mb-4">
+                        <div class="w-14 h-14 mx-auto bg-gray-50 rounded-2xl flex items-center justify-center mb-4 border border-gray-100">
                             <svg class="w-7 h-7 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                         </div>
                         <p class="text-sm font-medium text-gray-900 mb-1">No projects yet</p>
@@ -219,8 +248,8 @@
                 @endforelse
             </div>
             @if(\App\Models\Project::count() > 0)
-                <div class="px-6 py-3 bg-gray-50/50 border-t border-gray-50 flex items-center justify-between">
-                    <span class="text-[11px] text-gray-400">
+                <div class="px-6 py-3 bg-gray-50/50 border-t border-gray-100 flex items-center justify-between">
+                    <span class="text-[11px] text-gray-500">
                         Showing recent {{ min(5, \App\Models\Project::count()) }} of {{ \App\Models\Project::count() }} projects
                     </span>
                     <a href="{{ route('admin.projects.index') }}" class="text-[11px] font-medium text-brand-600 hover:text-brand-700 transition-colors">
@@ -234,7 +263,7 @@
         <div class="flex flex-col gap-5">
             <!-- Quick Actions Card -->
             <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2.5">
+                <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2.5 bg-gray-50/50">
                     <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
                     <h3 class="font-semibold text-gray-900 text-sm">Quick Actions</h3>
                 </div>
@@ -245,7 +274,7 @@
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-medium text-gray-900 group-hover:text-brand-600 transition-colors">Add New Project</p>
-                            <p class="text-xs text-gray-400">Create a new portfolio entry</p>
+                            <p class="text-xs text-gray-500">Create a new portfolio entry</p>
                         </div>
                     </a>
 
@@ -255,7 +284,7 @@
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">Add New Service</p>
-                            <p class="text-xs text-gray-400">Expand your company offerings</p>
+                            <p class="text-xs text-gray-500">Expand your company offerings</p>
                         </div>
                     </a>
 
@@ -265,7 +294,7 @@
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">View Messages</p>
-                            <p class="text-xs text-gray-400">Check contact inquiries</p>
+                            <p class="text-xs text-gray-500">Check contact inquiries</p>
                         </div>
                     </a>
 
@@ -275,7 +304,7 @@
                         </div>
                         <div class="min-w-0">
                             <p class="text-sm font-medium text-gray-900 group-hover:text-amber-600 transition-colors">Quotation Requests</p>
-                            <p class="text-xs text-gray-400">Review pending quotes</p>
+                            <p class="text-xs text-gray-500">Review pending quotes</p>
                         </div>
                     </a>
                 </div>
@@ -283,7 +312,7 @@
 
             <!-- System Status Card -->
             <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-                <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2.5">
+                <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2.5 bg-gray-50/50">
                     <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
                     <h3 class="font-semibold text-gray-900 text-sm">System Status</h3>
                 </div>
@@ -295,21 +324,21 @@
                             Operational
                         </span>
                     </div>
-                    <div class="flex items-center justify-between py-2 border-t border-gray-50">
+                    <div class="flex items-center justify-between py-2 border-t border-gray-100">
                         <span class="text-sm text-gray-600">Database</span>
-                        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-50 px-2.5 py-1 rounded-full border border-green-100">
                             <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                             Connected
                         </span>
                     </div>
-                    <div class="flex items-center justify-between py-2 border-t border-gray-50">
+                    <div class="flex items-center justify-between py-2 border-t border-gray-100">
                         <span class="text-sm text-gray-600">Storage</span>
                         <span class="inline-flex items-center gap-1.5 text-xs font-medium text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
                             <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
                             Available
                         </span>
                     </div>
-                    <div class="flex items-center justify-between py-2 border-t border-gray-50">
+                    <div class="flex items-center justify-between py-2 border-t border-gray-100">
                         <span class="text-sm text-gray-600">Last Backup</span>
                         <span class="text-xs font-mono text-gray-500">Today, 02:00 AM</span>
                     </div>
@@ -327,15 +356,15 @@
                     <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                     <h3 class="font-semibold text-gray-900 text-sm">Services</h3>
                     @php $serviceCount = \App\Models\Service::count(); @endphp
-                    <span class="text-[11px] font-mono text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">{{ $serviceCount }} active</span>
+                    <span class="text-[11px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">{{ $serviceCount }} active</span>
                 </div>
                 <a href="{{ route('admin.services.index') }}" class="text-xs font-medium text-brand-600 hover:text-brand-700 transition-colors">
                     Manage &rarr;
                 </a>
             </div>
-            <div class="divide-y divide-gray-50">
+            <div class="divide-y divide-gray-100">
                 @forelse(\App\Models\Service::latest()->take(4)->get() as $service)
-                    <div class="px-6 py-3.5 hover:bg-gray-50/80 transition-colors flex items-center justify-between">
+                    <div class="px-6 py-3.5 hover:bg-gray-50/50 transition-colors flex items-center justify-between">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="flex-shrink-0 w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
@@ -359,15 +388,15 @@
                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                     <h3 class="font-semibold text-gray-900 text-sm">Clients & Partners</h3>
                     @php $clientCount = \App\Models\Client::count(); @endphp
-                    <span class="text-[11px] font-mono text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">{{ $clientCount }} partners</span>
+                    <span class="text-[11px] font-mono text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">{{ $clientCount }} partners</span>
                 </div>
                 <a href="{{ route('admin.clients.index') }}" class="text-xs font-medium text-brand-600 hover:text-brand-700 transition-colors">
                     Manage &rarr;
                 </a>
             </div>
-            <div class="divide-y divide-gray-50">
+            <div class="divide-y divide-gray-100">
                 @forelse(\App\Models\Client::latest()->take(4)->get() as $client)
-                    <div class="px-6 py-3.5 hover:bg-gray-50/80 transition-colors flex items-center justify-between">
+                    <div class="px-6 py-3.5 hover:bg-gray-50/50 transition-colors flex items-center justify-between">
                         <div class="flex items-center gap-3 min-w-0">
                             <div class="flex-shrink-0 w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-500">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -384,4 +413,58 @@
             </div>
         </div>
     </div>
+
+    <!-- Chart.js Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx1 = document.getElementById('activityChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Projects Created',
+                        data: [0, 0, 0, 0, 0, 0, 0], // Empty data as requested
+                        borderColor: '#f97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, suggestedMax: 10, grid: { color: '#f3f4f6' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            const ctx2 = document.getElementById('inquiriesChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Contact Messages',
+                        data: [0, 0, 0, 0, 0, 0, 0], // Empty data as requested
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, suggestedMax: 10, grid: { color: '#f3f4f6' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+        });
+    </script>
 </x-app-layout>

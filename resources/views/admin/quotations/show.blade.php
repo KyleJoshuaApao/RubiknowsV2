@@ -122,7 +122,7 @@
 
             <!-- Delete -->
             <div class="mt-4 text-center">
-                <form action="{{ route('admin.quotations.destroy', $quotation) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this quotation request?');">
+                <form action="{{ route('admin.quotations.destroy', $quotation) }}" method="POST" data-confirm="Are you sure you want to delete this quotation request? This action cannot be undone.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="text-sm text-red-600 hover:text-red-800 font-medium">Delete Request</button>

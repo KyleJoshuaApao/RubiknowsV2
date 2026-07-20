@@ -19,32 +19,21 @@ class UserController extends Controller
         $this->fileUploadService = $fileUploadService;
     }
 
-    /**
-     * Check if user is Super Admin
-     */
-    protected function checkSuperAdmin()
-    {
-        if (Auth::user()->role !== 'Super Admin') {
-            abort(403, 'Unauthorized action. Only Super Admins can manage users.');
-        }
-    }
+
 
     public function index()
     {
-        $this->checkSuperAdmin();
         $users = User::latest()->paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        $this->checkSuperAdmin();
         return view('admin.users.create');
     }
 
     public function store(Request $request)
     {
-        $this->checkSuperAdmin();
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -71,13 +60,11 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $this->checkSuperAdmin();
         return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        $this->checkSuperAdmin();
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -106,7 +93,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $this->checkSuperAdmin();
 
         if ($user->id === Auth::id()) {
             return redirect()->route('admin.users.index')->with('error', 'You cannot delete yourself.');

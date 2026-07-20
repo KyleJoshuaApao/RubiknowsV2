@@ -60,7 +60,7 @@
         </div>
         
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-between">
-            <form action="{{ route('admin.messages.destroy', $message) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this message?');">
+            <form action="{{ route('admin.messages.destroy', $message) }}" method="POST" data-confirm="Are you sure you want to delete this message? This action cannot be undone.">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">Delete Message</button>

@@ -112,7 +112,7 @@
 
             <!-- Delete -->
             <div class="mt-4 text-center">
-                <form action="{{ route('admin.applications.destroy', $application) }}" method="POST" onsubmit="return confirm('Delete this application and all attached files forever?');">
+                <form action="{{ route('admin.applications.destroy', $application) }}" method="POST" data-confirm="Delete this application and all attached files forever? This action cannot be undone.">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="text-sm text-red-600 hover:text-red-800 font-medium">Delete Application</button>

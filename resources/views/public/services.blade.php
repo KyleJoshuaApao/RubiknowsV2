@@ -2,7 +2,7 @@
     <x-slot name="title">Our Services</x-slot>
 
     <!-- Header -->
-    <div class="relative bg-white pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden">
+    <div class="relative bg-white pt-24 pb-16 lg:pt-40 lg:pb-32 overflow-hidden">
         <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(ellipse at top right, rgba(224,123,42,0.08), transparent 55%);"></div>
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
 
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Services Grid -->
-    <div class="py-32 lg:py-44 bg-white relative overflow-hidden">
+    <div class="py-20 lg:py-44 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                 @forelse($services as $service)
@@ -83,8 +83,9 @@
                              <div class="text-sm font-bold text-orange-500 font-mono tracking-wider mb-3">
                                  #{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
                              </div>
-                             <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">{{ $service->title }}</h3>
-                             @if($service->short_description)
+                         </div>
+                         <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">{{ $service->title }}</h3>
+                         @if($service->short_description)
                                  <p class="text-sm text-gray-700 font-semibold mb-2">{{ $service->short_description }}</p>
                              @endif
                              <div class="text-gray-600 mb-6 flex-grow whitespace-pre-line text-sm leading-relaxed">{!! nl2br(e($service->content)) !!}</div>
@@ -105,11 +106,21 @@
         </div>
     </div>
 
-    <!-- CTA Section -->
-    <div class="relative bg-gradient-to-br from-slate-900 via-gray-900 to-black py-20 lg:py-28 overflow-hidden border-t border-slate-700">
-        <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.08] pointer-events-none"></div>
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-yellow-500/8 rounded-full blur-[200px] pointer-events-none -translate-y-1/2"></div>
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <!-- Premium 3D CTA Section -->
+    <div class="relative bg-white py-20 lg:py-32 overflow-hidden">
+        <!-- 3D Perspective Grid -->
+        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none" style="transform: perspective(1000px) rotateX(60deg) scale(2.5); transform-origin: top; mask-image: linear-gradient(to bottom, transparent, black 40%, transparent);"></div>
+        
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- 3D Glassmorphic Card -->
+            <div class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-[#0a0a0a] rounded-[2.5rem] p-6 sm:p-8 lg:p-20 overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.05),inset_0_-1px_0_rgba(255,255,255,0.02)] border border-white/10 group transform hover:-translate-y-2 transition-transform duration-700">
+                
+                <!-- Inner 3D Lighting -->
+                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3 group-hover:bg-brand-500/20 transition-colors duration-700"></div>
+                <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/3 translate-y-1/3 group-hover:bg-amber-500/15 transition-colors duration-700"></div>
+                <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+
+                <div class="relative z-20 text-center max-w-4xl mx-auto">
             <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
                 <div class="flex items-center justify-center gap-3 mb-6">
                     <div class="h-px w-20 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
@@ -130,5 +141,7 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 </x-public-layout>

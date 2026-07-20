@@ -8,9 +8,40 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                <form action="{{ route('admin.projects.update', $project) }}" method="POST">
+                <form action="{{ route('admin.projects.update', $project) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
+                            <input type="text" name="category_id" id="category_id" value="{{ old('category_id', $project->category_id) }}" placeholder="e.g. Civil Engineering" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                        </div>
+
+                        <div>
+                            <label for="image_file" class="block text-sm font-medium text-gray-700">Project Cover Image</label>
+                            @if($project->image_url)
+                                <div class="mt-2 mb-3 flex items-center gap-3">
+                                    <img src="{{ Storage::disk('public')->url($project->image_url) }}"
+                                         alt="Current Cover"
+                                         class="h-24 w-36 object-cover rounded-lg border border-gray-200 shadow-sm">
+                                    <div>
+                                        <p class="text-xs text-green-600 font-semibold">✓ Image uploaded</p>
+                                        <p class="text-xs text-gray-400 mt-0.5">Choose a new file below to replace it</p>
+                                    </div>
+                                </div>
+                            @else
+                                <p class="mt-1 text-xs text-gray-400">No image uploaded yet.</p>
+                            @endif
+                            <input type="file" name="image_file" id="image_file"
+                                   accept="image/jpeg,image/png,image/gif,image/webp"
+                                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-[#E07B2A] hover:file:bg-orange-100">
+                            @error('image_file')
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                            @enderror
+                            <p class="mt-1 text-xs text-gray-400">Accepted: JPG, PNG, GIF, WEBP. Max 5MB.</p>
+                        </div>
+                    </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>

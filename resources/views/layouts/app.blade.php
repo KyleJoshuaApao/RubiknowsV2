@@ -22,8 +22,11 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <!-- Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
-    <body class="font-['Inter'] antialiased text-gray-900 bg-gray-50 flex h-screen overflow-hidden">
+    <body class="font-sans antialiased text-gray-900 bg-gray-50 flex h-screen overflow-hidden">
 
         <!-- ===== SIDEBAR ===== -->
         <aside class="w-64 bg-[#0a0a0a] shadow-2xl flex-shrink-0 flex flex-col hidden md:flex text-gray-300 relative z-20">
@@ -258,7 +261,7 @@
                     </button>
                     <!-- Page Title dynamically inserted -->
                     @isset($header)
-                        <div class="flex-1 min-w-0">
+                        <div class="flex-1 min-w-0 text-gray-900">
                             {{ $header }}
                         </div>
                     @endisset
@@ -366,48 +369,181 @@
 
                 <div class="p-6 lg:p-8">
                     <!-- Alert System -->
-                    @if (session('success'))
-                        <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-4" class="mb-6">
-                            <div class="bg-white border-l-[3px] border-brand-500 rounded-xl shadow-sm overflow-hidden">
-                                <div class="flex items-center justify-between p-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="flex-shrink-0 w-8 h-8 bg-brand-50 rounded-lg flex items-center justify-center">
-                                            <svg class="h-4 w-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                        <p class="text-sm font-medium text-gray-800">{{ session('success') }}</p>
-                                    </div>
-                                    <button @click="show = false" class="text-gray-300 hover:text-gray-500 transition-colors p-1">
-                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div x-data="{ show: true }" x-show="show" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-4" class="mb-6">
-                            <div class="bg-white border-l-[3px] border-red-500 rounded-xl shadow-sm overflow-hidden">
-                                <div class="flex items-center justify-between p-4">
-                                    <div class="flex items-center gap-3">
-                                        <div class="flex-shrink-0 w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
-                                            <svg class="h-4 w-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                        <p class="text-sm font-medium text-gray-800">{{ session('error') }}</p>
-                                    </div>
-                                    <button @click="show = false" class="text-gray-300 hover:text-gray-500 transition-colors p-1">
-                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
+                    {{-- Flash toasts are rendered by the global RubiKnows toast system below --}}
 
                     {{ $slot }}
                 </div>
             </div>
         </main>
+
+        <!-- ============================================================
+             RUBIKNOWS — Global Toast Notification System
+             ============================================================ -->
+        <div
+            id="rk-toast-container"
+            class="fixed top-5 right-5 z-[99999] flex flex-col gap-3 pointer-events-none"
+            aria-live="polite"
+        ></div>
+
+        <!-- ============================================================
+             RUBIKNOWS — Custom Confirm Modal
+             ============================================================ -->
+        <div id="rk-confirm-backdrop"
+             class="fixed inset-0 z-[99998] flex items-center justify-center p-4"
+             style="display:none!important; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px);">
+            <div id="rk-confirm-box"
+                 class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden"
+                 style="transform:scale(0.92);opacity:0;transition:transform 0.22s cubic-bezier(.34,1.56,.64,1),opacity 0.18s ease;">
+                <!-- Top accent bar -->
+                <div class="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600"></div>
+                <div class="px-7 pt-7 pb-6">
+                    <!-- Icon -->
+                    <div class="flex items-center gap-4 mb-5">
+                        <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-500 mb-0.5">Confirm Action</p>
+                            <h3 id="rk-confirm-title" class="text-base font-bold text-gray-900 leading-snug">Are you sure?</h3>
+                        </div>
+                    </div>
+                    <p id="rk-confirm-message" class="text-sm text-gray-500 leading-relaxed mb-7"></p>
+                    <div class="flex items-center gap-3 justify-end">
+                        <button id="rk-confirm-cancel"
+                                class="px-5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200">
+                            Cancel
+                        </button>
+                        <button id="rk-confirm-ok"
+                                class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-bold shadow-lg shadow-orange-200 hover:from-orange-600 hover:to-amber-600 hover:shadow-orange-300 transition-all duration-200">
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+                <!-- Logo watermark -->
+                <div class="absolute bottom-3 left-6 flex items-center gap-1.5 opacity-30 select-none">
+                    <img src="/LOGO.png" alt="" class="h-4 w-auto">
+                    <span class="text-[9px] font-bold tracking-widest text-gray-400 uppercase">RubiKnows</span>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        /* ================================================================
+           RubiKnows — Notification & Confirm System
+           ================================================================ */
+        (function () {
+            'use strict';
+
+            /* ---------- TOAST ---------- */
+            var _toastContainer = document.getElementById('rk-toast-container');
+
+            function rkToast(message, type) {
+                type = type || 'success';
+                var cfg = {
+                    success : { icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>', bar: '#f97316', iconColor: '#f97316', bg: '#fff' },
+                    error   : { icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>', bar: '#ef4444', iconColor: '#ef4444', bg: '#fff' },
+                    info    : { icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>', bar: '#3b82f6', iconColor: '#3b82f6', bg: '#fff' },
+                };
+                var c = cfg[type] || cfg.success;
+                var toast = document.createElement('div');
+                toast.style.cssText = 'pointer-events:all;min-width:300px;max-width:380px;background:'+c.bg+';border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.13),0 2px 8px rgba(0,0,0,0.07);overflow:hidden;transform:translateX(120%);opacity:0;transition:transform 0.38s cubic-bezier(.34,1.56,.64,1),opacity 0.25s ease;';
+                toast.innerHTML = '<div style="height:3px;background:'+c.bar+';border-radius:999px 999px 0 0"></div>'
+                    + '<div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px 14px 16px;">'
+                    + '<div style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:'+c.bar+'18;display:flex;align-items:center;justify-content:center;">'
+                    + '<svg style="width:18px;height:18px;color:'+c.iconColor+'" fill="none" viewBox="0 0 24 24" stroke="'+c.iconColor+'">'+c.icon+'</svg></div>'
+                    + '<div style="flex:1;min-width:0;">'
+                    + '<p style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:'+c.bar+';margin:0 0 2px 0;">'
+                    + (type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Notice') + '</p>'
+                    + '<p style="font-size:13px;font-weight:500;color:#1a1a1a;margin:0;line-height:1.5;">'+message+'</p></div>'
+                    + '<button onclick="this.closest(\'[data-rk-toast]\').remove()" style="flex-shrink:0;padding:2px;background:none;border:none;cursor:pointer;color:#9ca3af;margin-top:1px;">'
+                    + '<svg style="width:15px;height:15px" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>'
+                    + '</div>';
+                toast.setAttribute('data-rk-toast', '1');
+                _toastContainer.appendChild(toast);
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        toast.style.transform = 'translateX(0)';
+                        toast.style.opacity   = '1';
+                    });
+                });
+                setTimeout(function () { dismissToast(toast); }, 5000);
+            }
+
+            function dismissToast(toast) {
+                toast.style.transform = 'translateX(120%)';
+                toast.style.opacity   = '0';
+                setTimeout(function () { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 400);
+            }
+
+            window.rkToast = rkToast;
+
+            /* ---------- Auto-fire session flash toasts ---------- */
+            @if(session('success'))
+            window.addEventListener('DOMContentLoaded', function () {
+                rkToast({{ json_encode(session('success')) }}, 'success');
+            });
+            @endif
+            @if(session('error'))
+            window.addEventListener('DOMContentLoaded', function () {
+                rkToast({{ json_encode(session('error')) }}, 'error');
+            });
+            @endif
+
+            /* ---------- CONFIRM MODAL ---------- */
+            var _backdrop = document.getElementById('rk-confirm-backdrop');
+            var _box      = document.getElementById('rk-confirm-box');
+            var _title    = document.getElementById('rk-confirm-title');
+            var _msg      = document.getElementById('rk-confirm-message');
+            var _okBtn    = document.getElementById('rk-confirm-ok');
+            var _cancelBtn= document.getElementById('rk-confirm-cancel');
+            var _pendingResolve = null;
+
+            function openConfirm(message, title) {
+                _title.textContent   = title   || 'Are you sure?';
+                _msg.textContent     = message || 'This action cannot be undone.';
+                _backdrop.style.cssText = 'display:flex!important;position:fixed;inset:0;z-index:99998;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);';
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        _box.style.transform = 'scale(1)';
+                        _box.style.opacity   = '1';
+                    });
+                });
+                return new Promise(function (resolve) { _pendingResolve = resolve; });
+            }
+
+            function closeConfirm(result) {
+                _box.style.transform = 'scale(0.92)';
+                _box.style.opacity   = '0';
+                setTimeout(function () {
+                    _backdrop.style.cssText = 'display:none!important;';
+                }, 220);
+                if (_pendingResolve) { _pendingResolve(result); _pendingResolve = null; }
+            }
+
+            _okBtn.addEventListener('click',     function () { closeConfirm(true);  });
+            _cancelBtn.addEventListener('click',  function () { closeConfirm(false); });
+            _backdrop.addEventListener('click',   function (e) { if (e.target === _backdrop) closeConfirm(false); });
+            document.addEventListener('keydown',  function (e) { if (e.key === 'Escape') closeConfirm(false); });
+
+            window.rkConfirm = openConfirm;
+
+            /* ---------- Intercept all data-confirm forms ---------- */
+            document.addEventListener('submit', function (e) {
+                var form = e.target;
+                var msg  = form.getAttribute('data-confirm');
+                if (!msg) return;
+                e.preventDefault();
+                openConfirm(msg).then(function (ok) {
+                    if (ok) {
+                        form.removeAttribute('data-confirm');
+                        form.submit();
+                    }
+                });
+            }, true);
+
+        })();
+        </script>
     </body>
 </html>

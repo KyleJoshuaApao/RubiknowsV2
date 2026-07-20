@@ -12,13 +12,22 @@ Route::get('/projects', [PublicController::class, 'projects'])->name('public.pro
 Route::get('/projects/{project}', [PublicController::class, 'projectDetails'])->name('public.project-details');
 Route::get('/gallery', [PublicController::class, 'gallery'])->name('public.gallery');
 Route::get('/testimonials', [PublicController::class, 'testimonials'])->name('public.testimonials');
+Route::get('/clients-and-partners', [PublicController::class, 'clients'])->name('public.clients');
 Route::get('/careers', [PublicController::class, 'careers'])->name('public.careers');
+Route::get('/privacy-policy', function() { return view('public.privacy'); })->name('public.privacy');
+Route::get('/terms-of-service', function() { return view('public.terms'); })->name('public.terms');
 Route::get('/contact', [PublicController::class, 'contact'])->name('public.contact');
 
-// Form Submissions
-Route::post('/contact', [PublicController::class, 'submitContact'])->name('public.contact.submit');
-Route::post('/quotation', [PublicController::class, 'submitQuotation'])->name('public.quotation.submit');
-Route::post('/careers/{job}/apply', [PublicController::class, 'applyForJob'])->name('public.careers.apply');
+// Form Submissions — Rate limited to prevent spam and disk exhaustion
+Route::post('/contact', [PublicController::class, 'submitContact'])
+    ->middleware('throttle:5,1')
+    ->name('public.contact.submit');
+Route::post('/quotation', [PublicController::class, 'submitQuotation'])
+    ->middleware('throttle:3,1')
+    ->name('public.quotation.submit');
+Route::post('/careers/{job}/apply', [PublicController::class, 'applyForJob'])
+    ->middleware('throttle:3,1')
+    ->name('public.careers.apply');
 
 // Admin Dashboard Route
 Route::get('/dashboard', function () {
@@ -38,9 +47,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('gallery', \App\Http\Controllers\Admin\GalleryMediaController::class);
         Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class);
         Route::resource('clients', \App\Http\Controllers\Admin\ClientController::class);
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
-        Route::resource('settings', \App\Http\Controllers\Admin\SettingController::class)->only(['index', 'store']);
-    
+        // Super Admin routes
+        Route::middleware(['superadmin'])->group(function () {
+            Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+            Route::resource('settings', \App\Http\Controllers\Admin\SettingController::class)->only(['index', 'store']);
+        });
         // Phase 3: Submissions & HR
         Route::post('messages/bulk-delete', [\App\Http\Controllers\Admin\ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-delete');
         Route::post('quotations/bulk-delete', [\App\Http\Controllers\Admin\QuotationRequestController::class, 'bulkDestroy'])->name('quotations.bulk-delete');
@@ -49,6 +60,27 @@ Route::middleware('auth')->group(function () {
         Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::resource('messages', \App\Http\Controllers\Admin\ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::resource('quotations', \App\Http\Controllers\Admin\QuotationRequestController::class)->only(['index', 'show', 'update', 'destroy']);
+
+        // Protected file downloads — files are on private disk, auth required
+        Route::get('applications/{application}/resume', function(\App\Models\JobApplication $application) {
+            $path = storage_path('app/' . $application->resume_path);
+            abort_unless(file_exists($path), 404);
+            return response()->download($path);
+        })->name('admin.applications.resume.download');
+
+        Route::get('applications/{application}/portfolio', function(\App\Models\JobApplication $application) {
+            abort_unless($application->portfolio_path, 404);
+            $path = storage_path('app/' . $application->portfolio_path);
+            abort_unless(file_exists($path), 404);
+            return response()->download($path);
+        })->name('admin.applications.portfolio.download');
+
+        Route::get('quotations/{quotation}/attachment', function(\App\Models\QuotationRequest $quotation) {
+            abort_unless($quotation->attachment_path, 404);
+            $path = storage_path('app/' . $quotation->attachment_path);
+            abort_unless(file_exists($path), 404);
+            return response()->download($path);
+        })->name('admin.quotations.attachment.download');
     });
 });
 
