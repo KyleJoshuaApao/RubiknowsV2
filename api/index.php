@@ -6,7 +6,8 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 echo "PHP Version: " . PHP_VERSION . "\n";
-echo "Extensions: " . implode(', ', get_loaded_extensions()) . "\n";
+echo "bootstrap/cache/services.php exists? " . (file_exists(__DIR__ . '/../bootstrap/cache/services.php') ? 'YES' : 'NO') . "\n";
+echo "bootstrap/cache/packages.php exists? " . (file_exists(__DIR__ . '/../bootstrap/cache/packages.php') ? 'YES' : 'NO') . "\n";
 
 // Try booting Laravel with error catching
 echo "\n--- Attempting Laravel boot ---\n";
