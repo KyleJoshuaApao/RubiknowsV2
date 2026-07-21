@@ -36,8 +36,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900|playfair+display:400,500,600,700,800,900&display=swap" rel="stylesheet" />
 
-        <!-- Alpine.js Intersect Plugin (version-locked for SRI safety) -->
-        <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.14.9/dist/cdn.min.js"></script>
+        <!-- Alpine.js Intersect Plugin is bundled via Vite -->
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
