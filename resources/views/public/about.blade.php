@@ -11,7 +11,7 @@
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-8">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
                 <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
                     <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
                     Who We Are
@@ -30,12 +30,12 @@
     <div class="py-20 lg:py-44 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="opacity-0-initial">
+                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="">
                     <div class="flex items-center gap-3 mb-7">
                         <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                         <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Our Story</span>
                     </div>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight mb-6">Building Trust,<br>Delivering Excellence</h2>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight mb-6">{!! nl2br(e($settings['about_story_title'] ?? 'Building Trust, Delivering Excellence')) !!}</h2>
                     <div class="rich-text text-gray-600 leading-relaxed text-base space-y-4">
                         {!! $settings['about_story_content'] ?? "<p>Founded with a vision to redefine structural integrity and innovative design, RubiKnows has grown into a premier engineering and construction firm. We specialize in delivering comprehensive solutions from initial consultancy to final build.</p><p class='mt-4'>Our team of dedicated engineers, architects, and project managers work synergistically to ensure that every project we undertake not only meets but exceeds industry standards. We pride ourselves on safety, sustainability, and unparalleled craftsmanship.</p>" !!}
                     </div>
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="opacity-0-initial">
+                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="">
                     <div class="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 rounded-[2rem] p-10 lg:p-14 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-32 h-32 bg-orange-100/30 rounded-full blur-2xl"></div>
                         <div class="absolute bottom-0 right-0 w-32 h-32 bg-amber-100/30 rounded-full blur-2xl"></div>
@@ -89,7 +89,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
                 <!-- Vision -->
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="opacity-0-initial">
+                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="">
                     <div class="flex items-center gap-3 mb-7">
                         <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                         <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">We Aspire To Be</span>
@@ -104,7 +104,7 @@
                 </div>
 
                 <!-- Mission -->
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="opacity-0-initial">
+                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="">
                     <div class="flex items-center gap-3 mb-7">
                         <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                         <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">What We Do</span>
@@ -133,7 +133,7 @@
     <!-- Leadership -->
     <div class="py-20 lg:py-44 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial text-center mb-16">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" text-center mb-16">
                 <div class="flex items-center justify-center gap-3 mb-7">
                     <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Leadership</span>
@@ -144,7 +144,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                 @foreach(['Ruvelyn S. Rubinos', 'Kevin C. Rubinos'] as $index => $owner)
                 <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                     class="opacity-0-initial group p-10 text-center bg-white border border-gray-100 rounded-[2rem] hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700"
+                     class=" group p-10 text-center bg-white border border-gray-100 rounded-[2rem] hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700"
                      style="animation-delay: {{ $index * 0.12 }}s">
                     <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-orange-500/30">
                         <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,7 +174,7 @@
                 <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
 
                 <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                 <div class="flex items-center justify-center gap-3 mb-6">
                     <div class="h-px w-20 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
                     <span class="text-amber-300 text-xs font-bold uppercase tracking-[0.3em]">Ready To Partner?</span>

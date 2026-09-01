@@ -6,7 +6,7 @@
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.04] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                 <span class="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold uppercase tracking-widest mb-6">
                     <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
                     Client Stories
@@ -27,7 +27,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse($testimonials as $testimonial)
                 <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                     class="opacity-0-initial group p-6 lg:p-8 bg-white rounded-3xl border border-gray-100 hover:border-orange-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-500"
+                     class=" group p-6 lg:p-8 bg-white rounded-3xl border border-gray-100 hover:border-orange-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-500"
                      style="animation-delay: {{ $loop->index * 0.1 }}s">
                     <p class="text-gray-700 italic text-sm leading-relaxed mb-8">"{{ $testimonial->quote }}"</p>
                     <div class="flex items-center pt-6 border-t border-gray-100">
@@ -68,7 +68,7 @@
                 <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
 
                 <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                 <div class="flex items-center justify-center gap-2 mb-6">
                     <div class="h-px w-12 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
                     <span class="text-amber-300 text-sm font-semibold uppercase tracking-widest">Ready to Share Your Story?</span>

@@ -102,7 +102,7 @@
                 <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
 
                 <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                 <div class="flex items-center justify-center gap-3 mb-6">
                     <div class="h-px w-20 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
                     <span class="text-amber-300 text-xs font-bold uppercase tracking-[0.3em]">Ready to Build?</span>

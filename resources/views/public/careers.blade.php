@@ -7,7 +7,7 @@
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-8">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
                 <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
                     <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
                     Join Our Team
@@ -28,7 +28,7 @@
 
             <div class="space-y-6">
                 @forelse($jobs as $job)
-                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial bg-white border border-gray-100 rounded-[2rem] p-8 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-700">
+                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" bg-white border border-gray-100 rounded-[2rem] p-8 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-700">
                         <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
                             <div>
                                 <h3 class="text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">{{ $job->title }}</h3>

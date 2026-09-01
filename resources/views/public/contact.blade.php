@@ -7,7 +7,7 @@
         <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-8">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
                 <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
                     <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
                     Get In Touch

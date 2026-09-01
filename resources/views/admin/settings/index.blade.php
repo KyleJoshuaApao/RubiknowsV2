@@ -49,12 +49,18 @@
                         /* Set a clean, professional theme border & heights for editor */
                         .ql-toolbar.ql-snow {
                             border-color: #e5e7eb !important;
+                            border-width: 1px !important;
+                            border-style: solid !important;
                             border-top-left-radius: 0.375rem;
                             border-top-right-radius: 0.375rem;
                             background-color: #f9fafb;
+                            padding: 10px !important;
                         }
                         .ql-container.ql-snow {
                             border-color: #e5e7eb !important;
+                            border-width: 1px !important;
+                            border-style: solid !important;
+                            border-top: none !important;
                             border-bottom-left-radius: 0.375rem;
                             border-bottom-right-radius: 0.375rem;
                             font-family: 'Inter', sans-serif;
@@ -62,6 +68,29 @@
                         }
                         .ql-editor {
                             min-height: 200px;
+                            padding: 16px !important;
+                        }
+                        /* Fix Tailwind Preflight resetting Quill SVG icons */
+                        .ql-toolbar svg {
+                            height: 18px !important;
+                            width: 18px !important;
+                            display: inline-block !important;
+                            vertical-align: middle !important;
+                        }
+                        /* Restore Quill's specific SVG stroke and fill rules */
+                        .ql-toolbar .ql-stroke {
+                            fill: none !important;
+                            stroke: #444 !important;
+                            stroke-linecap: round;
+                            stroke-linejoin: round;
+                            stroke-width: 2;
+                        }
+                        .ql-toolbar .ql-fill {
+                            fill: #444 !important;
+                            stroke: none !important;
+                        }
+                        .ql-toolbar .ql-even {
+                            fill-rule: evenodd;
                         }
                     </style>
 
@@ -104,14 +133,11 @@
                 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        // Gmail-like toolbar options
+                        // Simplified toolbar options as requested
                         const toolbarOptions = [
+                            ['bold', 'italic'],
                             [{ 'font': [] }],
-                            [{ 'size': ['small', false, 'large', 'huge'] }],
-                            ['bold', 'italic', 'underline'],
-                            [{ 'color': [] }, { 'background': [] }],
-                            [{ 'align': [] }],
-                            ['clean']
+                            [{ 'align': [] }]
                         ];
 
                         // Initialize Quill for Story

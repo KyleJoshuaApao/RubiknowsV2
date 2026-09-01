@@ -8,7 +8,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="max-w-4xl">
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-8">
+                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
                     <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
                         <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
                         Established 2020 — Engineering Excellence
@@ -37,7 +37,7 @@
     <!-- Featured Services -->
     <div class="py-20 lg:py-44 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-20">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-20">
                 <div class="flex items-center gap-3 mb-7">
                     <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Our Capabilities</span>
@@ -73,14 +73,14 @@
         <div class="absolute top-1/2 left-0 w-[32rem] h-[32rem] bg-orange-100/20 rounded-full blur-[200px] pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-7">
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                     <div class="flex items-center gap-3 mb-7">
                         <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                         <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Active Portfolio</span>
                     </div>
                     <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight mb-7">Featured Projects</h2>
                 </div>
-                <a href="{{ route('public.projects') }}" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial hidden md:inline-flex items-center gap-2 px-5 py-2.5 border-2 border-orange-200 rounded-full text-xs font-bold text-orange-600 bg-white hover:border-orange-500 hover:bg-orange-50 transition-all duration-300">
+                <a href="{{ route('public.projects') }}" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" hidden md:inline-flex items-center gap-2 px-5 py-2.5 border-2 border-orange-200 rounded-full text-xs font-bold text-orange-600 bg-white hover:border-orange-500 hover:bg-orange-50 transition-all duration-300">
                     View Complete Projects
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </a>
@@ -90,7 +90,7 @@
                 @forelse($featuredProjects as $project)
                     <a href="{{ route('public.project-details', $project) }}"
                        x-data x-intersect.once="$el.classList.add('animate-scale-in')"
-                       class="opacity-0-initial group block bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl hover:shadow-orange-500/10 border border-gray-100 hover:border-orange-200 transition-all duration-700"
+                       class=" group block bg-white rounded-[2rem] overflow-hidden shadow-md hover:shadow-2xl hover:shadow-orange-500/10 border border-gray-100 hover:border-orange-200 transition-all duration-700"
                        style="animation-delay: {{ $loop->index * 0.12 }}s">
                         @if($project->cover_image_path)
                             <div class="relative h-80 overflow-hidden bg-orange-50">
@@ -141,7 +141,7 @@
     <!-- Process Section -->
     <div class="py-20 lg:py-44 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-20">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-20">
                 <div class="flex items-center gap-3 mb-7">
                     <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Our Engineering Process</span>
@@ -160,7 +160,7 @@
                     ];
                 @endphp
                 @foreach($steps as $step)
-                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial relative p-8 bg-white rounded-[2rem] border border-gray-100 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700" style="animation-delay: {{ $loop->index * 0.1 }}s">
+                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" relative p-8 bg-white rounded-[2rem] border border-gray-100 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700" style="animation-delay: {{ $loop->index * 0.1 }}s">
                         <div class="absolute -top-5 left-4 md:-left-5 w-12 h-12 bg-orange-500 rounded-[1.25rem] flex items-center justify-center text-white font-black text-base shadow-xl shadow-orange-500/30">{{ $step['num'] }}</div>
                         <h3 class="text-xl font-bold text-gray-900 mb-3 mt-1">{{ $step['title'] }}</h3>
                         <p class="text-gray-600 text-base leading-relaxed">{{ $step['desc'] }}</p>
@@ -173,7 +173,7 @@
     <!-- Testimonials -->
     <div class="py-20 lg:py-44 bg-gray-50 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial mb-20">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-20">
                 <div class="flex items-center gap-3 mb-7">
                     <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Client Feedback</span>
@@ -185,7 +185,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
                 @forelse($testimonials as $testimonial)
                     <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                         class="opacity-0-initial group p-8 bg-white rounded-[2rem] border border-gray-100 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700"
+                         class=" group p-8 bg-white rounded-[2rem] border border-gray-100 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700"
                          style="animation-delay: {{ $loop->index * 0.1 }}s">
                         <p class="text-gray-700 italic text-sm leading-relaxed mb-7">"{{ $testimonial->quote }}"</p>
                         <div class="flex items-center pt-5 border-t border-gray-100">
@@ -233,7 +233,7 @@
                 <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
 
                 <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                 <div class="flex items-center justify-center gap-3 mb-6">
                     <div class="h-px w-20 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
                     <span class="text-amber-300 text-xs font-bold uppercase tracking-[0.3em]">Next Project</span>

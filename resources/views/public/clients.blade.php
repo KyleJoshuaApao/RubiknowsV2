@@ -8,7 +8,7 @@
         <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-orange-100/40 rounded-full blur-[120px] pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                 <span class="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold uppercase tracking-widest mb-6">
                     <span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
                     Trusted By Industry Leaders
@@ -35,7 +35,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {{-- Section header --}}
-            <div class="mb-16" x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="opacity-0-initial">
+            <div class="mb-16" x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="h-px w-16 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-widest">Who We Serve</span>
@@ -48,7 +48,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     @foreach($clients as $i => $client)
                         <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                             class="opacity-0-initial group"
+                             class=" group"
                              style="animation-delay: {{ ($i % 10) * 0.06 }}s">
                             <div class="relative bg-white border border-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center
                                         hover:border-orange-400 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-400 aspect-square">
@@ -98,7 +98,7 @@
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {{-- Section header --}}
-            <div class="mb-16" x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="opacity-0-initial">
+            <div class="mb-16" x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="h-px w-16 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-widest">Strategic Alliances</span>
@@ -111,7 +111,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
                     @foreach($partners as $i => $partner)
                         <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                             class="opacity-0-initial group"
+                             class=" group"
                              style="animation-delay: {{ ($i % 8) * 0.07 }}s">
                             <div class="relative bg-white border border-gray-100 rounded-3xl p-8 flex flex-col items-center justify-center text-center
                                         hover:border-orange-400 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-500">
@@ -161,7 +161,7 @@
         <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-brand-50 rounded-full blur-[200px] opacity-60 pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="mb-16" x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="opacity-0-initial">
+            <div class="mb-16" x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="h-px w-16 bg-gradient-to-r from-orange-500 to-amber-300"></div>
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-widest">Our Supporters</span>
@@ -174,7 +174,7 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                     @foreach($sponsors as $i => $sponsor)
                         <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                             class="opacity-0-initial group"
+                             class=" group"
                              style="animation-delay: {{ ($i % 10) * 0.06 }}s">
                             <div class="relative bg-white border border-gray-100 rounded-2xl p-6 flex flex-col items-center justify-center text-center
                                         hover:border-orange-400 hover:shadow-xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-400 aspect-square">
@@ -215,7 +215,7 @@
                 <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
 
                 <div class="relative z-20 text-center max-w-4xl mx-auto">
-                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="opacity-0-initial">
+                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
                         <div class="flex items-center justify-center gap-2 mb-6">
                             <div class="h-px w-12 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
                             <span class="text-amber-300 text-sm font-semibold uppercase tracking-widest">Become a Partner</span>
