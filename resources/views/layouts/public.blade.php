@@ -43,68 +43,6 @@
     </head>
     <body class="font-sans antialiased text-gray-900 bg-white selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
 
-        <!-- Minimalist Preloader -->
-        <div id="preloader">
-            <img src="/LOGO.png" alt="RubiKnows Logo" class="preloader-logo" />
-            <div class="preloader-text font-sans tracking-[0.2em] uppercase flex items-center justify-center">
-                <span class="preloader-rubi">RUBI</span><span class="preloader-knows">KNOWS</span>
-            </div>
-            <div class="preloader-bar">
-                <div class="preloader-bar-fill" id="preloader-bar-progress"></div>
-            </div>
-            <div class="preloader-counter" id="preloader-percent-wrapper">000</div>
-        </div>
-
-        <script>
-        (function() {
-            'use strict';
-            if (sessionStorage.getItem('rubiknows_preloader_shown') === 'true') {
-                document.getElementById('preloader').style.display = 'none';
-                return;
-            }
-            document.body.style.overflow = 'hidden';
-
-            var duration = 1500;
-            var startTime = Date.now();
-            var percentEl = document.getElementById('preloader-percent-wrapper');
-            var barFill = document.getElementById('preloader-bar-progress');
-
-            function tickPercent() {
-                var elapsed = Date.now() - startTime;
-                var pct = Math.min(100, Math.round((elapsed / duration) * 100));
-                if (percentEl) percentEl.textContent = String(pct).padStart(3, '0');
-                if (barFill) barFill.style.width = pct + '%';
-                if (pct < 100) {
-                    requestAnimationFrame(tickPercent);
-                }
-            }
-
-            window.addEventListener('load', function() {
-                var elapsed = Date.now() - startTime;
-                var remaining = Math.max(0, duration - elapsed);
-
-                setTimeout(function() {
-                    if (percentEl) percentEl.textContent = '100';
-                    if (barFill) barFill.style.width = '100%';
-
-                    setTimeout(function() {
-                        var loader = document.getElementById('preloader');
-                        if (loader) {
-                            loader.style.transition = 'opacity 0.5s ease';
-                            loader.style.opacity = '0';
-                            setTimeout(function() {
-                                loader.remove();
-                                sessionStorage.setItem('rubiknows_preloader_shown', 'true');
-                                document.body.style.overflow = '';
-                            }, 500);
-                        }
-                    }, 200);
-                }, remaining);
-            });
-
-            requestAnimationFrame(tickPercent);
-        })();
-        </script>
 
         <!-- Navigation -->
         <nav x-data="{ open: false }" class="fixed w-full z-50 bg-white border-b border-gray-200/50 transition-all duration-500 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">

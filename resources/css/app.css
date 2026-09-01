@@ -96,10 +96,10 @@
     .stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
     .stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
 
-    /* Initial hidden state for scroll reveals */
+    /* Initial hidden state for scroll reveals (Disabled to prevent blank pages on Vercel) */
     .opacity-0-initial {
-        opacity: 0;
-        transform: translateY(30px);
+        opacity: 1;
+        transform: translateY(0);
     }
 
     /* Glass morphism effects */
