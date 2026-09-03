@@ -89,8 +89,8 @@
                     <div class="flex items-center lg:hidden">
                         <button @click="open = !open" type="button" class="inline-flex items-center justify-center p-3 rounded-full bg-gray-50 border border-gray-100 text-gray-900 hover:bg-gray-100 hover:text-brand-600 transition-all duration-300">
                             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path :class="{'hidden': open, 'inline-flex': !open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-                                <path :class="{'hidden': !open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                                <path x-show="!open" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+                                <path x-show="open" style="display: none;" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
                     </div>
@@ -98,7 +98,7 @@
             </div>
 
             <!-- Mobile Menu -->
-            <div x-show="open" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="lg:hidden absolute w-full bg-white border-b border-gray-100 shadow-2xl">
+            <div x-show="open" style="display: none;" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="lg:hidden absolute w-full bg-white border-b border-gray-100 shadow-2xl">
                 <div class="px-6 pt-4 pb-8 space-y-2">
                     @foreach($navLinks as $link)
                         <a @click="open = false" href="{{ route($link['route']) }}" class="block px-4 py-3 rounded-2xl text-[14px] uppercase tracking-[0.1em] font-bold {{ request()->routeIs($link['route']) ? 'text-brand-600 bg-brand-50/50' : 'text-gray-500 hover:text-brand-500 hover:bg-gray-50' }} transition-colors">
