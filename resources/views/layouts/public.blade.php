@@ -45,7 +45,7 @@
 
 
         <!-- Navigation -->
-        <nav x-data="{ open: false }" class="fixed w-full z-50 bg-white border-b border-gray-200/50 transition-all duration-500 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
+        <nav x-data="{ open: false }" @click.outside="open = false" class="fixed w-full z-50 bg-white border-b border-gray-200/50 transition-all duration-500 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <!-- Logo -->
@@ -101,11 +101,11 @@
             <div x-show="open" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="lg:hidden absolute w-full bg-white border-b border-gray-100 shadow-2xl">
                 <div class="px-6 pt-4 pb-8 space-y-2">
                     @foreach($navLinks as $link)
-                        <a href="{{ route($link['route']) }}" class="block px-4 py-3 rounded-2xl text-[14px] uppercase tracking-[0.1em] font-bold {{ request()->routeIs($link['route']) ? 'text-brand-600 bg-brand-50/50' : 'text-gray-500 hover:text-brand-500 hover:bg-gray-50' }} transition-colors">
+                        <a @click="open = false" href="{{ route($link['route']) }}" class="block px-4 py-3 rounded-2xl text-[14px] uppercase tracking-[0.1em] font-bold {{ request()->routeIs($link['route']) ? 'text-brand-600 bg-brand-50/50' : 'text-gray-500 hover:text-brand-500 hover:bg-gray-50' }} transition-colors">
                             {{ $link['label'] }}
                         </a>
                     @endforeach
-                    <a href="{{ route('public.contact') }}" class="block px-4 py-4 mt-6 text-center rounded-2xl text-[14px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-brand-600 to-amber-500 shadow-lg shadow-brand-500/20">Contact Us</a>
+                    <a @click="open = false" href="{{ route('public.contact') }}" class="block px-4 py-4 mt-6 text-center rounded-2xl text-[14px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-brand-600 to-amber-500 shadow-lg shadow-brand-500/20">Contact Us</a>
                 </div>
             </div>
         </nav>
