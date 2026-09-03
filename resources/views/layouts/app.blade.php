@@ -14,7 +14,7 @@
         </title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="/LOGO.png">
+        <link rel="icon" type="image/png" href="{{ asset('LOGO.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -39,7 +39,7 @@
             <div class="h-20 flex items-center px-6 bg-[#000000] border-b border-white/[0.04] relative z-10">
                 <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
                     <div class="relative">
-                        <img src="/LOGO.png" alt="Rubiknows Logo" class="h-7 w-auto object-contain transition-all duration-500 group-hover:scale-105">
+                        <img src="{{ asset('LOGO.png') }}" alt="Rubiknows Logo" class="h-7 w-auto object-contain transition-all duration-500 group-hover:scale-105">
                         <div class="absolute -inset-1 bg-brand-500/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                     <div class="font-sans text-xl tracking-wide">
@@ -423,7 +423,7 @@
                 </div>
                 <!-- Logo watermark -->
                 <div class="absolute bottom-3 left-6 flex items-center gap-1.5 opacity-30 select-none">
-                    <img src="/LOGO.png" alt="" class="h-4 w-auto">
+                    <img src="{{ asset('LOGO.png') }}" alt="" class="h-4 w-auto">
                     <span class="text-[9px] font-bold tracking-widest text-gray-400 uppercase">RubiKnows</span>
                 </div>
             </div>

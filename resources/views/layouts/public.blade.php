@@ -30,7 +30,7 @@
         <meta name="twitter:image"       content="{{ asset('LOGO.png') }}">
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="/LOGO.png">
+        <link rel="icon" type="image/png" href="{{ asset('LOGO.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -52,7 +52,7 @@
                     <div class="flex-shrink-0 flex items-center">
                         <a href="{{ route('public.home') }}" class="flex items-center group relative">
                             <div class="absolute inset-0 bg-brand-500/10 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700"></div>
-                            <img src="/LOGO.png" alt="RubiKnows" class="h-12 w-auto object-contain mr-3 relative z-10 transition-transform duration-700 group-hover:rotate-[5deg] group-hover:scale-110">
+                            <img src="{{ asset('LOGO.png') }}" alt="RubiKnows" class="h-12 w-auto object-contain mr-3 relative z-10 transition-transform duration-700 group-hover:rotate-[5deg] group-hover:scale-110">
                             <span class="text-[26px] font-['Playfair_Display'] tracking-tight transition-colors duration-500 inline-flex items-center relative z-10">
                                 <span class="font-normal text-gray-900">RUBI</span><span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-amber-500">KNOWS</span>
                             </span>
@@ -132,7 +132,7 @@
                         <div>
                             <a href="{{ route('public.home') }}" class="inline-flex items-center gap-4 group mb-8">
                                 <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md shadow-2xl shadow-brand-500/10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-[5deg]">
-                                    <img src="/LOGO.png" alt="RubiKnows Logo" class="w-10 h-10 object-contain">
+                                    <img src="{{ asset('LOGO.png') }}" alt="RubiKnows Logo" class="w-10 h-10 object-contain">
                                 </div>
                                 <span class="text-3xl font-['Playfair_Display'] tracking-tight transition-colors duration-700 inline-flex items-center">
                                     <span class="font-normal text-white">RUBI</span><span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-amber-300">KNOWS</span>
