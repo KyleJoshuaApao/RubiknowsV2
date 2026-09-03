@@ -18,7 +18,7 @@ class SecurityHeaders
         $response->headers->remove('X-Powered-By');
         $isLocal = app()->environment('local');
         $viteHosts = $isLocal ? "http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:* [::1]:*" : "";
-        $unsafeEval = $isLocal ? "'unsafe-eval'" : "";
+        $unsafeEval = "'unsafe-eval'"; // Alpine.js requires unsafe-eval to evaluate expressions
 
         $csp = implode('; ', [
             "default-src 'self'",
