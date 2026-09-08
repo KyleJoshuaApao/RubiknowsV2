@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/LOGO.png" alt="Rubiknows Logo" width="250"/>
+  <img src="public/RK3.png" alt="Rubiknows Logo" width="250"/>
   <h1>Rubiknows</h1>
 </div>
 
