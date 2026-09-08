@@ -8,10 +8,6 @@ putenv('LOG_CHANNEL=stderr');
 putenv('QUEUE_CONNECTION=sync');
 putenv('FILESYSTEM_DISK=s3');
 putenv('APP_MAINTENANCE_DRIVER=array');
-putenv('DB_HOST=aws-0-ap-northeast-1.pooler.supabase.com');
-putenv('DB_USERNAME=postgres.fvdxejbpmmmblaijtwkz');
-putenv('DB_HOST=aws-0-ap-northeast-1.pooler.supabase.com');
-putenv('DB_USERNAME=postgres.fvdxejbpmmmblaijtwkz');
 putenv('APP_DEBUG=true');
 
 $_ENV['VIEW_COMPILED_PATH'] = '/tmp/views';
@@ -21,12 +17,6 @@ $_ENV['LOG_CHANNEL'] = 'stderr';
 $_ENV['QUEUE_CONNECTION'] = 'sync';
 $_ENV['FILESYSTEM_DISK'] = 's3';
 $_ENV['APP_MAINTENANCE_DRIVER'] = 'array';
-$_ENV['DB_HOST'] = 'aws-0-ap-northeast-1.pooler.supabase.com';
-$_ENV['DB_USERNAME'] = 'postgres.fvdxejbpmmmblaijtwkz';
-$_ENV['DB_HOST'] = 'aws-0-ap-northeast-1.pooler.supabase.com';
-$_ENV['DB_USERNAME'] = 'postgres.fvdxejbpmmmblaijtwkz';
-$_SERVER['DB_HOST'] = 'aws-0-ap-northeast-1.pooler.supabase.com';
-$_SERVER['DB_USERNAME'] = 'postgres.fvdxejbpmmmblaijtwkz';
 $_ENV['APP_DEBUG'] = 'true';
 $_SERVER['APP_DEBUG'] = 'true';
 
