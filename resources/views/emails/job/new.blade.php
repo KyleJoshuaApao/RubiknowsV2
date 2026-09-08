@@ -1,32 +1,124 @@
-<x-mail::message>
-<div style="text-align: center; padding: 10px 0 25px 0; border-bottom: 2px solid #f3f4f6; margin-bottom: 25px;">
-    <img src="https://i.imgur.com/DKn4Sb2.png" alt="Rubiknows Logo" style="height: 120px; width: auto; display: block; border: none; margin: 0 auto 15px auto; max-width: 100%;">
-<div style="font-size: 36px; font-weight: 900; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -1px; text-transform: uppercase; line-height: 1.2; word-break: keep-all; white-space: nowrap; margin-top: 15px;">
-<span style="color: #000000;">RUBI</span><span style="color: #E07B2A;">KNOWS</span>
-</div>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Job Application - RubiKnows</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #18181b;">
 
-# Job Application Received
+    <!-- Background wrapper -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f5; padding: 40px 15px;">
+        <tr>
+            <td align="center">
+                
+                <!-- Email Container -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 650px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    
+                    <!-- Header with Logo -->
+                    <tr>
+                        <td align="center" style="padding: 40px 40px 30px; background-color: #ffffff; border-bottom: 3px solid #E0A92A;">
+                            <div style="font-size: 44px; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; line-height: 1; display: flex; align-items: center; justify-content: center;">
+                                <img src="{{ $message->embed(public_path('RK3-email.png')) }}" alt="RK3" style="height: 100px; vertical-align: middle; margin-right: 20px;">
+                                <div style="display: inline-block; vertical-align: middle; margin-top: 25px;">
+                                    <span style="color: #18181b; font-weight: 300;">RUBI</span><span style="color: #E0A92A;">KNOWS</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
 
-A new candidate has submitted an application for an open position through the Careers portal. Here are their details:
+                    <!-- Title & Intro -->
+                    <tr>
+                        <td style="padding: 40px 40px 20px; background-color: #ffffff;">
+                            <h1 style="margin: 0 0 10px 0; color: #18181b; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">New Job Application</h1>
+                            <p style="margin: 0; color: #52525b; font-size: 16px; line-height: 1.6;">
+                                A new candidate has successfully submitted an application through the careers portal. Please review their details below.
+                            </p>
+                        </td>
+                    </tr>
 
-<x-mail::table>
-| Application Details | Information | Application Details | Information |
-| :--- | :--- | :--- | :--- |
-| **Applying For** | **{{ $application->job->title ?? 'Open Application' }}** | **Applicant Name** | {{ $application->name }} |
-| **Email Address** | [{{ $application->email }}](mailto:{{ $application->email }}) | **Phone Number** | {{ $application->phone ?: 'Not provided' }} |
-</x-mail::table>
+                    <!-- Information Grid -->
+                    <tr>
+                        <td style="padding: 10px 40px 30px; background-color: #ffffff;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #fafafa; border: 1px solid #e4e4e7; border-radius: 6px;">
+                                <tr>
+                                    <td width="50%" valign="top" style="padding: 25px; border-right: 1px solid #e4e4e7; border-bottom: 1px solid #e4e4e7;">
+                                        <div style="font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Applicant Name</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #18181b;">{{ $application->name }}</div>
+                                    </td>
+                                    <td width="50%" valign="top" style="padding: 25px; border-bottom: 1px solid #e4e4e7;">
+                                        <div style="font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Position Applied For</div>
+                                        <div style="font-size: 16px; font-weight: 600; color: #18181b;">{{ $application->job->title ?? 'General Application' }}</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" valign="top" style="padding: 25px; border-right: 1px solid #e4e4e7;">
+                                        <div style="font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Email Address</div>
+                                        <div style="font-size: 15px; font-weight: 500;">
+                                            <a href="mailto:{{ $application->email }}" style="color: #E07B2A; text-decoration: none;">{{ $application->email }}</a>
+                                        </div>
+                                    </td>
+                                    <td width="50%" valign="top" style="padding: 25px;">
+                                        <div style="font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Phone Number</div>
+                                        <div style="font-size: 15px; font-weight: 500; color: #18181b;">{{ $application->phone ?: 'Not provided' }}</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-### Applicant's Cover Letter
+                    <!-- Message Block -->
+                    @if($application->cover_letter)
+                    <tr>
+                        <td style="padding: 0 40px 30px; background-color: #ffffff;">
+                            <div style="font-size: 11px; font-weight: 700; color: #71717a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">Cover Letter / Message</div>
+                            <div style="background-color: #ffffff; border-left: 4px solid #18181b; padding: 15px 20px; font-size: 15px; color: #3f3f46; line-height: 1.7; font-style: italic;">
+                                "{!! nl2br(e($application->cover_letter)) !!}"
+                            </div>
+                        </td>
+                    </tr>
+                    @endif
 
-<x-mail::panel>
-{{ $application->cover_letter ?: 'No cover letter was provided with this application.' }}
-</x-mail::panel>
+                    <!-- Attachments Notice -->
+                    <tr>
+                        <td style="padding: 0 40px 30px; background-color: #ffffff;">
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 15px;">
+                                <tr>
+                                    <td width="30" valign="top" style="font-size: 18px;">📎</td>
+                                    <td style="font-size: 14px; color: #92400e;">
+                                        <strong>Attachments available:</strong> The applicant has securely uploaded their Resume @if($application->portfolio_path) and Portfolio @endif. You can download these directly from the admin dashboard.
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
 
-> **Attachments:** The applicant's Resume and Portfolio (if provided) can be securely downloaded from the Admin Dashboard.
+                    <!-- Call to Action -->
+                    <tr>
+                        <td align="center" style="padding: 10px 40px 50px; background-color: #ffffff;">
+                            <a href="{{ url('/admin/applications/' . $application->id) }}" style="display: inline-block; background-color: #18181b; color: #ffffff; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-decoration: none; padding: 18px 40px; border-radius: 4px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                View Application in Dashboard
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="padding: 30px 40px; background-color: #18181b; text-align: center;">
+                            <p style="margin: 0 0 10px 0; font-size: 12px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px;">
+                                RubiKnows Engineering & Construction
+                            </p>
+                            <p style="margin: 0; font-size: 12px; color: #71717a;">
+                                This is an automated notification from the RubiKnows HR system.<br>
+                                Please do not reply directly to this email.
+                            </p>
+                        </td>
+                    </tr>
 
-<x-mail::button :url="url('/admin/applications/' . $application->id)">
-Review Application
-</x-mail::button>
+                </table>
+            </td>
+        </tr>
+    </table>
 
-</x-mail::message>
+</body>
+</html>

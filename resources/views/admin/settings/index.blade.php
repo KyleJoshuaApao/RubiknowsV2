@@ -2,15 +2,15 @@
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight tracking-tight">
+                <h2 class="font-black text-3xl uppercase tracking-tighter text-richblack-900 leading-tight">
                     {{ __('System Settings') }}
                 </h2>
-                <p class="text-sm text-gray-500 mt-1">Manage global website configurations and metadata.</p>
+                <p class="text-sm font-bold uppercase tracking-widest text-gray-500 mt-2">Manage global website configurations and metadata.</p>
             </div>
         </div>
     </x-slot>
 
-    <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden max-w-4xl">
+    <div class="mt-6 bg-white  shadow-sm border border-gray-100 overflow-hidden max-w-4xl">
         <form action="{{ route('admin.settings.store') }}" method="POST">
             @csrf
             
@@ -164,7 +164,7 @@
                     <div class="space-y-4">
                         <div>
                             <x-input-label for="seo_description" value="Default Meta Description" />
-                            <textarea id="seo_description" name="seo_description" rows="3" class="mt-1 block w-full border-gray-300 focus:border-orange-500 focus:ring-orange-500 rounded-md shadow-sm">{{ $settings['seo_description'] ?? 'Top-tier engineering, construction, and consultancy services.' }}</textarea>
+                            <textarea id="seo_description" name="seo_description" rows="3" class="block w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors">{{ $settings['seo_description'] ?? 'Top-tier engineering, construction, and consultancy services.' }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -186,11 +186,12 @@
                 </div>
             </div>
 
-            <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex justify-end">
-                <button type="submit" class="inline-flex items-center px-4 py-2 bg-[#E07B2A] border border-transparent rounded-lg font-medium text-sm text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors shadow-sm">
+            <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end">
+                <button type="submit" class="inline-flex items-center bg-brand-500 text-white px-6 py-3 font-bold uppercase tracking-widest text-xs hover:bg-brand-600 transition-colors">
                     Save Settings
                 </button>
             </div>
         </form>
     </div>
 </x-app-layout>
+

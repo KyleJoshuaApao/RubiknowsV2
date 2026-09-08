@@ -5,199 +5,158 @@
         $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
     @endphp
 
-    <!-- Header -->
-    <div class="relative bg-white pt-24 pb-16 lg:pt-40 lg:pb-32 overflow-hidden">
-        <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(ellipse at top right, rgba(224,123,42,0.08), transparent 55%);"></div>
-        <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
-                <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
-                    <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
-                    Who We Are
-                </span>
-            </div>
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-sans font-black tracking-tight leading-[1.05] mb-8 animate-fade-in-up delay-200">
-                About <span class="gold-shimmer-text italic font-black">RubiKnows</span>
-            </h1>
-            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" style="animation-delay: 0.2s">
-                Pioneering excellence in engineering and construction since 2020.
-            </p>
+    <!-- ===== KIMLEY-HORN STYLE HERO ===== -->
+    <section class="relative h-[60vh] min-h-[500px] flex items-center bg-gray-900 kh-angled-bottom-right mb-16">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=80&w=2500&auto=format&fit=crop" 
+                 alt="RubiKnows Team" 
+                 class="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-1000">
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-transparent"></div>
         </div>
-    </div>
-
-    <!-- Company Profile -->
-    <div class="py-20 lg:py-44 bg-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="">
-                    <div class="flex items-center gap-3 mb-7">
-                        <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
-                        <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Our Story</span>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight mb-6">{!! nl2br(e($settings['about_story_title'] ?? 'Building Trust, Delivering Excellence')) !!}</h2>
-                    <div class="rich-text text-gray-600 leading-relaxed text-base space-y-4">
-                        {!! $settings['about_story_content'] ?? "<p>Founded with a vision to redefine structural integrity and innovative design, RubiKnows has grown into a premier engineering and construction firm. We specialize in delivering comprehensive solutions from initial consultancy to final build.</p><p class='mt-4'>Our team of dedicated engineers, architects, and project managers work synergistically to ensure that every project we undertake not only meets but exceeds industry standards. We pride ourselves on safety, sustainability, and unparalleled craftsmanship.</p>" !!}
-                    </div>
-
-                    <div class="mt-12 grid grid-cols-2 gap-8">
-                        <div class="border-l-2 border-orange-500 pl-6">
-                            <p class="text-3xl lg:text-4xl font-sans font-black text-gray-900">
-                                <span x-data="{ count: 0, target: {{ !empty($settings['about_projects_count']) ? (int)$settings['about_projects_count'] : 100 }} }" x-init="let interval = setInterval(() => { if (count < target) { count += Math.ceil(target/50); if (count > target) count = target; } else { clearInterval(interval); } }, 30)" x-text="count">0</span>+
-                            </p>
-                            <p class="text-[11px] font-bold text-gray-500 font-mono uppercase tracking-wider mt-2">Projects Completed</p>
-                        </div>
-                        <div class="border-l-2 border-orange-500 pl-6">
-                            <p class="text-3xl lg:text-4xl font-sans font-black text-gray-900">
-                                <span x-data="{ count: 0, target: {{ !empty($settings['about_experience_years']) ? (int)$settings['about_experience_years'] : 5 }} }" x-init="let interval = setInterval(() => { if (count < target) { count++ } else { clearInterval(interval); } }, 150)" x-text="count">0</span>+
-                            </p>
-                            <p class="text-[11px] font-bold text-gray-500 font-mono uppercase tracking-wider mt-2">Years Experience</p>
-                        </div>
-                    </div>
-                </div>
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="">
-                    <div class="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-100 rounded-[2rem] p-10 lg:p-14 relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-32 h-32 bg-orange-100/30 rounded-full blur-2xl"></div>
-                        <div class="absolute bottom-0 right-0 w-32 h-32 bg-amber-100/30 rounded-full blur-2xl"></div>
-
-                        <div class="text-center relative z-10">
-                            <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-white text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100 mb-10">
-                                Our Motto
-                            </span>
-                            <div class="relative mt-10">
-                                <span class="absolute -top-8 left-2 text-7xl font-sans text-orange-400/60 leading-none select-none">"</span>
-                                <blockquote class="relative z-10 text-xl md:text-2xl lg:text-3xl font-sans font-bold text-gray-900 leading-snug tracking-tight">
-                                    <span class="gold-shimmer-text italic font-black">With God,</span> All things are possible.
-                                </blockquote>
-                                <span class="absolute -bottom-10 right-2 text-7xl font-sans text-orange-400/60 leading-none select-none">"</span>
-                            </div>
-                            <div class="flex items-center justify-center gap-4 mt-14">
-                                <div class="h-px w-12 bg-gradient-to-r from-orange-500 to-amber-300"></div>
-                                <cite class="not-italic text-xs font-bold text-gray-700 uppercase tracking-widest">Matthew 19:26</cite>
-                                <div class="h-px w-12 bg-gradient-to-l from-orange-500 to-amber-300"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mission & Vision -->
-    <div class="py-20 lg:py-44 bg-gray-50 relative overflow-hidden">
-        <div class="absolute top-1/2 left-0 w-[32rem] h-[32rem] bg-orange-100/20 rounded-full blur-[200px] pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-                <!-- Vision -->
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-left')" class="">
-                    <div class="flex items-center gap-3 mb-7">
-                        <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
-                        <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">We Aspire To Be</span>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight mb-7">Our Vision</h2>
-                    <div class="relative pl-6">
-                        <span class="absolute top-[-10px] left-0 text-6xl font-sans text-orange-400/60 leading-none select-none">"</span>
-                        <div class="rich-text text-lg font-bold text-gray-900 leading-relaxed pl-4 italic">
-                            {!! $settings['about_vision'] ?? '<p>RUBIKNOWS AIMS TO BE THE PREFERRED ENGINEERING AND CONSTRUCTION FIRM IN MINDANAO.</p>' !!}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mission -->
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-right')" class="">
-                    <div class="flex items-center gap-3 mb-7">
-                        <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
-                        <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">What We Do</span>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight mb-7">Our Mission</h2>
-                    <div class="rich-text text-gray-600 leading-relaxed text-base space-y-5">
-                        {!! $settings['about_mission'] ?? '
-                        <p class="text-gray-900 font-bold font-mono text-xs uppercase tracking-wider mb-1">Hassle Free to Clients</p>
-                        <p class="mb-4">To provide all-in engineering services from plans to permit process, up to construction or renovation</p>
-
-                        <p class="text-gray-900 font-bold font-mono text-xs uppercase tracking-wider mb-1">Quality and Affordability</p>
-                        <p class="mb-4">Committed to deliver and execute works with quality and standard in all projects</p>
-
-                        <p class="text-gray-900 font-bold font-mono text-xs uppercase tracking-wider mb-1">Sustainable Designs</p>
-                        <p class="mb-4">Seeks to reduce negative impacts on the environment, and the health and comfort of building occupants</p>
-
-                        <p class="text-gray-900 font-bold font-mono text-xs uppercase tracking-wider mb-1">Produce Employment Opportunities</p>
-                        <p>Helps to employ skillful workers payed according to their performances</p>
-                        ' !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Leadership -->
-    <div class="py-20 lg:py-44 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" text-center mb-16">
-                <div class="flex items-center justify-center gap-3 mb-7">
-                    <div class="h-px w-28 bg-gradient-to-r from-orange-500 to-amber-300"></div>
-                    <span class="text-orange-600 text-xs font-bold uppercase tracking-[0.3em]">Leadership</span>
-                    <div class="h-px w-28 bg-gradient-to-l from-orange-500 to-amber-300"></div>
-                </div>
-                <h2 class="text-2xl md:text-3xl lg:text-4xl font-sans font-black text-gray-900 tracking-tight">Our Owners</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                @foreach(['Ruvelyn S. Rubinos', 'Kevin C. Rubinos'] as $index => $owner)
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                     class=" group p-10 text-center bg-white border border-gray-100 rounded-[2rem] hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700"
-                     style="animation-delay: {{ $index * 0.12 }}s">
-                    <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-orange-500/30">
-                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">{{ $owner }}</h3>
-                    <p class="text-[11px] font-bold text-gray-500 font-mono uppercase tracking-wider mt-3">Owner</p>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    <!-- Premium 3D CTA Section -->
-    <div class="relative bg-white py-20 lg:py-32 overflow-hidden">
-        <!-- 3D Perspective Grid -->
-        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none" style="transform: perspective(1000px) rotateX(60deg) scale(2.5); transform-origin: top; mask-image: linear-gradient(to bottom, transparent, black 40%, transparent);"></div>
         
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- 3D Glassmorphic Card -->
-            <div class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-[#0a0a0a] rounded-[2.5rem] p-6 sm:p-8 lg:p-20 overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.05),inset_0_-1px_0_rgba(255,255,255,0.02)] border border-white/10 group transform hover:-translate-y-2 transition-transform duration-700">
-                
-                <!-- Inner 3D Lighting -->
-                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3 group-hover:bg-brand-500/20 transition-colors duration-700"></div>
-                <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/3 translate-y-1/3 group-hover:bg-amber-500/15 transition-colors duration-700"></div>
-                <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
+        <div class="relative z-10 w-full max-w-screen-2xl mx-auto px-6 lg:px-12 pt-20 border-l-4 border-brand-500 ml-4 md:ml-8 lg:ml-12">
+            <h1 x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
+                class="text-5xl sm:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight">
+                About Us
+            </h1>
+        </div>
+    </section>
 
-                <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
-                <div class="flex items-center justify-center gap-3 mb-6">
-                    <div class="h-px w-20 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
-                    <span class="text-amber-300 text-xs font-bold uppercase tracking-[0.3em]">Ready To Partner?</span>
-                    <div class="h-px w-20 bg-gradient-to-l from-yellow-500 to-orange-300"></div>
+    <!-- ===== STANDARD TEXT / MISSION ===== -->
+    <section class="py-24 lg:py-32 bg-white relative">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-lightgray/30 -z-10 kh-angled-deco-right"></div>
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="max-w-5xl">
+                <h3 class="text-3xl lg:text-5xl font-black text-charcoal-700 leading-tight mb-8 tracking-tight">
+                    {!! nl2br(e($settings['about_story_title'] ?? 'At RubiKnows, we lead with a people-first mindset. Whether you’re a client or an employee, you’ll feel the difference in how we work—because your success is our priority.')) !!}
+                </h3>
+                <div class="w-full h-1 bg-gray-200 mb-8 relative">
+                    <div class="absolute top-0 left-0 h-full w-24 bg-brand-500"></div>
                 </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-sans font-black text-white tracking-tight mb-6 leading-tight">
-                    Let's Build <span class="gold-shimmer-text italic font-black">Together</span>
-                </h2>
-                <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-                    Discover how we can bring your vision to life with our engineering expertise and construction excellence.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="{{ route('public.contact') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full shadow-2xl shadow-orange-500/30 text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 hover:scale-105 transition-all duration-500 font-bold text-sm">
-                        Get In Touch
-                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </a>
-                    <a href="{{ route('public.projects') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-500 font-bold text-sm">
-                        View Our Portfolio
-                    </a>
+                <div class="text-xl lg:text-2xl text-gray-700 leading-relaxed font-bold space-y-6">
+                    {!! $settings['about_story_content'] ?? '<p>We do things differently. People—clients and employees—are at the forefront of our business. Clients know we are laser-focused on their success. Employees know our culture and approach to business are built on a desire to see our staff flourish, one and all. Both groups know that with RubiKnows, they can expect more and experience better.</p>' !!}
                 </div>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
+    </section>
+
+    <!-- ===== VIDEO / GALLERY SECTION ===== -->
+    <section class="py-24 bg-richblack-950 border-t-8 border-brand-500">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="relative w-full aspect-video overflow-hidden shadow-2xl group cursor-pointer border-4 border-richblack-900">
+                <!-- Video/Image Background -->
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop" 
+                     alt="Making a Difference" 
+                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale group-hover:grayscale-0">
+                <div class="absolute inset-0 bg-brand-500/20 group-hover:bg-transparent transition-colors duration-500"></div>
+                <!-- Play Button Center -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-24 h-24 bg-richblack-950 border-4 border-brand-500 flex items-center justify-center group-hover:bg-brand-500 transition-all duration-300">
+                        <svg class="w-10 h-10 ml-2 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CORE VALUES / AWARDS GRID ===== -->
+    <section class="py-24 lg:py-32 bg-gray-50">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="mb-16 flex flex-col md:flex-row justify-between items-end border-b-4 border-richblack-900 pb-6">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-black text-charcoal-700 tracking-tight">Why RubiKnows?</h2>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Value 1 -->
+                <div class="group relative block bg-white border-t-4 border-brand-500 shadow-lg hover:-translate-y-2 transition-transform duration-300">
+                    <div class="aspect-[4/3] overflow-hidden border-b-4 border-richblack-900">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="People">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-black text-richblack-900 uppercase tracking-tight mb-4">Our People</h3>
+                        <p class="text-gray-600 font-bold leading-relaxed">We hire the best and brightest, fostering an environment where innovation and collaboration thrive on every project.</p>
+                    </div>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="group relative block bg-white border-t-4 border-brand-500 shadow-lg hover:-translate-y-2 transition-transform duration-300">
+                    <div class="aspect-[4/3] overflow-hidden border-b-4 border-richblack-900">
+                        <img src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="Diversity">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-black text-richblack-900 uppercase tracking-tight mb-4">Diversity & Inclusion</h3>
+                        <p class="text-gray-600 font-bold leading-relaxed">We believe that a diverse team brings unparalleled creativity, driving exceptional outcomes for our communities.</p>
+                    </div>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="group relative block bg-white border-t-4 border-brand-500 shadow-lg hover:-translate-y-2 transition-transform duration-300">
+                    <div class="aspect-[4/3] overflow-hidden border-b-4 border-richblack-900">
+                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="Client Service">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-black text-richblack-900 uppercase tracking-tight mb-4">Client Service</h3>
+                        <p class="text-gray-600 font-bold leading-relaxed">Our clients are our partners. We share your vision and dedicate our expertise to turning your goals into reality.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOLD QUOTE / STATEMENT ===== -->
+    <section class="py-32 bg-brand-500 relative overflow-hidden border-t-8 border-richblack-950 border-b-8">
+        <!-- Abstract shape -->
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-richblack-950/10 transform -skew-x-12 origin-top-right"></div>
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 relative z-10 text-center">
+            <blockquote class="max-w-5xl mx-auto">
+                <p class="text-4xl md:text-6xl font-black text-white leading-tight mb-10 uppercase tracking-tighter">
+                    "With God, <br>All things are possible."
+                </p>
+                <footer class="text-richblack-950 font-black tracking-[0.3em] uppercase text-lg bg-white inline-block px-6 py-2">
+                    — Matthew 19:26
+                </footer>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- ===== LEADERSHIP / OUR PEOPLE ===== -->
+    <section class="py-24 lg:py-32 bg-white">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="mb-16 border-b-4 border-richblack-900 pb-6 flex items-end justify-between">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-black text-charcoal-700 tracking-tight">Our Leadership</h2>
+                    <p class="mt-4 text-xl text-brand-500 font-bold uppercase tracking-widest">The minds guiding our vision</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Leader 1 -->
+                <div class="bg-gray-50 border-t-4 border-brand-500 overflow-hidden group hover:bg-richblack-950 transition-colors duration-300">
+                    <div class="aspect-square bg-gray-200 flex items-end justify-center relative overflow-hidden border-b-4 border-white group-hover:border-richblack-900 transition-colors">
+                        <svg class="w-32 h-32 text-gray-400 transform translate-y-4 group-hover:scale-105 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <div class="absolute inset-0 bg-brand-500/10 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-black text-richblack-900 group-hover:text-white uppercase tracking-tight transition-colors">Ruvelyn S. Rubinos</h3>
+                        <p class="text-sm font-black text-brand-500 uppercase tracking-widest mt-2">Founder / Owner</p>
+                    </div>
+                </div>
+
+                <!-- Leader 2 -->
+                <div class="bg-gray-50 border-t-4 border-brand-500 overflow-hidden group hover:bg-richblack-950 transition-colors duration-300">
+                    <div class="aspect-square bg-gray-200 flex items-end justify-center relative overflow-hidden border-b-4 border-white group-hover:border-richblack-900 transition-colors">
+                        <svg class="w-32 h-32 text-gray-400 transform translate-y-4 group-hover:scale-105 transition-transform" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        <div class="absolute inset-0 bg-brand-500/10 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-black text-richblack-900 group-hover:text-white uppercase tracking-tight transition-colors">Kevin C. Rubinos</h3>
+                        <p class="text-sm font-black text-brand-500 uppercase tracking-widest mt-2">Founder / Owner</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </x-public-layout>

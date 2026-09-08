@@ -1,41 +1,57 @@
 <x-public-layout>
     <x-slot name="title">Terms of Service</x-slot>
 
-    <!-- Header -->
-    <div class="relative bg-white pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden border-b border-gray-100">
-        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 animate-grid-pan"></div>
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/5 rounded-full blur-[120px] pointer-events-none transform translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-amber-500/5 rounded-full blur-[150px] pointer-events-none transform -translate-x-1/2 translate-y-1/2"></div>
-
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h1 class="text-4xl md:text-6xl font-sans font-black tracking-tight leading-[1.05] mb-6">
-                Terms of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-amber-300 to-brand-500 font-black">Service</span>
-            </h1>
-            <p class="text-gray-400">Last updated: {{ date('F j, Y') }}</p>
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-900 text-white relative kh-angled-bottom-right mb-16">
+        <!-- Architectural Overlay -->
+        <div class="absolute inset-0 z-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
         </div>
-    </div>
+        
+        <div class="max-w-screen-2xl mx-auto px-6 relative z-10 border-l-4 border-brand-500 ml-4 md:ml-8 lg:ml-12">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight max-w-4xl">
+                Terms of Service
+            </h1>
+            <p class="mt-8 text-xl font-bold text-gray-400">
+                Last updated: {{ date('F j, Y') }}
+            </p>
+        </div>
+    </section>
 
-    <!-- Content -->
-    <div class="py-16 lg:py-24 bg-gray-900 relative">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="rich-text text-gray-300 leading-relaxed text-base space-y-6">
-                <p>Welcome to our website. If you continue to browse and use this website, you are agreeing to comply with and be bound by the following terms and conditions of use.</p>
-                <h3>1. Acceptance of Terms</h3>
-                <p>By accessing this website, we assume you accept these terms and conditions. Do not continue to use this website if you do not agree to take all of the terms and conditions stated on this page.</p>
-                <h3>2. License</h3>
-                <p>Unless otherwise stated, we or our licensors own the intellectual property rights for all material on this website. All intellectual property rights are reserved. You may access this from our website for your own personal use subjected to restrictions set in these terms and conditions.</p>
-                <h3>3. Restrictions</h3>
-                <p>You are specifically restricted from all of the following:</p>
-                <ul>
-                    <li>Publishing any website material in any other media.</li>
-                    <li>Selling, sublicensing and/or otherwise commercializing any website material.</li>
-                    <li>Using this website in any way that is or may be damaging to this website.</li>
-                </ul>
-                <h3>4. Governing Law</h3>
-                <p>These terms and conditions are governed by and construed in accordance with the laws of the jurisdiction, and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.</p>
+    <!-- ===== CONTENT ===== -->
+    <section class="py-24 lg:py-32 bg-white">
+        <div class="max-w-4xl mx-auto px-6 lg:px-12">
+            <div class="prose prose-gray prose-lg max-w-none rich-text font-medium text-gray-700 leading-relaxed prose-headings:font-black prose-headings:text-richblack-900 prose-headings:uppercase prose-headings:tracking-tight prose-a:text-brand-500 prose-a:font-bold hover:prose-a:text-richblack-900">
+                <p>Welcome to RubiKnows. These Terms of Service govern your use of our website and services. By accessing or using our website, you agree to be bound by these terms.</p>
+                
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. In addition, when using this website's particular services, you shall be subject to any posted guidelines or rules applicable to such services.</p>
+                
+                <h2>2. Description of Services</h2>
+                <p>RubiKnows provides engineering, construction, and consultancy services. The information provided on this website is for general informational purposes and does not constitute professional engineering advice until a formal agreement is established.</p>
+                
+                <h2>3. Intellectual Property Rights</h2>
+                <p>The content, organization, graphics, design, compilation, and other matters related to the Site are protected under applicable copyrights, trademarks, and other proprietary rights. The copying, redistribution, use, or publication by you of any such matters or any part of the Site is strictly prohibited without our express written permission.</p>
+                
+                <h2>4. Limitation of Liability</h2>
+                <p>In no event shall RubiKnows, its officers, directors, employees, or agents, be liable to you for any direct, indirect, incidental, special, punitive, or consequential damages whatsoever resulting from any errors, mistakes, or inaccuracies of content, or personal injury or property damage, of any nature whatsoever, resulting from your access to and use of our website.</p>
+                
+                <h2>5. Project Quotations</h2>
+                <p>Any estimates or quotations provided through our website are preliminary and subject to change upon detailed assessment and formal agreement. They do not constitute a binding contract until a formal proposal is signed by both parties.</p>
+                
+                <h2>6. Modifications to Terms</h2>
+                <p>RubiKnows reserves the right to change these conditions from time to time as it sees fit and your continued use of the site will signify your acceptance of any adjustment to these terms.</p>
+                
+                <h2>7. Contact Information</h2>
+                <p>If you have any questions regarding these Terms of Service, please <a href="{{ route('public.contact') }}">contact us</a>.</p>
             </div>
         </div>
-    </div>
-    </div>
-    </div>
+    </section>
 </x-public-layout>

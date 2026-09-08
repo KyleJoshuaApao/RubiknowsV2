@@ -1,9 +1,6 @@
-<div {{ $attributes->merge(['class' => 'flex flex-row items-center justify-center gap-3']) }}>
-    <!-- 2D Logo Image -->
-    <img src="{{ asset('LOGO.png') }}" alt="Rubiknows Logo" class="h-10 w-auto object-contain">
-    
-    <!-- Brand Text -->
-    <div class="font-sans tracking-tight text-3xl">
-        <span class="font-light text-black">RUBI</span><span class="font-bold text-[#E07B2A]">KNOWS</span>
-    </div>
+<div class="flex items-center gap-2">
+    <img src="{{ asset('RK3.png') }}" alt="Rubiknows Logo" class="h-10 w-auto object-contain">
+    <span class="text-2xl tracking-tighter">
+        <span class="text-black font-light">RUBI</span><span class="text-[#E07B2A] font-bold">KNOWS</span>
+    </span>
 </div>

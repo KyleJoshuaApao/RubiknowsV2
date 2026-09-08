@@ -35,7 +35,7 @@ Route::post('/contact', [PublicController::class, 'submitContact'])
 Route::post('/quotation', [PublicController::class, 'submitQuotation'])
     ->middleware('throttle:3,1')
     ->name('public.quotation.submit');
-Route::post('/careers/{job}/apply', [PublicController::class, 'applyForJob'])
+Route::post('/careers/apply', [PublicController::class, 'applyForJob'])
     ->middleware('throttle:3,1')
     ->name('public.careers.apply');
 
@@ -61,10 +61,16 @@ Route::middleware('auth')->group(function () {
         Route::middleware(['superadmin'])->group(function () {
             Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
             Route::resource('settings', \App\Http\Controllers\Admin\SettingController::class)->only(['index', 'store']);
+            Route::get('live-editor', [\App\Http\Controllers\Admin\LiveEditorController::class, 'index'])->name('live-editor.index');
+            Route::post('live-editor', [\App\Http\Controllers\Admin\LiveEditorController::class, 'store'])->name('live-editor.store');
         });
         // Phase 3: Submissions & HR
         Route::post('messages/bulk-delete', [\App\Http\Controllers\Admin\ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-delete');
         Route::post('quotations/bulk-delete', [\App\Http\Controllers\Admin\QuotationRequestController::class, 'bulkDestroy'])->name('quotations.bulk-delete');
+
+        Route::post('applications/{application}/reply', [\App\Http\Controllers\Admin\JobApplicationController::class, 'reply'])->name('applications.reply');
+        Route::post('messages/{message}/reply', [\App\Http\Controllers\Admin\ContactMessageController::class, 'reply'])->name('messages.reply');
+        Route::post('quotations/{quotation}/reply', [\App\Http\Controllers\Admin\QuotationRequestController::class, 'reply'])->name('quotations.reply');
 
         Route::resource('jobs', \App\Http\Controllers\Admin\JobController::class);
         Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->only(['index', 'show', 'update', 'destroy']);

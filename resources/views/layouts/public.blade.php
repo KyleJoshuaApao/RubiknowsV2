@@ -34,198 +34,202 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,800,900|playfair+display:400,500,600,700,800,900&display=swap" rel="stylesheet" />
-
-        <!-- Alpine.js Intersect Plugin is bundled via Vite -->
+        <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,900|dm-serif-display:400,400i&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <style>
+            /* Custom Scrollbar for Mega Menus */
+            .mega-menu-scroll::-webkit-scrollbar {
+                width: 6px;
+            }
+            .mega-menu-scroll::-webkit-scrollbar-track {
+                background: #f1f1f1; 
+            }
+            .mega-menu-scroll::-webkit-scrollbar-thumb {
+                background: #E0A92A; 
+            }
+        </style>
     </head>
-    <body class="font-sans antialiased text-gray-900 bg-white selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
+    <body class="font-sans antialiased text-gray-700 bg-white flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
+        <!-- ===== STYLISTIC NAVIGATION ===== -->
+        <header x-data="{ mobileOpen: false }" class="w-full z-50 relative sticky top-0 bg-gray-100 shadow-sm border-b border-gray-300">
+            <div class="flex items-stretch h-24 lg:h-28 w-full relative">
+                
+                <!-- Left: Logo Area with Stylistic Accents -->
+                <div class="relative h-full flex items-center z-20">
+                    <!-- Layer 2: The Gold Accent Wing (deepest layer, sticks out most) -->
+                    <div class="absolute top-4 lg:top-5 left-0 h-[100%] w-[57%] bg-brand-500 kh-angled-logo shadow-2xl -z-20 pointer-events-none"></div>
 
-        <!-- Navigation -->
-        <nav x-data="{ open: false }" @click.outside="open = false" class="fixed w-full z-50 bg-white border-b border-gray-200/50 transition-all duration-500 shadow-[0_4px_30px_rgba(0,0,0,0.02)]">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-24">
-                    <!-- Logo -->
-                    <div class="flex-shrink-0 flex items-center">
-                        <a href="{{ route('public.home') }}" class="flex items-center group relative">
-                            <div class="absolute inset-0 bg-brand-500/10 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700"></div>
-                            <img src="{{ asset('LOGO.png') }}" alt="RubiKnows" class="h-12 w-auto object-contain mr-3 relative z-10 transition-transform duration-700 group-hover:rotate-[5deg] group-hover:scale-110">
-                            <span class="text-[26px] font-['Playfair_Display'] tracking-tight transition-colors duration-500 inline-flex items-center relative z-10">
-                                <span class="font-normal text-gray-900">RUBI</span><span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-600 to-amber-500">KNOWS</span>
+                    <!-- Layer 1: The Dark Slate Main Wing -->
+                    <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-richblack-950 kh-angled-logo shadow-xl -z-10 pointer-events-none"></div>
+                    
+                    <!-- The White Logo Background -->
+                    <div class="absolute inset-0 bg-white kh-angled-logo shadow-md -z-10 pointer-events-none"></div>
+                    
+                    <a href="{{ route('public.home') }}" class="flex items-center gap-3 pl-4 sm:pl-8 lg:pl-12 pr-16 lg:pr-32 py-2">
+                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="h-14 sm:h-16 lg:h-20 w-auto">
+                        <div class="flex flex-col mt-1">
+                            <span class="flex items-baseline">
+                                <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-richblack-950">RUBI</span>
+                                <span class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
                             </span>
-                        </a>
-                    </div>
+                            <span class="text-[10px] lg:text-[11px] font-medium text-gray-600 tracking-[0.2em] uppercase mt-0.5 whitespace-nowrap hidden sm:block">
+                                CORPORATION
+                            </span>
+                        </div>
+                    </a>
+                </div>
 
-                    <!-- Desktop Menu -->
-                    <div class="hidden lg:flex items-center space-x-10">
-                        @php
-                            $navLinks = [
-                                ['route' => 'public.home', 'label' => 'Home'],
-                                ['route' => 'public.about', 'label' => 'About'],
-                                ['route' => 'public.services', 'label' => 'Services'],
-                                ['route' => 'public.projects', 'label' => 'Portfolio'],
-                                ['route' => 'public.gallery', 'label' => 'Gallery'],
-                                ['route' => 'public.testimonials', 'label' => 'Testimonials'],
-                                ['route' => 'public.clients', 'label' => 'Clients'],
-                            ];
-                        @endphp
-                        
-                        @foreach($navLinks as $link)
-                            <a href="{{ route($link['route']) }}" class="relative text-[13px] uppercase tracking-[0.1em] font-semibold transition-all duration-300 {{ request()->routeIs($link['route']) ? 'text-brand-600' : 'text-gray-500 hover:text-brand-500' }} group">
-                                {{ $link['label'] }}
-                                <span class="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-brand-500 to-amber-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left {{ request()->routeIs($link['route']) ? 'scale-x-100' : '' }}"></span>
-                            </a>
-                        @endforeach
-                        
-                        <a href="{{ route('public.contact') }}" class="inline-flex items-center justify-center px-7 py-2.5 text-[12px] uppercase tracking-[0.15em] font-bold text-white bg-brand-500 rounded-full shadow-[0_4px_14px_0_rgba(224,123,42,0.39)] hover:shadow-[0_6px_20px_rgba(224,123,42,0.23)] hover:-translate-y-0.5 transition-all duration-300">
+                <!-- Right: Desktop Navigation -->
+                <nav class="hidden lg:flex items-center flex-1 justify-end space-x-1 xl:space-x-4 h-full pr-6 lg:pr-12">
+                    <a href="{{ route('public.home') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Home
+                    </a>
+                    <a href="{{ route('public.about') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        About Us
+                    </a>
+                    <a href="{{ route('public.services') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Services
+                    </a>
+                    <a href="{{ route('public.projects') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Projects
+                    </a>
+                    <a href="{{ route('public.gallery') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Gallery
+                    </a>
+                    <a href="{{ route('public.testimonials') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Testimonials
+                    </a>
+                    <a href="{{ route('public.clients') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Clients
+                    </a>
+                    <a href="{{ route('public.careers') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                        Careers
+                    </a>
+
+                    <div class="flex items-center h-full ml-4 xl:ml-6">
+                        <a href="{{ route('public.contact') }}" class="btn-primary">
                             Contact Us
                         </a>
                     </div>
+                </nav>
 
-                    <!-- Mobile Menu Button -->
-                    <div class="flex items-center lg:hidden">
-                        <button @click="open = !open" type="button" class="inline-flex items-center justify-center p-3 rounded-full bg-gray-50 border border-gray-100 text-gray-900 hover:bg-gray-100 hover:text-brand-600 transition-all duration-300">
-                            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path x-show="!open" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
-                                <path x-show="open" style="display: none;" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center lg:hidden ml-auto pr-6">
+                    <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-charcoal-700 hover:text-brand-500 focus:outline-none z-50">
+                        <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path x-show="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path x-show="mobileOpen" style="display: none;" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
                 </div>
             </div>
 
             <!-- Mobile Menu -->
-            <div x-show="open" style="display: none;" x-transition:enter="transition ease-out duration-300 transform" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200 transform" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="lg:hidden absolute w-full bg-white border-b border-gray-100 shadow-2xl">
-                <div class="px-6 pt-4 pb-8 space-y-2">
-                    @foreach($navLinks as $link)
-                        <a @click="open = false" href="{{ route($link['route']) }}" class="block px-4 py-3 rounded-2xl text-[14px] uppercase tracking-[0.1em] font-bold {{ request()->routeIs($link['route']) ? 'text-brand-600 bg-brand-50/50' : 'text-gray-500 hover:text-brand-500 hover:bg-gray-50' }} transition-colors">
-                            {{ $link['label'] }}
-                        </a>
-                    @endforeach
-                    <a @click="open = false" href="{{ route('public.contact') }}" class="block px-4 py-4 mt-6 text-center rounded-2xl text-[14px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-brand-600 to-amber-500 shadow-lg shadow-brand-500/20">Contact Us</a>
+            <div x-show="mobileOpen" @click.outside="mobileOpen = false" style="display: none;"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 class="lg:hidden bg-white border-t-4 border-brand-500 absolute w-full shadow-2xl z-50">
+                <div class="px-6 py-6 flex flex-col space-y-4">
+                    <a @click="mobileOpen = false" href="{{ route('public.home') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Home</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.about') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">About</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.services') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Services</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.projects') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Portfolio</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.gallery') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Gallery</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.testimonials') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Testimonials</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.clients') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Clients</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.careers') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Careers</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.contact') }}" class="mt-4 text-center px-6 py-3 bg-brand-500 text-white font-black uppercase tracking-widest text-[14px]">Contact Us</a>
                 </div>
             </div>
-        </nav>
+        </header>
 
-        <!-- Main Content Area -->
-        <main class="flex-grow pt-20">
-            {{-- Flash toasts handled by RubiKnows toast system below --}}
-
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="flex-grow">
             {{ $slot }}
         </main>
 
-        <footer class="relative bg-[#050505] text-white pt-16 lg:pt-24 pb-12 overflow-hidden border-t border-white/10 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]">
-            <!-- Animated Background Grid -->
-            <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.02] animate-grid-pan pointer-events-none"></div>
+        <!-- ===== KIMLEY-HORN STYLE "FAT" FOOTER (RESTORED LINKS) ===== -->
+        <footer class="bg-richblack-950 text-white pt-24 pb-12 mt-auto border-t-[16px] border-brand-500 relative overflow-hidden">
+            <!-- Decorative geometric element -->
+            <div class="absolute bottom-0 right-0 w-1/3 h-1/2 bg-white/5 kh-angled-deco-right"></div>
             
-            <!-- Premium Lighting Effects -->
-            <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-500/10 rounded-full blur-[160px] pointer-events-none"></div>
-            <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[150px] pointer-events-none"></div>
-
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 pb-16 border-b border-white/10">
+            <div class="max-w-screen-2xl mx-auto px-6 relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16">
+                    
                     <!-- Brand Section -->
-                    <div class="lg:col-span-5 flex flex-col justify-between">
+                    <div class="lg:col-span-5 pr-8">
+                        <a href="{{ route('public.home') }}" class="inline-flex items-center gap-3 mb-8">
+                            <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="h-24 w-auto">
+                            <span class="flex items-baseline">
+                                <span class="text-3xl sm:text-4xl font-light tracking-tight text-gray-200">RUBI</span><span class="text-3xl sm:text-4xl font-black tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
+                            </span>
+                        </a>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-10 max-w-sm font-bold uppercase tracking-wider">
+                            World-class engineering, construction, and consultancy services. We engineer the future, blending world-class precision with visionary design.
+                        </p>
+                        
                         <div>
-                            <a href="{{ route('public.home') }}" class="inline-flex items-center gap-4 group mb-8">
-                                <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md shadow-2xl shadow-brand-500/10 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-[5deg]">
-                                    <img src="{{ asset('LOGO.png') }}" alt="RubiKnows Logo" class="w-10 h-10 object-contain">
-                                </div>
-                                <span class="text-3xl font-['Playfair_Display'] tracking-tight transition-colors duration-700 inline-flex items-center">
-                                    <span class="font-normal text-white">RUBI</span><span class="font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-amber-300">KNOWS</span>
-                                </span>
+                            <h4 class="text-xs font-black text-brand-500 tracking-[0.2em] uppercase mb-4">Start a Project</h4>
+                            <a href="{{ route('public.contact', ['tab' => 'quote']) }}" class="inline-flex items-center justify-center px-8 py-4 bg-brand-500 text-white font-black uppercase tracking-widest text-sm hover:bg-white hover:text-richblack-950 transition-all duration-300">
+                                Initiate Proposal
+                                <svg class="w-4 h-4 ml-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                             </a>
-                            <p class="text-gray-400 text-sm leading-loose max-w-md font-light">
-                                {{ $seoDescription }} We engineer the future, blending world-class precision with visionary design.
-                            </p>
-                        </div>
-
-                        <div class="mt-12">
-                            <h4 class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-6">Start a Project</h4>
-                            <div class="flex flex-wrap gap-5 items-center">
-                                <a href="{{ route('public.contact', ['tab' => 'quote']) }}" class="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden text-sm font-semibold text-white rounded-full bg-white/5 border border-white/10 hover:border-brand-500/50 transition-all duration-500 group">
-                                    <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-brand-600/20 to-amber-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                                    <span class="relative">Initiate Proposal</span>
-                                    <svg class="w-4 h-4 ml-3 relative transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                </a>
-                                
-                                <div class="flex items-center space-x-3">
-                                    @if(!empty($settings['social_facebook']))
-                                        <a href="{{ $settings['social_facebook'] }}" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-500 hover:border-brand-500 shadow-lg hover:shadow-brand-500/30 transition-all duration-500">
-                                            <span class="sr-only">Facebook</span>
-                                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" /></svg>
-                                        </a>
-                                    @endif
-                                    @if(!empty($settings['social_linkedin']))
-                                        <a href="{{ $settings['social_linkedin'] }}" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-600 hover:border-blue-600 shadow-lg hover:shadow-blue-600/30 transition-all duration-500">
-                                            <span class="sr-only">LinkedIn</span>
-                                            <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd" /></svg>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <!-- Directory Section -->
-                    <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12 lg:gap-16">
+                    <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12">
+                        
+                        <!-- Company Links -->
                         <div>
-                            <h3 class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-8">
+                            <h3 class="text-sm font-black text-brand-500 tracking-[0.15em] uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
                                 Company
                             </h3>
-                            <ul class="space-y-4 text-sm font-light">
-                                <li><a href="{{ route('public.about') }}" class="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-brand-500 opacity-0 -ml-3 transition-all duration-300"></span> About Us</a></li>
-                                <li><a href="{{ route('public.projects') }}" class="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-brand-500 opacity-0 -ml-3 transition-all duration-300"></span> Portfolio</a></li>
-                                <li><a href="{{ route('public.clients') }}" class="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-brand-500 opacity-0 -ml-3 transition-all duration-300"></span> Clients & Partners</a></li>
-                                <li><a href="{{ route('public.careers') }}" class="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-brand-500 opacity-0 -ml-3 transition-all duration-300"></span> Careers</a></li>
-                                <li><a href="{{ route('public.contact') }}" class="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-brand-500 opacity-0 -ml-3 transition-all duration-300"></span> Contact</a></li>
+                            <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
+                                <li><a href="{{ route('public.about') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">About Us</a></li>
+                                <li><a href="{{ route('public.projects') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Portfolio</a></li>
+                                <li><a href="{{ route('public.clients') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Clients & Partners</a></li>
+                                <li><a href="{{ route('public.careers') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Careers</a></li>
+                                <li><a href="{{ route('public.contact') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Contact</a></li>
                             </ul>
                         </div>
 
+                        <!-- Services List -->
                         <div>
-                            <h3 class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-8">
+                            <h3 class="text-sm font-black text-brand-500 tracking-[0.15em] uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
                                 Services
                             </h3>
-                            <ul class="space-y-4 text-sm font-light">
+                            <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
                                 @php
-                                    $footerServices = \App\Models\Service::latest()->take(4)->get();
+                                    $footerServices = \App\Models\Service::latest()->take(6)->get();
                                 @endphp
                                 @foreach($footerServices as $fs)
-                                    <li><a href="{{ route('public.services') }}" class="text-gray-400 hover:text-white hover:translate-x-1 transition-all duration-300 inline-flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-brand-500 opacity-0 -ml-3 transition-all duration-300"></span> {{ $fs->title }}</a></li>
+                                    <li><a href="{{ route('public.services') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">{{ $fs->title }}</a></li>
                                 @endforeach
                             </ul>
                         </div>
 
+                        <!-- Global HQ / Contact -->
                         <div>
-                            <h3 class="text-xs font-semibold text-gray-400 tracking-widest uppercase mb-8">
+                            <h3 class="text-sm font-black text-brand-500 tracking-[0.15em] uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
                                 Global HQ
                             </h3>
-                            <ul class="space-y-6 text-sm text-gray-400 font-light">
-                                @if(!empty($settings['office_address']))
-                                    <li class="flex items-start group cursor-default">
-                                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-brand-500/20 group-hover:text-brand-400 transition-colors">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                        </div>
-                                        <span class="leading-relaxed mt-1">{{ $settings['office_address'] }}</span>
-                                    </li>
-                                @endif
+                            <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
                                 @if(!empty($settings['contact_phone']))
-                                    <li class="flex items-center group">
-                                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-brand-500/20 group-hover:text-brand-400 transition-colors">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                                        </div>
-                                        <a href="tel:{{ $settings['contact_phone'] }}" class="hover:text-white transition-colors duration-300 text-sm">{{ $settings['contact_phone'] }}</a>
+                                    <li class="flex flex-col gap-1">
+                                        <span class="text-brand-500">Phone</span>
+                                        <span class="text-white">{{ $settings['contact_phone'] }}</span>
                                     </li>
                                 @endif
                                 @if(!empty($settings['contact_email']))
-                                    <li class="flex items-center group">
-                                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center mr-4 flex-shrink-0 group-hover:bg-brand-500/20 group-hover:text-brand-400 transition-colors">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                        </div>
-                                        <a href="mailto:{{ $settings['contact_email'] }}" class="hover:text-white transition-colors duration-300 text-sm">{{ $settings['contact_email'] }}</a>
+                                    <li class="flex flex-col gap-1">
+                                        <span class="text-brand-500">Email</span>
+                                        <a href="mailto:{{ $settings['contact_email'] }}" class="text-white hover:text-brand-500 transition-colors lowercase tracking-normal">{{ $settings['contact_email'] }}</a>
                                     </li>
                                 @endif
                             </ul>
@@ -233,63 +237,50 @@
                     </div>
                 </div>
 
-                <!-- Bottom Copyright -->
-                <div class="mt-8 pt-4 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p class="text-xs text-gray-500 tracking-wide">
-                        &copy; {{ date('Y') }} {{ $companyName }}. All rights reserved.
-                    </p>
-                    <div class="flex items-center space-x-8 text-xs tracking-wide">
-                        <a href="{{ route('public.privacy') }}" class="text-gray-500 hover:text-white transition-all duration-300">Privacy</a>
-                        <a href="{{ route('public.terms') }}" class="text-gray-500 hover:text-white transition-all duration-300">Terms</a>
-                        @if (Route::has('login'))
-                            <a href="{{ route('login') }}" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-gray-300 hover:text-brand-400 hover:bg-brand-500/10 hover:border-brand-500/30 transition-all duration-300">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                                Portal
-                            </a>
-                        @endif
+                <div class="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-500 font-bold uppercase tracking-widest">
+                    <p>&copy; {{ date('Y') }} {{ $companyName }}. All Rights Reserved.</p>
+                    <div class="flex flex-wrap gap-6 justify-center items-center">
+                        <a href="{{ route('public.privacy') }}" class="hover:text-white transition-colors">Privacy</a>
+                        <a href="{{ route('public.terms') }}" class="hover:text-white transition-colors">Terms</a>
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="ml-4 px-4 py-2 bg-brand-500 text-white hover:bg-white hover:text-richblack-950 transition-colors">CMS Dashboard</a>
+                        @else
+                            <a href="{{ route('login') }}" class="ml-4 px-4 py-2 border border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white transition-colors">Portal</a>
+                        @endauth
                     </div>
                 </div>
             </div>
         </footer>
-        <!-- Cursor Tracking Script for Spotlights -->
-        <script>
-            document.addEventListener('mousemove', e => {
-                document.querySelectorAll('.cursor-spotlight').forEach(el => {
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    el.style.setProperty('--x', `${x}px`);
-                    el.style.setProperty('--y', `${y}px`);
-                });
-            });
-        </script>
 
-        <!-- RubiKnows Toast System -->
+        <!-- ===== TOAST NOTIFICATION SYSTEM ===== -->
         <div id="rk-toast-container" class="fixed top-5 right-5 z-[99999] flex flex-col gap-3 pointer-events-none" aria-live="polite"></div>
         <script>
         (function () {
             var _c = document.getElementById('rk-toast-container');
             function rkToast(message, type) {
                 type = type || 'success';
-                var icons = {
-                    success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>',
-                    error:   '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+                var colors = {
+                    success: { bar: '#E07B2A', label: 'Success' },
+                    error:   { bar: '#ef4444', label: 'Error' },
+                    info:    { bar: '#3b82f6', label: 'Notice' },
                 };
-                var bar = type === 'error' ? '#ef4444' : '#f97316';
-                var label = type === 'error' ? 'Error' : 'Success';
+                var c = colors[type] || colors.success;
+                var icons = {
+                    success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>',
+                    error:   '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>',
+                    info:    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+                };
                 var t = document.createElement('div');
                 t.setAttribute('data-rk-toast', '1');
-                t.style.cssText = 'pointer-events:all;min-width:300px;max-width:380px;background:#fff;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.13),0 2px 8px rgba(0,0,0,0.07);overflow:hidden;transform:translateX(120%);opacity:0;transition:transform 0.38s cubic-bezier(.34,1.56,.64,1),opacity 0.25s ease;';
+                t.style.cssText = 'pointer-events:all;min-width:320px;max-width:400px;background:#0f172a;border-left:4px solid ' + c.bar + ';border-radius:0;box-shadow:0 10px 30px rgba(0,0,0,0.5);overflow:hidden;transform:translateX(120%);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;';
                 t.innerHTML =
-                    '<div style="height:3px;background:' + bar + ';border-radius:999px 999px 0 0"></div>' +
-                    '<div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;">' +
-                    '<div style="flex-shrink:0;width:34px;height:34px;border-radius:10px;background:' + bar + '18;display:flex;align-items:center;justify-content:center;">' +
-                    '<svg style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="' + bar + '">' + (icons[type] || icons.success) + '</svg></div>' +
+                    '<div style="display:flex;align-items:flex-start;gap:12px;padding:16px;">' +
+                    '<svg style="width:20px;height:20px;flex-shrink:0;margin-top:2px" fill="none" viewBox="0 0 24 24" stroke="' + c.bar + '">' + (icons[type] || icons.success) + '</svg>' +
                     '<div style="flex:1;min-width:0;">' +
-                    '<p style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:' + bar + ';margin:0 0 2px 0;">' + label + '</p>' +
-                    '<p style="font-size:13px;font-weight:500;color:#1a1a1a;margin:0;line-height:1.5;">' + message + '</p></div>' +
-                    '<button onclick="var el=this.closest(\'[data-rk-toast]\');el.style.transform=\'translateX(120%)\';el.style.opacity=\'0\';setTimeout(function(){el.parentNode&&el.parentNode.removeChild(el);},400);" style="flex-shrink:0;padding:2px;background:none;border:none;cursor:pointer;color:#9ca3af;">' +
-                    '<svg style="width:15px;height:15px" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>' +
+                    '<p style="font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:' + c.bar + ';margin:0 0 4px 0;">' + c.label + '</p>' +
+                    '<p style="font-size:14px;font-weight:600;color:#f8fafc;margin:0;line-height:1.5;">' + message + '</p></div>' +
+                    '<button onclick="this.closest(\'[data-rk-toast]\').remove()" style="flex-shrink:0;padding:2px;background:none;border:none;cursor:pointer;color:#64748b;transition:color .2s;">' +
+                    '<svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg></button>' +
                     '</div>';
                 _c.appendChild(t);
                 requestAnimationFrame(function () { requestAnimationFrame(function () { t.style.transform = 'translateX(0)'; t.style.opacity = '1'; }); });

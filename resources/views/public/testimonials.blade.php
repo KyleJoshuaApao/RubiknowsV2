@@ -1,97 +1,85 @@
 <x-public-layout>
     <x-slot name="title">Testimonials</x-slot>
 
-    <!-- Header -->
-    <div class="relative bg-white pt-24 pb-16 lg:pb-20 overflow-hidden">
-        <div class="absolute inset-0 bg-grid-pattern opacity-[0.04] pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
-                <span class="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold uppercase tracking-widest mb-6">
-                    <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
-                    Client Stories
-                </span>
-            </div>
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-sans font-black text-black tracking-tight mt-6 mb-6" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" style="animation-delay: 0.1s">
-                What Our <span class="gold-shimmer-text italic">Clients Say</span>
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-900 text-white relative kh-angled-bottom-right mb-16">
+        <!-- Architectural Overlay -->
+        <div class="absolute inset-0 z-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+        
+        <div class="max-w-screen-2xl mx-auto px-6 relative z-10 border-l-4 border-brand-500 ml-4 md:ml-8 lg:ml-12">
+            <p class="text-white font-bold tracking-[0.2em] uppercase text-sm mb-6 flex items-center">
+                Client Feedback
+            </p>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight max-w-4xl">
+                What Our Clients Say
             </h1>
-            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" style="animation-delay: 0.2s">
-                Hear from the people we've had the pleasure of working with.
+            <p class="mt-8 text-xl lg:text-2xl text-gray-300 max-w-2xl leading-relaxed font-bold">
+                Hear from the organizations and individuals who have trusted RubiKnows with their engineering and construction projects.
             </p>
         </div>
-    </div>
+    </section>
 
-    <!-- Testimonials Grid -->
-    <div class="py-20 lg:py-32 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- ===== TESTIMONIALS GRID ===== -->
+    <section class="py-24 lg:py-32 bg-gray-50">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
                 @forelse($testimonials as $testimonial)
-                <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                     class=" group p-6 lg:p-8 bg-white rounded-3xl border border-gray-100 hover:border-orange-500 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-500"
-                     style="animation-delay: {{ $loop->index * 0.1 }}s">
-                    <p class="text-gray-700 italic text-sm leading-relaxed mb-8">"{{ $testimonial->quote }}"</p>
-                    <div class="flex items-center pt-6 border-t border-gray-100">
-                        @if($testimonial->avatar_path)
-                        <img class="h-14 w-14 rounded-full object-cover mr-5 ring-4 ring-orange-100" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
-                        @else
-                        <div class="h-14 w-14 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-xl mr-5 shadow-lg shadow-orange-500/30">
-                            {{ substr($testimonial->client_name, 0, 1) }}
+                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
+                         class="bg-white p-10 border-t-4 border-brand-500 shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
+                         style="animation-delay: {{ $loop->index * 0.08 }}s">
+                        
+                        <div class="mb-8 text-brand-500 opacity-20">
+                            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z"/></svg>
                         </div>
-                        @endif
-                        <div>
-                            <h4 class="text-base font-bold text-black group-hover:text-orange-600 transition-colors duration-300">{{ $testimonial->client_name }}</h4>
-                            <p class="text-xs text-gray-500">{{ $testimonial->role }} @if($testimonial->company) &bull; {{ $testimonial->company }} @endif</p>
+                        
+                        <div class="flex-grow">
+                            <p class="text-gray-900 leading-relaxed text-lg font-medium mb-10 italic">"{{ $testimonial->quote }}"</p>
+                        </div>
+                        
+                        <div class="flex items-center pt-8 border-t-2 border-gray-100 mt-auto">
+                            @if($testimonial->avatar_path)
+                                <img class="h-16 w-16 object-cover mr-6 border-b-4 border-brand-500" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
+                            @else
+                                <div class="h-16 w-16 bg-gray-100 text-brand-500 border-b-4 border-brand-500 flex items-center justify-center font-black text-2xl mr-6 uppercase">
+                                    {{ substr($testimonial->client_name, 0, 1) }}
+                                </div>
+                            @endif
+                            <div>
+                                <h4 class="text-base font-black text-richblack-900 uppercase tracking-widest">{{ $testimonial->client_name }}</h4>
+                                <p class="text-sm text-gray-500 mt-1 font-bold">
+                                    {{ $testimonial->role }} 
+                                    @if($testimonial->company)
+                                        <span class="text-brand-500 font-medium px-2">|</span> {{ $testimonial->company }}
+                                    @endif
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @empty
-                <div class="col-span-full text-center py-20">
-                    <p class="text-gray-400 font-mono text-sm">No testimonials available yet. Check back soon!</p>
-                </div>
+                    <div class="col-span-full text-center py-24 bg-white border-4 border-gray-100">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                        <p class="text-gray-500 text-lg font-bold uppercase tracking-wider">No testimonials have been added yet.</p>
+                    </div>
                 @endforelse
             </div>
-        </div>
-    </div>
 
-    <!-- Premium 3D CTA Section -->
-    <div class="relative bg-white py-20 lg:py-32 overflow-hidden">
-        <!-- 3D Perspective Grid -->
-        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none" style="transform: perspective(1000px) rotateX(60deg) scale(2.5); transform-origin: top; mask-image: linear-gradient(to bottom, transparent, black 40%, transparent);"></div>
-        
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- 3D Glassmorphic Card -->
-            <div class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-[#0a0a0a] rounded-[2.5rem] p-6 sm:p-8 lg:p-20 overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.05),inset_0_-1px_0_rgba(255,255,255,0.02)] border border-white/10 group transform hover:-translate-y-2 transition-transform duration-700">
-                
-                <!-- Inner 3D Lighting -->
-                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3 group-hover:bg-brand-500/20 transition-colors duration-700"></div>
-                <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/3 translate-y-1/3 group-hover:bg-amber-500/15 transition-colors duration-700"></div>
-                <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
-
-                <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
-                <div class="flex items-center justify-center gap-2 mb-6">
-                    <div class="h-px w-12 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
-                    <span class="text-amber-300 text-sm font-semibold uppercase tracking-widest">Ready to Share Your Story?</span>
-                    <div class="h-px w-12 bg-gradient-to-l from-yellow-500 to-orange-300"></div>
+            <!-- Pagination -->
+            @if($testimonials->hasPages())
+                <div class="mt-20 flex justify-center">
+                    {{ $testimonials->links('vendor.pagination.tailwind') }}
                 </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-sans font-black text-white tracking-tight mb-6 leading-tight">
-                    Let's Work <span class="gold-shimmer-text italic font-black">Together</span>
-                </h2>
-                <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-                    Ready to start your next project? Get in touch with us today!
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="{{ route('public.contact') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full shadow-2xl shadow-orange-500/30 text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 hover:scale-105 transition-all duration-300 font-bold text-sm">
-                        Contact Us
-                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </a>
-                    <a href="{{ route('public.services') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 transition-all duration-300 font-bold text-sm">
-                        View Services
-                    </a>
-                </div>
-            </div>
+            @endif
         </div>
-    </div>
-    </div>
-    </div>
+    </section>
 </x-public-layout>

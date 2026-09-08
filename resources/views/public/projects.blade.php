@@ -1,121 +1,112 @@
 <x-public-layout>
-    <x-slot name="title">Portfolio</x-slot>
+    <x-slot name="title">Our Projects</x-slot>
 
-    <!-- Header -->
-    <div class="relative bg-white pt-24 pb-16 lg:pt-40 lg:pb-32 overflow-hidden">
-        <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(ellipse at top right, rgba(224,123,42,0.08), transparent 55%);"></div>
-        <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
-                <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
-                    <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
-                    Build Specification
-                </span>
-            </div>
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-sans font-black tracking-tight leading-[1.05] mb-8 animate-fade-in-up delay-200">
-                Project <span class="gold-shimmer-text italic font-black">Portfolio</span>
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-900 text-white relative kh-angled-bottom-right mb-16">
+        <!-- Architectural Overlay -->
+        <div class="absolute inset-0 z-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+        
+        <div class="max-w-screen-2xl mx-auto px-6 relative z-10 border-l-4 border-brand-500 ml-4 md:ml-8 lg:ml-12">
+            <p class="text-white font-bold tracking-[0.2em] uppercase text-sm mb-6 flex items-center">
+                Our Portfolio
+            </p>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight max-w-4xl">
+                Featured Work
             </h1>
-            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" style="animation-delay: 0.2s">
-                Explore our track record of successful engineering and construction projects.
+            <p class="mt-8 text-xl lg:text-2xl text-gray-300 max-w-2xl leading-relaxed font-bold">
+                Explore our diverse portfolio of engineering and construction milestones.
             </p>
         </div>
-    </div>
+    </section>
 
-    <!-- Projects Grid -->
-    <div class="py-20 lg:py-44 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+    <!-- ===== PROJECTS GRID: EDGE-TO-EDGE CARDS ===== -->
+    <section class="bg-gray-50 py-24 lg:py-32 border-t-8 border-brand-500">
+        <div class="max-w-screen-2xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 @forelse($projects as $project)
+                    @php
+                        // Alternate heights for visual interest
+                        $isLarge = ($loop->index % 4 === 0 || $loop->index % 4 === 3);
+                        $imgHeightClass = $isLarge ? 'h-[600px]' : 'h-[450px]';
+                    @endphp
+
                     <a href="{{ route('public.project-details', $project) }}"
-                       x-data x-intersect.once="$el.classList.add('animate-scale-in')"
-                       class=" group block bg-white border border-gray-100 rounded-[2rem] overflow-hidden hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-2 transition-all duration-700"
-                       style="animation-delay: {{ $loop->index * 0.08 }}s">
+                       x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
+                       class="group block relative overflow-hidden bg-white shadow-lg hover:shadow-2xl border-b-4 border-transparent hover:border-brand-500 transition-all duration-300 {{ $imgHeightClass }}"
+                       style="animation-delay: {{ ($loop->index % 2) * 0.1 }}s">
+                        
                         @if($project->cover_image_path)
-                            <div class="relative h-80 overflow-hidden bg-orange-50">
-                                <img src="{{ Storage::url($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-105">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div class="absolute top-5 left-5 z-20">
-                                    <span class="px-4 py-2 bg-white border border-orange-100 text-orange-700 text-xs font-bold rounded-full uppercase tracking-wider shadow-md">{{ $project->category }}</span>
-                                </div>
-                            </div>
+                            <img src="{{ Storage::url($project->cover_image_path) }}" alt="{{ $project->title }}"
+                                 class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-90 group-hover:opacity-100 grayscale group-hover:grayscale-0">
                         @else
-                            <div class="h-80 bg-orange-50 flex items-center justify-center border-b border-gray-100">
-                                <span class="px-4 py-2 bg-white border border-orange-100 text-orange-700 text-xs font-bold rounded-full uppercase tracking-wider shadow-md">{{ $project->category }}</span>
+                            <div class="absolute inset-0 bg-richblack-900 flex items-center justify-center">
+                                <span class="text-6xl font-black text-richblack-800 uppercase transform -rotate-12">Project</span>
                             </div>
                         @endif
-
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300">{{ $project->title }}</h3>
-                            <div class="flex items-center text-sm text-gray-500 mb-6">
-                                <svg class="w-4 h-4 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                {{ $project->location }}
-                            </div>
-
-                            <p class="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-7">{{ $project->description }}</p>
-
-                            <div class="flex justify-between items-center pt-6 border-t border-gray-100 text-xs font-bold">
-                                <span class="text-orange-600 uppercase tracking-wider">
-                                    {{ $project->status === 'Featured' ? 'Completed' : strtoupper($project->status) }}
+                        
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-richblack-950 via-richblack-950/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                        
+                        <div class="absolute bottom-0 left-0 w-full p-8 lg:p-12 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                            <span class="px-4 py-2 bg-brand-500 text-white text-[10px] font-black tracking-widest uppercase mb-4 inline-block">
+                                {{ $project->category }}
+                            </span>
+                            
+                            <h3 class="text-3xl lg:text-4xl font-black text-white tracking-tight mb-4 group-hover:text-brand-500 transition-colors">{{ $project->title }}</h3>
+                            
+                            <div class="flex items-center justify-between text-sm font-black uppercase tracking-widest">
+                                <span class="flex items-center text-gray-300">
+                                    <svg class="w-4 h-4 mr-2 text-brand-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                    {{ $project->location }}
                                 </span>
-                                <span class="text-gray-900 group-hover:translate-x-1.5 transition-transform duration-300 inline-flex items-center">
-                                    Details
-                                    <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                
+                                <span class="text-white group-hover:text-brand-500 transition-colors inline-flex items-center">
+                                    View
+                                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </span>
                             </div>
                         </div>
                     </a>
                 @empty
-                    <div class="col-span-3 text-center py-20">
-                        <p class="text-gray-400 font-mono text-sm">No projects found.</p>
+                    <div class="col-span-full text-center py-32 bg-white shadow-lg border-t-4 border-brand-500">
+                        <span class="block text-gray-300 text-6xl font-black mb-6">00</span>
+                        <p class="text-gray-500 uppercase tracking-widest font-black text-sm">No projects published yet.</p>
                     </div>
                 @endforelse
             </div>
 
+            <!-- Pagination -->
             @if($projects->hasPages())
-                <div class="mt-12 flex justify-center">
-                    {{ $projects->links() }}
+                <div class="mt-16 flex justify-center">
+                    {{ $projects->links('vendor.pagination.tailwind') }}
                 </div>
             @endif
         </div>
-    </div>
+    </section>
 
-    <!-- Premium 3D CTA Section -->
-    <div class="relative bg-white py-20 lg:py-32 overflow-hidden">
-        <!-- 3D Perspective Grid -->
-        <div class="absolute inset-0 bg-grid-pattern-light opacity-50 pointer-events-none" style="transform: perspective(1000px) rotateX(60deg) scale(2.5); transform-origin: top; mask-image: linear-gradient(to bottom, transparent, black 40%, transparent);"></div>
-        
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <!-- 3D Glassmorphic Card -->
-            <div class="relative bg-gradient-to-br from-gray-950 via-gray-900 to-[#0a0a0a] rounded-[2.5rem] p-6 sm:p-8 lg:p-20 overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.5),inset_0_2px_10px_rgba(255,255,255,0.05),inset_0_-1px_0_rgba(255,255,255,0.02)] border border-white/10 group transform hover:-translate-y-2 transition-transform duration-700">
-                
-                <!-- Inner 3D Lighting -->
-                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-500/10 rounded-full blur-[100px] pointer-events-none transform translate-x-1/3 -translate-y-1/3 group-hover:bg-brand-500/20 transition-colors duration-700"></div>
-                <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none transform -translate-x-1/3 translate-y-1/3 group-hover:bg-amber-500/15 transition-colors duration-700"></div>
-                <div class="absolute inset-0 bg-grid-pattern-dark opacity-[0.05] pointer-events-none mix-blend-overlay"></div>
-
-                <div class="relative z-20 text-center max-w-4xl mx-auto">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class="">
-                <div class="flex items-center justify-center gap-3 mb-6">
-                    <div class="h-px w-20 bg-gradient-to-r from-yellow-500 to-orange-300"></div>
-                    <span class="text-amber-300 text-xs font-bold uppercase tracking-[0.3em]">Your Next Project</span>
-                    <div class="h-px w-20 bg-gradient-to-l from-yellow-500 to-orange-300"></div>
-                </div>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-sans font-black text-white tracking-tight mb-6 leading-tight">
-                    Ready to Start Your <span class="gold-shimmer-text italic font-black">Project?</span>
-                </h2>
-                <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-8">
-                    Let's work together to bring your vision to life with our engineering excellence.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="{{ route('public.contact') }}" class="inline-flex items-center justify-center px-6 py-3 rounded-full shadow-2xl shadow-orange-500/30 text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 hover:scale-105 transition-all duration-500 font-bold text-sm">
-                        Contact Us Now
-                        <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                    </a>
-                </div>
+    <!-- ===== CTA ===== -->
+    <section class="bg-richblack-950 text-white py-32 lg:py-48 relative overflow-hidden border-t-8 border-white border-b-8">
+        <div class="absolute inset-0 bg-brand-500 opacity-20 transform -skew-y-3 origin-top-left"></div>
+        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
+            <span class="block font-black tracking-[0.3em] uppercase text-brand-500 mb-8">Next Steps</span>
+            <h2 class="text-5xl lg:text-7xl font-black mb-8 leading-tight tracking-tighter uppercase">
+                Have a project in mind?
+            </h2>
+            <p class="text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed mb-12 font-bold">
+                Let's discuss how our expertise can turn your vision into reality.
+            </p>
+            <div class="mt-8 inline-block">
+                <x-kh-button href="{{ route('public.contact') }}" text="Discuss Your Project" />
             </div>
         </div>
-    </div>
-    </div>
-    </div>
+    </section>
 </x-public-layout>

@@ -41,8 +41,8 @@
             <div class="relative z-10 max-w-lg px-12 text-center animate-slide-up">
                 <!-- Large Logo -->
                 <div class="flex justify-center mb-10">
-                    <div class="w-32 h-32 rounded-3xl bg-white shadow-2xl shadow-brand-500/10 flex items-center justify-center transform transition duration-500 hover:scale-105 border border-gray-100">
-                        <img src="{{ asset('LOGO.png') }}" alt="RubiKnows Logo" class="w-24 h-24 object-contain">
+                    <div class="w-32 h-32  bg-white shadow-2xl shadow-brand-500/10 flex items-center justify-center transform transition duration-500 hover:scale-105 border border-gray-100">
+                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-24 h-24 object-contain">
                     </div>
                 </div>
                 <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight font-['Roboto_Slab'] mb-4">
@@ -73,7 +73,7 @@
                 <!-- Mobile Logo (hidden on desktop) -->
                 <div class="flex justify-center mb-10 lg:hidden">
                     <a href="/" class="inline-block transform transition duration-300 hover:scale-105">
-                        <img src="{{ asset('LOGO.png') }}" alt="RubiKnows" class="w-16 object-contain">
+                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="w-16 object-contain">
                     </a>
                 </div>
 
@@ -87,7 +87,7 @@
                 </div>
 
                 <!-- Form Slot -->
-                <div class="bg-white lg:bg-transparent p-8 lg:p-0 rounded-3xl lg:rounded-none shadow-xl lg:shadow-none border border-gray-100 lg:border-none">
+                <div class="bg-white lg:bg-transparent p-8 lg:p-0  lg:rounded-none shadow-xl lg:shadow-none border border-gray-100 lg:border-none">
                     {{ $slot }}
                 </div>
                 

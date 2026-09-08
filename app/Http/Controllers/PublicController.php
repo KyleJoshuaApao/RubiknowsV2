@@ -29,7 +29,12 @@ class PublicController extends Controller
         $clients = Client::latest()->get();
         $media = GalleryMedia::latest()->take(6)->get();
 
-        return view('public.home', compact('featuredProjects', 'services', 'testimonials', 'clients', 'media'));
+        $homeStats = json_decode(Setting::getValue('home_stats_bar', '[]'), true);
+        $homeMarkets = json_decode(Setting::getValue('home_markets', '[]'), true);
+        $homeMarquee = json_decode(Setting::getValue('home_marquee', '[]'), true);
+        $homeCareers = json_decode(Setting::getValue('home_careers', '{}'), true);
+
+        return view('public.home', compact('featuredProjects', 'services', 'testimonials', 'clients', 'media', 'homeStats', 'homeMarkets', 'homeMarquee', 'homeCareers'));
     }
 
     public function about()
@@ -62,31 +67,35 @@ class PublicController extends Controller
 
     public function careers()
     {
-        $jobs = Job::where('is_archived', false)->latest()->get();
+        $jobs = Job::where('is_archived', false)->latest()->paginate(10);
         return view('public.careers', compact('jobs'));
     }
 
-    public function applyForJob(Request $request, Job $job)
+    public function applyForJob(Request $request)
     {
         $data = $request->validate([
+            'job_title'    => 'required|string',
             'name'         => 'required|string|max:255',
             'email'        => 'required|email|max:255',
             'phone'        => 'nullable|string|max:20',
-            'cover_letter' => 'nullable|string|max:5000',
+            'message'      => 'nullable|string|max:5000',
             'resume'       => 'required|file|mimes:pdf,doc,docx|max:5120',
             'portfolio'    => 'nullable|file|mimes:pdf,zip|max:10240',
         ]);
 
-        // Store on the default configured disk
-        $resumePath    = $request->file('resume')->store('applications/resumes');
-        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios') : null;
+        $job = Job::where('title', $data['job_title'])->first();
+
+        // Store on the configured default disk (local or s3)
+        $disk = config('filesystems.default');
+        $resumePath    = $request->file('resume')->store('applications/resumes', $disk);
+        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', $disk) : null;
 
         $application = JobApplication::create([
-            'job_id' => $job->id,
+            'job_id' => $job ? $job->id : null,
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
-            'cover_letter' => $data['cover_letter'],
+            'cover_letter' => $data['message'] ?? null,
             'resume_path' => $resumePath,
             'portfolio_path' => $portfolioPath,
             'status' => 'Received',
@@ -103,13 +112,13 @@ class PublicController extends Controller
 
     public function testimonials()
     {
-        $testimonials = Testimonial::where('is_published', true)->latest()->get();
+        $testimonials = Testimonial::where('is_published', true)->latest()->paginate(12);
         return view('public.testimonials', compact('testimonials'));
     }
 
     public function clients()
     {
-        $clients  = Client::whereIn('type', ['Client', 'client'])->orWhereNull('type')->latest()->get();
+        $clients  = Client::whereIn('type', ['Client', 'client'])->orWhereNull('type')->latest()->paginate(20);
         $partners = Client::whereIn('type', ['Partner', 'partner'])->latest()->get();
         $sponsors = Client::whereIn('type', ['Sponsor', 'sponsor'])->latest()->get();
         return view('public.clients', compact('clients', 'partners', 'sponsors'));

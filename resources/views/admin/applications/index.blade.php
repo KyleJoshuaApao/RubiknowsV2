@@ -2,34 +2,34 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <div>
-                <h2 class="font-semibold text-2xl text-gray-800 leading-tight tracking-tight">
+                <h2 class="font-black text-3xl uppercase tracking-tighter text-richblack-900 leading-tight">
                     {{ __('Applicant Tracking') }}
                 </h2>
-                <p class="text-sm text-gray-500 mt-1">Review resumes and manage job applications.</p>
+                <p class="text-sm font-bold uppercase tracking-widest text-gray-500 mt-2">Review resumes and manage job applications.</p>
             </div>
         </div>
     </x-slot>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+    <div class="bg-white border-t-4 border-brand-500 border-b border-x border-gray-200 mt-8">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-100">
-                <thead class="bg-gray-50/80">
+                <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Applicant Info</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Position Applied</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Applied Date</th>
-                        <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th scope="col" class="px-8 py-5 text-left text-xs font-black text-richblack-900 uppercase tracking-widest border-b border-gray-200">Applicant Info</th>
+                        <th scope="col" class="px-8 py-5 text-left text-xs font-black text-richblack-900 uppercase tracking-widest border-b border-gray-200">Position Applied</th>
+                        <th scope="col" class="px-8 py-5 text-left text-xs font-black text-richblack-900 uppercase tracking-widest border-b border-gray-200">Status</th>
+                        <th scope="col" class="px-8 py-5 text-left text-xs font-black text-richblack-900 uppercase tracking-widest border-b border-gray-200">Applied Date</th>
+                        <th scope="col" class="px-8 py-5 text-right text-xs font-black text-richblack-900 uppercase tracking-widest border-b border-gray-200">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-50">
                     @forelse($applications as $app)
-                        <tr class="hover:bg-gray-50/50 transition-colors duration-150 group {{ $app->status === 'Received' ? 'bg-orange-50/30' : '' }}">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $app->name }}</div>
+                        <tr class="hover:bg-gray-50 transition-colors duration-150 group {{ $app->status === 'Received' ? 'bg-brand-50/30' : '' }}">
+                            <td class="px-8 py-6 whitespace-nowrap">
+                                <div class="text-base font-black text-richblack-900 uppercase tracking-widest">{{ $app->name }}</div>
                                 <div class="text-xs text-gray-500">{{ $app->email }}</div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-8 py-6 whitespace-nowrap">
                                 @if($app->job)
                                     <div class="text-sm text-gray-900 font-medium">{{ $app->job->title }}</div>
                                     <div class="text-xs text-gray-500">{{ $app->job->location }}</div>
@@ -37,7 +37,7 @@
                                     <div class="text-sm text-red-500 italic">Job Removed</div>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-8 py-6 whitespace-nowrap">
                                 @php
                                     $colors = [
                                         'Received' => 'bg-orange-100 text-orange-800 border-orange-200',
@@ -48,15 +48,15 @@
                                     ];
                                     $color = $colors[$app->status] ?? 'bg-gray-50 text-gray-600';
                                 @endphp
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border {{ $color }}">
+                                <span class="inline-flex items-center px-2.5 py-1  text-xs font-medium border {{ $color }}">
                                     {{ $app->status }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-8 py-6 whitespace-nowrap text-sm text-gray-500">
                                 {{ $app->created_at->format('M j, Y') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="{{ route('admin.applications.show', $app) }}" class="inline-flex items-center text-[#E07B2A] hover:text-orange-700">
+                            <td class="px-8 py-6 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="{{ route('admin.applications.show', $app) }}" class="inline-flex items-center text-brand-500 hover:text-orange-700">
                                     Review Application <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </a>
                             </td>
@@ -78,3 +78,4 @@
         @endif
     </div>
 </x-app-layout>
+

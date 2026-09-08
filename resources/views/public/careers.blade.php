@@ -1,146 +1,167 @@
 <x-public-layout>
     <x-slot name="title">Careers</x-slot>
 
-    <!-- Header -->
-    <div class="relative bg-white pt-24 pb-16 lg:pt-40 lg:pb-32 overflow-hidden">
-        <div class="absolute inset-0 opacity-30" style="background-image: radial-gradient(ellipse at top right, rgba(224,123,42,0.08), transparent 55%);"></div>
-        <div class="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" mb-8">
-                <span class="inline-flex items-center gap-3 px-5 py-2.5 bg-orange-50 text-orange-700 rounded-full text-xs font-bold uppercase tracking-[0.3em] border border-orange-100">
-                    <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-pulse"></span>
-                    Join Our Team
-                </span>
-            </div>
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-sans font-black tracking-tight leading-[1.05] mb-8 animate-fade-in-up delay-200">
-                Build Your <span class="gold-shimmer-text italic font-black">Career</span> With Us
+    <!-- ===== PAGE HEADER ===== -->
+    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-900 text-white relative kh-angled-bottom-right mb-16">
+        <!-- Architectural Overlay -->
+        <div class="absolute inset-0 z-0 opacity-10">
+            <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+        </div>
+        
+        <div class="max-w-screen-2xl mx-auto px-6 relative z-10 border-l-4 border-brand-500 ml-4 md:ml-8 lg:ml-12">
+            <p class="text-white font-bold tracking-[0.2em] uppercase text-sm mb-6 flex items-center">
+                Join Our Team
+            </p>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight max-w-4xl">
+                Build Your Career
             </h1>
-            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed" x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" style="animation-delay: 0.2s">
-                Join a team of passionate engineers and builders shaping the future of infrastructure.
+            <p class="mt-8 text-xl lg:text-2xl text-gray-300 max-w-2xl leading-relaxed font-bold">
+                Join a team of dedicated professionals committed to excellence in engineering and construction.
             </p>
         </div>
-    </div>
+    </section>
 
-    <!-- Job Listings -->
-    <div class="py-20 lg:py-44 bg-white" x-data="{ applyingFor: null, jobTitle: '' }">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- ===== CONTENT ===== -->
+    <section class="py-24 lg:py-32 bg-gray-50" x-data="{ applyFor: '{{ request('job') }}' }">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+                
+                <!-- Job Listings (Left) -->
+                <div class="lg:col-span-7 xl:col-span-8">
+                    <div class="mb-12 border-b-4 border-gray-200 pb-6 inline-block">
+                        <h2 class="text-4xl font-black text-richblack-900 uppercase tracking-tighter">Open Positions</h2>
+                    </div>
 
-            <div class="space-y-6">
-                @forelse($jobs as $job)
-                    <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')" class=" bg-white border border-gray-100 rounded-[2rem] p-8 hover:border-orange-200 hover:shadow-2xl hover:shadow-orange-500/10 hover:-translate-y-1 transition-all duration-700">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-6">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">{{ $job->title }}</h3>
-                                <div class="mt-4 flex flex-wrap gap-4">
-                                    <span class="inline-flex items-center px-4 py-2 bg-orange-50 border border-orange-100 text-orange-700 font-mono text-[11px] font-bold rounded-full uppercase tracking-wider">
-                                        {{ $job->type }}
-                                    </span>
-                                    <span class="inline-flex items-center px-4 py-2 bg-orange-50 border border-orange-100 text-orange-700 font-mono text-[11px] rounded-full uppercase tracking-wider">
-                                        <svg class="w-4 h-4 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                        {{ $job->location }}
-                                    </span>
+                    <div class="space-y-8">
+                        @forelse($jobs as $job)
+                            <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
+                                 class="bg-white p-8 border-t-4 border-brand-500 shadow-sm hover:shadow-lg transition-shadow duration-300"
+                                 style="animation-delay: {{ $loop->index * 0.1 }}s">
+                                
+                                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-6 mb-6">
+                                    <div>
+                                        <h3 class="text-2xl font-black text-richblack-900 uppercase tracking-tight">{{ $job->title }}</h3>
+                                        <div class="flex flex-wrap items-center gap-6 text-sm font-bold text-gray-500 mt-4 uppercase tracking-wider">
+                                            <span class="flex items-center">
+                                                <svg class="w-5 h-5 mr-2 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                                {{ $job->location }}
+                                            </span>
+                                            <span class="flex items-center">
+                                                <svg class="w-5 h-5 mr-2 text-brand-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                                {{ $job->type }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button @click="applyFor = '{{ $job->title }}'; $nextTick(() => document.getElementById('application-form').scrollIntoView({behavior: 'smooth'}))" 
+                                            class="inline-flex items-center justify-center bg-gray-900 text-white font-black uppercase tracking-widest text-xs px-6 py-3 hover:bg-brand-500 transition-colors flex-shrink-0">
+                                        Apply Now
+                                    </button>
+                                </div>
+                                
+                                <div class="text-base font-medium text-gray-700 leading-relaxed mb-6 line-clamp-3">
+                                    {{ $job->description }}
+                                </div>
+                                
+                                <div x-data="{ expanded: false }">
+                                    <button @click="expanded = !expanded" class="text-sm font-black text-brand-500 uppercase tracking-widest hover:text-richblack-900 flex items-center transition-colors">
+                                        <span x-text="expanded ? 'Hide Details' : 'View Requirements'"></span>
+                                        <svg class="w-5 h-5 ml-2 transform transition-transform" stroke-width="3" :class="{'rotate-180': expanded}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+                                    </button>
+                                    
+                                    <div x-show="expanded" x-collapse class="mt-8 pt-8 border-t-2 border-gray-100">
+                                        <div class="rich-text text-sm font-medium text-gray-700">
+                                            <p class="font-black text-richblack-900 uppercase tracking-widest mb-4">Requirements:</p>
+                                            {!! nl2br(e($job->requirements)) !!}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <button @click="applyingFor = {{ $job->id }}; jobTitle = '{{ addslashes($job->title) }}'; setTimeout(() => document.getElementById('applyFormContainer').scrollIntoView({behavior: 'smooth'}), 100);" class="inline-flex items-center justify-center px-5 py-2.5 border border-orange-500 rounded-full text-sm font-semibold text-orange-600 bg-white hover:bg-orange-500 hover:text-white hover:shadow-xl hover:shadow-orange-500/30 transition-all duration-500 w-full md:w-auto">
-                                    Apply Now
-                                    <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                </button>
+                        @empty
+                            <div class="text-center py-24 bg-white border-4 border-gray-100">
+                                <svg class="w-16 h-16 text-gray-300 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                <p class="text-gray-500 text-lg font-bold uppercase tracking-wider">We currently have no open positions.<br>Please check back later.</p>
                             </div>
-                        </div>
-
-                        <div class="rich-text text-gray-600 text-sm leading-relaxed">
-                            <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 font-mono">Description</h4>
-                            <p class="whitespace-pre-wrap mb-8">{{ $job->description }}</p>
-
-                            @if($job->requirements)
-                                <h4 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-4 font-mono">Requirements</h4>
-                                <p class="whitespace-pre-wrap">{{ $job->requirements }}</p>
-                            @endif
-                        </div>
+                        @endforelse
                     </div>
-                @empty
-                    <div class="text-center py-20 bg-orange-50 border border-orange-100 rounded-[2rem]">
-                        <svg class="mx-auto h-16 w-16 text-orange-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        <h3 class="mt-6 text-lg font-bold text-gray-900">No Open Positions</h3>
-                        <p class="mt-2 text-base text-gray-600">We don't have any open roles right now. Check back later!</p>
-                    </div>
-                @endforelse
-            </div>
 
-            <!-- Application Form (Alpine controlled) -->
-            <div id="applyFormContainer" x-show="applyingFor !== null" style="display: none;" class="mt-20 bg-white border border-gray-100 rounded-[2rem] overflow-hidden">
-                <div class="bg-gradient-to-r from-orange-600 to-amber-500 px-8 py-6 flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-white font-mono text-sm uppercase tracking-wider">Application: <span x-text="jobTitle" class="font-sans normal-case tracking-normal text-xl"></span></h3>
-                    <button @click="applyingFor = null" class="text-white hover:text-orange-100 focus:outline-none transition-colors p-2 rounded-full hover:bg-white/10">
-                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                    </button>
-                </div>
-
-                <div class="p-8 md:p-10">
-                    @if($errors->any())
-                        <div class="mb-8 bg-orange-50 border-l-4 border-orange-500 p-6 rounded-r-[1.25rem]">
-                            <p class="text-base text-gray-900 font-medium">Please fix the errors below and try again.</p>
+                    <!-- Pagination -->
+                    @if($jobs->hasPages())
+                        <div class="mt-16 flex justify-center">
+                            {{ $jobs->links('vendor.pagination.tailwind') }}
                         </div>
                     @endif
-
-                    <form x-bind:action="'/careers/' + applyingFor + '/apply'" method="POST" enctype="multipart/form-data" class="space-y-6">
-                        @csrf
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="name" class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono mb-2">Full Name *</label>
-                                <input type="text" name="name" id="name" required class="block w-full bg-orange-50 border border-gray-100 text-gray-900 rounded-[1.25rem] focus:ring-orange-500 focus:border-orange-500 py-2.5 px-4 text-sm transition-all duration-300">
-                                @error('name')<p class="mt-2 text-sm text-orange-600 font-medium">{{ $message }}</p>@enderror
-                            </div>
-
-                            <div>
-                                <label for="email" class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono mb-2">Email Address *</label>
-                                <input type="email" name="email" id="email" required class="block w-full bg-orange-50 border border-gray-100 text-gray-900 rounded-[1.25rem] focus:ring-orange-500 focus:border-orange-500 py-2.5 px-4 text-sm transition-all duration-300">
-                                @error('email')<p class="mt-2 text-sm text-orange-600 font-medium">{{ $message }}</p>@enderror
-                            </div>
-                        </div>
-
-                        <div>
-                            <label for="phone" class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono mb-2">Phone Number</label>
-                            <input type="text" name="phone" id="phone" class="block w-full bg-orange-50 border border-gray-100 text-gray-900 rounded-[1.25rem] focus:ring-orange-500 focus:border-orange-500 py-2.5 px-4 text-sm transition-all duration-300">
-                        </div>
-
-                        <div>
-                            <label for="cover_letter" class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono mb-2">Cover Letter / Message</label>
-                            <textarea name="cover_letter" id="cover_letter" rows="4" class="block w-full bg-orange-50 border border-gray-100 text-gray-900 rounded-[1.25rem] focus:ring-orange-500 focus:border-orange-500 py-2.5 px-4 text-sm transition-all duration-300"></textarea>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 bg-orange-50/85 border border-orange-100 rounded-[1.5rem]">
-                            <div>
-                                <label for="resume" class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono mb-2">Resume (PDF, DOCX) *</label>
-                                <input type="file" name="resume" id="resume" required accept=".pdf,.doc,.docx" class="mt-3 block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border file:border-orange-100 file:text-xs file:font-mono file:font-bold file:bg-white file:text-orange-600 hover:file:bg-orange-50 cursor-pointer transition-all duration-300">
-                                @error('resume')<p class="mt-2 text-sm text-orange-600 font-medium">{{ $message }}</p>@enderror
-                            </div>
-
-                            <div>
-                                <label for="portfolio" class="block text-xs font-bold text-gray-700 uppercase tracking-wider font-mono mb-2">Portfolio (PDF, ZIP) (Optional)</label>
-                                <input type="file" name="portfolio" id="portfolio" accept=".pdf,.zip" class="mt-3 block w-full text-sm text-gray-600 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border file:border-orange-100 file:text-xs file:font-mono file:font-bold file:bg-white file:text-orange-600 hover:file:bg-orange-50 cursor-pointer transition-all duration-300">
-                                @error('portfolio')<p class="mt-2 text-sm text-orange-600 font-medium">{{ $message }}</p>@enderror
-                            </div>
-                        </div>
-
-                        <div class="pt-6 flex flex-col md:flex-row justify-end gap-4">
-                            <button type="button" @click="applyingFor = null" class="px-5 py-2.5 border border-gray-100 text-sm font-semibold rounded-full text-gray-600 bg-white hover:bg-gray-50 hover:border-gray-200 focus:outline-none transition-all duration-300">
-                                Cancel
-                            </button>
-                            <button type="submit" class="inline-flex items-center justify-center px-6 py-2.5 rounded-full shadow-lg shadow-orange-500/30 text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 hover:shadow-2xl hover:shadow-orange-500/40 hover:-translate-y-1 transition-all duration-500 font-semibold text-sm">
-                                Submit Application
-                                <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </button>
-                        </div>
-                    </form>
                 </div>
+                
+                <!-- Application Form (Right) -->
+                <div class="lg:col-span-5 xl:col-span-4" id="application-form">
+                    <div class="sticky top-28 bg-white border-t-4 border-brand-500 p-8 shadow-xl">
+                        <div class="mb-10 border-b-2 border-gray-100 pb-6">
+                            <h3 class="text-2xl font-black text-richblack-900 uppercase tracking-tighter mb-3">Submit Application</h3>
+                            <p class="text-sm font-bold text-gray-500">Fill out the form below to apply. If you don't see a fitting role, you can select "General Application".</p>
+                        </div>
+                        
+                        <form action="{{ route('public.careers.apply') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                            @csrf
+                            
+                            <div>
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Position Applied For *</label>
+                                <select name="job_title" x-model="applyFor" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors cursor-pointer">
+                                    <option value="">Select a position...</option>
+                                    <option value="General Application">General Application</option>
+                                    @foreach($jobs as $job)
+                                        <option value="{{ $job->title }}">{{ $job->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Full Name *</label>
+                                <input type="text" name="name" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="John Doe">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Email Address *</label>
+                                <input type="email" name="email" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="john@example.com">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Phone Number *</label>
+                                <input type="text" name="phone" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="(555) 123-4567">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Cover Letter / Message (Optional)</label>
+                                <textarea name="message" rows="4" class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="Briefly tell us why you're a good fit..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Resume / CV *</label>
+                                <p class="text-xs font-bold text-gray-500 mb-3">PDF, DOC, DOCX (Max 5MB)</p>
+                                <input type="file" name="resume" accept=".pdf,.doc,.docx" required 
+                                       class="block w-full text-sm text-gray-500 font-bold file:mr-4 file:py-3 file:px-6 file:border-0 file:text-xs file:font-black file:uppercase file:tracking-widest file:bg-brand-500 file:text-white hover:file:bg-richblack-950 cursor-pointer bg-gray-50 border-0 border-b-4 border-gray-200 p-2 transition-colors">
+                            </div>
+                            
+                            <div class="pt-6">
+                                <button type="submit" class="inline-flex items-center justify-center w-full px-8 py-4 bg-brand-500 text-white font-black text-sm tracking-widest uppercase hover:bg-gray-900 transition-colors shadow-sm">
+                                    Submit Application
+                                    <svg class="ml-3 w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
             </div>
-
         </div>
-    </div>
+    </section>
 </x-public-layout>

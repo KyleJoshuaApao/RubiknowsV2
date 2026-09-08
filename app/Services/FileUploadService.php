@@ -39,7 +39,8 @@ class FileUploadService
         $filename  = (string) \Illuminate\Support\Str::uuid() . '.' . $extension;
 
         // Store the file and return its path
-        return $file->storeAs($directory, $filename, 'public');
+        $disk = config('filesystems.default');
+        return $file->storeAs($directory, $filename, $disk);
     }
 
     /**
@@ -50,8 +51,9 @@ class FileUploadService
      */
     public function delete(?string $filePath): void
     {
-        if ($filePath && Storage::disk('public')->exists($filePath)) {
-            Storage::disk('public')->delete($filePath);
+        $disk = config('filesystems.default');
+        if ($filePath && Storage::disk($disk)->exists($filePath)) {
+            Storage::disk($disk)->delete($filePath);
         }
     }
 }
