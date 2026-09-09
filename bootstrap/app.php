@@ -20,16 +20,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (\Throwable $e, \Illuminate\Http\Request $request) {
-            $configDump = print_r(config()->all(), true);
-            if ($request->wantsJson()) {
-                return response()->json(['error' => $e->getMessage(), 'config' => $configDump], 500);
-            }
-            return response(
-                "<h1>Serverless Application Error</h1><pre>" . htmlspecialchars((string) $e) . "</pre><h2>Config Dump</h2><pre>" . htmlspecialchars($configDump) . "</pre>",
-                500
-            );
-        });
+        // Allow Laravel to handle exceptions normally
+        // The previous closure caught ALL throwables including ValidationException
     })->create();
 
 $storagePath = $_ENV['APP_STORAGE'] ?? '/tmp/storage';
