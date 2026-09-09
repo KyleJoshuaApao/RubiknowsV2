@@ -184,6 +184,19 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Integrations Section -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-900 border-b pb-2 mb-4">Integrations</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <x-input-label for="nvidia_nim_api_key" value="NVIDIA NIM API Key" />
+                            <x-text-input id="nvidia_nim_api_key" name="nvidia_nim_api_key" type="password" class="mt-1 block w-full" value="{{ $settings['nvidia_nim_api_key'] ?? '' }}" placeholder="nvapi-..." />
+                            <p class="text-xs text-gray-500 mt-1">API Key for NVIDIA NIM services.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="px-8 py-5 bg-gray-50 border-t border-gray-200 flex justify-end">
