@@ -60,11 +60,8 @@
                 
                 <!-- Left: Logo Area with Stylistic Accents -->
                 <div class="relative h-full flex items-center z-20">
-                    <!-- Layer 2: The Gold Accent Wing (deepest layer, sticks out most) -->
-                    <div class="absolute top-4 lg:top-5 left-0 h-[100%] w-[57%] bg-brand-500 kh-angled-logo shadow-2xl -z-20 pointer-events-none"></div>
-
-                    <!-- Layer 1: The Dark Slate Main Wing -->
-                    <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-richblack-950 kh-angled-logo shadow-xl -z-10 pointer-events-none"></div>
+                    <!-- The Gold Main Wing -->
+                    <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-gold-600 kh-angled-logo shadow-xl -z-10 pointer-events-none"></div>
                     
                     <!-- The White Logo Background -->
                     <div class="absolute inset-0 bg-white kh-angled-logo shadow-md -z-10 pointer-events-none"></div>
