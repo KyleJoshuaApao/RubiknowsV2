@@ -2,7 +2,7 @@
     <x-slot name="title">Our Services</x-slot>
 
     <!-- ===== PAGE HEADER ===== -->
-    <section class="pt-32 pb-20 lg:pt-48 lg:pb-32 bg-gray-900 text-white relative kh-angled-bottom-right mb-16">
+    <section class="pt-12 pb-8 lg:pt-16 lg:pb-12 bg-gray-900 text-white relative rounded-none mb-8">
         <!-- Architectural Overlay -->
         <div class="absolute inset-0 z-0 opacity-10">
             <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -14,97 +14,172 @@
                 <rect width="100%" height="100%" fill="url(#grid)" />
             </svg>
         </div>
-        
+
         <div class="max-w-screen-2xl mx-auto px-6 relative z-10 border-l-4 border-brand-500 ml-4 md:ml-8 lg:ml-12">
-            <p class="text-white font-bold tracking-[0.2em] uppercase text-sm mb-6 flex items-center">
-                What We Offer
-            </p>
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-none tracking-tight max-w-4xl">
+            <p class="text-white font-bold tracking-widest uppercase text-sm mb-4 flex items-center">
                 Our Expertise
+            </p>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-none tracking-tight max-w-3xl">
+                Professional Services
             </h1>
-            <p class="mt-8 text-xl lg:text-2xl text-gray-300 max-w-2xl leading-relaxed font-bold">
-                Comprehensive engineering and construction solutions tailored to your unique requirements.
+            <p class="mt-4 text-xl lg:text-2xl text-gray-300 max-w-2xl leading-relaxed font-medium">
+                Comprehensive engineering and construction solutions tailored to your needs.
             </p>
         </div>
     </section>
 
-    <!-- ===== SERVICES LIST ===== -->
-    <section class="bg-gray-50 py-24 lg:py-32 border-t-8 border-brand-500 relative">
+    <!-- ===== SERVICES GRID ===== -->
+    <section class="bg-gray-50 py-8 lg:py-12 border-t-2 border-brand-500">
         <div class="max-w-screen-2xl mx-auto px-6">
-            
-            <div class="flex flex-col lg:flex-row gap-16">
-                <!-- Sticky Index (30%) -->
-                <div class="lg:w-1/4 hidden lg:block">
-                    <div class="sticky top-32 bg-white border-t-4 border-brand-500 shadow-lg p-8">
-                        <h3 class="text-sm font-black text-richblack-900 uppercase tracking-widest mb-6 pb-4 border-b-2 border-brand-500 inline-block">Index</h3>
-                        <ul class="space-y-4">
-                            @foreach($services as $service)
-                                <li>
-                                    <a href="#service-{{ $service->id }}" class="text-sm font-bold text-gray-500 hover:text-brand-500 hover:translate-x-1 transition-all uppercase tracking-wider block truncate">
-                                        <span class="text-brand-500 font-black mr-2">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span> 
-                                        {{ $service->title }}
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($services as $service)
+                    <a href="{{ route('public.service-details', $service) }}"
+                       class="group block bg-white border-t-4 border-brand-500 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
+                       x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
+                       style="animation-delay: {{ ($loop->index % 3) * 0.05 }}s">
+
+                        @if($service->image_path)
+                            <div class="aspect-[4/3] w-full overflow-hidden border-b-4 border-richblack-900">
+                                <img src="{{ Storage::url($service->image_path) }}" alt="{{ $service->title }}"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out grayscale group-hover:grayscale-0">
+                            </div>
+                        @else
+                            <div class="aspect-[4/3] w-full bg-richblack-900 flex items-center justify-center border-b-4 border-richblack-900">
+                                <span class="text-4xl font-bold text-richblack-800 uppercase transform -rotate-6">Service</span>
+                            </div>
+                        @endif
+
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-charcoal-700 mb-3 group-hover:text-brand-500 transition-colors">{{ $service->title }}</h3>
+                            <p class="text-gray-600 text-base leading-relaxed line-height-6 mb-4">{!! $service->short_description !!}</p>
+
+                            @if(!empty($service->features))
+                                <div class="space-y-2">
+                                    <h4 class="text-sm font-bold text-brand-500 mb-2">Key Features:</h4>
+                                    <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
+                                        @php
+                                            $features = is_string($service->features)
+                                                ? explode("\n", $service->features)
+                                                : $service->features;
+                                        @endphp
+                                        @foreach($features as $feature)
+                                            @if(trim($feature) !== '')
+                                                <li>{{ trim($feature) }}</li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <div class="mt-4">
+                                <x-kh-button href="{{ route('public.service-details', $service) }}" text="Learn More" class="w-full" />
+                            </div>
+                        </div>
+                    </a>
+                @empty
+                    <div class="col-span-full text-center py-12 bg-white shadow-lg border-t-4 border-brand-500">
+                        <span class="block text-gray-300 text-4xl font-bold mb-4">00</span>
+                        <p class="text-gray-500 uppercase tracking-widest font-medium text-sm">No services available yet.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== PROCESS SECTION ===== -->
+    <section class="py-10 lg:py-14 bg-white">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-2 border-richblack-900 pb-3">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-charcoal-700 tracking-tight">Our Process</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Discovery -->
+                <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-l-2 border-brand-500 hover:bg-brand-50 transition-colors duration-200">
+                    <div class="w-10 h-10 flex-shrink-0 bg-brand-500/10 flex items-center justify-center rounded-lg">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-charcoal-700 mb-1">Discovery</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">We begin by understanding your vision, goals, and requirements through collaborative discussions and site assessments.</p>
                     </div>
                 </div>
 
-                <!-- Content Area (70%) -->
-                <div class="lg:w-3/4 space-y-12">
-                    @forelse($services as $service)
-                        <div id="service-{{ $service->id }}" class="bg-white p-10 lg:p-16 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4 border-transparent hover:border-brand-500 group relative overflow-hidden">
-                            <!-- Background accent on hover -->
-                            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-500/5 transform translate-x-16 -translate-y-16 group-hover:scale-150 transition-transform duration-500 rounded-full blur-2xl"></div>
-                            
-                            <div class="flex flex-col md:flex-row md:items-start gap-8 relative z-10">
-                                <div class="w-20 h-20 bg-richblack-950 flex items-center justify-center shrink-0 group-hover:bg-brand-500 transition-colors">
-                                    <span class="text-3xl font-black text-white transition-colors">
-                                        {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
-                                    </span>
-                                </div>
-                                <div class="flex-1">
-                                    <h2 class="text-3xl lg:text-5xl font-black text-charcoal-700 mb-6 group-hover:text-brand-500 transition-colors tracking-tight">{{ $service->title }}</h2>
-                                    
-                                    @if($service->short_description)
-                                        <div class="border-l-4 border-brand-500 pl-6 mb-8">
-                                            <p class="text-xl text-gray-800 font-bold leading-relaxed">{{ $service->short_description }}</p>
-                                        </div>
-                                    @endif
-                                    
-                                    <div class="rich-text text-gray-600 font-medium leading-relaxed text-lg space-y-6 mb-10 max-w-3xl">
-                                        {!! nl2br(e($service->content)) !!}
-                                    </div>
-                                    
-                                    <div class="mt-8 inline-block">
-                                        <x-kh-button href="{{ route('public.contact', ['subject' => 'Inquiry: ' . $service->title]) }}" text="Inquire About This" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="p-16 text-center text-gray-500 font-bold uppercase tracking-widest bg-white shadow-lg border-t-4 border-brand-500">
-                            No services available at this time.
-                        </div>
-                    @endforelse
+                <!-- Design -->
+                <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-l-2 border-brand-500 hover:bg-brand-50 transition-colors duration-200">
+                    <div class="w-10 h-10 flex-shrink-0 bg-brand-500/10 flex items-center justify-center rounded-lg">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-3-3h6"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-charcoal-700 mb-1">Design</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">Our team creates detailed plans and designs that balance aesthetics, functionality, and budget considerations.</p>
+                    </div>
+                </div>
+
+                <!-- Execution -->
+                <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-l-2 border-brand-500 hover:bg-brand-50 transition-colors duration-200">
+                    <div class="w-10 h-10 flex-shrink-0 bg-brand-500/10 flex items-center justify-center rounded-lg">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18M3 21l18-18"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-charcoal-700 mb-1">Execution</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">We bring designs to life with skilled craftsmanship, quality materials, and meticulous attention to detail.</p>
+                    </div>
+                </div>
+
+                <!-- Delivery -->
+                <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-lg border-l-2 border-brand-500 hover:bg-brand-50 transition-colors duration-200">
+                    <div class="w-10 h-10 flex-shrink-0 bg-brand-500/10 flex items-center justify-center rounded-lg">
+                        <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l3 3 4-4M5 19h14a2 2 0 002-2V6a2 2 0 012-2h.01M17 3h4a2 2 0 012 2v1.5a2 2 0 01-2 2v-2.5h-3.5a2 2 0 00-4 0H5a2 2 0 010 4h6a2 2 0 002 2v6a2 2 0 00-2 2"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-charcoal-700 mb-1">Delivery</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">We ensure timely completion, thorough quality checks, and client satisfaction before project handover.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== CTA ===== -->
-    <section class="bg-richblack-950 text-white py-32 lg:py-48 relative overflow-hidden border-t-8 border-white border-b-8">
-        <div class="absolute inset-0 bg-brand-500 opacity-20 transform -skew-y-3 origin-top-left"></div>
-        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
-            <span class="block font-black tracking-[0.3em] uppercase text-brand-500 mb-8">Custom Solutions</span>
-            <h2 class="text-white text-5xl lg:text-7xl font-black mb-8 leading-tight tracking-tighter uppercase">
-                Need a Custom Plan?
-            </h2>
-            <p class="text-xl lg:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed mb-12 font-bold">
-                Our engineering team can tailor any service to your project's unique requirements.
-            </p>
-            <div class="mt-8 inline-block">
-                <x-kh-button href="{{ route('public.contact') }}" text="Get a Custom Quote" />
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="py-10 lg:py-12 bg-richblack-950">
+        <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
+            <div class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-2 border-richblack-900 pb-3">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold text-charcoal-700 tracking-tight">Client Success Stories</h2>
+                </div>
+                <div class="text-sm text-brand-500 font-medium uppercase tracking-widest">
+                    Hear from those we've served
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                @forelse($testimonials as $testimonial)
+                    <div class="group block bg-white border-l-4 border-brand-500 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5">
+                        <div class="p-6">
+                            <p class="text-gray-700 italic leading-relaxed mb-4">{!! $testimonial->content !!}</p>
+                            <div class="flex items-center mt-4">
+                                @if($testimonial->image_path)
+                                    <img src="{{ Storage::url($testimonial->image_path) }}" alt="{{ $testimonial->name }}" class="w-12 h-12 rounded-full object-cover mr-3">
+                                @else
+                                    <div class="w-12 h-12 bg-gray-200 rounded-flex items-center justify-center">
+                                        <span class="text-white font-bold">{{ substr($testimonial->name, 0, 1) }}</span>
+                                    </div>
+                                @endif
+                                <div>
+                                    <h3 class="text-base font-bold text-charcoal-900 mb-0.5">{{ $testimonial->name }}</h3>
+                                    <p class="text-xs text-gray-500">{{ $testimonial->title ?? '' }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-10">
+                        <p class="text-gray-500">No testimonials available yet.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
