@@ -153,7 +153,7 @@
         <!-- ===== KIMLEY-HORN STYLE "FAT" FOOTER (RESTORED LINKS) ===== -->
         <footer class="bg-richblack-950 text-white pt-24 pb-12 mt-auto border-t-[16px] border-brand-500 relative overflow-hidden">
             <!-- Decorative geometric element -->
-            <div class="absolute bottom-0 right-0 w-1/3 h-1/2 bg-white/5 "></div>
+            <div class="absolute bottom-0 right-0 w-1/3 h-1/2 bg-white "></div>
             
             <div class="max-w-screen-2xl mx-auto px-6 relative z-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16">
