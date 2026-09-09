@@ -45,7 +45,7 @@
             <!-- Navigation -->
             <nav class="flex-1 px-3 py-6 space-y-6 overflow-y-auto scrollbar-thin">
                 @php
-                    $icons = json_decode(file_get_contents(resource_path('views/components/icons.blade.php')), true);
+                    $icons = include resource_path('views/components/icons.blade.php');
                     $unreadMsgs = \App\Models\ContactMessage::where('status', 'New')->count();
                     $pendingQuotes = \App\Models\QuotationRequest::where('status', 'Pending')->count();
                     $newApps = \App\Models\JobApplication::where('status', 'Received')->count();
