@@ -28,6 +28,7 @@ class SecurityHeaders
             "img-src 'self' data: blob: *",
             "connect-src 'self' $viteHosts",
             "media-src 'self' blob: *",
+            "frame-src 'self' https://www.google.com",
             "frame-ancestors 'self'",
             "base-uri 'self'",
             "form-action 'self'",
