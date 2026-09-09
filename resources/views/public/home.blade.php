@@ -412,8 +412,8 @@
     <!-- ===== CTA SECTION ===== -->
     <section class="relative bg-black py-24 lg:py-32 overflow-hidden">
         <!-- Geometric accent -->
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-white "></div>
-        <div class="absolute bottom-0 left-0 w-1/4 h-1/2 bg-white "></div>
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-black "></div>
+        <div class="absolute bottom-0 left-0 w-1/4 h-1/2 bg-black "></div>
 
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-12 relative z-10">
             <div class="text-center max-w-4xl mx-auto">

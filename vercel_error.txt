@@ -1,0 +1,994 @@
+<h1>Serverless Application Error</h1><pre>RuntimeException: Unsupported cipher or incorrect key length. Supported ciphers are: aes-128-cbc, aes-256-cbc, aes-128-gcm, aes-256-gcm. in /var/task/user/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php:61
+Stack trace:
+#0 /var/task/user/vendor/laravel/framework/src/Illuminate/Encryption/EncryptionServiceProvider.php(32): Illuminate\Encryption\Encrypter-&gt;__construct(&#039;&quot;base64:Urj2rKI...&#039;, &#039;AES-256-CBC&#039;)
+#1 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(1118): Illuminate\Encryption\EncryptionServiceProvider-&gt;{closure:Illuminate\Encryption\EncryptionServiceProvider::registerEncrypter():29}(Object(Illuminate\Foundation\Application), Array)
+#2 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(936): Illuminate\Container\Container-&gt;build(Object(Closure))
+#3 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1078): Illuminate\Container\Container-&gt;resolve(&#039;encrypter&#039;, Array, true)
+#4 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(864): Illuminate\Foundation\Application-&gt;resolve(&#039;encrypter&#039;, Array)
+#5 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1058): Illuminate\Container\Container-&gt;make(&#039;encrypter&#039;, Array)
+#6 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(1339): Illuminate\Foundation\Application-&gt;make(&#039;encrypter&#039;)
+#7 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(1240): Illuminate\Container\Container-&gt;resolveClass(Object(ReflectionParameter), &#039;Illuminate\\Cont...&#039;)
+#8 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(1165): Illuminate\Container\Container-&gt;resolveDependencies(Array)
+#9 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(936): Illuminate\Container\Container-&gt;build(&#039;Illuminate\\Cook...&#039;)
+#10 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1078): Illuminate\Container\Container-&gt;resolve(&#039;Illuminate\\Cook...&#039;, Array, true)
+#11 /var/task/user/vendor/laravel/framework/src/Illuminate/Container/Container.php(864): Illuminate\Foundation\Application-&gt;resolve(&#039;Illuminate\\Cook...&#039;, Array)
+#12 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1058): Illuminate\Container\Container-&gt;make(&#039;Illuminate\\Cook...&#039;, Array)
+#13 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(208): Illuminate\Foundation\Application-&gt;make(&#039;Illuminate\\Cook...&#039;)
+#14 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#15 /var/task/user/vendor/laravel/framework/src/Illuminate/Routing/Router.php(821): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#16 /var/task/user/vendor/laravel/framework/src/Illuminate/Routing/Router.php(800): Illuminate\Routing\Router-&gt;runRouteWithinStack(Object(Illuminate\Routing\Route), Object(Illuminate\Http\Request))
+#17 /var/task/user/vendor/laravel/framework/src/Illuminate/Routing/Router.php(764): Illuminate\Routing\Router-&gt;runRoute(Object(Illuminate\Http\Request), Object(Illuminate\Routing\Route))
+#18 /var/task/user/vendor/laravel/framework/src/Illuminate/Routing/Router.php(753): Illuminate\Routing\Router-&gt;dispatchToRoute(Object(Illuminate\Http\Request))
+#19 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(200): Illuminate\Routing\Router-&gt;dispatch(Object(Illuminate\Http\Request))
+#20 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(180): Illuminate\Foundation\Http\Kernel-&gt;{closure:Illuminate\Foundation\Http\Kernel::dispatchToRouter():197}(Object(Illuminate\Http\Request))
+#21 /var/task/user/app/Http/Middleware/SecurityHeaders.php(13): Illuminate\Pipeline\Pipeline-&gt;{closure:Illuminate\Pipeline\Pipeline::prepareDestination():178}(Object(Illuminate\Http\Request))
+#22 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): App\Http\Middleware\SecurityHeaders-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#23 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#24 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php(31): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#25 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#26 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php(21): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#27 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php(51): Illuminate\Foundation\Http\Middleware\TransformsRequest-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#28 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\TrimStrings-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#29 /var/task/user/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePostSize.php(27): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#30 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePostSize-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#31 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php(109): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#32 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#33 /var/task/user/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php(61): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#34 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\HandleCors-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#35 /var/task/user/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php(58): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#36 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\TrustProxies-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#37 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/InvokeDeferredCallbacks.php(22): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#38 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#39 /var/task/user/vendor/laravel/framework/src/Illuminate/Http/Middleware/ValidatePathEncoding.php(28): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#40 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(219): Illuminate\Http\Middleware\ValidatePathEncoding-&gt;handle(Object(Illuminate\Http\Request), Object(Closure))
+#41 /var/task/user/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php(137): Illuminate\Pipeline\Pipeline-&gt;{closure:{closure:Illuminate\Pipeline\Pipeline::carry():194}:195}(Object(Illuminate\Http\Request))
+#42 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(175): Illuminate\Pipeline\Pipeline-&gt;then(Object(Closure))
+#43 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(144): Illuminate\Foundation\Http\Kernel-&gt;sendRequestThroughRouter(Object(Illuminate\Http\Request))
+#44 /var/task/user/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1220): Illuminate\Foundation\Http\Kernel-&gt;handle(Object(Illuminate\Http\Request))
+#45 /var/task/user/public/index.php(20): Illuminate\Foundation\Application-&gt;handleRequest(Object(Illuminate\Http\Request))
+#46 /var/task/user/api/index.php(42): require(&#039;/var/task/user/...&#039;)
+#47 {main}</pre><h2>Config Dump</h2><pre>Array
+(
+    [broadcasting] =&gt; Array
+        (
+            [default] =&gt; 
+            [connections] =&gt; Array
+                (
+                    [reverb] =&gt; Array
+                        (
+                            [driver] =&gt; reverb
+                            [key] =&gt; 
+                            [secret] =&gt; 
+                            [app_id] =&gt; 
+                            [options] =&gt; Array
+                                (
+                                    [host] =&gt; 
+                                    [port] =&gt; 443
+                                    [scheme] =&gt; https
+                                    [useTLS] =&gt; 1
+                                )
+
+                            [client_options] =&gt; Array
+                                (
+                                )
+
+                        )
+
+                    [pusher] =&gt; Array
+                        (
+                            [driver] =&gt; pusher
+                            [key] =&gt; 
+                            [secret] =&gt; 
+                            [app_id] =&gt; 
+                            [options] =&gt; Array
+                                (
+                                    [cluster] =&gt; 
+                                    [host] =&gt; api-mt1.pusher.com
+                                    [port] =&gt; 443
+                                    [scheme] =&gt; https
+                                    [encrypted] =&gt; 1
+                                    [useTLS] =&gt; 1
+                                )
+
+                            [client_options] =&gt; Array
+                                (
+                                )
+
+                        )
+
+                    [ably] =&gt; Array
+                        (
+                            [driver] =&gt; ably
+                            [key] =&gt; 
+                        )
+
+                    [log] =&gt; Array
+                        (
+                            [driver] =&gt; log
+                        )
+
+                    [null] =&gt; Array
+                        (
+                            [driver] =&gt; null
+                        )
+
+                )
+
+        )
+
+    [concurrency] =&gt; Array
+        (
+            [default] =&gt; process
+        )
+
+    [cors] =&gt; Array
+        (
+            [paths] =&gt; Array
+                (
+                    [0] =&gt; api/*
+                    [1] =&gt; sanctum/csrf-cookie
+                )
+
+            [allowed_methods] =&gt; Array
+                (
+                    [0] =&gt; *
+                )
+
+            [allowed_origins] =&gt; Array
+                (
+                    [0] =&gt; *
+                )
+
+            [allowed_origins_patterns] =&gt; Array
+                (
+                )
+
+            [allowed_headers] =&gt; Array
+                (
+                    [0] =&gt; *
+                )
+
+            [exposed_headers] =&gt; Array
+                (
+                )
+
+            [max_age] =&gt; 0
+            [supports_credentials] =&gt; 
+        )
+
+    [hashing] =&gt; Array
+        (
+            [driver] =&gt; bcrypt
+            [bcrypt] =&gt; Array
+                (
+                    [rounds] =&gt; 
+                    [verify] =&gt; 1
+                    [limit] =&gt; 
+                )
+
+            [argon] =&gt; Array
+                (
+                    [memory] =&gt; 65536
+                    [threads] =&gt; 1
+                    [time] =&gt; 4
+                    [verify] =&gt; 1
+                )
+
+            [rehash_on_login] =&gt; 1
+        )
+
+    [view] =&gt; Array
+        (
+            [paths] =&gt; Array
+                (
+                    [0] =&gt; /var/task/user/resources/views
+                )
+
+            [compiled] =&gt; /tmp/views
+        )
+
+    [app] =&gt; Array
+        (
+            [name] =&gt; &quot;Laravel&quot; 
+            [env] =&gt; production
+            [debug] =&gt; 
+            [url] =&gt; &quot;http://localhost:8000&quot; 
+            [frontend_url] =&gt; http://localhost:3000
+            [asset_url] =&gt; 
+            [timezone] =&gt; UTC
+            [locale] =&gt; 
+            [fallback_locale] =&gt; 
+            [faker_locale] =&gt; 
+            [cipher] =&gt; AES-256-CBC
+            [key] =&gt; &quot;base64:Urj2rKIYHNucAvGt6ihRw+2YWvJOzi+RwRIeXy8Fyyw=&quot; 
+            [previous_keys] =&gt; Array
+                (
+                )
+
+            [maintenance] =&gt; Array
+                (
+                    [driver] =&gt; file
+                    [store] =&gt; database
+                )
+
+            [providers] =&gt; Array
+                (
+                    [0] =&gt; Illuminate\Auth\AuthServiceProvider
+                    [1] =&gt; Illuminate\Broadcasting\BroadcastServiceProvider
+                    [2] =&gt; Illuminate\Bus\BusServiceProvider
+                    [3] =&gt; Illuminate\Cache\CacheServiceProvider
+                    [4] =&gt; Illuminate\Foundation\Providers\ConsoleSupportServiceProvider
+                    [5] =&gt; Illuminate\Concurrency\ConcurrencyServiceProvider
+                    [6] =&gt; Illuminate\Cookie\CookieServiceProvider
+                    [7] =&gt; Illuminate\Database\DatabaseServiceProvider
+                    [8] =&gt; Illuminate\Encryption\EncryptionServiceProvider
+                    [9] =&gt; Illuminate\Filesystem\FilesystemServiceProvider
+                    [10] =&gt; Illuminate\Foundation\Providers\FoundationServiceProvider
+                    [11] =&gt; Illuminate\Hashing\HashServiceProvider
+                    [12] =&gt; Illuminate\Mail\MailServiceProvider
+                    [13] =&gt; Illuminate\Notifications\NotificationServiceProvider
+                    [14] =&gt; Illuminate\Pagination\PaginationServiceProvider
+                    [15] =&gt; Illuminate\Auth\Passwords\PasswordResetServiceProvider
+                    [16] =&gt; Illuminate\Pipeline\PipelineServiceProvider
+                    [17] =&gt; Illuminate\Queue\QueueServiceProvider
+                    [18] =&gt; Illuminate\Redis\RedisServiceProvider
+                    [19] =&gt; Illuminate\Session\SessionServiceProvider
+                    [20] =&gt; Illuminate\Translation\TranslationServiceProvider
+                    [21] =&gt; Illuminate\Validation\ValidationServiceProvider
+                    [22] =&gt; Illuminate\View\ViewServiceProvider
+                    [23] =&gt; App\Providers\AppServiceProvider
+                )
+
+            [aliases] =&gt; Array
+                (
+                    [App] =&gt; Illuminate\Support\Facades\App
+                    [Arr] =&gt; Illuminate\Support\Arr
+                    [Artisan] =&gt; Illuminate\Support\Facades\Artisan
+                    [Auth] =&gt; Illuminate\Support\Facades\Auth
+                    [Benchmark] =&gt; Illuminate\Support\Benchmark
+                    [Blade] =&gt; Illuminate\Support\Facades\Blade
+                    [Broadcast] =&gt; Illuminate\Support\Facades\Broadcast
+                    [Bus] =&gt; Illuminate\Support\Facades\Bus
+                    [Cache] =&gt; Illuminate\Support\Facades\Cache
+                    [Concurrency] =&gt; Illuminate\Support\Facades\Concurrency
+                    [Config] =&gt; Illuminate\Support\Facades\Config
+                    [Context] =&gt; Illuminate\Support\Facades\Context
+                    [Cookie] =&gt; Illuminate\Support\Facades\Cookie
+                    [Crypt] =&gt; Illuminate\Support\Facades\Crypt
+                    [Date] =&gt; Illuminate\Support\Facades\Date
+                    [DB] =&gt; Illuminate\Support\Facades\DB
+                    [Eloquent] =&gt; Illuminate\Database\Eloquent\Model
+                    [Event] =&gt; Illuminate\Support\Facades\Event
+                    [File] =&gt; Illuminate\Support\Facades\File
+                    [Gate] =&gt; Illuminate\Support\Facades\Gate
+                    [Hash] =&gt; Illuminate\Support\Facades\Hash
+                    [Http] =&gt; Illuminate\Support\Facades\Http
+                    [Js] =&gt; Illuminate\Support\Js
+                    [Lang] =&gt; Illuminate\Support\Facades\Lang
+                    [Log] =&gt; Illuminate\Support\Facades\Log
+                    [Mail] =&gt; Illuminate\Support\Facades\Mail
+                    [Notification] =&gt; Illuminate\Support\Facades\Notification
+                    [Number] =&gt; Illuminate\Support\Number
+                    [Password] =&gt; Illuminate\Support\Facades\Password
+                    [Process] =&gt; Illuminate\Support\Facades\Process
+                    [Queue] =&gt; Illuminate\Support\Facades\Queue
+                    [RateLimiter] =&gt; Illuminate\Support\Facades\RateLimiter
+                    [Redirect] =&gt; Illuminate\Support\Facades\Redirect
+                    [Request] =&gt; Illuminate\Support\Facades\Request
+                    [Response] =&gt; Illuminate\Support\Facades\Response
+                    [Route] =&gt; Illuminate\Support\Facades\Route
+                    [Schedule] =&gt; Illuminate\Support\Facades\Schedule
+                    [Schema] =&gt; Illuminate\Support\Facades\Schema
+                    [Session] =&gt; Illuminate\Support\Facades\Session
+                    [Storage] =&gt; Illuminate\Support\Facades\Storage
+                    [Str] =&gt; Illuminate\Support\Str
+                    [Uri] =&gt; Illuminate\Support\Uri
+                    [URL] =&gt; Illuminate\Support\Facades\URL
+                    [Validator] =&gt; Illuminate\Support\Facades\Validator
+                    [View] =&gt; Illuminate\Support\Facades\View
+                    [Vite] =&gt; Illuminate\Support\Facades\Vite
+                )
+
+        )
+
+    [auth] =&gt; Array
+        (
+            [defaults] =&gt; Array
+                (
+                    [guard] =&gt; web
+                    [passwords] =&gt; users
+                )
+
+            [guards] =&gt; Array
+                (
+                    [web] =&gt; Array
+                        (
+                            [driver] =&gt; session
+                            [provider] =&gt; users
+                        )
+
+                )
+
+            [providers] =&gt; Array
+                (
+                    [users] =&gt; Array
+                        (
+                            [driver] =&gt; eloquent
+                            [model] =&gt; App\Models\User
+                        )
+
+                )
+
+            [passwords] =&gt; Array
+                (
+                    [users] =&gt; Array
+                        (
+                            [provider] =&gt; users
+                            [table] =&gt; password_reset_tokens
+                            [expire] =&gt; 60
+                            [throttle] =&gt; 60
+                        )
+
+                )
+
+            [password_timeout] =&gt; 10800
+        )
+
+    [cache] =&gt; Array
+        (
+            [default] =&gt; array
+            [stores] =&gt; Array
+                (
+                    [array] =&gt; Array
+                        (
+                            [driver] =&gt; array
+                            [serialize] =&gt; 
+                        )
+
+                    [session] =&gt; Array
+                        (
+                            [driver] =&gt; session
+                            [key] =&gt; _cache
+                        )
+
+                    [database] =&gt; Array
+                        (
+                            [driver] =&gt; database
+                            [connection] =&gt; 
+                            [table] =&gt; cache
+                            [lock_connection] =&gt; 
+                            [lock_table] =&gt; 
+                        )
+
+                    [file] =&gt; Array
+                        (
+                            [driver] =&gt; file
+                            [path] =&gt; /tmp/storage/framework/cache/data
+                            [lock_path] =&gt; /tmp/storage/framework/cache/data
+                        )
+
+                    [storage] =&gt; Array
+                        (
+                            [driver] =&gt; storage
+                            [disk] =&gt; 
+                            [path] =&gt; framework/cache/data
+                        )
+
+                    [memcached] =&gt; Array
+                        (
+                            [driver] =&gt; memcached
+                            [persistent_id] =&gt; 
+                            [sasl] =&gt; Array
+                                (
+                                    [0] =&gt; 
+                                    [1] =&gt; 
+                                )
+
+                            [options] =&gt; Array
+                                (
+                                )
+
+                            [servers] =&gt; Array
+                                (
+                                    [0] =&gt; Array
+                                        (
+                                            [host] =&gt; 
+                                            [port] =&gt; 11211
+                                            [weight] =&gt; 100
+                                        )
+
+                                )
+
+                        )
+
+                    [redis] =&gt; Array
+                        (
+                            [driver] =&gt; redis
+                            [connection] =&gt; cache
+                            [lock_connection] =&gt; default
+                        )
+
+                    [dynamodb] =&gt; Array
+                        (
+                            [driver] =&gt; dynamodb
+                            [key] =&gt; &quot;cbafd54457cfddecaf31c84b258d366c&quot; 
+                            [secret] =&gt; &quot;2bf39dff0ef295509d3f8e47929a0157d831e443c5259678cd28d924c5ffcb44&quot; 
+                            [region] =&gt; &quot;us-east-1&quot; 
+                            [table] =&gt; cache
+                            [endpoint] =&gt; 
+                        )
+
+                    [octane] =&gt; Array
+                        (
+                            [driver] =&gt; octane
+                        )
+
+                    [failover] =&gt; Array
+                        (
+                            [driver] =&gt; failover
+                            [stores] =&gt; Array
+                                (
+                                    [0] =&gt; database
+                                    [1] =&gt; array
+                                )
+
+                        )
+
+                )
+
+            [prefix] =&gt; laravel-cache-
+            [serializable_classes] =&gt; 
+        )
+
+    [database] =&gt; Array
+        (
+            [default] =&gt; &quot;pgsql&quot; 
+            [connections] =&gt; Array
+                (
+                    [sqlite] =&gt; Array
+                        (
+                            [driver] =&gt; sqlite
+                            [url] =&gt; 
+                            [database] =&gt; /var/task/user/database/database.sqlite
+                            [prefix] =&gt; 
+                            [foreign_key_constraints] =&gt; 1
+                            [busy_timeout] =&gt; 
+                            [journal_mode] =&gt; 
+                            [synchronous] =&gt; 
+                            [transaction_mode] =&gt; DEFERRED
+                        )
+
+                    [mysql] =&gt; Array
+                        (
+                            [driver] =&gt; mysql
+                            [url] =&gt; 
+                            [host] =&gt; &quot;aws-0-ap-northeast-2.pooler.supabase.com&quot; 
+                            [port] =&gt; &quot;5432&quot; 
+                            [database] =&gt; &quot;postgres&quot; 
+                            [username] =&gt; &quot;postgres.dyvxkhbnptihzniwwxtn&quot; 
+                            [password] =&gt; &quot;MariaAntoniaKyleJoshua878&quot; 
+                            [unix_socket] =&gt; 
+                            [charset] =&gt; utf8mb4
+                            [collation] =&gt; utf8mb4_unicode_ci
+                            [prefix] =&gt; 
+                            [prefix_indexes] =&gt; 1
+                            [strict] =&gt; 1
+                            [engine] =&gt; 
+                            [options] =&gt; Array
+                                (
+                                )
+
+                        )
+
+                    [mariadb] =&gt; Array
+                        (
+                            [driver] =&gt; mariadb
+                            [url] =&gt; 
+                            [host] =&gt; &quot;aws-0-ap-northeast-2.pooler.supabase.com&quot; 
+                            [port] =&gt; &quot;5432&quot; 
+                            [database] =&gt; &quot;postgres&quot; 
+                            [username] =&gt; &quot;postgres.dyvxkhbnptihzniwwxtn&quot; 
+                            [password] =&gt; &quot;MariaAntoniaKyleJoshua878&quot; 
+                            [unix_socket] =&gt; 
+                            [charset] =&gt; utf8mb4
+                            [collation] =&gt; utf8mb4_unicode_ci
+                            [prefix] =&gt; 
+                            [prefix_indexes] =&gt; 1
+                            [strict] =&gt; 1
+                            [engine] =&gt; 
+                            [options] =&gt; Array
+                                (
+                                )
+
+                        )
+
+                    [pgsql] =&gt; Array
+                        (
+                            [driver] =&gt; pgsql
+                            [url] =&gt; 
+                            [host] =&gt; &quot;aws-0-ap-northeast-2.pooler.supabase.com&quot; 
+                            [port] =&gt; &quot;5432&quot; 
+                            [database] =&gt; &quot;postgres&quot; 
+                            [username] =&gt; &quot;postgres.dyvxkhbnptihzniwwxtn&quot; 
+                            [password] =&gt; &quot;MariaAntoniaKyleJoshua878&quot; 
+                            [charset] =&gt; utf8
+                            [prefix] =&gt; 
+                            [prefix_indexes] =&gt; 1
+                            [search_path] =&gt; public
+                            [sslmode] =&gt; prefer
+                        )
+
+                    [sqlsrv] =&gt; Array
+                        (
+                            [driver] =&gt; sqlsrv
+                            [url] =&gt; 
+                            [host] =&gt; &quot;aws-0-ap-northeast-2.pooler.supabase.com&quot; 
+                            [port] =&gt; &quot;5432&quot; 
+                            [database] =&gt; &quot;postgres&quot; 
+                            [username] =&gt; &quot;postgres.dyvxkhbnptihzniwwxtn&quot; 
+                            [password] =&gt; &quot;MariaAntoniaKyleJoshua878&quot; 
+                            [charset] =&gt; utf8
+                            [prefix] =&gt; 
+                            [prefix_indexes] =&gt; 1
+                        )
+
+                )
+
+            [migrations] =&gt; Array
+                (
+                    [table] =&gt; migrations
+                    [update_date_on_publish] =&gt; 1
+                )
+
+            [redis] =&gt; Array
+                (
+                    [client] =&gt; 
+                    [options] =&gt; Array
+                        (
+                            [cluster] =&gt; redis
+                            [prefix] =&gt; laravel-database-
+                            [persistent] =&gt; 
+                        )
+
+                    [default] =&gt; Array
+                        (
+                            [url] =&gt; 
+                            [host] =&gt; 
+                            [username] =&gt; 
+                            [password] =&gt; 
+                            [port] =&gt; 
+                            [database] =&gt; 0
+                            [max_retries] =&gt; 3
+                            [backoff_algorithm] =&gt; decorrelated_jitter
+                            [backoff_base] =&gt; 100
+                            [backoff_cap] =&gt; 1000
+                        )
+
+                    [cache] =&gt; Array
+                        (
+                            [url] =&gt; 
+                            [host] =&gt; 
+                            [username] =&gt; 
+                            [password] =&gt; 
+                            [port] =&gt; 
+                            [database] =&gt; 1
+                            [max_retries] =&gt; 3
+                            [backoff_algorithm] =&gt; decorrelated_jitter
+                            [backoff_base] =&gt; 100
+                            [backoff_cap] =&gt; 1000
+                        )
+
+                )
+
+        )
+
+    [filesystems] =&gt; Array
+        (
+            [default] =&gt; s3
+            [disks] =&gt; Array
+                (
+                    [local] =&gt; Array
+                        (
+                            [driver] =&gt; local
+                            [root] =&gt; /tmp/storage/app/private
+                            [serve] =&gt; 1
+                            [throw] =&gt; 
+                            [report] =&gt; 
+                        )
+
+                    [public] =&gt; Array
+                        (
+                            [driver] =&gt; local
+                            [root] =&gt; /tmp/storage/app/public
+                            [url] =&gt; &quot;http://localhost:8000&quot; /storage
+                            [visibility] =&gt; public
+                            [throw] =&gt; 
+                            [report] =&gt; 
+                        )
+
+                    [s3] =&gt; Array
+                        (
+                            [driver] =&gt; s3
+                            [key] =&gt; &quot;cbafd54457cfddecaf31c84b258d366c&quot; 
+                            [secret] =&gt; &quot;2bf39dff0ef295509d3f8e47929a0157d831e443c5259678cd28d924c5ffcb44&quot; 
+                            [region] =&gt; &quot;us-east-1&quot; 
+                            [bucket] =&gt; &quot;rubiknows&quot; 
+                            [url] =&gt; &quot;https://ltsxjkzdjjnwxtdhgcmv.supabase.co/storage/v1/object/public/rubiknows&quot; 
+                            [endpoint] =&gt; &quot;https://ltsxjkzdjjnwxtdhgcmv.supabase.co/storage/v1/s3&quot; 
+                            [use_path_style_endpoint] =&gt; &quot;true&quot; 
+                            [throw] =&gt; 
+                            [report] =&gt; 
+                        )
+
+                )
+
+            [links] =&gt; Array
+                (
+                    [/var/task/user/public/storage] =&gt; /tmp/storage/app/public
+                )
+
+        )
+
+    [logging] =&gt; Array
+        (
+            [default] =&gt; stderr
+            [deprecations] =&gt; Array
+                (
+                    [channel] =&gt; 
+                    [trace] =&gt; 
+                )
+
+            [channels] =&gt; Array
+                (
+                    [stack] =&gt; Array
+                        (
+                            [driver] =&gt; stack
+                            [channels] =&gt; Array
+                                (
+                                    [0] =&gt; 
+                                )
+
+                            [ignore_exceptions] =&gt; 
+                        )
+
+                    [single] =&gt; Array
+                        (
+                            [driver] =&gt; single
+                            [path] =&gt; /tmp/storage/logs/laravel.log
+                            [level] =&gt; 
+                            [replace_placeholders] =&gt; 1
+                        )
+
+                    [daily] =&gt; Array
+                        (
+                            [driver] =&gt; daily
+                            [path] =&gt; /tmp/storage/logs/laravel.log
+                            [level] =&gt; 
+                            [days] =&gt; 14
+                            [replace_placeholders] =&gt; 1
+                        )
+
+                    [slack] =&gt; Array
+                        (
+                            [driver] =&gt; slack
+                            [url] =&gt; 
+                            [username] =&gt; &quot;Laravel&quot; 
+                            [emoji] =&gt; :boom:
+                            [level] =&gt; 
+                            [replace_placeholders] =&gt; 1
+                        )
+
+                    [papertrail] =&gt; Array
+                        (
+                            [driver] =&gt; monolog
+                            [level] =&gt; 
+                            [handler] =&gt; Monolog\Handler\SyslogUdpHandler
+                            [handler_with] =&gt; Array
+                                (
+                                    [host] =&gt; 
+                                    [port] =&gt; 
+                                    [connectionString] =&gt; tls://:
+                                )
+
+                            [processors] =&gt; Array
+                                (
+                                    [0] =&gt; Monolog\Processor\PsrLogMessageProcessor
+                                )
+
+                        )
+
+                    [stderr] =&gt; Array
+                        (
+                            [driver] =&gt; monolog
+                            [level] =&gt; 
+                            [handler] =&gt; Monolog\Handler\StreamHandler
+                            [handler_with] =&gt; Array
+                                (
+                                    [stream] =&gt; php://stderr
+                                )
+
+                            [formatter] =&gt; 
+                            [processors] =&gt; Array
+                                (
+                                    [0] =&gt; Monolog\Processor\PsrLogMessageProcessor
+                                )
+
+                        )
+
+                    [syslog] =&gt; Array
+                        (
+                            [driver] =&gt; syslog
+                            [level] =&gt; 
+                            [facility] =&gt; 8
+                            [replace_placeholders] =&gt; 1
+                        )
+
+                    [errorlog] =&gt; Array
+                        (
+                            [driver] =&gt; errorlog
+                            [level] =&gt; 
+                            [replace_placeholders] =&gt; 1
+                        )
+
+                    [null] =&gt; Array
+                        (
+                            [driver] =&gt; monolog
+                            [handler] =&gt; Monolog\Handler\NullHandler
+                        )
+
+                    [emergency] =&gt; Array
+                        (
+                            [path] =&gt; /tmp/storage/logs/laravel.log
+                        )
+
+                )
+
+        )
+
+    [mail] =&gt; Array
+        (
+            [default] =&gt; &quot;smtp&quot; 
+            [mailers] =&gt; Array
+                (
+                    [smtp] =&gt; Array
+                        (
+                            [transport] =&gt; smtp
+                            [scheme] =&gt; 
+                            [url] =&gt; 
+                            [host] =&gt; &quot;smtp.gmail.com&quot; 
+                            [port] =&gt; &quot;465&quot; 
+                            [username] =&gt; &quot;kylejoshua878@gmail.com&quot; 
+                            [password] =&gt; &quot;boreeogvyvmwisjc&quot; 
+                            [timeout] =&gt; 
+                            [local_domain] =&gt; 
+                        )
+
+                    [ses] =&gt; Array
+                        (
+                            [transport] =&gt; ses
+                        )
+
+                    [postmark] =&gt; Array
+                        (
+                            [transport] =&gt; postmark
+                        )
+
+                    [resend] =&gt; Array
+                        (
+                            [transport] =&gt; resend
+                        )
+
+                    [sendmail] =&gt; Array
+                        (
+                            [transport] =&gt; sendmail
+                            [path] =&gt; /usr/sbin/sendmail -bs -i
+                        )
+
+                    [log] =&gt; Array
+                        (
+                            [transport] =&gt; log
+                            [channel] =&gt; 
+                        )
+
+                    [array] =&gt; Array
+                        (
+                            [transport] =&gt; array
+                        )
+
+                    [failover] =&gt; Array
+                        (
+                            [transport] =&gt; failover
+                            [mailers] =&gt; Array
+                                (
+                                    [0] =&gt; smtp
+                                    [1] =&gt; log
+                                )
+
+                            [retry_after] =&gt; 60
+                        )
+
+                    [roundrobin] =&gt; Array
+                        (
+                            [transport] =&gt; roundrobin
+                            [mailers] =&gt; Array
+                                (
+                                    [0] =&gt; ses
+                                    [1] =&gt; postmark
+                                )
+
+                            [retry_after] =&gt; 60
+                        )
+
+                )
+
+            [from] =&gt; Array
+                (
+                    [address] =&gt; &quot;kylejoshua878@gmail.com&quot; 
+                    [name] =&gt; &quot;RubiKnows Automated System&quot; 
+                )
+
+            [markdown] =&gt; Array
+                (
+                    [theme] =&gt; default
+                    [paths] =&gt; Array
+                        (
+                            [0] =&gt; /var/task/user/resources/views/vendor/mail
+                        )
+
+                    [extensions] =&gt; Array
+                        (
+                        )
+
+                )
+
+        )
+
+    [queue] =&gt; Array
+        (
+            [default] =&gt; sync
+            [connections] =&gt; Array
+                (
+                    [sync] =&gt; Array
+                        (
+                            [driver] =&gt; sync
+                        )
+
+                    [database] =&gt; Array
+                        (
+                            [driver] =&gt; database
+                            [connection] =&gt; 
+                            [table] =&gt; jobs
+                            [queue] =&gt; default
+                            [retry_after] =&gt; 90
+                            [after_commit] =&gt; 
+                        )
+
+                    [beanstalkd] =&gt; Array
+                        (
+                            [driver] =&gt; beanstalkd
+                            [host] =&gt; localhost
+                            [queue] =&gt; default
+                            [retry_after] =&gt; 90
+                            [block_for] =&gt; 0
+                            [after_commit] =&gt; 
+                        )
+
+                    [sqs] =&gt; Array
+                        (
+                            [driver] =&gt; sqs
+                            [key] =&gt; &quot;cbafd54457cfddecaf31c84b258d366c&quot; 
+                            [secret] =&gt; &quot;2bf39dff0ef295509d3f8e47929a0157d831e443c5259678cd28d924c5ffcb44&quot; 
+                            [prefix] =&gt; https://sqs.us-east-1.amazonaws.com/your-account-id
+                            [queue] =&gt; default
+                            [suffix] =&gt; 
+                            [region] =&gt; &quot;us-east-1&quot; 
+                            [after_commit] =&gt; 
+                        )
+
+                    [redis] =&gt; Array
+                        (
+                            [driver] =&gt; redis
+                            [connection] =&gt; default
+                            [queue] =&gt; default
+                            [retry_after] =&gt; 90
+                            [block_for] =&gt; 
+                            [after_commit] =&gt; 
+                        )
+
+                    [deferred] =&gt; Array
+                        (
+                            [driver] =&gt; deferred
+                        )
+
+                    [failover] =&gt; Array
+                        (
+                            [driver] =&gt; failover
+                            [connections] =&gt; Array
+                                (
+                                    [0] =&gt; database
+                                    [1] =&gt; deferred
+                                )
+
+                        )
+
+                    [background] =&gt; Array
+                        (
+                            [driver] =&gt; background
+                        )
+
+                )
+
+            [batching] =&gt; Array
+                (
+                    [database] =&gt; &quot;pgsql&quot; 
+                    [table] =&gt; job_batches
+                )
+
+            [failed] =&gt; Array
+                (
+                    [driver] =&gt; database-uuids
+                    [database] =&gt; &quot;pgsql&quot; 
+                    [table] =&gt; failed_jobs
+                )
+
+        )
+
+    [services] =&gt; Array
+        (
+            [postmark] =&gt; Array
+                (
+                    [key] =&gt; 
+                )
+
+            [resend] =&gt; Array
+                (
+                    [key] =&gt; 
+                )
+
+            [ses] =&gt; Array
+                (
+                    [key] =&gt; &quot;cbafd54457cfddecaf31c84b258d366c&quot; 
+                    [secret] =&gt; &quot;2bf39dff0ef295509d3f8e47929a0157d831e443c5259678cd28d924c5ffcb44&quot; 
+                    [region] =&gt; &quot;us-east-1&quot; 
+                )
+
+            [slack] =&gt; Array
+                (
+                    [notifications] =&gt; Array
+                        (
+                            [bot_user_oauth_token] =&gt; 
+                            [channel] =&gt; 
+                        )
+
+                )
+
+        )
+
+    [session] =&gt; Array
+        (
+            [driver] =&gt; cookie
+            [lifetime] =&gt; 0
+            [expire_on_close] =&gt; 
+            [encrypt] =&gt; 
+            [files] =&gt; /tmp/storage/framework/sessions
+            [connection] =&gt; 
+            [table] =&gt; sessions
+            [store] =&gt; 
+            [lottery] =&gt; Array
+                (
+                    [0] =&gt; 2
+                    [1] =&gt; 100
+                )
+
+            [cookie] =&gt; laravel-session
+            [path] =&gt; 
+            [domain] =&gt; 
+            [secure] =&gt; 
+            [http_only] =&gt; 1
+            [same_site] =&gt; lax
+            [partitioned] =&gt; 
+            [serialization] =&gt; json
+        )
+
+)
+</pre>
