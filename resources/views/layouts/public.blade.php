@@ -240,7 +240,7 @@
                         <a href="{{ route('public.privacy') }}" class="hover:text-white transition-colors">Privacy</a>
                         <a href="{{ route('public.terms') }}" class="hover:text-white transition-colors">Terms</a>
                         @auth
-                            <a href="{{ route('dashboard') }}" class="ml-4 px-4 py-2 bg-brand-500 text-white hover:bg-white hover:text-richblack-950 transition-colors">CMS Dashboard</a>
+                            <a href="{{ route('dashboard') }}" class="ml-4 px-4 py-2 bg-brand-500 text-white hover:bg-white hover:text-richblack-950 transition-colors">Admin</a>
                         @else
                             <a href="{{ route('login') }}" class="ml-4 px-4 py-2 border border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white transition-colors">Portal</a>
                         @endauth
