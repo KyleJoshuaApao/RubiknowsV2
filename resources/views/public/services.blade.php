@@ -156,7 +156,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                @forelse($testimonials as $testimonial)
+                @forelse(($testimonials ?? []) as $testimonial)
                     <div class="group block bg-white border-l-4 border-brand-500 shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5">
                         <div class="p-6">
                             <p class="text-gray-700 italic leading-relaxed mb-4">{!! $testimonial->content !!}</p>

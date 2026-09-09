@@ -44,114 +44,177 @@
 
             <!-- Navigation -->
             <nav class="flex-1 px-3 py-6 space-y-6 overflow-y-auto scrollbar-thin">
-                @php
-                    $icons = include resource_path('views/components/icons.blade.php');
-                    $unreadMsgs = \App\Models\ContactMessage::where('status', 'New')->count();
-                    $pendingQuotes = \App\Models\QuotationRequest::where('status', 'Pending')->count();
-                    $newApps = \App\Models\JobApplication::where('status', 'Received')->count();
-                @endphp
-
                 <!-- Overview Section -->
-                <x-snav-section title="Overview" />
-                <x-snav-item
-                    href="{{ route('dashboard') }}"
-                    icon="{{$icons['dashboard']}}"
-                    label="Dashboard"
-                    activeWhen="['dashboard']"
-                />
+                <div>
+                    <div class="flex items-center justify-between px-4 mb-3">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Overview</h3>
+                        <div class="w-6 h-px bg-white/10"></div>
+                    </div>
+                    <a href="{{ route('dashboard') }}" class="nav-active-indicator group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 {{ request()->routeIs('dashboard') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('dashboard') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                        @if(request()->routeIs('dashboard'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+                </div>
 
                 <!-- Website Content Section -->
-                <x-snav-section title="Website Content" />
-                <x-snav-item
-                    href="{{ route('admin.projects.index') }}"
-                    icon="{{$icons['projects']}}"
-                    label="Project Portfolio"
-                    activeWhen="['admin.projects.*']"
-                />
-                <x-snav-item
-                    href="{{ route('admin.gallery.index') }}"
-                    icon="{{$icons['gallery']}}"
-                    label="Media Gallery"
-                    activeWhen="['admin.gallery.*']"
-                    class="mt-0.5"
-                />
-                <x-snav-item
-                    href="{{ route('admin.services.index') }}"
-                    icon="{{$icons['services']}}"
-                    label="Services"
-                    activeWhen="['admin.services.*']"
-                    class="mt-0.5"
-                />
-                <x-snav-item
-                    href="{{ route('admin.clients.index') }}"
-                    icon="{{$icons['clients']}}"
-                    label="Clients & Partners"
-                    activeWhen="['admin.clients.*']"
-                    class="mt-0.5"
-                />
-                <x-snav-item
-                    href="{{ route('admin.testimonials.index') }}"
-                    icon="{{$icons['testimonials']}}"
-                    label="Testimonials"
-                    activeWhen="['admin.testimonials.*']"
-                    class="mt-0.5"
-                />
+                <div>
+                    <div class="flex items-center justify-between px-4 mb-3">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Website Content</h3>
+                        <div class="w-6 h-px bg-white/10"></div>
+                    </div>
+
+                    <a href="{{ route('admin.projects.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 {{ request()->routeIs('admin.projects.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.projects.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        <span>Project Portfolio</span>
+                        @if(request()->routeIs('admin.projects.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.gallery.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.gallery.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.gallery.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Media Gallery</span>
+                        @if(request()->routeIs('admin.gallery.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.services.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.services.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.services.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Services</span>
+                        @if(request()->routeIs('admin.services.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.clients.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.clients.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.clients.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        <span>Clients & Partners</span>
+                        @if(request()->routeIs('admin.clients.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.testimonials.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.testimonials.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.testimonials.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                        </svg>
+                        <span>Testimonials</span>
+                        @if(request()->routeIs('admin.testimonials.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+                </div>
 
                 <!-- Communications Section -->
-                <x-snav-section title="Communications" />
-                <x-snav-item
-                    href="{{ route('admin.messages.index') }}"
-                    icon="{{$icons['messages']}}"
-                    label="Inbox (Contact Us)"
-                    badge="{{$unreadMsgs}}"
-                    badgeColor="brand-500"
-                    activeWhen="['admin.messages.*']"
-                />
-                <x-snav-item
-                    href="{{ route('admin.quotations.index') }}"
-                    icon="{{$icons['quotations']}}"
-                    label="Quotation Requests"
-                    badge="{{$pendingQuotes}}"
-                    badgeColor="blue-500"
-                    activeWhen="['admin.quotations.*']"
-                    class="mt-0.5"
-                />
+                <div>
+                    <div class="flex items-center justify-between px-4 mb-3">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Communications</h3>
+                        <div class="w-6 h-px bg-white/10"></div>
+                    </div>
+
+                    <a href="{{ route('admin.messages.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 {{ request()->routeIs('admin.messages.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.messages.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Inbox (Contact Us)</span>
+                        @php $unreadMsgs = \App\Models\ContactMessage::where('status', 'New')->count(); @endphp
+                        @if($unreadMsgs > 0)
+                            <span class="ml-auto bg-brand-500 text-white py-0.5 px-2 rounded-full text-[10px] font-semibold min-w-[20px] text-center">{{ $unreadMsgs }}</span>
+                        @endif
+                        @if(request()->routeIs('admin.messages.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.quotations.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.quotations.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.quotations.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Quotation Requests</span>
+                        @php $pendingQuotes = \App\Models\QuotationRequest::where('status', 'Pending')->count(); @endphp
+                        @if($pendingQuotes > 0)
+                            <span class="ml-auto bg-blue-500 text-white py-0.5 px-2 rounded-full text-[10px] font-semibold min-w-[20px] text-center">{{ $pendingQuotes }}</span>
+                        @endif
+                        @if(request()->routeIs('admin.quotations.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+                </div>
 
                 <!-- Human Resources Section -->
-                <x-snav-section title="Human Resources" />
-                <x-snav-item
-                    href="{{ route('admin.jobs.index') }}"
-                    icon="{{$icons['jobs']}}"
-                    label="Job Postings"
-                    activeWhen="['admin.jobs.*']"
-                />
-                <x-snav-item
-                    href="{{ route('admin.applications.index') }}"
-                    icon="{{$icons['applications']}}"
-                    label="Applicants"
-                    badge="{{$newApps}}"
-                    badgeColor="green-500"
-                    activeWhen="['admin.applications.*']"
-                    class="mt-0.5"
-                />
+                <div>
+                    <div class="flex items-center justify-between px-4 mb-3">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Human Resources</h3>
+                        <div class="w-6 h-px bg-white/10"></div>
+                    </div>
+
+                    <a href="{{ route('admin.jobs.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 {{ request()->routeIs('admin.jobs.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.jobs.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Job Postings</span>
+                        @if(request()->routeIs('admin.jobs.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+
+                    <a href="{{ route('admin.applications.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.applications.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.applications.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <span>Applicants</span>
+                        @php $newApps = \App\Models\JobApplication::where('status', 'Received')->count(); @endphp
+                        @if($newApps > 0)
+                            <span class="ml-auto bg-green-500 text-white py-0.5 px-2 rounded-full text-[10px] font-semibold min-w-[20px] text-center">{{ $newApps }}</span>
+                        @endif
+                        @if(request()->routeIs('admin.applications.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+                </div>
 
                 <!-- System Settings Section -->
-                <x-snav-section title="System" />
-                @if(Auth::user()->role === 'Super Admin')
-                    <x-snav-item
-                        href="{{ route('admin.users.index') }}"
-                        icon="{{$icons['users']}}"
-                        label="User Management"
-                        activeWhen="['admin.users.*']"
-                        class="mb-0.5"
-                    />
-                @endif
-                <x-snav-item
-                    href="{{ route('admin.settings.index') }}"
-                    icon="{{$icons['settings']}}"
-                    label="Global Settings"
-                    activeWhen="['admin.settings.*']"
-                />
+                <div>
+                    <div class="flex items-center justify-between px-4 mb-3">
+                        <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">System</h3>
+                        <div class="w-6 h-px bg-white/10"></div>
+                    </div>
+                    @if(Auth::user()->role === 'Super Admin')
+                        <a href="{{ route('admin.users.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mb-0.5 {{ request()->routeIs('admin.users.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                            <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.users.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                            </svg>
+                            <span>User Management</span>
+                            @if(request()->routeIs('admin.users.*'))
+                                <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                            @endif
+                        </a>
+                    @endif
+                    <a href="{{ route('admin.settings.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 {{ request()->routeIs('admin.settings.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.settings.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>Global Settings</span>
+                        @if(request()->routeIs('admin.settings.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
+                </div>
             </nav>
 
             <!-- User Info (Bottom Sidebar) -->

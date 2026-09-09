@@ -45,7 +45,8 @@ class PublicController extends Controller
     public function services()
     {
         $services = Service::latest()->get();
-        return view('public.services', compact('services'));
+        $testimonials = Testimonial::where('is_published', true)->latest()->take(3)->get();
+        return view('public.services', compact('services', 'testimonials'));
     }
 
     public function projects()
