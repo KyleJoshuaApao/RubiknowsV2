@@ -61,19 +61,19 @@
                 <!-- Left: Logo Area with Stylistic Accents -->
                 <div class="relative h-full flex items-center z-20">
                     <!-- The Gold Main Wing -->
-                    <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-gold-600 kh-angled-logo shadow-xl -z-10 pointer-events-none"></div>
+                    <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-gold-600  shadow-xl -z-10 pointer-events-none"></div>
                     
                     <!-- The White Logo Background -->
-                    <div class="absolute inset-0 bg-white kh-angled-logo shadow-md -z-10 pointer-events-none"></div>
+                    <div class="absolute inset-0 bg-white  shadow-md -z-10 pointer-events-none"></div>
                     
                     <a href="{{ route('public.home') }}" class="flex items-center gap-3 pl-4 sm:pl-8 lg:pl-12 pr-16 lg:pr-32 py-2">
                         <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="h-14 sm:h-16 lg:h-20 w-auto">
                         <div class="flex flex-col mt-1">
                             <span class="flex items-baseline">
                                 <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-richblack-950">RUBI</span>
-                                <span class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
+                                <span class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
                             </span>
-                            <span class="text-[10px] lg:text-[11px] font-medium text-gray-600 tracking-[0.2em] uppercase mt-0.5 whitespace-nowrap hidden sm:block">
+                            <span class="text-[10px] lg:text-[11px] font-medium text-gray-600 tracking-wider uppercase mt-0.5 whitespace-nowrap hidden sm:block">
                                 CORPORATION
                             </span>
                         </div>
@@ -82,28 +82,28 @@
 
                 <!-- Right: Desktop Navigation -->
                 <nav class="hidden lg:flex items-center flex-1 justify-end space-x-1 xl:space-x-4 h-full pr-6 lg:pr-12">
-                    <a href="{{ route('public.home') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.home') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Home
                     </a>
-                    <a href="{{ route('public.about') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.about') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         About Us
                     </a>
-                    <a href="{{ route('public.services') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.services') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Services
                     </a>
-                    <a href="{{ route('public.projects') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.projects') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Projects
                     </a>
-                    <a href="{{ route('public.gallery') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.gallery') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Gallery
                     </a>
-                    <a href="{{ route('public.testimonials') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.testimonials') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Testimonials
                     </a>
-                    <a href="{{ route('public.clients') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.clients') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Clients
                     </a>
-                    <a href="{{ route('public.careers') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-widest text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.careers') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Careers
                     </a>
 
@@ -132,15 +132,15 @@
                  x-transition:enter-end="opacity-100 translate-y-0"
                  class="lg:hidden bg-white border-t-4 border-brand-500 absolute w-full shadow-2xl z-50">
                 <div class="px-6 py-6 flex flex-col space-y-4">
-                    <a @click="mobileOpen = false" href="{{ route('public.home') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Home</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.about') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">About</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.services') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Services</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.projects') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Portfolio</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.gallery') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Gallery</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.testimonials') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Testimonials</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.clients') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Clients</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.careers') }}" class="text-xl font-black text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Careers</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.contact') }}" class="mt-4 text-center px-6 py-3 bg-brand-500 text-white font-black uppercase tracking-widest text-[14px]">Contact Us</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.home') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Home</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.about') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">About</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.services') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Services</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.projects') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Portfolio</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.gallery') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Gallery</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.testimonials') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Testimonials</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.clients') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Clients</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.careers') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Careers</a>
+                    <a @click="mobileOpen = false" href="{{ route('public.contact') }}" class="mt-4 text-center px-6 py-3 bg-brand-500 text-white font-bold uppercase tracking-wide text-[14px]">Contact Us</a>
                 </div>
             </div>
         </header>
@@ -153,7 +153,7 @@
         <!-- ===== KIMLEY-HORN STYLE "FAT" FOOTER (RESTORED LINKS) ===== -->
         <footer class="bg-richblack-950 text-white pt-24 pb-12 mt-auto border-t-[16px] border-brand-500 relative overflow-hidden">
             <!-- Decorative geometric element -->
-            <div class="absolute bottom-0 right-0 w-1/3 h-1/2 bg-white/5 kh-angled-deco-right"></div>
+            <div class="absolute bottom-0 right-0 w-1/3 h-1/2 bg-white/5 "></div>
             
             <div class="max-w-screen-2xl mx-auto px-6 relative z-10">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16">
@@ -163,7 +163,7 @@
                         <a href="{{ route('public.home') }}" class="inline-flex items-center gap-3 mb-8">
                             <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="h-24 w-auto">
                             <span class="flex items-baseline">
-                                <span class="text-3xl sm:text-4xl font-light tracking-tight text-gray-200">RUBI</span><span class="text-3xl sm:text-4xl font-black tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
+                                <span class="text-3xl sm:text-4xl font-light tracking-tight text-gray-200">RUBI</span><span class="text-3xl sm:text-4xl font-bold tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
                             </span>
                         </a>
                         <p class="text-gray-400 text-sm leading-relaxed mb-10 max-w-sm font-bold uppercase tracking-wider">
@@ -171,8 +171,8 @@
                         </p>
                         
                         <div>
-                            <h4 class="text-xs font-black text-brand-500 tracking-[0.2em] uppercase mb-4">Start a Project</h4>
-                            <a href="{{ route('public.contact', ['tab' => 'quote']) }}" class="inline-flex items-center justify-center px-8 py-4 bg-brand-500 text-white font-black uppercase tracking-widest text-sm hover:bg-white hover:text-richblack-950 transition-all duration-300">
+                            <h4 class="text-xs font-bold text-brand-500 tracking-wider uppercase mb-4">Start a Project</h4>
+                            <a href="{{ route('public.contact', ['tab' => 'quote']) }}" class="inline-flex items-center justify-center px-8 py-4 bg-brand-500 text-white font-bold uppercase tracking-wide text-sm hover:bg-white hover:text-richblack-950 transition-all duration-300">
                                 Initiate Proposal
                                 <svg class="w-4 h-4 ml-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                             </a>
@@ -184,7 +184,7 @@
                         
                         <!-- Company Links -->
                         <div>
-                            <h3 class="text-sm font-black text-brand-500 tracking-[0.15em] uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
+                            <h3 class="text-sm font-bold text-brand-500 tracking-wider uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
                                 Company
                             </h3>
                             <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
@@ -198,7 +198,7 @@
 
                         <!-- Services List -->
                         <div>
-                            <h3 class="text-sm font-black text-brand-500 tracking-[0.15em] uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
+                            <h3 class="text-sm font-bold text-brand-500 tracking-wider uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
                                 Services
                             </h3>
                             <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
@@ -213,7 +213,7 @@
 
                         <!-- Global HQ / Contact -->
                         <div>
-                            <h3 class="text-sm font-black text-brand-500 tracking-[0.15em] uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
+                            <h3 class="text-sm font-bold text-brand-500 tracking-wider uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
                                 Global HQ
                             </h3>
                             <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
@@ -234,7 +234,7 @@
                     </div>
                 </div>
 
-                <div class="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-500 font-bold uppercase tracking-widest">
+                <div class="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-500 font-bold uppercase tracking-wide">
                     <p>&copy; {{ date('Y') }} {{ $companyName }}. All Rights Reserved.</p>
                     <div class="flex flex-wrap gap-6 justify-center items-center">
                         <a href="{{ route('public.privacy') }}" class="hover:text-white transition-colors">Privacy</a>
