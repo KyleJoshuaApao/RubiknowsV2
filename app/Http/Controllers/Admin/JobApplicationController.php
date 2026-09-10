@@ -19,20 +19,14 @@ class JobApplicationController extends Controller
 
     public function show(JobApplication $application)
     {
-        if ($application->status === 'Received') {
-            $application->update(['status' => 'Under Review']);
-        }
-        
         return view('admin.applications.show', compact('application'));
     }
 
-    public function update(Request $request, JobApplication $application)
+    public function update(JobApplicationRequest $request, JobApplication $application)
     {
-        $request->validate([
-            'status' => 'required|in:Received,Under Review,Interview Scheduled,Accepted,Rejected'
-        ]);
+        $data = $request->validated();
 
-        $application->update(['status' => $request->status]);
+        $application->update(['status' => $data['status']]);
         return back()->with('success', 'Application status updated.');
     }
 
@@ -49,18 +43,21 @@ class JobApplicationController extends Controller
         return redirect()->route('admin.applications.index')->with('success', 'Application deleted.');
     }
 
-    public function reply(Request $request, JobApplication $application)
+    public function reply(JobApplicationReplyRequest $request, JobApplication $application)
     {
-        $data = $request->validate([
-            'reply_message' => 'required|string|max:5000',
-            'sender_name' => 'nullable|string|max:255',
-        ]);
+        $data = $request->validated();
 
-        $application->update([
+        $updateData = [
             'reply_message' => $data['reply_message'],
             'replied_at' => now(),
-            'status' => 'Interview Scheduled', // or keep current status
-        ]);
+        ];
+
+        // Only update status if provided in request
+        if ($data['status'] !== null) {
+            $updateData['status'] = $data['status'];
+        }
+
+        $application->update($updateData);
 
         try {
             $subject = 'Update regarding your application at RubiKnows';

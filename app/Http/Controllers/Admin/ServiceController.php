@@ -19,21 +19,13 @@ class ServiceController extends Controller
         return view('admin.services.create');
     }
 
-    public function store(Request $request)
+    public function store(ServiceRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'short_description' => 'nullable|string',
-            'content' => 'nullable|string',
-            'category' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:255',
-            'is_featured' => 'boolean',
-            'price' => 'nullable|numeric'
-        ]);
+        $data = $request->validated();
 
-        $validated['is_featured'] = $request->has('is_featured');
+        $data['is_featured'] = $request->has('is_featured');
 
-        Service::create($validated);
+        Service::create($data);
 
         return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');
     }
@@ -41,25 +33,6 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         return view('admin.services.edit', compact('service'));
-    }
-
-    public function update(Request $request, Service $service)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'short_description' => 'nullable|string',
-            'content' => 'nullable|string',
-            'category' => 'nullable|string|max:255',
-            'icon' => 'nullable|string|max:255',
-            'is_featured' => 'boolean',
-            'price' => 'nullable|numeric'
-        ]);
-
-        $validated['is_featured'] = $request->has('is_featured');
-
-        $service->update($validated);
-
-        return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
     }
 
     public function destroy(Service $service)

@@ -20,29 +20,17 @@ class QuotationRequestController extends Controller
 
     public function show(QuotationRequest $quotation)
     {
-        if ($quotation->status === 'Pending') {
-            $quotation->update(['status' => 'Under Review']);
-        }
         $engineers = User::all();
-        
+
         return view('admin.quotations.show', compact('quotation', 'engineers'));
     }
-
-    public function update(Request $request, QuotationRequest $quotation)
+    public function update(UpdateQuotationRequest $request, QuotationRequest $quotation)
     {
-        $request->validate([
-            'status' => 'sometimes|required|in:Pending,Under Review,Estimated,Sent,Closed',
-            'assigned_engineer_id' => 'nullable|exists:users,id'
-        ]);
+        $data = $request->validated();
 
-        $quotation->update($request->only(['status', 'assigned_engineer_id']));
-        return back()->with('success', 'Quotation request updated.');
-    }
+        $quotation->update($data);
 
-    public function destroy(QuotationRequest $quotation)
-    {
-        $quotation->delete();
-        return redirect()->route('admin.quotations.index')->with('success', 'Quotation request deleted.');
+        return back()->with('success', 'Quotation request updated successfully.');
     }
 
     public function bulkDestroy(Request $request)
@@ -55,18 +43,21 @@ class QuotationRequestController extends Controller
         return redirect()->route('admin.quotations.index')->with('error', 'No quotation requests selected.');
     }
 
-    public function reply(Request $request, QuotationRequest $quotation)
+    public function reply(ReplyQuotationRequest $request, QuotationRequest $quotation)
     {
-        $data = $request->validate([
-            'reply_message' => 'required|string|max:5000',
-            'sender_name' => 'nullable|string|max:255',
-        ]);
+        $data = $request->validated();
 
-        $quotation->update([
+        $updateData = [
             'reply_message' => $data['reply_message'],
             'replied_at' => now(),
-            'status' => 'Sent',
-        ]);
+        ];
+
+        // Only update status if provided in request
+        if ($data['status'] !== null) {
+            $updateData['status'] = $data['status'];
+        }
+
+        $quotation->update($updateData);
 
         try {
             $subject = 'Update on your Quotation Request at RubiKnows';

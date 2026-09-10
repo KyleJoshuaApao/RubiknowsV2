@@ -27,17 +27,10 @@ class ClientController extends Controller
         return view('admin.clients.create');
     }
 
-    public function store(Request $request)
+    public function store(ClientRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|max:50',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'success_story_url' => 'nullable|url'
-        ]);
-
-        $data = $request->except('logo');
-
+        $data = $request->validated();
+        unset($data['logo']); // Remove logo from validated data as it's handled separately
         if ($request->hasFile('logo')) {
             $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients');
         }
@@ -54,18 +47,10 @@ class ClientController extends Controller
 
     public function update(Request $request, Client $client)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'type' => 'required|string|max:50',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'success_story_url' => 'nullable|url'
-        ]);
+        $data = $request->validated();
 
-        $data = $request->except('logo');
 
-        if ($request->hasFile('logo')) {
-            $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients', $client->logo_url);
-        }
+        unset($data['logo']); // Remove logo from validated data as it's handled separately
 
         $client->update($data);
 

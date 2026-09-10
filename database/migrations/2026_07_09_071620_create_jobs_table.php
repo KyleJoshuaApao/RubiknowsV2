@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('career_jobs', function (Blueprint $table) {
-                        $table->id();
+            $table->id();
             $table->string('title');
             $table->string('type')->nullable();
             $table->string('location')->nullable();
-            $table->json('requirements')->nullable();
+            $table->string('requirements')->nullable();
             $table->longText('description')->nullable();
             $table->boolean('is_archived')->default(false);
             $table->timestamps();

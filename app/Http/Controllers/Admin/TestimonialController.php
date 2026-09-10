@@ -19,15 +19,9 @@ class TestimonialController extends Controller
         return view('admin.testimonials.create');
     }
 
-    public function store(Request $request)
+    public function store(TestimonialRequest $request)
     {
-        $data = $request->validate([
-            'client_name' => 'required|string|max:255',
-            'company' => 'nullable|string|max:255',
-            'role' => 'nullable|string|max:255',
-            'quote' => 'required|string',
-            'is_published' => 'boolean'
-        ]);
+        $data = $request->validated();
 
         $data['is_published'] = $request->has('is_published');
 
@@ -41,15 +35,9 @@ class TestimonialController extends Controller
         return view('admin.testimonials.edit', compact('testimonial'));
     }
 
-    public function update(Request $request, Testimonial $testimonial)
+    public function update(TestimonialRequest $request, Testimonial $testimonial)
     {
-        $data = $request->validate([
-            'client_name' => 'required|string|max:255',
-            'company' => 'nullable|string|max:255',
-            'role' => 'nullable|string|max:255',
-            'quote' => 'required|string',
-            'is_published' => 'boolean'
-        ]);
+        $data = $request->validated();
 
         $data['is_published'] = $request->has('is_published');
 

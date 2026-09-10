@@ -32,35 +32,9 @@ class UserController extends Controller
         return view('admin.users.create');
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-        ]);
-
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'Administrator',
-        ];
-
-        if ($request->hasFile('profile_photo')) {
-            $data['profile_photo_url'] = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos');
-        }
-
-        User::create($data);
-
-        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
-    }
-
-    public function edit(User $user)
-    {
-        return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)

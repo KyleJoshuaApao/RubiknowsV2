@@ -9,5 +9,13 @@ class GalleryMedia extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'type',
+        'title',
+        'url',
+        'thumbnail_url',
+        'album_name',
+        'category',
+        'before_after_pair_id'
+    ];
 }

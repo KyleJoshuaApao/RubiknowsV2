@@ -14,11 +14,20 @@ class SettingController extends Controller
         return view('admin.settings.index', compact('settings'));
     }
 
-    public function store(Request $request)
+    public function store(SettingRequest $request)
     {
-        $data = $request->except('_token');
+        // Validate that only allowed settings keys are being updated
+        $data = $request->validated();
 
-        foreach ($data as $key => $value) {
+        // Get all settings from database to validate keys
+        $allowedKeys = Setting::pluck('key')->toArray();
+
+        $data = array_except($data, '_token');
+
+        // Filter to only allowed keys
+        $filteredData = array_intersect_key($data, array_flip($allowedKeys));
+
+        foreach ($filteredData as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key],
                 ['value' => $value]

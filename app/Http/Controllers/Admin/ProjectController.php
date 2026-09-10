@@ -27,22 +27,9 @@ class ProjectController extends Controller
         return view('admin.projects.create');
     }
 
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'category_id' => 'nullable|string|max:255',
-            'status'      => 'nullable|string|max:255',
-            'year'        => 'nullable|string|max:4',
-            'location'    => 'nullable|string|max:255',
-            'client'      => 'nullable|string|max:255',
-            'duration'    => 'nullable|string|max:255',
-            'value'       => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image_file'  => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-        ]);
-
-        $data = collect($validated)->except('image_file')->toArray();
+        $data = $request->validated();
         if ($request->hasFile('image_file')) {
             $data['image_url'] = $this->fileUploadService->upload($request->file('image_file'), 'projects');
         }
@@ -57,22 +44,9 @@ class ProjectController extends Controller
         return view('admin.projects.edit', compact('project'));
     }
 
-    public function update(Request $request, Project $project)
+    public function update(ProjectRequest $request, Project $project)
     {
-        $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'category_id' => 'nullable|string|max:255',
-            'status'      => 'nullable|string|max:255',
-            'year'        => 'nullable|string|max:4',
-            'location'    => 'nullable|string|max:255',
-            'client'      => 'nullable|string|max:255',
-            'duration'    => 'nullable|string|max:255',
-            'value'       => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image_file'  => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-        ]);
-
-        $data = collect($validated)->except('image_file')->toArray();
+        $data = $request->validated();
         if ($request->hasFile('image_file')) {
             $data['image_url'] = $this->fileUploadService->upload($request->file('image_file'), 'projects', $project->image_url);
         }

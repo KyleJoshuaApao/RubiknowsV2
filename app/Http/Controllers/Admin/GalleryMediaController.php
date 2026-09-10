@@ -27,31 +27,14 @@ class GalleryMediaController extends Controller
         return view('admin.gallery.create');
     }
 
-    public function store(Request $request)
+    public function store(GalleryMediaRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'type' => 'required|string|in:Photo,Video',
-            'category' => 'required|string|max:100',
-            'album_name' => 'nullable|string|max:100',
-            'media_file' => 'required|file|mimes:jpeg,png,jpg,webp,mp4,mov|max:20480',
-        ]);
-
-        $data = $request->except('media_file');
+        $data = $request->validated();
 
         if ($request->hasFile('media_file')) {
-            $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery');
             $data['thumbnail_url'] = $data['url']; // Simplify for now
+            unset($data['media_file']); // Remove media_file from validated data as it's handled separately
         }
-
-        GalleryMedia::create($data);
-
-        return redirect()->route('admin.gallery.index')->with('success', 'Media uploaded successfully.');
-    }
-
-    public function edit(GalleryMedia $gallery)
-    {
-        return view('admin.gallery.edit', compact('gallery'));
     }
 
     public function update(Request $request, GalleryMedia $gallery)

@@ -21,32 +21,27 @@ class LiveEditorController extends Controller
         return view('admin.live-editor.index', compact('settings'));
     }
 
-    public function store(Request $request)
+    public function store(LiveEditorRequest $request)
     {
-        $validated = $request->validate([
-            'home_stats_bar' => 'nullable|array',
-            'home_markets' => 'nullable|string', // Comma separated for easy input, or JSON
-            'home_marquee' => 'nullable|string',
-            'home_careers' => 'nullable|array',
-        ]);
+        $data = $request->validated();
 
-        if (isset($validated['home_stats_bar'])) {
+        if (isset($data['home_stats_bar'])) {
             // Re-index array to prevent weird JSON object generation if keys were missing
-            Setting::updateOrCreate(['key' => 'home_stats_bar'], ['value' => json_encode(array_values($validated['home_stats_bar']))]);
+            Setting::updateOrCreate(['key' => 'home_stats_bar'], ['value' => json_encode(array_values($data['home_stats_bar']))]);
         }
 
-        if (isset($validated['home_markets'])) {
-            $markets = array_filter(array_map('trim', explode(',', $validated['home_markets'])));
+        if (isset($data['home_markets'])) {
+            $markets = array_filter(array_map('trim', explode(',', $data['home_markets'])));
             Setting::updateOrCreate(['key' => 'home_markets'], ['value' => json_encode(array_values($markets))]);
         }
 
-        if (isset($validated['home_marquee'])) {
-            $marquee = array_filter(array_map('trim', explode(',', $validated['home_marquee'])));
+        if (isset($data['home_marquee'])) {
+            $marquee = array_filter(array_map('trim', explode(',', $data['home_marquee'])));
             Setting::updateOrCreate(['key' => 'home_marquee'], ['value' => json_encode(array_values($marquee))]);
         }
 
-        if (isset($validated['home_careers'])) {
-            Setting::updateOrCreate(['key' => 'home_careers'], ['value' => json_encode($validated['home_careers'])]);
+        if (isset($data['home_careers'])) {
+            Setting::updateOrCreate(['key' => 'home_careers'], ['value' => json_encode($data['home_careers'])]);
         }
 
         return redirect()->back()->with('success', 'Homepage layout updated successfully!');

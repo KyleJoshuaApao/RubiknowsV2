@@ -10,7 +10,17 @@ class Job extends Model
     use HasFactory;
 
     protected $table = 'career_jobs';
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'type',
+        'location',
+        'description',
+        'requirements',
+        'is_archived'
+    ];
+    protected $casts = [
+        'requirements' => 'json',
+    ];
 
     public function applications()
     {

@@ -217,6 +217,12 @@
                                 Global HQ
                             </h3>
                             <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
+                                @if(!empty($settings['office_address']))
+                                    <li class="flex flex-col gap-1">
+                                        <span class="text-brand-500">Address</span>
+                                        <span class="text-white">{{ $settings['office_address'] }}</span>
+                                    </li>
+                                @endif
                                 @if(!empty($settings['contact_phone']))
                                     <li class="flex flex-col gap-1">
                                         <span class="text-brand-500">Phone</span>
@@ -284,12 +290,18 @@
                 setTimeout(function () { t.style.transform = 'translateX(120%)'; t.style.opacity = '0'; setTimeout(function () { t.parentNode && t.parentNode.removeChild(t); }, 400); }, 5000);
             }
             window.rkToast = rkToast;
-            @if(session('success'))
-            window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode(session('success')) }}, 'success'); });
-            @endif
-            @if(session('error'))
-            window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode(session('error')) }}, 'error'); });
-            @endif
+            @php
+$success = session()->pull('success');
+@endphp
+@if($success)
+window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode($success) }}, 'success'); });
+@endif
+@php
+$error = session()->pull('error');
+@endphp
+@if($error)
+window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode($error) }}, 'error'); });
+@endif
         })();
         </script>
     </body>

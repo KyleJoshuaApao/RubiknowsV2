@@ -9,7 +9,19 @@ class QuotationRequest extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'company',
+        'email',
+        'phone',
+        'service_needed',
+        'project_location',
+        'budget',
+        'timeline',
+        'description',
+        'attachment_path',
+        'status'
+    ];
 
     public function assignedEngineer()
     {

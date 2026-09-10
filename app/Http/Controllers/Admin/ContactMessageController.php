@@ -18,20 +18,15 @@ class ContactMessageController extends Controller
 
     public function show(ContactMessage $message)
     {
-        if ($message->status === 'New') {
-            $message->update(['status' => 'Read']);
-        }
-        
         return view('admin.messages.show', compact('message'));
     }
 
-    public function update(Request $request, ContactMessage $message)
+    public function update(UpdateContactMessageRequest $request, ContactMessage $message)
     {
-        $request->validate([
-            'status' => 'required|in:New,Read,Replied,Archived,Spam'
-        ]);
+        $data = $request->validated();
 
-        $message->update(['status' => $request->status]);
+        $message->update(['status' => $data['status']]);
+
         return back()->with('success', 'Message status updated.');
     }
 
@@ -51,18 +46,21 @@ class ContactMessageController extends Controller
         return redirect()->route('admin.messages.index')->with('error', 'No messages selected.');
     }
 
-    public function reply(Request $request, ContactMessage $message)
+    public function reply(ReplyContactMessageRequest $request, ContactMessage $message)
     {
-        $data = $request->validate([
-            'reply_message' => 'required|string|max:5000',
-            'sender_name' => 'nullable|string|max:255',
-        ]);
+        $data = $request->validated();
 
-        $message->update([
+        $updateData = [
             'reply_message' => $data['reply_message'],
             'replied_at' => now(),
-            'status' => 'Replied',
-        ]);
+        ];
+
+        // Only update status if provided in request
+        if ($data['status'] !== null) {
+            $updateData['status'] = $data['status'];
+        }
+
+        $message->update($updateData);
 
         try {
             $subject = 'Re: ' . ($message->subject ?: 'Your inquiry at RubiKnows');

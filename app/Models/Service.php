@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'title',
+        'short_description',
+        'content',
+        'category',
+        'icon',
+        'is_featured',
+        'price'
+    ];
 
     /**
      * Boot model events to automate slug generation.
