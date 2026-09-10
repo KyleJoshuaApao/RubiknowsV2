@@ -41,7 +41,7 @@
             <div class="relative z-10 max-w-lg px-12 text-center animate-slide-up">
                 <!-- Large Logo -->
                 <div class="flex justify-center mb-10">
-                    <div class="w-32 h-32  bg-white shadow-2xl shadow-brand-500/10 flex items-center justify-center transform transition duration-500 hover:scale-105 border border-gray-100">
+                    <div class="w-32 h-32  bg-transparent shadow-2xl shadow-brand-500/10 flex items-center justify-center transform transition duration-500 hover:scale-105 border border-gray-100">
                         <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-24 h-24 object-contain">
                     </div>
                 </div>
