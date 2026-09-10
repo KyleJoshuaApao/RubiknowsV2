@@ -36,9 +36,9 @@
 
             <div class="relative z-10 flex h-full w-full flex-col items-center justify-center px-8 pt-16 pb-24 text-center">
                 <!-- Logo -->
-                <div class="mb-12">
-                    <div class="w-60 h-60 bg-transparent flex items-center justify-center">
-                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-52 h-52 object-contain">
+                <div class="mb-10">
+                    <div class="w-36 h-36 bg-transparent flex items-center justify-center">
+                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-28 h-28 object-contain">
                     </div>
                 </div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight font-['Roboto_Slab'] mb-2">
