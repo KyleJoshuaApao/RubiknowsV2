@@ -265,3 +265,6 @@
         });
     </script>
 </x-app-layout>
+@push('extra-head-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@endpush
