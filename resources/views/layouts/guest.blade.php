@@ -28,71 +28,54 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased text-gray-900 bg-white flex min-h-screen selection:bg-brand-500 selection:text-white">
-        
-        <!-- Left Panel: Brand & Animation -->
-        <div class="hidden lg:flex lg:w-1/2 relative bg-[#f8f9fc] overflow-hidden items-center justify-center">
-            <!-- Animated Light Grid -->
-            <div class="absolute inset-0 bg-grid-pattern opacity-40 animate-grid-pan pointer-events-none"></div>
-            
-            <!-- Floating Elements / Orbs -->
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-brand-500/10 rounded-full blur-[80px] animate-pulse-soft"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-[100px] animate-pulse-soft" style="animation-delay: 2s;"></div>
-            
-            <div class="relative z-10 max-w-lg px-12 text-center animate-slide-up">
-                <!-- Large Logo -->
-                <div class="flex justify-center mb-10">
-                    <div class="w-32 h-32  bg-transparent shadow-2xl shadow-brand-500/10 flex items-center justify-center transform transition duration-500 hover:scale-105 border border-gray-100">
-                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-24 h-24 object-contain">
+
+        <!-- Left Panel: Brand -->
+        <div class="hidden lg:flex lg:w-1/2 relative bg-[#f8f9fc] overflow-hidden">
+            <!-- Subtle Animated Grid -->
+            <div class="absolute inset-0 bg-grid-pattern opacity-20 pointer-none"></div>
+
+            <div class="relative z-10 flex h-full w-full flex-col items-center justify-center px-8 pt-16 pb-24 text-center">
+                <!-- Logo -->
+                <div class="mb-16">
+                    <div class="w-96 h-96 bg-transparent flex items-center justify-center">
+                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-84 h-84 object-contain">
                     </div>
                 </div>
-                <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight font-['Roboto_Slab'] mb-4">
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight font-['Roboto_Slab'] mb-2">
                     Engineering <span class="text-brand-500">Excellence</span>
                 </h1>
-                <p class="text-lg text-gray-500 leading-relaxed">
-                    Welcome to the central command portal. Manage your projects, review client inquiries, and oversee your portfolio with precision.
+                <p class="max-w-xl text-lg text-gray-500 leading-relaxed mb-6">
+                    Secure access to your engineering projects and portfolio management tools.
                 </p>
-                
-                <!-- Decorative animated dots -->
-                <div class="mt-12 flex justify-center gap-3">
-                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-bounce"></span>
-                    <span class="w-2 h-2 rounded-full bg-blue-400 animate-bounce" style="animation-delay: 0.1s"></span>
-                    <span class="w-2 h-2 rounded-full bg-gray-300 animate-bounce" style="animation-delay: 0.2s"></span>
-                </div>
             </div>
         </div>
 
-        <!-- Right Panel: Form Area -->
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative bg-white">
-            <!-- Mobile Background Elements (hidden on desktop) -->
-            <div class="absolute inset-0 lg:hidden overflow-hidden pointer-events-none">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-[60px]"></div>
-                <div class="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-[60px]"></div>
-            </div>
-
-            <div class="w-full max-w-md relative z-10 animate-fade-in">
+        <!-- Right Panel: Form -->
+        <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
+            <div class="w-full max-w-md space-y-8">
                 <!-- Mobile Logo (hidden on desktop) -->
-                <div class="flex justify-center mb-10 lg:hidden">
+                <div class="flex justify-center mb-6 lg:hidden">
                     <a href="/" class="inline-block transform transition duration-300 hover:scale-105">
                         <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="w-16 object-contain">
                     </a>
                 </div>
 
-                <div class="mb-10 text-center lg:text-left">
-                    <h2 class="text-3xl font-bold text-gray-900 tracking-tight font-['Roboto_Slab']">
-                        Admin Portal
+                <div class="text-center lg:text-left">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                        Welcome Back
                     </h2>
-                    <p class="text-gray-500 mt-2 text-sm">
-                        Sign in to access your dashboard and manage content.
+                    <p class="text-gray-600 mb-4">
+                        Sign in to continue to RubiKnows Admin Portal
                     </p>
                 </div>
 
-                <!-- Form Slot -->
-                <div class="bg-white lg:bg-transparent p-8 lg:p-0  lg:rounded-none shadow-xl lg:shadow-none border border-gray-100 lg:border-none">
+                <!-- Form Card -->
+                <div class="bg-white rounded-xl shadow-xl border border-gray-200 p-8">
                     {{ $slot }}
                 </div>
-                
+
                 <!-- Footer -->
-                <div class="mt-12 text-center lg:text-left text-xs text-gray-400">
+                <div class="mt-6 text-center text-sm text-gray-500">
                     &copy; {{ date('Y') }} RubiKnows Engineering. All rights reserved.
                 </div>
             </div>
