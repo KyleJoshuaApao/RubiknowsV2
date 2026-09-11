@@ -2,7 +2,6 @@
     "$schema": "https://www.schemastore.org/package.json",
     "name": "rubiknows",
     "private": true,
-    "type": "module",
     "scripts": {
         "build": "bash build-patch.sh && vite build",
         "dev": "vite"

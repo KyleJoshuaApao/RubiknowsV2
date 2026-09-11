@@ -8,12 +8,7 @@
     },
     "routes": [
         {
-            "src": "/(build|css|gallery|images|js|storage)/(.*)",
-            "dest": "/public/$1/$2"
-        },
-        {
-            "src": "/(favicon\\.ico|robots\\.txt|LOGO\\.png|RK3\\.png|RK3-email\\.png|RK3-cropped\\.png)",
-            "dest": "/public/$1"
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
