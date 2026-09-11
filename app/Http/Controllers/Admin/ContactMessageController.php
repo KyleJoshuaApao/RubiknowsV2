@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ReplyContactMessageRequest;
+use App\Http\Requests\Admin\UpdateContactMessageRequest;
+use App\Mail\AdminReplyNotification;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\AdminReplyNotification;
 
 class ContactMessageController extends Controller
 {
     public function index()
     {
         $messages = ContactMessage::latest()->paginate(15);
+
         return view('admin.messages.index', compact('messages'));
     }
 
@@ -33,16 +37,19 @@ class ContactMessageController extends Controller
     public function destroy(ContactMessage $message)
     {
         $message->delete();
+
         return redirect()->route('admin.messages.index')->with('success', 'Message deleted.');
     }
 
     public function bulkDestroy(Request $request)
     {
         $ids = $request->input('ids', []);
-        if (!empty($ids)) {
+        if (! empty($ids)) {
             ContactMessage::whereIn('id', $ids)->delete();
+
             return redirect()->route('admin.messages.index')->with('success', 'Selected messages deleted successfully.');
         }
+
         return redirect()->route('admin.messages.index')->with('error', 'No messages selected.');
     }
 
@@ -63,11 +70,12 @@ class ContactMessageController extends Controller
         $message->update($updateData);
 
         try {
-            $subject = 'Re: ' . ($message->subject ?: 'Your inquiry at RubiKnows');
+            $subject = 'Re: '.($message->subject ?: 'Your inquiry at RubiKnows');
             $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
             Mail::to($message->email)->send(new AdminReplyNotification($message->name, $data['reply_message'], $subject, $senderName));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Mail Error (Reply): ' . $e->getMessage());
+            Log::error('Mail Error (Reply): '.$e->getMessage());
+
             return back()->with('error', 'Reply saved, but email could not be sent.');
         }
 

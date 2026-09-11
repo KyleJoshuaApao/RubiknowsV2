@@ -20,8 +20,18 @@ class QuotationRequest extends Model
         'timeline',
         'description',
         'attachment_path',
-        'status'
+        'assigned_engineer_id',
+        'status',
+        'reply_message',
+        'replied_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'replied_at' => 'datetime',
+        ];
+    }
 
     public function assignedEngineer()
     {

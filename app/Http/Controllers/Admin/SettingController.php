@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\SettingRequest;
 use App\Models\Setting;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class SettingController extends Controller
 {
     public function index()
     {
         $settings = Setting::all()->pluck('value', 'key')->toArray();
+
         return view('admin.settings.index', compact('settings'));
     }
 
@@ -22,7 +24,7 @@ class SettingController extends Controller
         // Get all settings from database to validate keys
         $allowedKeys = Setting::pluck('key')->toArray();
 
-        $data = array_except($data, '_token');
+        $data = Arr::except($data, '_token');
 
         // Filter to only allowed keys
         $filteredData = array_intersect_key($data, array_flip($allowedKeys));

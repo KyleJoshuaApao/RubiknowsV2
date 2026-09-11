@@ -1,18 +1,23 @@
 <?php
 
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ContactMessageController;
+use App\Http\Controllers\Admin\GalleryMediaController;
+use App\Http\Controllers\Admin\JobApplicationController;
+use App\Http\Controllers\Admin\JobController;
+use App\Http\Controllers\Admin\LiveEditorController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\QuotationRequestController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
+use App\Models\JobApplication;
+use App\Models\QuotationRequest;
 use Illuminate\Support\Facades\Route;
-
-// TEMPORARY ROUTE TO MIGRATE SUPABASE ON VERCEL
-Route::get('/migrate-supabase', function() {
-    try {
-        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
-        return 'Database Migrated Successfully! You can now visit the homepage.';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
+use Illuminate\Support\Facades\Storage;
 
 // Public Website Routes
 Route::get('/', [PublicController::class, 'index'])->name('public.home');
@@ -24,8 +29,12 @@ Route::get('/gallery', [PublicController::class, 'gallery'])->name('public.galle
 Route::get('/testimonials', [PublicController::class, 'testimonials'])->name('public.testimonials');
 Route::get('/clients-and-partners', [PublicController::class, 'clients'])->name('public.clients');
 Route::get('/careers', [PublicController::class, 'careers'])->name('public.careers');
-Route::get('/privacy-policy', function() { return view('public.privacy'); })->name('public.privacy');
-Route::get('/terms-of-service', function() { return view('public.terms'); })->name('public.terms');
+Route::get('/privacy-policy', function () {
+    return view('public.privacy');
+})->name('public.privacy');
+Route::get('/terms-of-service', function () {
+    return view('public.terms');
+})->name('public.terms');
 Route::get('/contact', [PublicController::class, 'contact'])->name('public.contact');
 
 // Form Submissions — Rate limited to prevent spam and disk exhaustion
@@ -52,59 +61,55 @@ Route::middleware('auth')->group(function () {
 
     // Admin CMS Routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('services', \App\Http\Controllers\Admin\ServiceController::class);
-        Route::resource('projects', \App\Http\Controllers\Admin\ProjectController::class);
-        Route::resource('gallery', \App\Http\Controllers\Admin\GalleryMediaController::class);
-        Route::resource('testimonials', \App\Http\Controllers\Admin\TestimonialController::class);
-        Route::resource('clients', \App\Http\Controllers\Admin\ClientController::class);
+        Route::resource('services', ServiceController::class)->except(['show']);
+        Route::resource('projects', ProjectController::class)->except(['show']);
+        Route::resource('gallery', GalleryMediaController::class)->except(['show']);
+        Route::resource('testimonials', TestimonialController::class)->except(['show']);
+        Route::resource('clients', ClientController::class)->except(['show']);
         // Super Admin routes
         Route::middleware(['superadmin'])->group(function () {
-            Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
-            Route::resource('settings', \App\Http\Controllers\Admin\SettingController::class)->only(['index', 'store']);
-            Route::get('live-editor', [\App\Http\Controllers\Admin\LiveEditorController::class, 'index'])->name('live-editor.index');
-            Route::post('live-editor', [\App\Http\Controllers\Admin\LiveEditorController::class, 'store'])->name('live-editor.store');
+            Route::resource('users', UserController::class)->except(['show']);
+            Route::resource('settings', SettingController::class)->only(['index', 'store']);
+            Route::get('live-editor', [LiveEditorController::class, 'index'])->name('live-editor.index');
+            Route::post('live-editor', [LiveEditorController::class, 'store'])->name('live-editor.store');
         });
         // Phase 3: Submissions & HR
-        Route::post('messages/bulk-delete', [\App\Http\Controllers\Admin\ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-delete');
-        Route::post('quotations/bulk-delete', [\App\Http\Controllers\Admin\QuotationRequestController::class, 'bulkDestroy'])->name('quotations.bulk-delete');
+        Route::post('messages/bulk-delete', [ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-delete');
+        Route::post('quotations/bulk-delete', [QuotationRequestController::class, 'bulkDestroy'])->name('quotations.bulk-delete');
 
-        Route::post('applications/{application}/reply', [\App\Http\Controllers\Admin\JobApplicationController::class, 'reply'])->name('applications.reply');
-        Route::post('messages/{message}/reply', [\App\Http\Controllers\Admin\ContactMessageController::class, 'reply'])->name('messages.reply');
-        Route::post('quotations/{quotation}/reply', [\App\Http\Controllers\Admin\QuotationRequestController::class, 'reply'])->name('quotations.reply');
+        Route::post('applications/{application}/reply', [JobApplicationController::class, 'reply'])->name('applications.reply');
+        Route::post('messages/{message}/reply', [ContactMessageController::class, 'reply'])->name('messages.reply');
+        Route::post('quotations/{quotation}/reply', [QuotationRequestController::class, 'reply'])->name('quotations.reply');
 
-        Route::resource('jobs', \App\Http\Controllers\Admin\JobController::class);
-        Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->only(['index', 'show', 'update', 'destroy']);
-        Route::resource('messages', \App\Http\Controllers\Admin\ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
-        Route::resource('quotations', \App\Http\Controllers\Admin\QuotationRequestController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('jobs', JobController::class);
+        Route::resource('applications', JobApplicationController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('messages', ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
+        Route::resource('quotations', QuotationRequestController::class)->only(['index', 'show', 'update', 'destroy']);
 
         // Protected file downloads — files are on private disk, auth required
-        Route::get('applications/{application}/resume', function(\App\Models\JobApplication $application) {
-            $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+        Route::get('applications/{application}/resume', function (JobApplication $application) {
+            $disk = Storage::disk(config('filesystems.default'));
             abort_unless($disk->exists($application->resume_path), 404);
+
             return $disk->download($application->resume_path);
-        })->name('admin.applications.resume.download');
+        })->name('applications.resume.download');
 
-        Route::get('applications/{application}/portfolio', function(\App\Models\JobApplication $application) {
+        Route::get('applications/{application}/portfolio', function (JobApplication $application) {
             abort_unless($application->portfolio_path, 404);
-            $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+            $disk = Storage::disk(config('filesystems.default'));
             abort_unless($disk->exists($application->portfolio_path), 404);
-            return $disk->download($application->portfolio_path);
-        })->name('admin.applications.portfolio.download');
 
-        Route::get('quotations/{quotation}/attachment', function(\App\Models\QuotationRequest $quotation) {
+            return $disk->download($application->portfolio_path);
+        })->name('applications.portfolio.download');
+
+        Route::get('quotations/{quotation}/attachment', function (QuotationRequest $quotation) {
             abort_unless($quotation->attachment_path, 404);
-            $disk = \Illuminate\Support\Facades\Storage::disk(config('filesystems.default'));
+            $disk = Storage::disk(config('filesystems.default'));
             abort_unless($disk->exists($quotation->attachment_path), 404);
+
             return $disk->download($quotation->attachment_path);
-        })->name('admin.quotations.attachment.download');
+        })->name('quotations.attachment.download');
     });
 });
 
 require __DIR__.'/auth.php';
-
-
-Route::get('/migrate-supabase', function() {
-    \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true, '--seed' => true]);
-    return 'Database Migration & Seeding completed successfully!';
-});
-

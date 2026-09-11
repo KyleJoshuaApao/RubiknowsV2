@@ -17,8 +17,17 @@ class JobApplication extends Model
         'cover_letter',
         'resume_path',
         'portfolio_path',
-        'status'
+        'status',
+        'reply_message',
+        'replied_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'replied_at' => 'datetime',
+        ];
+    }
 
     public function job()
     {

@@ -17,6 +17,15 @@ class ContactMessage extends Model
         'subject',
         'message',
         'attachment_path',
-        'status'
+        'status',
+        'reply_message',
+        'replied_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'replied_at' => 'datetime',
+        ];
+    }
 }

@@ -1,26 +1,40 @@
 <?php
 
 // Vercel serverless overrides — must run before Laravel boots
-$storagePath = '/tmp/storage';
+// Use /tmp for storage on Vercel since the filesystem is read-only except for /tmp
+$isVercel = getenv('VERCEL') === '1';
+$storagePath = $isVercel ? '/tmp/storage' : 'storage';
+
 putenv("APP_STORAGE=$storagePath");
 $_ENV['APP_STORAGE'] = $storagePath;
 putenv('LOG_CHANNEL=stderr');
 $_ENV['LOG_CHANNEL'] = 'stderr';
 
-$directories = [
-    "$storagePath/logs",
-    "$storagePath/framework/views",
-    "$storagePath/framework/cache/data",
-    "$storagePath/framework/sessions",
-    "$storagePath/bootstrap/cache",
-];
+// Only try to create directories if not on Vercel (where /tmp is already writable)
+// or if we're using a local storage path
+if (!$isVercel) {
+    $directories = [
+        "$storagePath/logs",
+        "$storagePath/framework/views",
+        "$storagePath/framework/cache/data",
+        "$storagePath/framework/sessions",
+        "$storagePath/bootstrap/cache",
+    ];
 
-foreach ($directories as $dir) {
-    if (!is_dir($dir)) {
-        mkdir($dir, 0777, true);
+    foreach ($directories as $dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+    }
+} else {
+    // On Vercel, ensure the bootstrap/cache directory exists in /tmp
+    $bootstrapCacheDir = $storagePath . '/bootstrap/cache';
+    if (!is_dir($bootstrapCacheDir)) {
+        mkdir($bootstrapCacheDir, 0777, true);
     }
 }
 
+// Set Laravel cache and session paths
 $_ENV['APP_SERVICES_CACHE'] = "$storagePath/bootstrap/cache/services.php";
 $_ENV['APP_PACKAGES_CACHE'] = "$storagePath/bootstrap/cache/packages.php";
 $_ENV['APP_CONFIG_CACHE'] = "$storagePath/bootstrap/cache/config.php";

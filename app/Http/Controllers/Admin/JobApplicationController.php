@@ -3,17 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\JobApplicationReplyRequest;
+use App\Http\Requests\Admin\JobApplicationRequest;
+use App\Mail\AdminReplyNotification;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\AdminReplyNotification;
+use Illuminate\Support\Facades\Storage;
 
 class JobApplicationController extends Controller
 {
     public function index()
     {
         $applications = JobApplication::with('job')->latest()->paginate(15);
+
         return view('admin.applications.index', compact('applications'));
     }
 
@@ -27,19 +31,21 @@ class JobApplicationController extends Controller
         $data = $request->validated();
 
         $application->update(['status' => $data['status']]);
+
         return back()->with('success', 'Application status updated.');
     }
 
     public function destroy(JobApplication $application)
     {
         if ($application->resume_path) {
-            Storage::disk('public')->delete($application->resume_path);
+            Storage::disk(config('filesystems.default'))->delete($application->resume_path);
         }
         if ($application->portfolio_path) {
-            Storage::disk('public')->delete($application->portfolio_path);
+            Storage::disk(config('filesystems.default'))->delete($application->portfolio_path);
         }
-        
+
         $application->delete();
+
         return redirect()->route('admin.applications.index')->with('success', 'Application deleted.');
     }
 
@@ -64,7 +70,8 @@ class JobApplicationController extends Controller
             $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
             Mail::to($application->email)->send(new AdminReplyNotification($application->name, $data['reply_message'], $subject, $senderName));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Mail Error (Reply): ' . $e->getMessage());
+            Log::error('Mail Error (Reply): '.$e->getMessage());
+
             return back()->with('error', 'Reply saved, but email could not be sent.');
         }
 

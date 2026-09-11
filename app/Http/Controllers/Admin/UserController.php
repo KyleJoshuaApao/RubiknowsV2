@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
@@ -19,11 +20,10 @@ class UserController extends Controller
         $this->fileUploadService = $fileUploadService;
     }
 
-
-
     public function index()
     {
         $users = User::latest()->paginate(10);
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -34,7 +34,18 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        $data = $request->validated();
 
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo_url'] = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos');
+        }
+
+        unset($data['profile_photo'], $data['password_confirmation']);
+        $data['role'] = 'Admin';
+
+        User::create($data);
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
     public function update(Request $request, User $user)

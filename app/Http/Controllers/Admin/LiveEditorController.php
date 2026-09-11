@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\LiveEditorRequest;
 use App\Models\Setting;
-use Illuminate\Http\Request;
 
 class LiveEditorController extends Controller
 {

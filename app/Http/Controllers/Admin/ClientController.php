@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ClientRequest;
 use App\Models\Client;
 use App\Services\FileUploadService;
-use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
@@ -19,6 +19,7 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::latest()->paginate(10);
+
         return view('admin.clients.index', compact('clients'));
     }
 
@@ -45,12 +46,14 @@ class ClientController extends Controller
         return view('admin.clients.edit', compact('client'));
     }
 
-    public function update(Request $request, Client $client)
+    public function update(ClientRequest $request, Client $client)
     {
         $data = $request->validated();
 
-
-        unset($data['logo']); // Remove logo from validated data as it's handled separately
+        unset($data['logo']);
+        if ($request->hasFile('logo')) {
+            $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients', $client->logo_url);
+        }
 
         $client->update($data);
 

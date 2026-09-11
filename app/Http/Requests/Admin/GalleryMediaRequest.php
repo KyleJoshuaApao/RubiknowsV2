@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GalleryMediaRequest extends FormRequest
@@ -17,7 +18,7 @@ class GalleryMediaRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -26,7 +27,7 @@ class GalleryMediaRequest extends FormRequest
             'type' => 'required|string|in:Photo,Video',
             'category' => 'required|string|max:100',
             'album_name' => 'nullable|string|max:100',
-            'media_file' => 'nullable|file|mimes:jpeg,png,jpg,webp,mp4,mov|max:20480',
+            'media_file' => ($this->isMethod('post') ? 'required' : 'nullable').'|file|mimes:jpeg,png,jpg,webp,mp4,mov|max:20480',
         ];
     }
 }

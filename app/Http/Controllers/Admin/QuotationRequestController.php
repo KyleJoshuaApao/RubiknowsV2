@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ReplyQuotationRequest;
+use App\Http\Requests\Admin\UpdateQuotationRequest;
+use App\Mail\AdminReplyNotification;
 use App\Models\QuotationRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\AdminReplyNotification;
 
 class QuotationRequestController extends Controller
 {
@@ -15,6 +18,7 @@ class QuotationRequestController extends Controller
     {
         $quotations = QuotationRequest::latest()->paginate(15);
         $engineers = User::all();
+
         return view('admin.quotations.index', compact('quotations', 'engineers'));
     }
 
@@ -24,6 +28,7 @@ class QuotationRequestController extends Controller
 
         return view('admin.quotations.show', compact('quotation', 'engineers'));
     }
+
     public function update(UpdateQuotationRequest $request, QuotationRequest $quotation)
     {
         $data = $request->validated();
@@ -36,10 +41,12 @@ class QuotationRequestController extends Controller
     public function bulkDestroy(Request $request)
     {
         $ids = $request->input('ids', []);
-        if (!empty($ids)) {
+        if (! empty($ids)) {
             QuotationRequest::whereIn('id', $ids)->delete();
+
             return redirect()->route('admin.quotations.index')->with('success', 'Selected quotation requests deleted successfully.');
         }
+
         return redirect()->route('admin.quotations.index')->with('error', 'No quotation requests selected.');
     }
 
@@ -64,7 +71,8 @@ class QuotationRequestController extends Controller
             $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
             Mail::to($quotation->email)->send(new AdminReplyNotification($quotation->name, $data['reply_message'], $subject, $senderName));
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Mail Error (Reply): ' . $e->getMessage());
+            Log::error('Mail Error (Reply): '.$e->getMessage());
+
             return back()->with('error', 'Reply saved, but email could not be sent.');
         }
 

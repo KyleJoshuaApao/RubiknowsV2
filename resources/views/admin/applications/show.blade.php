@@ -42,7 +42,7 @@
                                     <p class="text-xs text-gray-500">Provided by applicant</p>
                                 </div>
                             </div>
-                            <a href="{{ Storage::url($application->resume_path) }}" target="_blank" class="px-3 py-1.5 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm">View</a>
+                            <a href="{{ route('admin.applications.resume.download', $application) }}" target="_blank" class="px-3 py-1.5 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm">View</a>
                         </div>
                     @else
                         <p class="text-sm text-gray-500 italic">No resume attached.</p>
@@ -57,7 +57,7 @@
                                     <p class="text-xs text-gray-500">Provided by applicant</p>
                                 </div>
                             </div>
-                            <a href="{{ Storage::url($application->portfolio_path) }}" target="_blank" class="px-3 py-1.5 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm">View</a>
+                            <a href="{{ route('admin.applications.portfolio.download', $application) }}" target="_blank" class="px-3 py-1.5 bg-white border border-gray-300 rounded text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm">View</a>
                         </div>
                     @endif
                 </div>

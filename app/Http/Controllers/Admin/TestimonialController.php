@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TestimonialRequest;
 use App\Models\Testimonial;
-use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
 {
     public function index()
     {
         $testimonials = Testimonial::latest()->paginate(10);
+
         return view('admin.testimonials.index', compact('testimonials'));
     }
 

@@ -3,9 +3,9 @@
     "builds": [
         {
             "src": "api/index.php",
-            "use": "vercel-php@0.9.0",
+            "use": "vercel-php@0.8.0",
             "config": {
-                "buildCommand": "composer update && npm install --ignore-scripts && npm run build"
+                "buildCommand": "composer update && npm install --ignore-scripts && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache"
             }
         },
         {
@@ -30,6 +30,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "true",
+        "APP_KEY": "base64:Ggm40JLaIAXXK5v+qMTGgusJ4i9xmXMcPaLEKxOKYoI=",
         "CACHE_STORE": "array",
         "SESSION_DRIVER": "cookie",
         "QUEUE_CONNECTION": "sync",
