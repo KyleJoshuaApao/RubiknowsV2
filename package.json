@@ -3,7 +3,7 @@
     "name": "rubiknows",
     "private": true,
     "scripts": {
-        "build": "bash build-patch.sh && vite build",
+        "build": "vite build",
         "dev": "vite"
     },
     "devDependencies": {
