@@ -2,5 +2,6 @@ storage/app/public/**
 public/storage
 vercel-dry.json
 bootstrap/cache/*.php
+vendor/
 node_modules/
 public/hot
