@@ -2,45 +2,46 @@
 
 // Vercel serverless overrides — must run before Laravel boots
 // Use /tmp for storage on Vercel since the filesystem is read-only except for /tmp
-$isVercel = getenv('VERCEL') === '1';
-$storagePath = $isVercel ? '/tmp/storage' : 'storage';
+$storagePath = '/tmp/storage';
+
+// DEBUGGING: Catch all errors and print them to the screen so we can see what's actually failing
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+set_exception_handler(function ($e) {
+    http_response_code(500);
+    echo "<h1>Fatal Exception!</h1>";
+    echo "<pre>" . print_r($e, true) . "</pre>";
+    exit(1);
+});
+
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        http_response_code(500);
+        echo "<h1>Fatal PHP Error!</h1>";
+        echo "<pre>" . print_r($error, true) . "</pre>";
+    }
+});
 
 putenv("APP_STORAGE=$storagePath");
 $_ENV['APP_STORAGE'] = $storagePath;
 putenv('LOG_CHANNEL=stderr');
 $_ENV['LOG_CHANNEL'] = 'stderr';
 
-// Only try to create directories if not on Vercel (where /tmp is already writable)
-// or if we're using a local storage path
-if (!$isVercel) {
-    $directories = [
-        "$storagePath/logs",
-        "$storagePath/framework/views",
-        "$storagePath/framework/cache/data",
-        "$storagePath/framework/sessions",
-        "$storagePath/bootstrap/cache",
-    ];
+// Ensure all necessary directories exist in /tmp
+$directories = [
+    "$storagePath/logs",
+    "$storagePath/framework/views",
+    "$storagePath/framework/cache/data",
+    "$storagePath/framework/sessions",
+    "$storagePath/bootstrap/cache",
+    "/tmp/views",
+];
 
-    foreach ($directories as $dir) {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-    }
-} else {
-    // On Vercel, ensure all necessary directories exist in /tmp
-    $directories = [
-        "$storagePath/logs",
-        "$storagePath/framework/views",
-        "$storagePath/framework/cache/data",
-        "$storagePath/framework/sessions",
-        "$storagePath/bootstrap/cache",
-        "/tmp/views",
-    ];
-
-    foreach ($directories as $dir) {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
+foreach ($directories as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
     }
 }
 

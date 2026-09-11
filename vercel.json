@@ -5,7 +5,7 @@
             "src": "api/index.php",
             "use": "vercel-php@0.8.0",
             "config": {
-                "buildCommand": "composer update && npm install --ignore-scripts && npm run build && php artisan config:cache && php artisan route:cache && php artisan view:cache"
+                "buildCommand": "composer update && npm install --ignore-scripts && npm run build"
             }
         },
         {
