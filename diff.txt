@@ -1,0 +1,30 @@
+diff --git a/package.json b/package.json
+index 6d6c7d4..8f585a1 100644
+--- a/package.json
++++ b/package.json
+@@ -2,7 +2,6 @@
+     "$schema": "https://www.schemastore.org/package.json",
+     "name": "rubiknows",
+     "private": true,
+-    "type": "module",
+     "scripts": {
+         "build": "bash build-patch.sh && vite build",
+         "dev": "vite"
+diff --git a/vercel.json b/vercel.json
+index 12fa4c8..94acf9b 100644
+--- a/vercel.json
++++ b/vercel.json
+@@ -8,12 +8,7 @@
+     },
+     "routes": [
+         {
+-            "src": "/(build|css|gallery|images|js|storage)/(.*)",
+-            "dest": "/public/$1/$2"
+-        },
+-        {
+-            "src": "/(favicon\\.ico|robots\\.txt|LOGO\\.png|RK3\\.png|RK3-email\\.png|RK3-cropped\\.png)",
+-            "dest": "/public/$1"
++            "handle": "filesystem"
+         },
+         {
+             "src": "/(.*)",
