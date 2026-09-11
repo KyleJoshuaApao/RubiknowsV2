@@ -18,20 +18,23 @@ fi
 
 echo "Found $PHP_FILES to patch"
 
+PATCH_FAILED=false
+
 for PHP_FILE in $PHP_FILES; do
   if [ -n "$PHP_FILE" ] && [ -f "$PHP_FILE" ]; then
     echo "Processing $PHP_FILE"
 
-    # Check if filesystem is writable by attempting to create a temporary file
-    if touch "$PHP_FILE.testwrite" 2>/dev/null; then
-      # Filesystem is writable, create backup
-      rm -f "$PHP_FILE.testwrite"
+    # Check if we can write to this file's directory (for backup)
+    FILE_DIR=$(dirname "$PHP_FILE")
+    if touch "$FILE_DIR/test_write_$$" 2>/dev/null; then
+      # Writable filesystem - create backup
+      rm -f "$FILE_DIR/test_write_$$"
       cp "$PHP_FILE" "$PHP_FILE.backup"
-      BACKUP_CREATED=true
+      BACKUP_AVAILABLE=true
     else
-      # Filesystem is read-only, skip backup
-      echo "Warning: Filesystem is read-only, skipping backup for $PHP_FILE"
-      BACKUP_CREATED=false
+      # Read-only filesystem - skip backup
+      echo "Warning: Read-only filesystem detected for $PHP_FILE, skipping backup"
+      BACKUP_AVAILABLE=false
     fi
 
     # Perform patches
@@ -42,19 +45,25 @@ for PHP_FILE in $PHP_FILES; do
     if grep -q "launcher.js" "$PHP_FILE"; then
       echo "Successfully patched vercel-php handler in $PHP_FILE"
       # Clean up backup if we created one
-      if [ "$BACKUP_CREATED" = true ]; then
+      if [ "$BACKUP_AVAILABLE" = true ]; then
         rm -f "$PHP_FILE.backup"
       fi
     else
-      echo "Error: Failed to patch $PHP_FILE"
+      echo "Error: Failed to patch $PHP_FILE - launcher.js not found after patching"
+      PATCH_FAILED=true
       # Restore backup if we created one
-      if [ "$BACKUP_CREATED" = true ] && [ -f "$PHP_FILE.backup" ]; then
+      if [ "$BACKUP_AVAILABLE" = true ] && [ -f "$PHP_FILE.backup" ]; then
         mv "$PHP_FILE.backup" "$PHP_FILE"
         echo "Restored original file from backup"
       fi
-      exit 1
     fi
   fi
 done
 
+if [ "$PATCH_FAILED" = true ]; then
+  echo "One or more files failed to patch"
+  exit 1
+fi
+
 echo "Vercel-php patching completed"
+exit 0
