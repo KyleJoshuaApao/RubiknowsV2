@@ -27,12 +27,23 @@ if (!$isVercel) {
         }
     }
 } else {
-    // On Vercel, ensure the bootstrap/cache directory exists in /tmp
-    $bootstrapCacheDir = $storagePath . '/bootstrap/cache';
-    if (!is_dir($bootstrapCacheDir)) {
-        mkdir($bootstrapCacheDir, 0777, true);
+    // On Vercel, ensure all necessary directories exist in /tmp
+    $directories = [
+        "$storagePath/logs",
+        "$storagePath/framework/views",
+        "$storagePath/framework/cache/data",
+        "$storagePath/framework/sessions",
+        "$storagePath/bootstrap/cache",
+        "/tmp/views",
+    ];
+
+    foreach ($directories as $dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
     }
 }
+
 
 // Set Laravel cache and session paths
 $_ENV['APP_SERVICES_CACHE'] = "$storagePath/bootstrap/cache/services.php";
