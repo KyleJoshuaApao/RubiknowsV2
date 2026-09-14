@@ -22,18 +22,19 @@
         <meta property="og:url"         content="{{ url()->current() }}">
         <meta property="og:title"       content="{{ $pageTitle }}">
         <meta property="og:description" content="{{ $seoDescription }}">
-        <meta property="og:image"       content="{{ asset('LOGO.png') }}">
+        <meta property="og:image"       content="{{ config('logo_base64') }}">
         <meta property="og:site_name"   content="{{ $companyName }}">
         <meta name="twitter:card"        content="summary_large_image">
-        <meta name="twitter:title"       content="{{ $pageTitle }}">
+        <meta name="twitter:title"       content="{{ $seoDescription }}">
         <meta name="twitter:description" content="{{ $seoDescription }}">
-        <meta name="twitter:image"       content="{{ asset('LOGO.png') }}">
+        <meta name="twitter:image"       content="{{ config('logo_base64') }}">
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('LOGO.png') }}">
+        <link rel="icon" type="image/png" href="{{ config('logo_base64') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="dns-prefetch" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,900|dm-serif-display:400,400i&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
@@ -41,14 +42,17 @@
         
         <style>
             /* Custom Scrollbar for Mega Menus */
-            .mega-menu-scroll::-webkit-scrollbar {
-                width: 6px;
-            }
-            .mega-menu-scroll::-webkit-scrollbar-track {
-                background: #f1f1f1; 
-            }
-            .mega-menu-scroll::-webkit-scrollbar-thumb {
-                background: #E0A92A; 
+            .mega-menu-scroll::-webkit-scrollbar { width: 6px; }
+            .mega-menu-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+            .mega-menu-scroll::-webkit-scrollbar-thumb { background: #E0A92A; }
+
+            /* Page-transition progress bar */
+            #rk-progress-bar {
+                position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+                background: linear-gradient(90deg, #E07B2A, #f5a623);
+                z-index: 99999; transition: width 0.25s ease;
+                box-shadow: 0 0 8px rgba(224,123,42,0.6);
+                pointer-events: none;
             }
         </style>
     </head>
@@ -67,7 +71,7 @@
                     <div class="absolute inset-0 bg-white  shadow-md -z-10 pointer-events-none"></div>
                     
                     <a href="{{ route('public.home') }}" class="flex items-center gap-3 pl-4 sm:pl-8 lg:pl-12 pr-16 lg:pr-32 py-2">
-                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="h-14 sm:h-16 lg:h-20 w-auto">
+                        <x-logo class="h-14 sm:h-16 lg:h-20 w-auto" />
                         <div class="flex flex-col mt-1">
                             <span class="flex items-baseline">
                                 <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-richblack-950">RUBI</span>
@@ -145,7 +149,54 @@
             </div>
         </header>
 
-        <!-- ===== MAIN CONTENT ===== -->
+        <!-- ===== PAGE TRANSITION BAR ===== -->
+        <div id="rk-progress-bar"></div>
+
+        <!-- ===== INLINE FLASH BANNER ===== -->
+        @php $flashSuccess = session()->pull('success'); $flashError = session()->pull('error'); @endphp
+        @if($flashSuccess)
+        <div id="rk-flash-banner" role="alert" style="background:#166534;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700;font-size:15px;letter-spacing:.02em;">
+            <span style="display:flex;align-items:center;gap:10px;">
+                <svg style="width:22px;height:22px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                {{ $flashSuccess }}
+            </span>
+            <button onclick="document.getElementById('rk-flash-banner').remove()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;" aria-label="Dismiss">
+                <svg style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        @endif
+        @if($flashError)
+        <div id="rk-flash-banner-err" role="alert" style="background:#7f1d1d;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700;font-size:15px;letter-spacing:.02em;">
+            <span style="display:flex;align-items:center;gap:10px;">
+                <svg style="width:22px;height:22px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                {{ $flashError }}
+            </span>
+            <button onclick="document.getElementById('rk-flash-banner-err').remove()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;" aria-label="Dismiss">
+                <svg style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        @endif
+
+        {{-- Auto-dismiss flash banners after 5 seconds --}}
+        @if($flashSuccess || $flashError)
+        <script>
+        (function(){
+            function dismiss(id, delay) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                setTimeout(function(){
+                    el.style.transition = 'opacity 0.5s';
+                    el.style.opacity = '0';
+                    setTimeout(function(){ el && el.remove(); }, 500);
+                }, delay);
+            }
+            dismiss('rk-flash-banner', 5000);
+            dismiss('rk-flash-banner-err', 7000);
+        })();
+        </script>
+        @endif
+
+
         <main class="flex-grow">
             {{ $slot }}
         </main>
@@ -161,7 +212,7 @@
                     <!-- Brand Section -->
                     <div class="lg:col-span-5 pr-8">
                         <a href="{{ route('public.home') }}" class="inline-flex items-center gap-3 mb-8">
-                            <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="h-24 w-auto">
+                            <x-logo class="h-24 w-auto" />
                             <span class="flex items-baseline">
                                 <span class="text-3xl sm:text-4xl font-light tracking-tight text-gray-200">RUBI</span><span class="text-3xl sm:text-4xl font-bold tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
                             </span>
@@ -254,6 +305,42 @@
                 </div>
             </div>
         </footer>
+
+        <!-- ===== PAGE TRANSITION SCRIPT ===== -->
+        <script>
+        (function () {
+            var bar = document.getElementById('rk-progress-bar');
+            var timer;
+            function startProgress() {
+                clearTimeout(timer);
+                bar.style.width = '0%';
+                bar.style.transition = 'none';
+                requestAnimationFrame(function () {
+                    bar.style.transition = 'width 8s ease';
+                    bar.style.width = '85%';
+                });
+            }
+            function finishProgress() {
+                bar.style.transition = 'width 0.2s ease';
+                bar.style.width = '100%';
+                timer = setTimeout(function () {
+                    bar.style.transition = 'opacity 0.3s';
+                    bar.style.opacity = '0';
+                    setTimeout(function () { bar.style.width = '0'; bar.style.opacity = '1'; }, 300);
+                }, 200);
+            }
+            document.addEventListener('click', function (e) {
+                var link = e.target.closest('a');
+                if (!link) return;
+                var href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
+                startProgress();
+            });
+            document.addEventListener('submit', function () { startProgress(); });
+            window.addEventListener('pageshow', function () { finishProgress(); });
+            window.addEventListener('load', function () { finishProgress(); });
+        })();
+        </script>
 
         <!-- ===== TOAST NOTIFICATION SYSTEM ===== -->
         <div id="rk-toast-container" class="fixed top-5 right-5 z-[99999] flex flex-col gap-3 pointer-events-none" aria-live="polite"></div>

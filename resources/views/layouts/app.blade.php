@@ -14,7 +14,7 @@
         </title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('LOGO.png') }}">
+        <link rel="icon" type="image/png" href="{{ config('logo_base64') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,7 @@
             <!-- Branding -->
             <div class="h-20 flex items-center px-6 bg-richblack-950 relative z-10 border-b-4 border-brand-500 rounded-none">
                 <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
-                    <img src="{{ asset('RK3.png') }}" alt="Rubiknows Logo" class="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105">
+                    <x-logo class="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
                     <span class="text-2xl tracking-tight">
                         <span class="text-white font-light">RUBI</span><span class="text-brand-500 font-bold">KNOWS</span>
                     </span>
@@ -415,7 +415,7 @@
                 </div>
                 <!-- Logo watermark -->
                 <div class="absolute bottom-3 left-6 flex items-center gap-1.5 opacity-30 select-none">
-                    <img src="{{ asset('LOGO.png') }}" alt="" class="h-4 w-auto">
+                    <x-logo class="h-4 w-auto" alt="" />
                     <span class="text-[9px] font-bold tracking-widest text-gray-400 uppercase">RubiKnows</span>
                 </div>
             </div>

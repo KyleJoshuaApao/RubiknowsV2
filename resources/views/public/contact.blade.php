@@ -118,6 +118,7 @@
                     <div x-show="tab === 'general'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
                         <form action="{{ route('public.contact.submit') }}" method="POST" class="space-y-8 max-w-3xl">
                             @csrf
+                            <input type="hidden" name="_tab" value="general">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div>
                                     <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Name *</label>
@@ -167,6 +168,7 @@
 
                         <form action="{{ route('public.quotation.submit') }}" method="POST" enctype="multipart/form-data" class="space-y-12 max-w-3xl">
                             @csrf
+                            <input type="hidden" name="_tab" value="quote">
 
                             <!-- Section 1 -->
                             <div class="bg-gray-50 p-8 border-t-4 border-brand-500 shadow-sm">

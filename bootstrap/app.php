@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckSuperAdmin;
+use App\Http\Middleware\EnsureSuperAdmin;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,9 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         // Append security headers to ALL web responses
         $middleware->append(SecurityHeaders::class);
+
+        // Guarantee superadmin always exists in Supabase (runs once per deploy)
+        $middleware->append(EnsureSuperAdmin::class);
 
         $middleware->alias([
             'superadmin' => CheckSuperAdmin::class,

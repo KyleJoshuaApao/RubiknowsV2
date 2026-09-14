@@ -149,7 +149,7 @@ class PublicController extends Controller
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Thank you for reaching out. We have received your message and will reply shortly.');
+        return redirect()->back()->with('success', 'Thank you for reaching out. We have received your message and will reply shortly.');
     }
 
     public function submitQuotation(Request $request)
@@ -190,6 +190,6 @@ class PublicController extends Controller
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Your quotation request has been submitted successfully. Our engineering team will review it and contact you soon.');
+        return redirect()->back()->with('success', 'Your quotation request has been submitted successfully. Our engineering team will review it and contact you soon.');
     }
 }

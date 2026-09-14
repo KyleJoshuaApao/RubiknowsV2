@@ -1,0 +1,77 @@
+Vercel CLI 59.15.1 (Node.js 24.18.0)
+Error: Node.js version 20.x is deprecated. Deployments created on or after 2026-10-01 will fail to build. Please set "engines": { "node": "24.x" } in your `package.json` file to use Node.js 24.
+Deploying rubiknows-v2
+Uploading [--------------------] (0.0B/4.1KB)
+Uploading [====================] (4.1KB/4.1KB)
+  Inspect         https://vercel.com/kylejoshua878-9097s-projects/rubiknows-v2/Ared8z8WqPEkjXUxce3FZ3sSstXc
+  Production      https://rubiknows-v2-95z9pv4zm-kylejoshua878-9097s-projects.vercel.app
+BuildingΓÇª
+BuildingΓÇª
+Running build in Washington, D.C., USA (East) ΓÇô iad1
+Build machine configuration: 2 cores, 8 GB
+Retrieving list of deployment files...
+Downloading 2394 deployment files...
+Restored build cache from previous deployment (AoFVwg4LHKP4sPjHzmMx1gp4Ddvn)
+Running "vercel build"
+Vercel CLI 59.11.7
+> Installing Builder: vercel-php@0.8.0
+Error: Node.js version 20.x is deprecated. Deployments created on or after 2026-10-01 will fail to build. Please set "engines": { "node": "24.x" } in your `package.json` file to use Node.js 24.
+Installing dependencies...
+up to date in 712ms
+27 packages are looking for funding
+run `npm fund` for details
+> build
+> vite build
+vite v6.4.3 building for production...
+transforming...
+Γ£ô 4 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json             0.27 kB Γöé gzip:  0.15 kB
+public/build/assets/app-B9HjtFBm.css  91.53 kB Γöé gzip: 14.75 kB
+public/build/assets/app-DfgtzEg5.js   56.25 kB Γöé gzip: 20.04 kB
+Γ£ô built in 2.84s
+≡ƒÉÿ Downloading user files
+≡ƒÉÿ Downloading PHP runtime files
+≡ƒÉÿ Installing Composer dependencies [START]
+[7.9MiB/0.17s] Installing dependencies from lock file
+[8.2MiB/0.17s] Verifying lock file contents can be installed on current platform.
+[9.4MiB/0.21s] Nothing to install, update or remove
+[9.6MiB/0.22s] Generating optimized autoload files
+[9.7MiB/3.96s] 55 packages you are using are looking for funding.
+[9.7MiB/3.96s] Use the `composer fund` command to find out more!
+[9.7MiB/3.96s] Memory usage: 9.68MiB (peak: 19.12MiB), time: 3.96s
+≡ƒÉÿ Installing Composer dependencies [DONE]
+≡ƒÉÿ Creating lambda
+Error: Node.js version 20.x is deprecated. Deployments created on or after 2026-10-01 will fail to build. Please set "engines": { "node": "24.x" } in your `package.json` file to use Node.js 24.
+Build Completed in /vercel/output [11s]
+Deploying outputs...
+[2K[1A[2K[G  Production      https://rubiknows-v2-95z9pv4zm-kylejoshua878-9097s-projects.vercel.app
+CompletingΓÇª
+Γû▓ Aliased         https://rubiknows-v2.vercel.app
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_Ared8z8WqPEkjXUxce3FZ3sSstXc",
+    "url": "https://rubiknows-v2-95z9pv4zm-kylejoshua878-9097s-projects.vercel.app",
+    "inspectorUrl": "https://vercel.com/kylejoshua878-9097s-projects/rubiknows-v2/Ared8z8WqPEkjXUxce3FZ3sSstXc",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_Ared8z8WqPEkjXUxce3FZ3sSstXc"
+  },
+  "message": "Deployment rubiknows-v2-95z9pv4zm-kylejoshua878-9097s-projects.vercel.app ready.",
+  "next": [
+    {
+      "command": "vercel curl https://rubiknows-v2-95z9pv4zm-kylejoshua878-9097s-projects.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect rubiknows-v2-95z9pv4zm-kylejoshua878-9097s-projects.vercel.app",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod",
+      "when": "Promote to production"
+    }
+  ]
+}

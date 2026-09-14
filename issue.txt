@@ -1,0 +1,104 @@
+## Bug report
+
+- **vercel-php versions tested:** `0.8.0`, `0.9.0`
+- **Node.js version tested:** `22.x` (also reproducible with platform default `24.x`)
+- **Vercel function region:** `sin1`
+- **First observed:** 2026-08-12 (coincides with Vercel Managed Images rollout on 2026-08-10)
+
+## Description
+
+New Vercel deployments build successfully, but every invocation crashes **before** the PHP/Laravel entrypoint executes.
+
+The runtime log is:
+
+```text
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/var/task/launcher.launcher'
+  imported from /opt/rust/nodejs.js
+    at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+    at moduleResolve (node:internal/modules/esm/resolve:865:10)
+    at defaultResolve (node:internal/modules/esm/resolve:992:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+    at #resolve (node:internal/modules/esm/loader:683:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+    at node:internal/modules/esm/loader:632:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///var/task/launcher.launcher'
+}
+Application exited with code 1.
+```
+
+Example request ID:
+
+```text
+sin1:sin1::kvthm-1786551936674-da2b94ddaae8
+```
+
+## Relevant configuration
+
+Application environment values have been omitted:
+
+```json
+{
+  "version": 2,
+  "buildCommand": "echo skip-build",
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.9.0",
+      "includeFiles": "database/database.sqlite"
+    }
+  },
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/api/index.php" }
+  ]
+}
+```
+
+The same failure occurs with `vercel-php@0.8.0`.
+
+## Expected behavior
+
+The generated `launcher.js` should be loaded and its exported `launcher` handler invoked.
+
+## Actual behavior
+
+The Vercel Rust/Node bootstrap (`/opt/rust/nodejs.js`, part of the 2026-08-10 Vercel Managed Images rollout) appears to import the complete handler string `launcher.launcher` as a **literal ESM file path**:
+
+```text
+/var/task/launcher.launcher
+```
+
+The current runtime source creates `launcher.js` in `getLauncherFiles()` and configures the Lambda handler as `launcher.launcher`:
+
+- `src/utils.ts` — `getLauncherFiles()` produces `launcher.js` (from `launchers/builtin.js`)
+- `src/index.ts` — `new Lambda({ handler: 'launcher.launcher', ... })`
+
+This is the AWS Lambda `<module>.<export>` handler convention (`launcher.js` → export `launcher`). The previous Vercel Node bootstrap understood this convention and resolved it to `launcher.js`. The new Rust bootstrap appears to treat the entire `launcher.launcher` string as an ESM module specifier and tries to `import()` the file `/var/task/launcher.launcher`, which does not exist.
+
+## Root cause analysis (inference from stack trace)
+
+1. `getLauncherFiles()` in [`src/utils.ts`](https://github.com/vercel-community/php/blob/master/src/utils.ts) emits `launcher.js` into the Lambda bundle.
+2. `build()` in [`src/index.ts`](https://github.com/vercel-community/php/blob/master/src/index.ts) sets `handler: 'launcher.launcher'` — the AWS-style `<module>.<export>` format.
+3. The new Vercel Rust runtime (`/opt/rust/nodejs.js`, rolled out with [Vercel Managed Images on 2026-08-10](https://vercel.com/changelog/vercel-sandbox-managed-images)) no longer parses the `<module>.<export>` convention. It interprets the handler string as an ESM module path and attempts `import('/var/task/launcher.launcher')`, which fails with `ERR_MODULE_NOT_FOUND`.
+
+This is an inference from the stack trace, not a confirmed Vercel platform change. However, the timing (first observed 2026-08-12) aligns with the Vercel Managed Images rollout, and the error message clearly shows the bootstrap treating `launcher.launcher` as a file path rather than a `module.export` pair.
+
+## Troubleshooting already completed
+
+- Upgraded `vercel-php@0.8.0` → `0.9.0` — **same error persists**
+- Forced fresh Preview and Production deployments (`vercel --prod --force`) — **same error**
+- Pinned Node.js to `22.x` via `.nvmrc` (vercel-php's documented supported version) — **same error** (the Rust bootstrap is platform-level, not Node-version-dependent)
+- Confirmed the crash occurs **before** application code runs (no PHP/Laravel logs)
+- Confirmed Vercel project has **no Dashboard-configured environment variables** (all from `vercel.json` `env` block, applies to both Preview and Production) — **not an env var issue**
+- Verified both `sin1` Production and Preview deployments exhibit identical behavior
+
+## Questions
+
+1. Could you confirm whether the runtime needs to change its handler/output format for the current Vercel bootstrap (e.g., emit `launcher.mjs` and set `handler: 'launcher'` or `handler: 'launcher.mjs'`)?
+2. Or is this a Vercel platform regression where the new Rust bootstrap dropped support for the AWS-style `<module>.<export>` handler convention used by `@vercel/build-utils` `Lambda`?
+
+Any guidance on a temporary workaround would also be appreciated — the project is currently unable to deploy.

@@ -16,14 +16,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        // Create superadmin user
-        User::create([
-            'name' => 'Super Admin',
-            'email' => 'Kylejoshua878@gmail.com',
-            'password' => Hash::make('Ellah878#'),
-            'role' => 'Super Admin',
-        ]);
+        // Upsert superadmin — safe to run on every deploy.
+        // Uses updateOrCreate so it never fails on duplicate email.
+        User::updateOrCreate(
+            ['email' => 'Kylejoshua878@gmail.com'],
+            [
+                'name'     => 'Super Admin',
+                'password' => Hash::make('Ellah878#'),
+                'role'     => 'Super Admin',
+            ]
+        );
     }
 }

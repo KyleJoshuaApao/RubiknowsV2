@@ -18,7 +18,7 @@
         </title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ asset('LOGO.png') }}">
+        <link rel="icon" type="image/png" href="{{ config('logo_base64') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -38,7 +38,7 @@
                 <!-- Logo -->
                 <div class="mb-10">
                     <div class="w-36 h-36 bg-transparent flex items-center justify-center">
-                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows Logo" class="w-28 h-28 object-contain">
+                        <x-logo class="w-28 h-28 object-contain" />
                     </div>
                 </div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight font-['Roboto_Slab'] mb-2">
@@ -56,7 +56,7 @@
                 <!-- Mobile Logo (hidden on desktop) -->
                 <div class="flex justify-center mb-6 lg:hidden">
                     <a href="/" class="inline-block transform transition duration-300 hover:scale-105">
-                        <img src="{{ asset('RK3.png') }}" alt="RubiKnows" class="w-16 object-contain">
+                        <x-logo class="w-16 object-contain" />
                     </a>
                 </div>
 
