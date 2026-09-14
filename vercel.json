@@ -1,6 +1,7 @@
 {
   "version": 2,
   "framework": null,
+  "installCommand": "npm install && bash build-patch.sh",
   "buildCommand": "npm run build",
   "functions": {
     "api/index.php": {
