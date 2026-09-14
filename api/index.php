@@ -12,7 +12,7 @@ set_exception_handler(function ($e) {
     http_response_code(500);
     echo "<h1>Fatal Exception!</h1>";
     echo "<pre>" . print_r($e, true) . "</pre>";
-    exit(1);
+    exit(0);
 });
 
 register_shutdown_function(function () {
@@ -64,5 +64,14 @@ putenv('SESSION_DRIVER=cookie');
 $_ENV['CACHE_STORE'] = 'array';
 $_SERVER['CACHE_STORE'] = 'array';
 putenv('CACHE_STORE=array');
+
+// Force Vercel to use Postgres and S3 to prevent data loss on cold starts
+$_ENV['DB_CONNECTION'] = 'pgsql';
+$_SERVER['DB_CONNECTION'] = 'pgsql';
+putenv('DB_CONNECTION=pgsql');
+
+$_ENV['FILESYSTEM_DISK'] = 's3';
+$_SERVER['FILESYSTEM_DISK'] = 's3';
+putenv('FILESYSTEM_DISK=s3');
 
 require __DIR__ . '/../public/index.php';
