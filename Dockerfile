@@ -9,8 +9,9 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    nodejs \
-    npm
+    gnupg \
+    && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+    && apt-get install -y nodejs
 
 # Install PHP extensions needed for Laravel and PostgreSQL (Supabase)
 RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip

@@ -10,8 +10,8 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Optional: Run database migrations automatically on every deploy
-# php artisan migrate --force
+# Fix permissions on cached files so Apache can read/write them
+chown -R www-data:www-data bootstrap/cache storage
 
 # Start Apache in the foreground
 apache2-foreground
