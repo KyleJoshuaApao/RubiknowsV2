@@ -28,7 +28,7 @@ class JobController extends Controller
 
         Job::create($data);
 
-        return redirect()->route('admin.jobs.create')->with('success', 'Job posting created successfully.');
+        return redirect()->route('admin.jobs.index')->with('success', 'Job posting created successfully.');
     }
 
     public function show(Job $job)

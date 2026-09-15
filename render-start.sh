@@ -15,6 +15,7 @@ php artisan view:cache
 mkdir -p storage/app/public storage/app/private
 php artisan storage:link --force
 chown -R www-data:www-data bootstrap/cache storage
+chmod -R 775 bootstrap/cache storage
 
 # Start Apache in the foreground
 apache2-foreground
