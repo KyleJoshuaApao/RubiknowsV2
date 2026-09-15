@@ -33,11 +33,8 @@
 
             <!-- Branding -->
             <div class="h-20 flex items-center px-6 bg-richblack-950 relative z-10 border-b-4 border-brand-500 rounded-none">
-                <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
+                <a href="{{ url('/') }}" class="flex items-center gap-2.5 group bg-white px-2 py-1 rounded">
                     <x-logo class="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
-                    <span class="text-2xl tracking-tight">
-                        <span class="text-white font-light">RUBI</span><span class="text-brand-500 font-bold">KNOWS</span>
-                    </span>
                 </a>
             </div>
 
