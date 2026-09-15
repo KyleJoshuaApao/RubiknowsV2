@@ -86,10 +86,8 @@ class PublicController extends Controller
 
         $job = Job::where('title', $data['job_title'])->first();
 
-        // Store on the configured default disk (local or s3)
-        $disk = config('filesystems.default');
-        $resumePath    = $request->file('resume')->store('applications/resumes', $disk);
-        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', $disk) : null;
+        $resumePath    = $request->file('resume')->store('applications/resumes', 'public');
+        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', 'public') : null;
 
         $application = JobApplication::create([
             'job_id' => $job ? $job->id : null,
@@ -104,7 +102,7 @@ class PublicController extends Controller
 
         try {
             Mail::to(Setting::getAdminEmail())->send(new NewJobApplicationNotification($application));
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }
 
