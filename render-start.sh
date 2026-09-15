@@ -2,6 +2,7 @@
 
 # Render assigns a dynamic port via the PORT environment variable.
 # We need to tell Apache to listen on this port instead of the default 80.
+echo "ServerName localhost" >> /etc/apache2/apache2.conf
 sed -i "s/Listen 80/Listen ${PORT:-80}/g" /etc/apache2/ports.conf
 sed -i "s/:80/:${PORT:-80}/g" /etc/apache2/sites-available/000-default.conf
 
