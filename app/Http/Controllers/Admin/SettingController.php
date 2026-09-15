@@ -30,6 +30,8 @@ class SettingController extends Controller
             );
         }
 
+        \Illuminate\Support\Facades\Cache::forget('site_settings');
+
         return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully.');
     }
 }
