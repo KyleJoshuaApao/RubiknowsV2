@@ -21,18 +21,12 @@ class SettingController extends Controller
         // Validate that only allowed settings keys are being updated
         $data = $request->validated();
 
-        // Get all settings from database to validate keys
-        $allowedKeys = Setting::pluck('key')->toArray();
+        $data = Arr::except($data, ['_token', '_method']);
 
-        $data = Arr::except($data, '_token');
-
-        // Filter to only allowed keys
-        $filteredData = array_intersect_key($data, array_flip($allowedKeys));
-
-        foreach ($filteredData as $key => $value) {
+        foreach ($data as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key],
-                ['value' => $value]
+                ['value' => $value ?? '']
             );
         }
 
