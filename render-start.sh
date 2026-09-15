@@ -12,6 +12,8 @@ php artisan route:cache
 php artisan view:cache
 
 # Fix permissions on cached files so Apache can read/write them
+mkdir -p storage/app/public storage/app/private
+php artisan storage:link --force
 chown -R www-data:www-data bootstrap/cache storage
 
 # Start Apache in the foreground
