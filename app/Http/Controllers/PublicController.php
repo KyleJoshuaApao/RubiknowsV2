@@ -86,8 +86,8 @@ class PublicController extends Controller
 
         $job = Job::where('title', $data['job_title'])->first();
 
-        $resumePath    = $request->file('resume')->store('applications/resumes', 'public');
-        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios', 'public') : null;
+        $resumePath    = $request->file('resume')->store('applications/resumes');
+        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios') : null;
 
         $application = JobApplication::create([
             'job_id' => $job ? $job->id : null,

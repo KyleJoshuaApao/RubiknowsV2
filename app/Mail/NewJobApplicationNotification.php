@@ -56,18 +56,14 @@ class NewJobApplicationNotification extends Mailable
     {
         $attachments = [];
 
-        if ($this->application->resume_path) {
-            $resumePath = storage_path('app/public/' . $this->application->resume_path);
-            if (file_exists($resumePath)) {
-                $attachments[] = Attachment::fromPath($resumePath);
-            }
+        $disk = config('filesystems.default');
+
+        if ($this->application->resume_path && \Illuminate\Support\Facades\Storage::disk($disk)->exists($this->application->resume_path)) {
+            $attachments[] = Attachment::fromStorageDisk($disk, $this->application->resume_path);
         }
 
-        if ($this->application->portfolio_path) {
-            $portfolioPath = storage_path('app/public/' . $this->application->portfolio_path);
-            if (file_exists($portfolioPath)) {
-                $attachments[] = Attachment::fromPath($portfolioPath);
-            }
+        if ($this->application->portfolio_path && \Illuminate\Support\Facades\Storage::disk($disk)->exists($this->application->portfolio_path)) {
+            $attachments[] = Attachment::fromStorageDisk($disk, $this->application->portfolio_path);
         }
 
         return $attachments;
