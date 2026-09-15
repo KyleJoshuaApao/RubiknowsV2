@@ -35,6 +35,9 @@
             <div class="h-20 flex items-center px-6 bg-richblack-950 relative z-10 border-b-4 border-brand-500 rounded-none">
                 <a href="{{ url('/') }}" class="flex items-center gap-2.5 group">
                     <x-logo class="h-7 w-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+                    <span class="text-2xl tracking-tight">
+                        <span class="text-white font-light">RUBI</span><span class="text-brand-500 font-bold">KNOWS</span>
+                    </span>
                 </a>
             </div>
 
@@ -413,6 +416,7 @@
                 <!-- Logo watermark -->
                 <div class="absolute bottom-3 left-6 flex items-center gap-1.5 opacity-30 select-none">
                     <x-logo class="h-4 w-auto" alt="" />
+                    <span class="text-[9px] font-bold tracking-widest text-gray-400 uppercase">RubiKnows</span>
                 </div>
             </div>
         </div>

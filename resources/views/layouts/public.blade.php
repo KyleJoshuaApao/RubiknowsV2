@@ -86,6 +86,15 @@
                     
                     <a href="{{ route('public.home') }}" class="flex items-center gap-3 pl-4 sm:pl-8 lg:pl-12 pr-16 lg:pr-32 py-2">
                         <x-logo class="h-14 sm:h-16 lg:h-20 w-auto" />
+                        <div class="flex flex-col mt-1">
+                            <span class="flex items-baseline">
+                                <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-richblack-950">RUBI</span>
+                                <span class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
+                            </span>
+                            <span class="text-[10px] lg:text-[11px] font-medium text-gray-600 tracking-wider uppercase mt-0.5 whitespace-nowrap hidden sm:block">
+                                CORPORATION
+                            </span>
+                        </div>
                     </a>
                 </div>
 
@@ -218,6 +227,9 @@
                     <div class="lg:col-span-5 pr-8">
                         <a href="{{ route('public.home') }}" class="inline-flex items-center gap-3 mb-8">
                             <x-logo class="h-24 w-auto" />
+                            <span class="flex items-baseline">
+                                <span class="text-3xl sm:text-4xl font-light tracking-tight text-gray-200">RUBI</span><span class="text-3xl sm:text-4xl font-bold tracking-tight text-brand-500 ml-[1px]">KNOWS</span>
+                            </span>
                         </a>
                         <p class="text-gray-400 text-sm leading-relaxed mb-10 max-w-sm font-bold uppercase tracking-wider">
                             World-class engineering, construction, and consultancy services. We engineer the future, blending world-class precision with visionary design.

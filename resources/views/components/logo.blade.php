@@ -1,1 +1,1 @@
-<img {{ $attributes->merge(['alt' => 'RubiKnows Logo']) }} src="/RK4.jpg">
+<img {{ $attributes->merge(['alt' => 'RubiKnows Logo', 'class' => 'object-contain']) }} src="/RK4.webp">
