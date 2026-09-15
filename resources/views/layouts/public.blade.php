@@ -16,6 +16,8 @@
 
         <title>{{ $pageTitle }}</title>
         <meta name="description" content="{{ $seoDescription }}">
+        <meta name="keywords" content="Rubiknows, engineering, construction, consultancy, architecture, project management, services">
+        <link rel="canonical" href="{{ url()->current() }}">
 
         <!-- Open Graph / Social Sharing -->
         <meta property="og:type"        content="website">
@@ -25,9 +27,21 @@
         <meta property="og:image"       content="{{ config('logo_base64') }}">
         <meta property="og:site_name"   content="{{ $companyName }}">
         <meta name="twitter:card"        content="summary_large_image">
-        <meta name="twitter:title"       content="{{ $seoDescription }}">
+        <meta name="twitter:title"       content="{{ $pageTitle }}">
         <meta name="twitter:description" content="{{ $seoDescription }}">
         <meta name="twitter:image"       content="{{ config('logo_base64') }}">
+
+        <!-- JSON-LD Schema Markup -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "{{ $companyName }}",
+            "url": "{{ url('/') }}",
+            "logo": "{{ config('logo_base64') }}",
+            "description": "{{ $seoDescription }}"
+        }
+        </script>
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="{{ config('logo_base64') }}">

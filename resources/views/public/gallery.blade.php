@@ -39,7 +39,7 @@
                          style="animation-delay: {{ ($loop->index % 10) * 0.05 }}s"
                          @click="selectedImage = '{{ Storage::url($image->image_path) }}'">
                         
-                        <img src="{{ Storage::url($image->image_path) }}" 
+                        <img loading="lazy" src="{{ Storage::url($image->image_path) }}" 
                              alt="{{ $image->caption ?? 'Gallery Image' }}"
                              class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-out filter grayscale-0 group-hover:grayscale-[20%]"
                              loading="lazy">
@@ -88,7 +88,7 @@
                 
                 <div class="relative">
                     <div class="absolute -top-4 -left-4 w-16 h-16 border-t-8 border-l-8 border-brand-500 z-10 pointer-events-none"></div>
-                    <img :src="selectedImage" class="max-w-full max-h-[85vh] object-contain border-4 border-richblack-800 shadow-2xl" @click.stop>
+                    <img loading="lazy" :src="selectedImage" class="max-w-full max-h-[85vh] object-contain border-4 border-richblack-800 shadow-2xl" @click.stop>
                     <div class="absolute -bottom-4 -right-4 w-16 h-16 border-b-8 border-r-8 border-brand-500 z-10 pointer-events-none"></div>
                 </div>
             </div>

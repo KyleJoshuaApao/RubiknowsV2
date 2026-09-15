@@ -40,7 +40,7 @@
 
                         @if($service->image_path)
                             <div class="aspect-[4/3] w-full overflow-hidden border-b-4 border-richblack-900">
-                                <img src="{{ Storage::url($service->image_path) }}" alt="{{ $service->title }}"
+                                <img loading="lazy" src="{{ Storage::url($service->image_path) }}" alt="{{ $service->title }}"
                                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out grayscale group-hover:grayscale-0">
                             </div>
                         @else
@@ -162,7 +162,7 @@
                             <p class="text-gray-700 italic leading-relaxed mb-4">{!! $testimonial->content !!}</p>
                             <div class="flex items-center mt-4">
                                 @if($testimonial->image_path)
-                                    <img src="{{ Storage::url($testimonial->image_path) }}" alt="{{ $testimonial->name }}" class="w-12 h-12 rounded-full object-cover mr-3">
+                                    <img loading="lazy" src="{{ Storage::url($testimonial->image_path) }}" alt="{{ $testimonial->name }}" class="w-12 h-12 rounded-full object-cover mr-3">
                                 @else
                                     <div class="w-12 h-12 bg-gray-200 rounded-flex items-center justify-center">
                                         <span class="text-white font-bold">{{ substr($testimonial->name, 0, 1) }}</span>

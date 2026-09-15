@@ -6,7 +6,7 @@
         <section class="relative h-[85vh] min-h-[600px] flex items-center bg-black  mb-0">
             <!-- Background Image -->
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2500&auto=format&fit=crop"
+                <img loading="lazy" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2500&auto=format&fit=crop"
                     alt="Engineering Excellence"
                     class="w-full h-full object-cover opacity-50">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/90 to-transparent"></div>
@@ -147,7 +147,7 @@
                         style="animation-delay: {{ $loop->index * 0.12 }}s">
                         @if($project->cover_image_path)
                         <div class="relative h-80 overflow-hidden bg-black">
-                            <img src="{{ Storage::url($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100">
+                            <img loading="lazy" src="{{ Storage::url($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <div class="absolute top-5 left-5 z-20">
                                 <span class="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider">{{ $project->category }}</span>
@@ -267,7 +267,7 @@
                         <p class="text-gray-700 italic text-base leading-relaxed mb-8">"{{ $testimonial->quote }}"</p>
                         <div class="flex items-center pt-6 border-t border-gray-200">
                             @if($testimonial->avatar_path)
-                            <img class="h-14 w-14 object-cover mr-4 border-2 border-black" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
+                            <img loading="lazy" class="h-14 w-14 object-cover mr-4 border-2 border-black" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
                             @else
                             <div class="h-14 w-14 bg-black text-white flex items-center justify-center font-bold text-xl mr-4">
                                 {{ substr($testimonial->client_name, 0, 1) }}
@@ -318,7 +318,7 @@
                     <article class="group cursor-pointer">
                         <div class="relative h-60 overflow-hidden bg-white mb-6">
                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                            <img src="https://images.unsplash.com/photo-1541888086925-0c13d4b68e96?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1541888086925-0c13d4b68e96?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute top-4 left-4 z-20">
                                 <span class="px-3 py-1 bg-black text-white text-[10px] font-bold tracking-wide">Press Release</span>
                             </div>
@@ -338,7 +338,7 @@
                     <article class="group cursor-pointer">
                         <div class="relative h-60 overflow-hidden bg-white mb-6">
                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute top-4 left-4 z-20">
                                 <span class="px-3 py-1 bg-black text-white text-[10px] font-bold tracking-wide">Whitepaper</span>
                             </div>
@@ -358,7 +358,7 @@
                     <article class="group cursor-pointer">
                         <div class="relative h-60 overflow-hidden bg-white mb-6">
                             <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                            <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                            <img loading="lazy" src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
                             <div class="absolute top-4 left-4 z-20">
                                 <span class="px-3 py-1 bg-black text-white text-[10px] font-bold tracking-wide">Culture</span>
                             </div>

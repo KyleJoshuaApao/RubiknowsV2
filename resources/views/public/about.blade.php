@@ -8,7 +8,7 @@
     <!-- ===== KIMLEY-HORN STYLE HERO ===== -->
     <section class="relative h-[60vh] min-h-[500px] flex items-center bg-gray-900 rounded-none mb-12">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=80&w=2500&auto=format&fit=crop"
+            <img loading="lazy" src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=80&w=2500&auto=format&fit=crop"
                  alt="RubiKnows Team"
                  class="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-1000">
             <div class="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-transparent"></div>
@@ -45,7 +45,7 @@
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
             <div class="relative w-full aspect-video overflow-hidden shadow-2xl group cursor-pointer border-4 border-richblack-900">
                 <!-- Video/Image Background -->
-                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop"
+                <img loading="lazy" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000&auto=format&fit=crop"
                      alt="Making a Difference"
                      class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale group-hover:grayscale-0">
                 <div class="absolute inset-0 bg-brand-500/20 group-hover:bg-transparent transition-colors duration-500"></div>
@@ -72,7 +72,7 @@
                 <!-- Value 1 -->
                 <div class="group relative block bg-white border-t-4 border-brand-500 shadow-lg hover:-translate-y-1 transition-transform duration-200">
                     <div class="aspect-[4/3] overflow-hidden border-b-4 border-richblack-900">
-                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="People">
+                        <img loading="lazy" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="People">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-richblack-900 uppercase tracking-tight mb-3">Our People</h3>
@@ -83,7 +83,7 @@
                 <!-- Value 2 -->
                 <div class="group relative block bg-white border-t-4 border-brand-500 shadow-lg hover:-translate-y-1 transition-transform duration-200">
                     <div class="aspect-[4/3] overflow-hidden border-b-4 border-richblack-900">
-                        <img src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="Diversity">
+                        <img loading="lazy" src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="Diversity">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-richblack-900 uppercase tracking-tight mb-3">Diversity & Inclusion</h3>
@@ -94,7 +94,7 @@
                 <!-- Value 3 -->
                 <div class="group relative block bg-white border-t-4 border-brand-500 shadow-lg hover:-translate-y-1 transition-transform duration-200">
                     <div class="aspect-[4/3] overflow-hidden border-b-4 border-richblack-900">
-                        <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="Client Service">
+                        <img loading="lazy" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 grayscale group-hover:grayscale-0" alt="Client Service">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-richblack-900 uppercase tracking-tight mb-3">Client Service</h3>
