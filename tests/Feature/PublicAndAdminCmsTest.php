@@ -262,6 +262,28 @@ class PublicAndAdminCmsTest extends TestCase
         $this->assertDatabaseMissing('job_applications', ['id' => $application->id]);
     }
 
+    public function test_public_job_application_can_be_submitted_with_files(): void
+    {
+        Mail::fake();
+        Storage::fake(config('filesystems.default'));
+
+        $this->post(route('public.careers.apply'), [
+            'job_title' => 'Site Engineer',
+            'name' => 'Applicant',
+            'email' => 'applicant@example.com',
+            'phone' => '09171234567',
+            'message' => 'I would like to apply.',
+            'resume' => UploadedFile::fake()->create('resume.pdf', 10, 'application/pdf'),
+            'portfolio' => UploadedFile::fake()->create('portfolio.zip', 10, 'application/zip'),
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('job_applications', [
+            'name' => 'Applicant',
+            'email' => 'applicant@example.com',
+            'status' => 'Received',
+        ]);
+    }
+
     private function superAdmin(): User
     {
         return User::factory()->create([
