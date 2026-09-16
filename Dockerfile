@@ -17,6 +17,9 @@ RUN apt-get update && apt-get install -y \
 # Install PHP extensions needed for Laravel and PostgreSQL (Supabase)
 RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip intl
 
+# Align PHP's multipart limits with the largest validated admin/public uploads.
+COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 # Enable Apache mod_rewrite for Laravel routing
 RUN a2enmod rewrite
 

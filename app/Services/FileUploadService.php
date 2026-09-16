@@ -24,11 +24,6 @@ class FileUploadService
             return $oldFilePath;
         }
 
-        // Delete the old file if it exists
-        if ($oldFilePath) {
-            $this->delete($oldFilePath);
-        }
-
         // Generate a short, safe filename using UUID + actual extension (not what the client claims)
         $extension = strtolower($file->extension()) ?: 'jpg';
         
@@ -40,8 +35,22 @@ class FileUploadService
 
         $filename  = (string) \Illuminate\Support\Str::uuid() . '.' . $extension;
 
-        // Store the file and return its path
-        return $file->storeAs($directory, $filename, $disk);
+        try {
+            $path = $file->storeAs($directory, $filename, $disk);
+        } catch (\Throwable $exception) {
+            throw new \RuntimeException('The uploaded file could not be stored.', 0, $exception);
+        }
+
+        if (!is_string($path) || $path === '') {
+            throw new \RuntimeException('The uploaded file could not be stored.');
+        }
+
+        // Keep the old file until the replacement has been safely persisted.
+        if ($oldFilePath) {
+            $this->delete($oldFilePath, $disk);
+        }
+
+        return $path;
     }
 
     /**

@@ -34,24 +34,29 @@
 
             <div class="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
                 @forelse($media as $image)
+                    @php($mediaUrl = Storage::disk('public')->url($image->url))
                     <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
-                         class="break-inside-avoid group cursor-zoom-in relative overflow-hidden bg-gray-100 border-b-4 border-transparent hover:border-brand-500 transition-all duration-300 shadow-sm hover:shadow-xl"
+                         class="break-inside-avoid group relative overflow-hidden bg-gray-100 border-b-4 border-transparent hover:border-brand-500 transition-all duration-300 shadow-sm hover:shadow-xl"
                          style="animation-delay: {{ ($loop->index % 10) * 0.05 }}s"
-                         @click="selectedImage = '{{ Storage::disk('public')->url($image->image_path) }}'">
-                        
-                        <img loading="lazy" src="{{ Storage::disk('public')->url($image->image_path) }}"
-                             alt="{{ $image->caption ?? 'Gallery Image' }}"
-                             class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-out filter grayscale-0 group-hover:grayscale-[20%]"
-                             loading="lazy">
-                        
-                        @if($image->caption)
-                            <div class="absolute inset-0 bg-richblack-950/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-8 border-t-4 border-brand-500 transform translate-y-4 group-hover:translate-y-0">
-                                <p class="text-white text-xl font-black uppercase tracking-widest mb-2">{{ $image->caption }}</p>
-                                @if($image->category)
-                                    <p class="text-brand-500 text-sm font-bold uppercase tracking-widest">{{ $image->category }}</p>
-                                @endif
-                            </div>
+                         @if($image->type === 'Photo') @click="selectedImage = @js($mediaUrl)" role="button" tabindex="0" @keydown.enter="selectedImage = @js($mediaUrl)" @endif>
+
+                        @if($image->type === 'Video')
+                            <video controls preload="metadata" class="w-full h-auto bg-richblack-900" aria-label="{{ $image->title }}">
+                                <source src="{{ $mediaUrl }}">
+                                Your browser does not support the video tag.
+                            </video>
+                        @else
+                            <img loading="lazy" src="{{ $mediaUrl }}"
+                                 alt="{{ $image->title }}"
+                                 class="w-full h-auto cursor-zoom-in object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-[20%]">
                         @endif
+
+                        <div class="absolute inset-x-0 bottom-0 bg-richblack-950/80 p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <p class="text-lg font-black uppercase tracking-widest text-white">{{ $image->title }}</p>
+                            @if($image->category)
+                                <p class="mt-2 text-sm font-bold uppercase tracking-widest text-brand-500">{{ $image->category }}</p>
+                            @endif
+                        </div>
                     </div>
                 @empty
                     <div class="col-span-full text-center py-24 bg-gray-50 border-4 border-gray-100 break-inside-avoid w-full">

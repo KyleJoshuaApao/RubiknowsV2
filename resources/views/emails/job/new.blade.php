@@ -19,7 +19,7 @@
                     <tr>
                         <td align="center" style="padding: 40px 40px 30px; background-color: #ffffff; border-bottom: 3px solid #E0A92A;">
                             <div style="font-size: 44px; font-weight: 900; letter-spacing: -1px; text-transform: uppercase; line-height: 1; display: flex; align-items: center; justify-content: center;">
-                                <img src="{{ $message->embed(public_path('RK4.jpg')) }}" alt="RK4" style="height: 100px; vertical-align: middle; margin-right: 20px;">
+                                <img src="{{ asset('RK4.jpg') }}" alt="RK4" style="height: 100px; vertical-align: middle; margin-right: 20px;">
                                 <div style="display: inline-block; vertical-align: middle; margin-top: 25px;">
                                     <span style="color: #18181b; font-weight: 300;">RUBI</span><span style="color: #E0A92A;">KNOWS</span>
                                 </div>

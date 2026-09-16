@@ -33,7 +33,11 @@ class ClientController extends Controller
         $data = $request->validated();
         unset($data['logo']); // Remove logo from validated data as it's handled separately
         if ($request->hasFile('logo')) {
-            $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients');
+            try {
+                $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients');
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('logo', $exception);
+            }
         }
 
         Client::create($data);
@@ -52,7 +56,11 @@ class ClientController extends Controller
 
         unset($data['logo']);
         if ($request->hasFile('logo')) {
-            $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients', $client->logo_url);
+            try {
+                $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients', $client->logo_url);
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('logo', $exception);
+            }
         }
 
         $client->update($data);

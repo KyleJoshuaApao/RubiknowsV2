@@ -1,5 +1,7 @@
 <?php
 
+$publicUploadRoot = env('PUBLIC_STORAGE_PATH', storage_path('app/public'));
+
 return [
 
     /*
@@ -42,10 +44,10 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => $publicUploadRoot,
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
-            'throw' => false,
+            'throw' => true,
             'report' => false,
         ],
 
@@ -76,7 +78,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage') => $publicUploadRoot,
     ],
 
 ];

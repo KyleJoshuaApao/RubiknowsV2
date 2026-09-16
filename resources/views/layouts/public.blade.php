@@ -393,5 +393,6 @@ window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode
 @endif
         })();
         </script>
+        @stack('scripts')
     </body>
 </html>

@@ -32,7 +32,11 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('image_file')) {
-            $data['image_url'] = $this->fileUploadService->upload($request->file('image_file'), 'projects');
+            try {
+                $data['image_url'] = $this->fileUploadService->upload($request->file('image_file'), 'projects');
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('image_file', $exception);
+            }
         }
 
         Project::create($data);
@@ -49,7 +53,11 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
         if ($request->hasFile('image_file')) {
-            $data['image_url'] = $this->fileUploadService->upload($request->file('image_file'), 'projects', $project->image_url);
+            try {
+                $data['image_url'] = $this->fileUploadService->upload($request->file('image_file'), 'projects', $project->image_url);
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('image_file', $exception);
+            }
         }
 
         $project->update($data);

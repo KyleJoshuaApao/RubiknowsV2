@@ -13,10 +13,13 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\User;
-use App\Mail\NewJobApplicationNotification;
+use App\Services\FileUploadService;
+use App\Jobs\SendNewJobApplicationNotification;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -42,6 +45,37 @@ class PublicAndAdminCmsTest extends TestCase
         ] as $uri) {
             $this->get($uri)->assertOk();
         }
+    }
+
+    public function test_public_services_page_links_to_each_service_detail_page(): void
+    {
+        $service = Service::create([
+            'title' => 'Structural Audit',
+            'short_description' => 'Independent structural review.',
+        ]);
+
+        $this->get(route('public.services'))
+            ->assertOk()
+            ->assertSee(route('public.service-details', $service));
+
+        $this->get(route('public.service-details', $service))
+            ->assertOk()
+            ->assertSee('Structural Audit');
+    }
+
+    public function test_public_gallery_renders_the_uploaded_media_title_and_url(): void
+    {
+        $media = GalleryMedia::create([
+            'title' => 'Bridge construction progress',
+            'type' => 'Photo',
+            'category' => 'Construction Progress',
+            'url' => 'gallery/bridge.webp',
+        ]);
+
+        $this->get(route('public.gallery'))
+            ->assertOk()
+            ->assertSee('Bridge construction progress')
+            ->assertSee(Storage::disk('public')->url($media->url));
     }
 
     public function test_admin_cms_pages_render_successfully(): void
@@ -173,6 +207,48 @@ class PublicAndAdminCmsTest extends TestCase
         $this->assertDatabaseHas('career_jobs', ['title' => 'Senior Site Engineer']);
     }
 
+    public function test_project_upload_failures_return_a_field_error_instead_of_a_server_error(): void
+    {
+        $this->actingAs($this->superAdmin());
+        $this->app->instance(FileUploadService::class, new class extends FileUploadService {
+            public function upload(?UploadedFile $file, string $directory = 'uploads', ?string $oldFilePath = null, string $disk = self::PUBLIC_UPLOAD_DISK): ?string
+            {
+                throw new \RuntimeException('The upload disk is unavailable.');
+            }
+        });
+
+        $this->post(route('admin.projects.store'), [
+            'title' => 'Project with unavailable upload disk',
+            'image_file' => UploadedFile::fake()->create('bridge.jpg', 10, 'image/jpeg'),
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors('image_file');
+
+        $this->assertDatabaseMissing('projects', ['title' => 'Project with unavailable upload disk']);
+    }
+
+    public function test_gallery_upload_failures_return_a_field_error_instead_of_a_server_error(): void
+    {
+        $this->actingAs($this->superAdmin());
+        $this->app->instance(FileUploadService::class, new class extends FileUploadService {
+            public function upload(?UploadedFile $file, string $directory = 'uploads', ?string $oldFilePath = null, string $disk = self::PUBLIC_UPLOAD_DISK): ?string
+            {
+                throw new \RuntimeException('The upload disk is unavailable.');
+            }
+        });
+
+        $this->post(route('admin.gallery.store'), [
+            'title' => 'Gallery item with unavailable upload disk',
+            'type' => 'Photo',
+            'category' => 'General',
+            'media_file' => UploadedFile::fake()->create('site.jpg', 10, 'image/jpeg'),
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors('media_file');
+
+        $this->assertDatabaseMissing('gallery_media', ['title' => 'Gallery item with unavailable upload disk']);
+    }
+
     public function test_super_admin_can_create_users_and_update_settings(): void
     {
         $this->actingAs($this->superAdmin());
@@ -193,6 +269,14 @@ class PublicAndAdminCmsTest extends TestCase
 
         $this->assertDatabaseHas('settings', ['key' => 'company_name', 'value' => 'RubiKnows Engineering']);
         $this->assertDatabaseMissing('settings', ['key' => 'unexpected_key']);
+    }
+
+    public function test_blank_company_notification_email_falls_back_to_the_configured_sender(): void
+    {
+        config(['mail.from.address' => 'notifications@example.com']);
+        Setting::create(['key' => 'contact_email', 'value' => '   ']);
+
+        $this->assertSame('notifications@example.com', Setting::getAdminEmail());
     }
 
     public function test_admin_replies_and_workflow_updates_persist(): void
@@ -274,7 +358,8 @@ class PublicAndAdminCmsTest extends TestCase
 
     public function test_public_job_application_can_be_submitted_with_files(): void
     {
-        Mail::fake();
+        Bus::fake();
+        Setting::create(['key' => 'contact_email', 'value' => 'hr@example.com']);
         config(['filesystems.default' => 's3']);
         Storage::fake('local');
         Storage::fake('s3');
@@ -294,13 +379,64 @@ class PublicAndAdminCmsTest extends TestCase
             'email' => 'applicant@example.com',
             'status' => 'Received',
         ]);
-        Mail::assertQueued(NewJobApplicationNotification::class);
+        Bus::assertDispatched(SendNewJobApplicationNotification::class, function (SendNewJobApplicationNotification $job) {
+            return $job->recipient === 'hr@example.com';
+        });
 
         $application = JobApplication::where('email', 'applicant@example.com')->firstOrFail();
         Storage::disk('local')->assertExists($application->resume_path);
         Storage::disk('local')->assertExists($application->portfolio_path);
         Storage::disk('s3')->assertMissing($application->resume_path);
         Storage::disk('s3')->assertMissing($application->portfolio_path);
+    }
+
+    public function test_career_application_validation_restores_entered_values_and_shows_the_resume_error(): void
+    {
+        $this->followingRedirects()
+            ->from(route('public.careers'))
+            ->post(route('public.careers.apply'), [
+                'job_title' => 'General Application',
+                'name' => 'Applicant',
+                'email' => 'applicant@example.com',
+            ])
+            ->assertOk()
+            ->assertSee('value="Applicant"', false)
+            ->assertSee('The resume field is required.');
+    }
+
+    public function test_job_application_notification_uses_resend_over_https_with_attachments(): void
+    {
+        config([
+            'services.resend.key' => 're_test_key',
+            'mail.from.address' => 'careers@rubiknows.test',
+            'mail.from.name' => 'RubiKnows Careers',
+        ]);
+        Storage::fake(JobApplication::UPLOAD_DISK);
+        Storage::disk(JobApplication::UPLOAD_DISK)->put('applications/resumes/resume.pdf', 'resume file');
+
+        $application = JobApplication::create([
+            'name' => 'Applicant',
+            'email' => 'applicant@example.com',
+            'resume_path' => 'applications/resumes/resume.pdf',
+            'status' => 'Received',
+        ]);
+
+        Http::fake([
+            'https://api.resend.com/emails' => Http::response(['id' => 'email-id'], 200),
+        ]);
+
+        (new SendNewJobApplicationNotification($application->id, 'hr@example.com'))->handle();
+
+        Http::assertSent(function ($request) {
+            $data = $request->data();
+
+            return $request->url() === 'https://api.resend.com/emails'
+                && $request->hasHeader('Authorization', 'Bearer re_test_key')
+                && $request->hasHeader('Idempotency-Key')
+                && $data['to'] === ['hr@example.com']
+                && $data['attachments'][0]['filename'] === 'resume.pdf'
+                && $data['attachments'][0]['content'] === base64_encode('resume file');
+        });
     }
 
     private function superAdmin(): User

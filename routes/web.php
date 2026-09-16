@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Storage;
 Route::get('/', [PublicController::class, 'index'])->name('public.home');
 Route::get('/about', [PublicController::class, 'about'])->name('public.about');
 Route::get('/services', [PublicController::class, 'services'])->name('public.services');
+Route::get('/services/{service}', [PublicController::class, 'serviceDetails'])->name('public.service-details');
 Route::get('/projects', [PublicController::class, 'projects'])->name('public.projects');
 Route::get('/projects/{project}', [PublicController::class, 'projectDetails'])->name('public.project-details');
 Route::get('/gallery', [PublicController::class, 'gallery'])->name('public.gallery');

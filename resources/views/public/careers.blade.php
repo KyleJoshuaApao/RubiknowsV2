@@ -29,7 +29,7 @@
     </section>
 
     <!-- ===== CONTENT ===== -->
-    <section class="py-24 lg:py-32 bg-gray-50" x-data="{ applyFor: '{{ request('job') }}' }">
+    <section class="py-24 lg:py-32 bg-gray-50" x-data="{ applyFor: @js(old('job_title', request('job'))), submitting: false }">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
                 
@@ -76,7 +76,7 @@
                                         <svg class="w-5 h-5 ml-2 transform transition-transform" stroke-width="3" :class="{'rotate-180': expanded}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
                                     </button>
                                     
-                                    <div x-show="expanded" x-collapse class="mt-8 pt-8 border-t-2 border-gray-100">
+                                    <div x-show="expanded" x-transition class="mt-8 pt-8 border-t-2 border-gray-100">
                                         <div class="rich-text text-sm font-medium text-gray-700">
                                             <p class="font-black text-richblack-900 uppercase tracking-widest mb-4">Requirements:</p>
                                             {!! nl2br(e($job->requirements)) !!}
@@ -110,7 +110,7 @@
                             <p class="text-sm font-bold text-gray-500">Fill out the form below to apply. If you don't see a fitting role, you can select "General Application".</p>
                         </div>
                         
-                        <form action="{{ route('public.careers.apply') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+                        <form action="{{ route('public.careers.apply') }}" method="POST" enctype="multipart/form-data" class="space-y-8" @submit="submitting = true" :aria-busy="submitting.toString()">
                             @csrf
 
                             @error('application')
@@ -126,26 +126,41 @@
                                         <option value="{{ $job->title }}">{{ $job->title }}</option>
                                     @endforeach
                                 </select>
+                                @error('job_title')
+                                    <p class="mt-2 text-sm font-bold text-red-700">{{ $message }}</p>
+                                @enderror
                             </div>
                             
                             <div>
                                 <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Full Name *</label>
-                                <input type="text" name="name" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="John Doe">
+                                <input type="text" name="name" value="{{ old('name') }}" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="John Doe">
+                                @error('name')
+                                    <p class="mt-2 text-sm font-bold text-red-700">{{ $message }}</p>
+                                @enderror
                             </div>
                             
                             <div>
                                 <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Email Address *</label>
-                                <input type="email" name="email" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="john@example.com">
+                                <input type="email" name="email" value="{{ old('email') }}" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="john@example.com">
+                                @error('email')
+                                    <p class="mt-2 text-sm font-bold text-red-700">{{ $message }}</p>
+                                @enderror
                             </div>
                             
                             <div>
-                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Phone Number *</label>
-                                <input type="text" name="phone" required class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="(555) 123-4567">
+                                <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Phone Number</label>
+                                <input type="text" name="phone" value="{{ old('phone') }}" class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="(555) 123-4567">
+                                @error('phone')
+                                    <p class="mt-2 text-sm font-bold text-red-700">{{ $message }}</p>
+                                @enderror
                             </div>
                             
                             <div>
                                 <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Cover Letter / Message (Optional)</label>
-                                <textarea name="message" rows="4" class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="Briefly tell us why you're a good fit..."></textarea>
+                                <textarea name="message" rows="4" class="w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" placeholder="Briefly tell us why you're a good fit...">{{ old('message') }}</textarea>
+                                @error('message')
+                                    <p class="mt-2 text-sm font-bold text-red-700">{{ $message }}</p>
+                                @enderror
                             </div>
                             
                             <div>
@@ -153,11 +168,14 @@
                                 <p class="text-xs font-bold text-gray-500 mb-3">PDF, DOC, DOCX (Max 5MB)</p>
                                 <input type="file" name="resume" accept=".pdf,.doc,.docx" required 
                                        class="block w-full text-sm text-gray-500 font-bold file:mr-4 file:py-3 file:px-6 file:border-0 file:text-xs file:font-black file:uppercase file:tracking-widest file:bg-brand-500 file:text-white hover:file:bg-richblack-950 cursor-pointer bg-gray-50 border-0 border-b-4 border-gray-200 p-2 transition-colors">
+                                @error('resume')
+                                    <p class="mt-2 text-sm font-bold text-red-700">{{ $message }}</p>
+                                @enderror
                             </div>
                             
                             <div class="pt-6">
-                                <button type="submit" class="inline-flex items-center justify-center w-full px-8 py-4 bg-brand-500 text-white font-black text-sm tracking-widest uppercase hover:bg-gray-900 transition-colors shadow-sm">
-                                    Submit Application
+                                <button type="submit" :disabled="submitting" class="inline-flex items-center justify-center w-full px-8 py-4 bg-brand-500 text-white font-black text-sm tracking-widest uppercase hover:bg-gray-900 transition-colors shadow-sm disabled:cursor-not-allowed disabled:opacity-70">
+                                    <span x-text="submitting ? 'Submitting application…' : 'Submit Application'"></span>
                                     <svg class="ml-3 w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>
                             </div>

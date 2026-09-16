@@ -42,7 +42,11 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('profile_photo')) {
-            $user->profile_photo_url = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos', $user->profile_photo_url);
+            try {
+                $user->profile_photo_url = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos', $user->profile_photo_url);
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('profile_photo', $exception);
+            }
         }
 
         $user->save();

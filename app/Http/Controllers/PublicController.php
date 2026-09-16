@@ -13,12 +13,12 @@ use App\Models\ContactMessage;
 use App\Models\QuotationRequest;
 use App\Models\JobApplication;
 use App\Models\Setting;
+use App\Jobs\SendNewJobApplicationNotification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use App\Mail\NewContactMessageNotification;
 use App\Mail\NewQuotationRequestNotification;
-use App\Mail\NewJobApplicationNotification;
 
 class PublicController extends Controller
 {
@@ -48,6 +48,11 @@ class PublicController extends Controller
         $services = Service::latest()->get();
         $testimonials = Testimonial::where('is_published', true)->latest()->take(3)->get();
         return view('public.services', compact('services', 'testimonials'));
+    }
+
+    public function serviceDetails(Service $service)
+    {
+        return view('public.service-details', compact('service'));
     }
 
     public function projects()
@@ -133,7 +138,7 @@ class PublicController extends Controller
         }
 
         try {
-            Mail::to(Setting::getAdminEmail())->queue(new NewJobApplicationNotification($application));
+            SendNewJobApplicationNotification::dispatch($application->id, Setting::getAdminEmail());
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }

@@ -37,7 +37,11 @@ class UserController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('profile_photo')) {
-            $data['profile_photo_url'] = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos');
+            try {
+                $data['profile_photo_url'] = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos');
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('profile_photo', $exception);
+            }
         }
 
         unset($data['profile_photo'], $data['password_confirmation']);
@@ -68,7 +72,11 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('profile_photo')) {
-            $data['profile_photo_url'] = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos', $user->profile_photo_url);
+            try {
+                $data['profile_photo_url'] = $this->fileUploadService->upload($request->file('profile_photo'), 'profile_photos', $user->profile_photo_url);
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('profile_photo', $exception);
+            }
         }
 
         $user->update($data);

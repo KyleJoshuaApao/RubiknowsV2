@@ -33,7 +33,11 @@ class GalleryMediaController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('media_file')) {
-            $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery');
+            try {
+                $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery');
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('media_file', $exception);
+            }
             $data['thumbnail_url'] = $data['url'];
         }
 
@@ -49,7 +53,11 @@ class GalleryMediaController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('media_file')) {
-            $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery', $gallery->url);
+            try {
+                $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery', $gallery->url);
+            } catch (\Throwable $exception) {
+                return $this->uploadFailure('media_file', $exception);
+            }
             $data['thumbnail_url'] = $data['url'];
         }
 

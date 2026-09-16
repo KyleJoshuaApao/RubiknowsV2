@@ -23,8 +23,12 @@ class Setting extends Model
     /**
      * Get the contact email or fallback to system mail config.
      */
-    public static function getAdminEmail()
+    public static function getAdminEmail(): string
     {
-        return static::getValue('contact_email', config('mail.from.address'));
+        $email = trim((string) static::getValue('contact_email', ''));
+
+        return filter_var($email, FILTER_VALIDATE_EMAIL)
+            ? $email
+            : (string) config('mail.from.address');
     }
 }

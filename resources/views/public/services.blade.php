@@ -51,7 +51,7 @@
 
                         <div class="p-6">
                             <h3 class="text-xl font-bold text-charcoal-700 mb-3 group-hover:text-brand-500 transition-colors">{{ $service->title }}</h3>
-                            <p class="text-gray-600 text-base leading-relaxed line-height-6 mb-4">{!! $service->short_description !!}</p>
+                            <p class="text-gray-600 text-base leading-relaxed line-height-6 mb-4">{{ $service->short_description }}</p>
 
                             @if(!empty($service->features))
                                 <div class="space-y-2">
