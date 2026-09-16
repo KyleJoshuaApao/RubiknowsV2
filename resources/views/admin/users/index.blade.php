@@ -47,7 +47,7 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10  overflow-hidden bg-gray-100 flex items-center justify-center border border-gray-200">
                                         @if($user->profile_photo_url)
-                                            <img src="{{ Storage::url($user->profile_photo_url) }}" alt="{{ $user->name }}" class="h-full w-full object-cover">
+                                            <img src="{{ Storage::disk('public')->url($user->profile_photo_url) }}" alt="{{ $user->name }}" class="h-full w-full object-cover">
                                         @else
                                             <span class="text-brand-500 font-bold text-sm">{{ substr($user->name, 0, 1) }}</span>
                                         @endif

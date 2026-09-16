@@ -81,11 +81,11 @@
                     <!-- The Gold Main Wing -->
                     <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-gold-600  shadow-xl -z-10 pointer-events-none"></div>
                     
-                    <!-- The Black Logo Background -->
-                    <div class="absolute inset-0 bg-black  shadow-md -z-10 pointer-events-none"></div>
+                    <!-- The White Logo Background -->
+                    <div class="absolute inset-0 bg-white shadow-md -z-10 pointer-events-none"></div>
                     
                     <a href="{{ route('public.home') }}" class="flex items-center gap-3 pl-4 sm:pl-8 lg:pl-12 pr-16 lg:pr-32 py-2">
-                        <x-logo :dark="true" textSize="text-2xl sm:text-3xl lg:text-4xl" class="h-14 sm:h-16 lg:h-20 w-auto" />
+                        <x-logo textSize="text-2xl sm:text-3xl lg:text-4xl" class="h-14 sm:h-16 lg:h-20 w-auto" />
                     </a>
                 </div>
 

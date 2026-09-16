@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 class FileUploadService
 {
+    public const PUBLIC_UPLOAD_DISK = 'public';
+
     /**
      * Upload a file and return the stored path.
      *
@@ -16,7 +18,7 @@ class FileUploadService
      * @param string|null $oldFilePath
      * @return string|null
      */
-    public function upload(?UploadedFile $file, string $directory = 'uploads', ?string $oldFilePath = null): ?string
+    public function upload(?UploadedFile $file, string $directory = 'uploads', ?string $oldFilePath = null, string $disk = self::PUBLIC_UPLOAD_DISK): ?string
     {
         if (!$file) {
             return $oldFilePath;
@@ -39,7 +41,6 @@ class FileUploadService
         $filename  = (string) \Illuminate\Support\Str::uuid() . '.' . $extension;
 
         // Store the file and return its path
-        $disk = config('filesystems.default');
         return $file->storeAs($directory, $filename, $disk);
     }
 
@@ -49,9 +50,8 @@ class FileUploadService
      * @param string|null $filePath
      * @return void
      */
-    public function delete(?string $filePath): void
+    public function delete(?string $filePath, string $disk = self::PUBLIC_UPLOAD_DISK): void
     {
-        $disk = config('filesystems.default');
         if ($filePath && Storage::disk($disk)->exists($filePath)) {
             Storage::disk($disk)->delete($filePath);
         }

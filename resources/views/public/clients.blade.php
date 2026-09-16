@@ -41,7 +41,7 @@
                         <div class="absolute bottom-0 left-0 w-full h-1 bg-brand-500 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
 
                         @if($client->logo_path)
-                            <img loading="lazy" src="{{ Storage::url($client->logo_path) }}" 
+                            <img loading="lazy" src="{{ Storage::disk('public')->url($client->logo_path) }}"
                                  alt="{{ $client->name }}" 
                                  class="max-w-full max-h-20 object-contain filter grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-105">
                         @else

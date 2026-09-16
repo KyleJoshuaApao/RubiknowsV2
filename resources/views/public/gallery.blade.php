@@ -37,9 +37,9 @@
                     <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
                          class="break-inside-avoid group cursor-zoom-in relative overflow-hidden bg-gray-100 border-b-4 border-transparent hover:border-brand-500 transition-all duration-300 shadow-sm hover:shadow-xl"
                          style="animation-delay: {{ ($loop->index % 10) * 0.05 }}s"
-                         @click="selectedImage = '{{ Storage::url($image->image_path) }}'">
+                         @click="selectedImage = '{{ Storage::disk('public')->url($image->image_path) }}'">
                         
-                        <img loading="lazy" src="{{ Storage::url($image->image_path) }}" 
+                        <img loading="lazy" src="{{ Storage::disk('public')->url($image->image_path) }}"
                              alt="{{ $image->caption ?? 'Gallery Image' }}"
                              class="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 ease-out filter grayscale-0 group-hover:grayscale-[20%]"
                              loading="lazy">

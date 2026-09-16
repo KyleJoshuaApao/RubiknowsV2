@@ -218,7 +218,7 @@
                 <a href="{{ route('profile.edit') }}" class="flex items-center hover:bg-white/5 p-2 transition-all duration-200 group">
                     <div class="w-8 h-8 overflow-hidden bg-richblack-900 border border-gray-700 flex items-center justify-center flex-shrink-0 group-hover:border-brand-500 transition-colors">
                         @if(Auth::user()->profile_photo_url)
-                            <img src="{{ Storage::url(Auth::user()->profile_photo_url) }}" alt="{{ Auth::user()->name }}" class="h-full w-full object-cover">
+                            <img src="{{ Storage::disk('public')->url(Auth::user()->profile_photo_url) }}" alt="{{ Auth::user()->name }}" class="h-full w-full object-cover">
                         @else
                             <span class="text-white font-bold text-sm">{{ substr(Auth::user()->name, 0, 1) }}</span>
                         @endif

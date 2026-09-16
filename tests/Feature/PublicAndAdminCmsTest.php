@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Client;
 use App\Models\ContactMessage;
+use App\Models\GalleryMedia;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\Project;
@@ -86,7 +87,9 @@ class PublicAndAdminCmsTest extends TestCase
     public function test_admin_cms_can_create_and_update_content_records(): void
     {
         $this->actingAs($this->superAdmin());
-        Storage::fake(config('filesystems.default'));
+        config(['filesystems.default' => 's3']);
+        Storage::fake('public');
+        Storage::fake('s3');
 
         $this->post(route('admin.services.store'), [
             'title' => 'Structural Audit',
@@ -103,8 +106,11 @@ class PublicAndAdminCmsTest extends TestCase
         $this->post(route('admin.projects.store'), [
             'title' => 'Bridge Retrofit',
             'status' => 'Featured',
+            'image_file' => UploadedFile::fake()->create('bridge.jpg', 10, 'image/jpeg'),
         ])->assertRedirect(route('admin.projects.index'));
         $project = Project::firstOrFail();
+        Storage::disk('public')->assertExists($project->image_url);
+        Storage::disk('s3')->assertMissing($project->image_url);
 
         $this->put(route('admin.projects.update', $project), [
             'title' => 'Bridge Retrofit Updated',
@@ -119,6 +125,9 @@ class PublicAndAdminCmsTest extends TestCase
             'media_file' => UploadedFile::fake()->create('site.jpg', 10, 'image/jpeg'),
         ])->assertRedirect(route('admin.gallery.index'));
         $this->assertDatabaseHas('gallery_media', ['title' => 'Site Photo']);
+        $gallery = GalleryMedia::where('title', 'Site Photo')->firstOrFail();
+        Storage::disk('public')->assertExists($gallery->url);
+        Storage::disk('s3')->assertMissing($gallery->url);
 
         $this->post(route('admin.testimonials.store'), [
             'client_name' => 'Ava Santos',

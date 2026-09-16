@@ -47,7 +47,7 @@
                         
                         <div class="flex items-center pt-8 border-t-2 border-gray-100 mt-auto">
                             @if($testimonial->avatar_path)
-                                <img loading="lazy" class="h-16 w-16 object-cover mr-6 border-b-4 border-brand-500" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
+                                <img loading="lazy" class="h-16 w-16 object-cover mr-6 border-b-4 border-brand-500" src="{{ Storage::disk('public')->url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
                             @else
                                 <div class="h-16 w-16 bg-gray-100 text-brand-500 border-b-4 border-brand-500 flex items-center justify-center font-black text-2xl mr-6 uppercase">
                                     {{ substr($testimonial->client_name, 0, 1) }}

@@ -45,7 +45,7 @@
                        style="animation-delay: {{ ($loop->index % 2) * 0.05 }}s">
 
                         @if($project->cover_image_path)
-                            <img loading="lazy" src="{{ Storage::url($project->cover_image_path) }}" alt="{{ $project->title }}"
+                            <img loading="lazy" src="{{ Storage::disk('public')->url($project->cover_image_path) }}" alt="{{ $project->title }}"
                                  class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out opacity-90 group-hover:opacity-100 grayscale group-hover:grayscale-0">
                         @else
                             <div class="absolute inset-0 bg-richblack-900 flex items-center justify-center">

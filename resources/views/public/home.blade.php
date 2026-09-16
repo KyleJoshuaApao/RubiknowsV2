@@ -147,7 +147,7 @@
                         style="animation-delay: {{ $loop->index * 0.12 }}s">
                         @if($project->cover_image_path)
                         <div class="relative h-80 overflow-hidden bg-black">
-                            <img loading="lazy" src="{{ Storage::url($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100">
+                            <img loading="lazy" src="{{ Storage::disk('public')->url($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                             <div class="absolute top-5 left-5 z-20">
                                 <span class="px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider">{{ $project->category }}</span>
@@ -267,7 +267,7 @@
                         <p class="text-gray-700 italic text-base leading-relaxed mb-8">"{{ $testimonial->quote }}"</p>
                         <div class="flex items-center pt-6 border-t border-gray-200">
                             @if($testimonial->avatar_path)
-                            <img loading="lazy" class="h-14 w-14 object-cover mr-4 border-2 border-black" src="{{ Storage::url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
+                            <img loading="lazy" class="h-14 w-14 object-cover mr-4 border-2 border-black" src="{{ Storage::disk('public')->url($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
                             @else
                             <div class="h-14 w-14 bg-black text-white flex items-center justify-center font-bold text-xl mr-4">
                                 {{ substr($testimonial->client_name, 0, 1) }}
