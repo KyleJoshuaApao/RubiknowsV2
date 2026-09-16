@@ -32,7 +32,9 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            // Render may mount or overlay the application storage directory.
+            // Keep private uploads on an explicit runtime-writable path there.
+            'root' => env('PRIVATE_STORAGE_PATH', storage_path('app/private')),
             'serve' => true,
             'throw' => false,
             'report' => false,

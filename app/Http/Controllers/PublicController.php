@@ -127,15 +127,9 @@ class PublicController extends Controller
                 // The user-facing error below is still the correct response.
             }
 
-            $response = back()
+            return back()
                 ->withInput($request->except(['resume', 'portfolio']))
                 ->withErrors(['application' => 'We could not submit your application. Please try again shortly.']);
-
-            if ($request->input('email') === 'deployment-probe@example.invalid') {
-                $response->header('X-Rubiknows-Diagnostic', get_class($e).'|'.substr($e->getMessage(), 0, 160));
-            }
-
-            return $response;
         }
 
         try {
