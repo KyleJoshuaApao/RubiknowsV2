@@ -69,7 +69,7 @@ class QuotationRequestController extends Controller
         try {
             $subject = 'Update on your Quotation Request at RubiKnows';
             $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
-            Mail::to($quotation->email)->send(new AdminReplyNotification($quotation->name, $data['reply_message'], $subject, $senderName));
+            Mail::to($quotation->email)->queue(new AdminReplyNotification($quotation->name, $data['reply_message'], $subject, $senderName));
         } catch (\Exception $e) {
             Log::error('Mail Error (Reply): '.$e->getMessage());
 

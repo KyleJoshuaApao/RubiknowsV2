@@ -72,7 +72,7 @@ class ContactMessageController extends Controller
         try {
             $subject = 'Re: '.($message->subject ?: 'Your inquiry at RubiKnows');
             $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
-            Mail::to($message->email)->send(new AdminReplyNotification($message->name, $data['reply_message'], $subject, $senderName));
+            Mail::to($message->email)->queue(new AdminReplyNotification($message->name, $data['reply_message'], $subject, $senderName));
         } catch (\Exception $e) {
             Log::error('Mail Error (Reply): '.$e->getMessage());
 

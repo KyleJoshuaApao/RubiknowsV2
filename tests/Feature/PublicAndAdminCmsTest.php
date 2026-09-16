@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\User;
+use App\Mail\NewJobApplicationNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Mail;
@@ -293,6 +294,7 @@ class PublicAndAdminCmsTest extends TestCase
             'email' => 'applicant@example.com',
             'status' => 'Received',
         ]);
+        Mail::assertQueued(NewJobApplicationNotification::class);
 
         $application = JobApplication::where('email', 'applicant@example.com')->firstOrFail();
         Storage::disk('local')->assertExists($application->resume_path);

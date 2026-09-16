@@ -133,7 +133,7 @@ class PublicController extends Controller
         }
 
         try {
-            Mail::to(Setting::getAdminEmail())->send(new NewJobApplicationNotification($application));
+            Mail::to(Setting::getAdminEmail())->queue(new NewJobApplicationNotification($application));
         } catch (\Throwable $e) {
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }
@@ -174,7 +174,7 @@ class PublicController extends Controller
         $message = ContactMessage::create($data);
 
         try {
-            Mail::to(Setting::getAdminEmail())->send(new NewContactMessageNotification($message));
+            Mail::to(Setting::getAdminEmail())->queue(new NewContactMessageNotification($message));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }
@@ -215,7 +215,7 @@ class PublicController extends Controller
         ]);
 
         try {
-            Mail::to(Setting::getAdminEmail())->send(new NewQuotationRequestNotification($quotation));
+            Mail::to(Setting::getAdminEmail())->queue(new NewQuotationRequestNotification($quotation));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Mail Error: ' . $e->getMessage());
         }

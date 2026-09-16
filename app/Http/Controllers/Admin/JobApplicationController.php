@@ -68,7 +68,7 @@ class JobApplicationController extends Controller
         try {
             $subject = 'Update regarding your application at RubiKnows';
             $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
-            Mail::to($application->email)->send(new AdminReplyNotification($application->name, $data['reply_message'], $subject, $senderName));
+            Mail::to($application->email)->queue(new AdminReplyNotification($application->name, $data['reply_message'], $subject, $senderName));
         } catch (\Exception $e) {
             Log::error('Mail Error (Reply): '.$e->getMessage());
 
