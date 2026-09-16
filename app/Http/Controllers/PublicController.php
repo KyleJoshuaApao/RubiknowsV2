@@ -119,7 +119,13 @@ class PublicController extends Controller
                 Storage::disk($disk)->delete($path);
             }
 
-            report($e);
+            // A misconfigured production logger must not turn this handled
+            // submission failure back into an HTTP 500 response.
+            try {
+                report($e);
+            } catch (\Throwable) {
+                // The user-facing error below is still the correct response.
+            }
 
             return back()
                 ->withInput($request->except(['resume', 'portfolio']))
