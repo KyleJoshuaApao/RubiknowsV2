@@ -3,6 +3,7 @@ FROM php:8.4-apache
 # Install system dependencies and required libraries
 RUN apt-get update && apt-get install -y \
     libpq-dev \
+    libicu-dev \
     libpng-dev \
     libzip-dev \
     zip \
@@ -14,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs
 
 # Install PHP extensions needed for Laravel and PostgreSQL (Supabase)
-RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip
+RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip intl
 
 # Enable Apache mod_rewrite for Laravel routing
 RUN a2enmod rewrite
