@@ -112,6 +112,10 @@
                         
                         <form action="{{ route('public.careers.apply') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
                             @csrf
+
+                            @error('application')
+                                <p class="border-l-4 border-red-600 bg-red-50 px-4 py-3 text-sm font-bold text-red-800">{{ $message }}</p>
+                            @enderror
                             
                             <div>
                                 <label class="block text-xs font-black text-richblack-900 uppercase tracking-widest mb-2">Position Applied For *</label>

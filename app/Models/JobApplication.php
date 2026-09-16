@@ -9,6 +9,12 @@ class JobApplication extends Model
 {
     use HasFactory;
 
+    /**
+     * Application documents are private and must not depend on the default
+     * upload disk, which may be configured for public CMS media.
+     */
+    public const UPLOAD_DISK = 'local';
+
     protected $fillable = [
         'job_id',
         'name',

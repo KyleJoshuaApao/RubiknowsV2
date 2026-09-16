@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
 
         // Protected file downloads — files are on private disk, auth required
         Route::get('applications/{application}/resume', function (JobApplication $application) {
-            $disk = Storage::disk(config('filesystems.default'));
+            $disk = Storage::disk(JobApplication::UPLOAD_DISK);
             abort_unless($disk->exists($application->resume_path), 404);
 
             return $disk->download($application->resume_path);
@@ -96,7 +96,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('applications/{application}/portfolio', function (JobApplication $application) {
             abort_unless($application->portfolio_path, 404);
-            $disk = Storage::disk(config('filesystems.default'));
+            $disk = Storage::disk(JobApplication::UPLOAD_DISK);
             abort_unless($disk->exists($application->portfolio_path), 404);
 
             return $disk->download($application->portfolio_path);

@@ -38,10 +38,10 @@ class JobApplicationController extends Controller
     public function destroy(JobApplication $application)
     {
         if ($application->resume_path) {
-            Storage::disk(config('filesystems.default'))->delete($application->resume_path);
+            Storage::disk(JobApplication::UPLOAD_DISK)->delete($application->resume_path);
         }
         if ($application->portfolio_path) {
-            Storage::disk(config('filesystems.default'))->delete($application->portfolio_path);
+            Storage::disk(JobApplication::UPLOAD_DISK)->delete($application->portfolio_path);
         }
 
         $application->delete();

@@ -241,7 +241,7 @@ class PublicAndAdminCmsTest extends TestCase
     {
         $this->actingAs($this->superAdmin());
 
-        $disk = config('filesystems.default');
+        $disk = JobApplication::UPLOAD_DISK;
         Storage::fake($disk);
         Storage::disk($disk)->put('applications/resumes/resume.pdf', 'resume');
         Storage::disk($disk)->put('applications/portfolios/portfolio.pdf', 'portfolio');
@@ -265,7 +265,9 @@ class PublicAndAdminCmsTest extends TestCase
     public function test_public_job_application_can_be_submitted_with_files(): void
     {
         Mail::fake();
-        Storage::fake(config('filesystems.default'));
+        config(['filesystems.default' => 's3']);
+        Storage::fake('local');
+        Storage::fake('s3');
 
         $this->post(route('public.careers.apply'), [
             'job_title' => 'Site Engineer',
@@ -282,6 +284,12 @@ class PublicAndAdminCmsTest extends TestCase
             'email' => 'applicant@example.com',
             'status' => 'Received',
         ]);
+
+        $application = JobApplication::where('email', 'applicant@example.com')->firstOrFail();
+        Storage::disk('local')->assertExists($application->resume_path);
+        Storage::disk('local')->assertExists($application->portfolio_path);
+        Storage::disk('s3')->assertMissing($application->resume_path);
+        Storage::disk('s3')->assertMissing($application->portfolio_path);
     }
 
     private function superAdmin(): User

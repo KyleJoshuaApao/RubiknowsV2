@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\JobApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -56,7 +57,7 @@ class NewJobApplicationNotification extends Mailable
     {
         $attachments = [];
 
-        $disk = config('filesystems.default');
+        $disk = JobApplication::UPLOAD_DISK;
 
         if ($this->application->resume_path && \Illuminate\Support\Facades\Storage::disk($disk)->exists($this->application->resume_path)) {
             $attachments[] = Attachment::fromStorageDisk($disk, $this->application->resume_path);

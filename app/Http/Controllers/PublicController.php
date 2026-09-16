@@ -15,6 +15,7 @@ use App\Models\JobApplication;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use App\Mail\NewContactMessageNotification;
 use App\Mail\NewQuotationRequestNotification;
 use App\Mail\NewJobApplicationNotification;
@@ -86,19 +87,44 @@ class PublicController extends Controller
 
         $job = Job::where('title', $data['job_title'])->first();
 
-        $resumePath    = $request->file('resume')->store('applications/resumes');
-        $portfolioPath = $request->hasFile('portfolio') ? $request->file('portfolio')->store('applications/portfolios') : null;
+        $disk = JobApplication::UPLOAD_DISK;
+        $resumePath = null;
+        $portfolioPath = null;
 
-        $application = JobApplication::create([
-            'job_id' => $job ? $job->id : null,
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'cover_letter' => $data['message'] ?? null,
-            'resume_path' => $resumePath,
-            'portfolio_path' => $portfolioPath,
-            'status' => 'Received',
-        ]);
+        try {
+            $resumePath = $request->file('resume')->store('applications/resumes', $disk);
+            if (!$resumePath) {
+                throw new \RuntimeException('The resume could not be stored.');
+            }
+
+            if ($request->hasFile('portfolio')) {
+                $portfolioPath = $request->file('portfolio')->store('applications/portfolios', $disk);
+                if (!$portfolioPath) {
+                    throw new \RuntimeException('The portfolio could not be stored.');
+                }
+            }
+
+            $application = DB::transaction(fn () => JobApplication::create([
+                'job_id' => $job ? $job->id : null,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'],
+                'cover_letter' => $data['message'] ?? null,
+                'resume_path' => $resumePath,
+                'portfolio_path' => $portfolioPath,
+                'status' => 'Received',
+            ]));
+        } catch (\Throwable $e) {
+            foreach (array_filter([$resumePath, $portfolioPath]) as $path) {
+                Storage::disk($disk)->delete($path);
+            }
+
+            report($e);
+
+            return back()
+                ->withInput($request->except(['resume', 'portfolio']))
+                ->withErrors(['application' => 'We could not submit your application. Please try again shortly.']);
+        }
 
         try {
             Mail::to(Setting::getAdminEmail())->send(new NewJobApplicationNotification($application));
