@@ -38,13 +38,14 @@
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link rel="dns-prefetch" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|space-grotesk:400,500,600,700&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('head')
         <style>[x-cloak] { display: none !important; }</style>
     </head>
     <body class="rk-public flex min-h-screen flex-col antialiased">
         <a class="rk-skip-link" href="#main-content">Skip to content</a>
+        <div class="rk-scroll-progress" aria-hidden="true"></div>
 
         <header class="rk-header" x-data="{ mobileOpen: false }" @keydown.escape.window="if (mobileOpen) { mobileOpen = false; $nextTick(() => $refs.menuToggle.focus()) }">
             <div class="rk-header__inner">
@@ -135,6 +136,39 @@
             </div>
         </footer>
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const revealItems = document.querySelectorAll('#main-content > .rk-home > section, #main-content > section, .rk-footer__grid');
+
+                if (!('IntersectionObserver' in window)) {
+                    revealItems.forEach((item) => item.classList.add('rk-is-visible'));
+                } else {
+                    const observer = new IntersectionObserver((entries, currentObserver) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('rk-is-visible');
+                                currentObserver.unobserve(entry.target);
+                            }
+                        });
+                    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+
+                    revealItems.forEach((item) => {
+                        item.classList.add('rk-reveal');
+                        observer.observe(item);
+                    });
+                }
+
+                const progress = document.querySelector('.rk-scroll-progress');
+                if (progress) {
+                    const updateProgress = () => {
+                        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+                        progress.style.transform = `scaleX(${scrollable > 0 ? window.scrollY / scrollable : 0})`;
+                    };
+                    window.addEventListener('scroll', updateProgress, { passive: true });
+                    updateProgress();
+                }
+            });
+        </script>
         @stack('scripts')
     </body>
 </html>

@@ -742,3 +742,106 @@ body:not(.rk-public) main .text-brand-500 { color: #825003 !important; }
     .rk-public *::before,
     .rk-public *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* =========================================================
+   Public experience layer
+   A tactile, high-contrast system inspired by exhibition spaces,
+   fabrication studios, and large-format wayfinding.
+   ========================================================= */
+body.rk-public {
+    --rk-ink: #11110f;
+    --rk-charcoal: #1c1d1b;
+    --rk-paper: #f1f0eb;
+    --rk-paper-deep: #deddd5;
+    --rk-white: #fffefa;
+    --rk-gold: #f2bd18;
+    --rk-gold-deep: #9a6400;
+    --rk-line: rgba(17, 17, 15, .18);
+    --rk-muted: #5d5b55;
+    background-color: var(--rk-paper);
+    background-image: radial-gradient(rgba(17,17,15,.11) .65px, transparent .65px), linear-gradient(90deg, rgba(255,255,255,.45), transparent 30%, rgba(17,17,15,.035));
+    background-size: 7px 7px, 100% 100%;
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+.rk-public .rk-scroll-progress { position: fixed; top: 0; left: 0; z-index: 100; width: 100%; height: 3px; background: var(--rk-gold); box-shadow: 0 0 18px rgba(242,189,24,.55); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+.rk-public .rk-header { border-bottom-color: rgba(17,17,15,.24); background: rgba(241,240,235,.86); box-shadow: 0 1rem 3rem rgba(17,17,15,.06); }
+.rk-public .rk-header__inner { min-height: 6rem; }
+.rk-public .rk-brand { min-width: 17rem; background: var(--rk-ink); color: var(--rk-white); border-right: 0; }
+.rk-public .rk-brand::after { right: auto; width: 4.5rem; background: var(--rk-gold); }
+.rk-public .rk-brand .rk-logo-wordmark { color: var(--rk-white); }
+.rk-public .rk-brand .rk-logo-wordmark .text-brand-500 { color: var(--rk-gold); }
+.rk-public .rk-nav { gap: .35rem; padding-right: 2.25rem; }
+.rk-public .rk-nav a { color: var(--rk-ink); font-family: 'Inter', sans-serif; font-size: .6rem; letter-spacing: .1em; }
+.rk-public .rk-nav a::after { right: .7rem; left: .7rem; height: 2px; }
+.rk-public .rk-nav .rk-nav__contact { min-height: 3.1rem; margin-left: 1.2rem; padding-inline: 1.25rem; box-shadow: 4px 4px 0 var(--rk-ink); }
+.rk-public .rk-nav .rk-nav__contact:hover { box-shadow: 0 0 0 var(--rk-ink); }
+.rk-public .rk-eyebrow { font-family: 'Inter', sans-serif; letter-spacing: .2em; }
+.rk-public .rk-eyebrow__line { width: 2.5rem; background: var(--rk-gold); }
+.rk-public .rk-action { min-height: 3.4rem; box-shadow: 5px 5px 0 var(--rk-ink); transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, background-color .25s ease; }
+.rk-public .rk-action:hover { box-shadow: 0 0 0 var(--rk-ink); transform: translate(4px, 4px); }
+.rk-public .rk-page-intro { min-height: 32rem; background: var(--rk-paper); }
+.rk-public .rk-page-intro::before { opacity: .7; background-image: linear-gradient(to right, rgba(17,17,15,.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,17,15,.08) 1px, transparent 1px); background-size: min(11vw, 9rem) 100%, 100% 4rem; }
+.rk-public .rk-page-intro__rule { width: 12rem; height: .5rem; background: var(--rk-gold); box-shadow: 12rem 0 0 var(--rk-ink); }
+.rk-public .rk-page-intro__inner { min-height: 32rem; align-items: end; padding-bottom: clamp(4rem, 8vw, 7rem); }
+.rk-public .rk-page-intro h1 { max-width: 66rem; font-size: clamp(3.8rem, 8.5vw, 9rem); letter-spacing: -.09em; }
+.rk-public .rk-page-intro p { max-width: 34rem; color: var(--rk-ink); font-size: 1.05rem; }
+.rk-public .rk-section { position: relative; padding-block: clamp(6rem, 12vw, 12rem); background: rgba(255,254,250,.84); }
+.rk-public .rk-section::before { position: absolute; top: 0; right: max(1.5rem, calc((100vw - 88rem) / 2)); left: max(1.5rem, calc((100vw - 88rem) / 2)); height: 1px; background: var(--rk-line); content: ''; }
+.rk-public .rk-section--paper { background: rgba(222,221,213,.68); }
+.rk-public .rk-section--ink { background: var(--rk-ink); background-image: linear-gradient(135deg, rgba(255,255,255,.04), transparent 40%), radial-gradient(rgba(255,255,255,.08) .6px, transparent .6px); background-size: 100% 100%, 7px 7px; }
+.rk-public .rk-section__title { font-size: clamp(2.7rem, 6vw, 6.7rem); letter-spacing: -.085em; }
+.rk-public .rk-statement { position: relative; isolation: isolate; padding-block: clamp(5rem, 10vw, 10rem); background: var(--rk-gold); background-image: linear-gradient(120deg, rgba(255,255,255,.18), transparent 35%), radial-gradient(rgba(17,17,15,.15) .7px, transparent .7px); background-size: 100% 100%, 8px 8px; }
+.rk-public .rk-statement::after { position: absolute; right: -10rem; bottom: -16rem; z-index: -1; width: 32rem; height: 32rem; border: 1px solid rgba(17,17,15,.28); border-radius: 50%; box-shadow: 0 0 0 2rem rgba(17,17,15,.06), 0 0 0 4rem rgba(17,17,15,.04); content: ''; }
+.rk-public .rk-services-rail, .rk-public .rk-quote-grid, .rk-public .rk-logo-grid { border-color: rgba(17,17,15,.28); }
+.rk-public .rk-service-link { min-height: 21rem; padding: 2rem; background: rgba(255,254,250,.68); transition: background-color .35s ease, color .35s ease, transform .35s cubic-bezier(.2,.8,.2,1); }
+.rk-public .rk-service-link:hover { background: var(--rk-ink); color: var(--rk-white); transform: translateY(-.5rem); }
+.rk-public .rk-service-link:hover p, .rk-public .rk-service-link:hover .rk-service-link__index { color: var(--rk-gold); }
+.rk-public .rk-service-link h3 { margin-top: 7rem; font-size: clamp(1.6rem, 2.8vw, 2.7rem); }
+.rk-public .rk-project-mosaic, .rk-public .rk-project-grid, .rk-public .rk-gallery-grid, .rk-public .rk-feature-grid { gap: 1.5rem; }
+.rk-public .rk-project-tile, .rk-public .rk-feature-card, .rk-public .rk-gallery-tile { box-shadow: 8px 8px 0 rgba(17,17,15,.12); }
+.rk-public .rk-project-tile img, .rk-public .rk-feature-card img, .rk-public .rk-gallery-tile img, .rk-public .rk-gallery-tile video { filter: saturate(.78) contrast(1.06); opacity: .9; transition: transform .8s cubic-bezier(.2,.8,.2,1), filter .5s ease, opacity .5s ease; }
+.rk-public .rk-project-tile:hover img, .rk-public .rk-feature-card:hover img, .rk-public .rk-gallery-tile:hover img { filter: saturate(1.12) contrast(1.08); opacity: 1; transform: scale(1.08); }
+.rk-public .rk-project-tile::after, .rk-public .rk-feature-card::after { background: linear-gradient(0deg, rgba(10,10,8,.93), rgba(10,10,8,.12) 72%), linear-gradient(90deg, rgba(17,17,15,.28), transparent 55%); }
+.rk-public .rk-gallery-tile__caption { padding: 1.6rem; background: linear-gradient(0deg, rgba(10,10,8,.9), transparent); }
+.rk-public .rk-testimonial-grid { gap: 1.5rem; }
+.rk-public .rk-testimonial-card { min-height: 26rem; border-top-width: 5px; background: rgba(255,254,250,.78); box-shadow: 8px 8px 0 rgba(17,17,15,.1); }
+.rk-public .rk-testimonial-card:hover { transform: translateY(-.5rem); }
+.rk-public .rk-dual-cta__panel { position: relative; overflow: hidden; }
+.rk-public .rk-dual-cta__panel:first-child { background: var(--rk-gold); background-image: radial-gradient(rgba(17,17,15,.16) .7px, transparent .7px); background-size: 8px 8px; }
+.rk-public .rk-dual-cta__panel:last-child { background: var(--rk-ink); color: var(--rk-white); }
+.rk-public .rk-dual-cta__panel:last-child p { color: rgba(255,255,255,.7); }
+.rk-public .rk-dual-cta__panel:last-child .rk-eyebrow { color: var(--rk-gold); }
+.rk-public .rk-dual-cta__panel:last-child h2 { color: var(--rk-white); }
+.rk-public .rk-numbered-list__item { padding-block: 2rem; border-color: rgba(17,17,15,.25); transition: padding .3s ease, background-color .3s ease; }
+.rk-public .rk-numbered-list__item:hover { padding-inline: 1rem; background: rgba(242,189,24,.16); }
+.rk-public .rk-form-panel, .rk-public .rk-form-section { border-top-width: 5px; background: rgba(222,221,213,.68); box-shadow: 8px 8px 0 rgba(17,17,15,.1); }
+.rk-public .rk-form input, .rk-public .rk-form select, .rk-public .rk-form textarea { background: rgba(255,254,250,.74); }
+.rk-public .rk-footer { background: var(--rk-ink); background-image: radial-gradient(rgba(255,255,255,.07) .6px, transparent .6px); background-size: 7px 7px; }
+.rk-public .rk-footer::before { width: 12rem; height: .5rem; box-shadow: 12rem 0 0 var(--rk-gold); }
+.rk-public .rk-footer__grid { padding-bottom: 6rem; }
+.rk-public .rk-footer__bottom { border-top-color: rgba(255,255,255,.28); }
+.rk-public .rk-reveal { opacity: 0; transform: translateY(2.5rem); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
+.rk-public .rk-reveal.rk-is-visible { opacity: 1; transform: translateY(0); }
+.rk-public .rk-home-hero__image { filter: saturate(.8) contrast(1.05); opacity: .9; transition: transform 1.2s cubic-bezier(.2,.8,.2,1), filter .6s ease; }
+.rk-public .rk-home-hero:hover .rk-home-hero__image { filter: saturate(1.02) contrast(1.08); transform: scale(1.035); }
+
+@media (max-width: 900px) {
+    .rk-public .rk-brand { min-width: 0; }
+    .rk-public .rk-page-intro, .rk-public .rk-page-intro__inner { min-height: 25rem; }
+    .rk-public .rk-page-intro h1 { font-size: clamp(3.4rem, 12vw, 6rem); }
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-header__inner { min-height: 5rem; }
+    .rk-public .rk-page-intro, .rk-public .rk-page-intro__inner { min-height: 22rem; }
+    .rk-public .rk-section { padding-block: 5rem; }
+    .rk-public .rk-section::before { right: 1rem; left: 1rem; }
+    .rk-public .rk-statement::after { right: -15rem; }
+    .rk-public .rk-service-link h3 { margin-top: 4rem; }
+    .rk-public .rk-project-tile, .rk-public .rk-feature-card, .rk-public .rk-gallery-tile { box-shadow: 4px 4px 0 rgba(17,17,15,.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rk-public .rk-reveal { opacity: 1; transform: none; transition: none; }
+}
