@@ -845,3 +845,129 @@ body.rk-public {
 @media (prefers-reduced-motion: reduce) {
     .rk-public .rk-reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* Editorial refinement: tighter rhythm, lighter surfaces, and a consistent RubiKnows gold. */
+body.rk-public {
+    --rk-ink: #171613;
+    --rk-charcoal: #292723;
+    --rk-paper: #f5f3ee;
+    --rk-paper-deep: #e8e4da;
+    --rk-white: #ffffff;
+    --rk-gold: #e0a92a;
+    --rk-gold-deep: #825003;
+    --rk-line: rgba(23, 22, 19, .14);
+    --rk-muted: #5d5a54;
+    background-color: var(--rk-paper);
+    background-image: linear-gradient(90deg, rgba(255,255,255,.68), transparent 42%, rgba(23,22,19,.025));
+}
+
+.rk-public .rk-container { width: min(100% - 3rem, 84rem); }
+.rk-public .rk-header { background: rgba(255,255,255,.97); }
+.rk-public .rk-header__inner { min-height: 5rem; }
+.rk-public .rk-brand { min-width: 16rem; background: var(--rk-white); color: var(--rk-ink); border-right: 1px solid rgba(23,22,19,.08); }
+.rk-public .rk-brand .rk-logo-wordmark { color: var(--rk-ink); }
+.rk-public .rk-brand .rk-logo-wordmark .text-brand-500 { color: var(--rk-gold); }
+.rk-public .rk-brand::after { right: 0; width: 100%; height: 3px; background: var(--rk-gold); box-shadow: none; }
+.rk-public .rk-nav { padding-right: 1.5rem; }
+.rk-public .rk-nav .rk-nav__contact { box-shadow: 3px 3px 0 var(--rk-ink); }
+
+.rk-public .rk-page-intro { min-height: 23rem; }
+.rk-public .rk-page-intro__inner { min-height: 23rem; padding-top: 4.5rem; padding-bottom: 4rem; }
+.rk-public .rk-page-intro h1 { max-width: 58rem; font-size: clamp(2.8rem, 5.6vw, 5.8rem); line-height: .9; }
+.rk-public .rk-page-intro p { max-width: 37rem; margin-top: 1.35rem; font-size: 1rem; line-height: 1.6; }
+.rk-public .rk-section { padding-block: clamp(4.5rem, 7vw, 6.5rem); }
+.rk-public .rk-section::before { right: max(1.5rem, calc((100vw - 84rem) / 2)); left: max(1.5rem, calc((100vw - 84rem) / 2)); }
+.rk-public .rk-section__head { margin-bottom: clamp(2rem, 4vw, 3rem); }
+.rk-public .rk-section__title { max-width: 44rem; font-size: clamp(2.2rem, 4.4vw, 4.65rem); line-height: .94; }
+.rk-public .rk-section__lede { max-width: 32rem; font-size: .96rem; line-height: 1.65; }
+.rk-public .rk-home-hero { min-height: min(44rem, calc(100svh - 5rem)); }
+.rk-public .rk-home-hero__inner { padding-block: clamp(4rem, 8vw, 7rem) clamp(2.75rem, 5vw, 4.5rem); }
+.rk-public .rk-home-hero h1 { max-width: 40rem; font-size: clamp(3.6rem, 7vw, 7.4rem); line-height: .83; }
+.rk-public .rk-home-hero__bottom { margin-top: 2rem; }
+.rk-public .rk-statement { padding-block: clamp(3.75rem, 6vw, 5.5rem); }
+.rk-public .rk-statement h2 { max-width: 31rem; font-size: clamp(2.2rem, 4vw, 4.25rem); }
+.rk-public .rk-stat { min-height: 7.5rem; padding: 1.5rem; }
+.rk-public .rk-services-rail { gap: 0; }
+.rk-public .rk-service-link { min-height: 17rem; padding: 1.5rem; }
+.rk-public .rk-service-link h3 { margin-top: 4.25rem; font-size: clamp(1.35rem, 2.3vw, 2.15rem); }
+.rk-public .rk-project-tile { min-height: 21rem; }
+.rk-public .rk-project-tile:first-child { min-height: 29rem; }
+.rk-public .rk-project-tile:nth-child(3) { min-height: 22rem; }
+.rk-public .rk-project-tile h3 { font-size: clamp(1.55rem, 2.8vw, 3rem); }
+.rk-public .rk-feature-card { min-height: 19rem; }
+.rk-public .rk-feature-card h3 { font-size: clamp(1.4rem, 2.45vw, 2.45rem); }
+.rk-public .rk-editorial-copy__title { font-size: clamp(2rem, 3.8vw, 4rem); }
+.rk-public .rk-numbered-list__item { padding-block: 1.35rem; }
+.rk-public .rk-detail-hero { min-height: min(35rem, 62svh); }
+.rk-public .rk-detail-hero h1 { font-size: clamp(3rem, 6vw, 6.2rem); }
+.rk-public .rk-dual-cta__panel { padding-block: clamp(3.25rem, 6vw, 5.5rem); }
+.rk-public .rk-dual-cta h2 { font-size: clamp(2.1rem, 3.8vw, 3.9rem); }
+.rk-public .rk-footer__grid { padding-bottom: 4.5rem; }
+
+/* About / people composition */
+.rk-public .rk-about-story { background: var(--rk-white); }
+.rk-public .rk-about-story__grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: clamp(2.5rem, 7vw, 7rem); }
+.rk-public .rk-about-story__lead h2 { max-width: 31rem; margin: .9rem 0 2rem; font-size: clamp(2.3rem, 4.1vw, 4.2rem); letter-spacing: -.07em; line-height: .94; }
+.rk-public .rk-about-story__body { max-width: 38rem; color: #4f4c46; font-size: 1rem; line-height: 1.78; }
+.rk-public .rk-about-story__body p { margin-top: 1rem; }
+.rk-public .rk-about-story__body p:first-child { margin-top: 0; }
+.rk-public .rk-about-metrics { display: grid; grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); margin-top: 1rem; border-top: 1px solid var(--rk-line); border-bottom: 1px solid var(--rk-line); }
+.rk-public .rk-about-metrics div { display: flex; min-height: 7.5rem; flex-direction: column; justify-content: center; padding: 1.25rem 1.5rem; border-right: 1px solid var(--rk-line); }
+.rk-public .rk-about-metrics div:last-child { border-right: 0; }
+.rk-public .rk-about-metrics strong { color: var(--rk-gold-deep); font-size: clamp(2rem, 3.3vw, 3.2rem); letter-spacing: -.07em; line-height: 1; }
+.rk-public .rk-about-metrics span { margin-top: .6rem; color: var(--rk-muted); font-size: .65rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+.rk-public .rk-about-visual { display: grid; width: min(100% - 3rem, 84rem); min-height: 34rem; grid-template-columns: minmax(0, 1.8fr) minmax(14rem, .8fr); grid-template-rows: 1fr auto; gap: 1rem; margin: 0 auto; padding-block: clamp(1.25rem, 3vw, 2.5rem); background: var(--rk-ink); }
+.rk-public .rk-about-visual__image { position: relative; overflow: hidden; background: var(--rk-charcoal); }
+.rk-public .rk-about-visual__image img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.72) contrast(1.06); transition: transform .7s ease, filter .4s ease; }
+.rk-public .rk-about-visual__image:hover img { filter: saturate(1) contrast(1.08); transform: scale(1.04); }
+.rk-public .rk-about-visual__image--large { min-height: 29rem; grid-row: 1 / span 2; }
+.rk-public .rk-about-visual__image--small { min-height: 17rem; }
+.rk-public .rk-about-visual__caption { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding: 1.25rem 1.5rem 0; color: var(--rk-white); }
+.rk-public .rk-about-visual__caption .rk-eyebrow { color: var(--rk-gold); }
+.rk-public .rk-about-visual__caption p { max-width: 22rem; margin: 0; font-size: clamp(1rem, 1.8vw, 1.35rem); line-height: 1.25; }
+.rk-public .rk-principle-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rk-line); border-left: 1px solid var(--rk-line); }
+.rk-public .rk-principle-grid article { min-height: 14rem; padding: 1.5rem; border-right: 1px solid var(--rk-line); border-bottom: 1px solid var(--rk-line); background: rgba(255,255,255,.52); }
+.rk-public .rk-principle-grid span { color: var(--rk-gold-deep); font-size: .68rem; font-weight: 800; letter-spacing: .15em; }
+.rk-public .rk-principle-grid h3 { margin: 3.5rem 0 0; font-size: clamp(1.35rem, 2.2vw, 2rem); letter-spacing: -.04em; line-height: 1; }
+.rk-public .rk-principle-grid p { max-width: 20rem; margin: .8rem 0 0; color: var(--rk-muted); font-size: .88rem; line-height: 1.6; }
+.rk-public .rk-about-faith { padding-block: clamp(4rem, 6vw, 6rem); }
+.rk-public .rk-people-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.rk-public .rk-person-card { background: var(--rk-white); box-shadow: 7px 7px 0 rgba(23,22,19,.1); }
+.rk-public .rk-person-card__portrait { position: relative; min-height: 25rem; overflow: hidden; background: var(--rk-charcoal); }
+.rk-public .rk-person-card__portrait img { width: 100%; height: 100%; min-height: 25rem; object-fit: cover; filter: saturate(.7) contrast(1.05); }
+.rk-public .rk-person-card__portrait::after { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(17,17,15,.58), transparent 55%); content: ''; }
+.rk-public .rk-person-card__portrait span { position: absolute; right: 1.25rem; bottom: 1rem; z-index: 1; color: rgba(255,255,255,.84); font-size: .7rem; font-weight: 800; letter-spacing: .16em; }
+.rk-public .rk-person-card__meta { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 1rem; padding: 1.25rem 1.5rem 1.5rem; }
+.rk-public .rk-person-card__number { color: var(--rk-gold-deep); font-size: .68rem; font-weight: 800; letter-spacing: .12em; }
+.rk-public .rk-person-card h3 { margin: 0; font-size: clamp(1.4rem, 2.5vw, 2.3rem); letter-spacing: -.05em; line-height: 1; }
+.rk-public .rk-person-card p { margin: .5rem 0 0; color: var(--rk-muted); font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+
+@media (max-width: 900px) {
+    .rk-public .rk-brand { min-width: 0; }
+    .rk-public .rk-page-intro, .rk-public .rk-page-intro__inner { min-height: 20rem; }
+    .rk-public .rk-page-intro h1 { font-size: clamp(2.7rem, 9vw, 5rem); }
+    .rk-public .rk-about-story__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .rk-public .rk-about-metrics { margin-top: 1rem; }
+    .rk-public .rk-about-visual { width: min(100% - 2rem, 84rem); }
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-container { width: min(100% - 2rem, 84rem); }
+    .rk-public .rk-header__inner { min-height: 4.75rem; }
+    .rk-public .rk-page-intro, .rk-public .rk-page-intro__inner { min-height: 18rem; }
+    .rk-public .rk-page-intro__inner { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 3.5rem; padding-bottom: 3rem; }
+    .rk-public .rk-page-intro h1 { font-size: clamp(2.45rem, 12vw, 4.25rem); }
+    .rk-public .rk-section { padding-block: 4rem; }
+    .rk-public .rk-about-metrics { grid-template-columns: 1fr; }
+    .rk-public .rk-about-metrics div { min-height: 5.5rem; border-right: 0; border-bottom: 1px solid var(--rk-line); }
+    .rk-public .rk-about-metrics div:last-child { border-bottom: 0; }
+    .rk-public .rk-about-visual { display: flex; min-height: 0; flex-direction: column; gap: .75rem; padding: .75rem; }
+    .rk-public .rk-about-visual__image--large { min-height: 21rem; }
+    .rk-public .rk-about-visual__image--small { min-height: 13rem; }
+    .rk-public .rk-about-visual__caption { align-items: start; flex-direction: column; padding: .75rem .5rem .25rem; }
+    .rk-public .rk-principle-grid { grid-template-columns: 1fr; }
+    .rk-public .rk-principle-grid article { min-height: 11.5rem; }
+    .rk-public .rk-principle-grid h3 { margin-top: 2.4rem; }
+    .rk-public .rk-people-grid { grid-template-columns: 1fr; }
+    .rk-public .rk-person-card__portrait, .rk-public .rk-person-card__portrait img { min-height: 19rem; }
+}

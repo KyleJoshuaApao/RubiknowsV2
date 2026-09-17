@@ -7,18 +7,36 @@
         $storyContent = $settings['about_story_content'] ?? '<p>RubiKnows brings engineering, construction, and consultancy together around the needs of every project. We stay close to the work, communicate clearly, and keep client success in view from the earliest decisions through delivery.</p>';
     @endphp
 
-    <x-public.page-intro eyebrow="About RubiKnows" number="01" title="Work with purpose. Build with care." lede="We approach every commission as a partnership: technically rigorous, practical in delivery, and attentive to the people who will use what we make." />
+    <x-public.page-intro eyebrow="About RubiKnows" number="01" title="People, precision, and work built to last." lede="We approach every commission as a partnership: technically rigorous, practical in delivery, and attentive to the people who will use what we make." />
 
-    <section class="rk-section">
-        <div class="rk-container rk-editorial-copy">
-            <div>
+    <section class="rk-section rk-about-story">
+        <div class="rk-container rk-about-story__grid">
+            <div class="rk-about-story__lead">
                 <x-public.eyebrow>Our story</x-public.eyebrow>
-                <h2 class="rk-editorial-copy__title">{{ $storyTitle }}</h2>
+                <h2>{{ $storyTitle }}</h2>
+                <a class="rk-text-link" href="{{ route('public.contact') }}">Talk with our team</a>
             </div>
-            <div class="rk-editorial-copy__body rich-text">
+            <div class="rk-about-story__body rich-text">
                 {!! $storyContent !!}
-                <a class="rk-text-link mt-8" href="{{ route('public.contact') }}">Talk with our team</a>
             </div>
+            <div class="rk-about-metrics" aria-label="RubiKnows at a glance">
+                <div><strong>{{ $settings['about_est_year'] ?? '2020' }}</strong><span>Established</span></div>
+                <div><strong>{{ $settings['about_experience_years'] ?? '5' }}+</strong><span>Years of experience</span></div>
+                <div><strong>{{ $settings['about_projects_count'] ?? '100' }}+</strong><span>Projects delivered</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="rk-about-visual" aria-label="The work behind the work">
+        <div class="rk-about-visual__image rk-about-visual__image--large">
+            <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=78&w=1600&auto=format&fit=crop" alt="Construction team working on a structure">
+        </div>
+        <div class="rk-about-visual__image rk-about-visual__image--small">
+            <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=78&w=1000&auto=format&fit=crop" alt="Construction detail in progress">
+        </div>
+        <div class="rk-about-visual__caption">
+            <x-public.eyebrow>In the field</x-public.eyebrow>
+            <p>Good outcomes start with people who stay close to the details.</p>
         </div>
     </section>
 
@@ -27,39 +45,31 @@
             <div class="rk-section__head">
                 <div class="rk-section__head-copy">
                     <x-public.eyebrow>How we work</x-public.eyebrow>
-                    <h2 class="rk-section__title">The people and principles behind every project.</h2>
+                    <h2 class="rk-section__title">A connected team, from first idea to final handover.</h2>
                 </div>
+                <p class="rk-section__lede">The work is technical, but the way we work is human: clear conversations, shared accountability, and practical decisions made at the right time.</p>
             </div>
-            <div class="rk-feature-grid">
-                <article class="rk-feature-card">
-                    <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=75&w=1200&auto=format&fit=crop" alt="RubiKnows team collaboration">
-                    <div class="rk-feature-card__copy">
-                        <x-public.eyebrow>People</x-public.eyebrow>
-                        <h3>Collaborative from the ground up.</h3>
-                        <p>We bring a connected team to the table so technical decisions stay clear and projects keep moving.</p>
-                    </div>
+            <div class="rk-principle-grid">
+                <article>
+                    <span>01</span>
+                    <h3>Listen closely.</h3>
+                    <p>We begin with the brief, the site, and the people who will live with the result.</p>
                 </article>
-                <article class="rk-feature-card">
-                    <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=75&w=1400&auto=format&fit=crop" alt="Engineering work in progress">
-                    <div class="rk-feature-card__copy">
-                        <x-public.eyebrow>Approach</x-public.eyebrow>
-                        <h3>Thoughtful work, made practical.</h3>
-                        <p>We balance ambition with the details that determine whether a project can be delivered well.</p>
-                    </div>
+                <article>
+                    <span>02</span>
+                    <h3>Make it buildable.</h3>
+                    <p>We turn design intent into decisions that teams, budgets, and schedules can carry.</p>
                 </article>
-                <article class="rk-feature-card">
-                    <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=75&w=1200&auto=format&fit=crop" alt="Construction team at work">
-                    <div class="rk-feature-card__copy">
-                        <x-public.eyebrow>Partnership</x-public.eyebrow>
-                        <h3>Committed to the work and the outcome.</h3>
-                        <p>Clients work with a team that remains accountable through the final handover.</p>
-                    </div>
+                <article>
+                    <span>03</span>
+                    <h3>Stay accountable.</h3>
+                    <p>We keep communication open and remain present through delivery and close-out.</p>
                 </article>
             </div>
         </div>
     </section>
 
-    <section class="rk-section rk-section--ink">
+    <section class="rk-section rk-section--ink rk-about-faith">
         <div class="rk-container rk-editorial-copy">
             <div>
                 <x-public.eyebrow>Our guiding principle</x-public.eyebrow>
@@ -72,25 +82,35 @@
         </div>
     </section>
 
-    <section class="rk-section">
+    <section class="rk-section rk-section--paper">
         <div class="rk-container">
             <div class="rk-section__head">
                 <div class="rk-section__head-copy">
-                    <x-public.eyebrow>Leadership</x-public.eyebrow>
-                    <h2 class="rk-section__title">The people guiding our direction.</h2>
+                    <x-public.eyebrow>The people behind the work</x-public.eyebrow>
+                    <h2 class="rk-section__title">Leadership with both hands on the work.</h2>
                 </div>
                 <a class="rk-text-link" href="{{ route('public.careers') }}">Work with us</a>
             </div>
-            <div class="rk-numbered-list">
-                <article class="rk-numbered-list__item">
-                    <span class="rk-numbered-list__number">01</span>
-                    <h3>Ruvelyn S. Rubinos</h3>
-                    <p>Founder / Owner</p>
+            <div class="rk-people-grid">
+                <article class="rk-person-card">
+                    <div class="rk-person-card__portrait">
+                        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=78&w=1000&auto=format&fit=crop" alt="Team members collaborating around a table">
+                        <span>RSR</span>
+                    </div>
+                    <div class="rk-person-card__meta">
+                        <span class="rk-person-card__number">01</span>
+                        <div><h3>Ruvelyn S. Rubinos</h3><p>Founder / Owner</p></div>
+                    </div>
                 </article>
-                <article class="rk-numbered-list__item">
-                    <span class="rk-numbered-list__number">02</span>
-                    <h3>Kevin C. Rubinos</h3>
-                    <p>Founder / Owner</p>
+                <article class="rk-person-card">
+                    <div class="rk-person-card__portrait">
+                        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=78&w=1000&auto=format&fit=crop" alt="Construction team at work on site">
+                        <span>KCR</span>
+                    </div>
+                    <div class="rk-person-card__meta">
+                        <span class="rk-person-card__number">02</span>
+                        <div><h3>Kevin C. Rubinos</h3><p>Founder / Owner</p></div>
+                    </div>
                 </article>
             </div>
         </div>
