@@ -19,10 +19,10 @@
             <div class="absolute bottom-7 right-7 hidden items-center gap-3 text-[10px] font-bold uppercase tracking-[.22em] text-white/60 sm:flex"><span class="h-10 w-px bg-[#dcae32]"></span>Scroll to explore</div>
         </section>
 
-        <section class="border-y border-white/15 bg-[#0b0c0c] px-6 text-white sm:px-10 lg:px-16" x-show="previewData.stats && previewData.stats.length" x-cloak>
-            <div class="mx-auto grid max-w-[96rem] divide-y divide-white/15 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
+        <section class="border-y border-black/10 bg-white px-6 text-[#0b0c0c] sm:px-10 lg:px-16" x-show="previewData.stats && previewData.stats.length" x-cloak>
+            <div class="mx-auto grid max-w-[96rem] divide-y divide-black/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0 lg:grid-cols-4">
                 <template x-for="(stat, index) in previewData.stats" :key="`${stat.label}-${index}`">
-                    <div class="py-8 sm:px-8 lg:px-10"><p class="text-4xl font-black tracking-[-.06em] text-[#dcae32] sm:text-5xl" x-text="stat.value"></p><p class="mt-2 text-[10px] font-black uppercase tracking-[.18em] text-white/55" x-text="stat.label"></p></div>
+                    <div class="py-8 sm:px-8 lg:px-10"><p class="text-4xl font-black tracking-[-.06em] text-brand-500 sm:text-5xl" x-text="stat.value"></p><p class="mt-2 text-[10px] font-black uppercase tracking-[.18em] text-black/55" x-text="stat.label"></p></div>
                 </template>
             </div>
         </section>
@@ -34,14 +34,14 @@
             </div>
         </section>
 
-        <section class="rk-reveal bg-[#0b0c0c] px-6 py-20 text-white sm:px-10 lg:px-16 lg:py-32" x-data x-intersect.once="$el.classList.add('rk-is-visible')">
+        <section class="rk-reveal bg-[#f7f7f5] px-6 py-20 text-[#0b0c0c] sm:px-10 lg:px-16 lg:py-32" x-data x-intersect.once="$el.classList.add('rk-is-visible')">
             <div class="mx-auto max-w-[96rem]">
-                <div class="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p class="rk-kicker">Capabilities</p><h2 class="text-white mt-3 max-w-3xl text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl">Ideas into<br><span class="text-[#dcae32]">infrastructure.</span></h2></div><a href="{{ route('public.services') }}" class="rk-text-link">View all services ↗</a></div>
-                <div class="grid border-t border-white/20 md:grid-cols-2 lg:grid-cols-3">
+                <div class="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p class="rk-kicker">Capabilities</p><h2 class="mt-3 max-w-3xl text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl">Ideas into<br><span class="text-brand-500">infrastructure.</span></h2></div><a href="{{ route('public.services') }}" class="rk-text-link">View all services ↗</a></div>
+                <div class="grid border-t border-black/20 md:grid-cols-2 lg:grid-cols-3">
                     @forelse($services as $service)
-                        <a href="{{ route('public.service-details', $service) }}" class="group border-b border-r border-white/20 p-7 transition-colors hover:bg-[#dcae32] hover:text-[#0b0c0c] sm:p-10"><span class="text-sm font-black text-[#dcae32] group-hover:text-[#0b0c0c]/60">0{{ $loop->iteration }}</span><h3 class="mt-16 text-2xl font-black uppercase leading-none tracking-[-.03em]">{{ $service->title }}</h3><p class="mt-5 max-w-sm text-sm leading-relaxed text-white/60 group-hover:text-[#0b0c0c]/75">{{ $service->short_description ?? Str::limit(strip_tags($service->content), 150) }}</p><span class="mt-8 block text-xs font-black uppercase tracking-[.18em] opacity-0 transition-opacity group-hover:opacity-100">Discover service →</span></a>
+                        <a href="{{ route('public.service-details', $service) }}" class="group border-b border-r border-black/20 p-7 transition-colors hover:bg-brand-500 hover:text-[#0b0c0c] sm:p-10"><span class="text-sm font-black text-brand-600 group-hover:text-[#0b0c0c]/60">0{{ $loop->iteration }}</span><h3 class="mt-16 text-2xl font-black uppercase leading-none tracking-[-.03em]">{{ $service->title }}</h3><p class="mt-5 max-w-sm text-sm leading-relaxed text-black/60 group-hover:text-[#0b0c0c]/75">{{ $service->short_description ?? Str::limit(strip_tags($service->content), 150) }}</p><span class="mt-8 block text-xs font-black uppercase tracking-[.18em] opacity-0 transition-opacity group-hover:opacity-100">Discover service →</span></a>
                     @empty
-                        <p class="col-span-full py-12 text-sm uppercase tracking-[.18em] text-white/50">Services are being prepared.</p>
+                        <p class="col-span-full py-12 text-sm uppercase tracking-[.18em] text-black/50">Services are being prepared.</p>
                     @endforelse
                 </div>
             </div>
@@ -64,7 +64,7 @@
 
         <section class="rk-reveal bg-[#f1f0ec] px-6 py-20 sm:px-10 lg:px-16 lg:py-32" x-data x-intersect.once="$el.classList.add('rk-is-visible')"><div class="mx-auto max-w-[96rem]"><div class="mb-14 flex items-end justify-between gap-6"><div><p class="rk-kicker">Client perspective</p><h2 class="mt-3 text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl">Good work<br><span class="text-[#b18716]">speaks.</span></h2></div><a href="{{ route('public.testimonials') }}" class="rk-text-link hidden sm:block">All testimonials ↗</a></div><div class="grid gap-px bg-[#0b0c0c]/15 md:grid-cols-3">@forelse($testimonials->take(3) as $testimonial)<article class="bg-[#f1f0ec] p-8 sm:p-10"><div class="text-4xl font-black text-[#dcae32]">“</div><p class="mt-4 text-lg font-medium leading-relaxed">{{ $testimonial->quote }}</p><p class="mt-8 text-xs font-black uppercase tracking-[.16em]">{{ $testimonial->client_name }}</p><p class="mt-1 text-xs text-black/50">{{ $testimonial->company ?? 'RubiKnows client' }}</p></article>@empty<p class="col-span-full bg-[#f1f0ec] p-10 text-sm uppercase tracking-[.18em] text-black/50">Client stories are being prepared.</p>@endforelse</div></div></section>
 
-        <section class="grid bg-[#dcae32] text-[#0b0c0c] lg:grid-cols-2"><div class="px-6 py-20 sm:px-10 lg:px-16 lg:py-28"><p class="rk-kicker text-[#0b0c0c]/70">Join the team</p><h2 class="mt-3 max-w-xl text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl" x-text="previewData.careers.title"></h2><p class="mt-8 max-w-lg text-lg leading-relaxed" x-text="previewData.careers.description"></p><a href="{{ route('public.careers') }}" class="rk-button rk-button-dark mt-10">View open positions <span>↗</span></a></div><div class="bg-[#0b0c0c] px-6 py-20 text-white sm:px-10 lg:px-16 lg:py-28"><p class="rk-kicker">Start a conversation</p><h2 class="text-white mt-3 max-w-xl text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl">Make your next build matter.</h2><p class="mt-8 max-w-lg text-lg leading-relaxed text-white/70">Tell us what you are building. Our engineers, project teams, and partners are ready to help you move the idea forward.</p><a href="{{ route('public.contact') }}" class="rk-button mt-10">Get a quotation <span>↗</span></a></div></section>
+        <section class="grid bg-[#dcae32] text-[#0b0c0c] lg:grid-cols-2"><div class="px-6 py-20 sm:px-10 lg:px-16 lg:py-28"><p class="rk-kicker text-[#0b0c0c]/70">Join the team</p><h2 class="mt-3 max-w-xl text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl" x-text="previewData.careers.title"></h2><p class="mt-8 max-w-lg text-lg leading-relaxed" x-text="previewData.careers.description"></p><a href="{{ route('public.careers') }}" class="rk-button rk-button-dark mt-10">View open positions <span>↗</span></a></div><div class="bg-white px-6 py-20 text-[#0b0c0c] sm:px-10 lg:px-16 lg:py-28"><p class="rk-kicker">Start a conversation</p><h2 class="mt-3 max-w-xl text-5xl font-black uppercase leading-[.86] tracking-[-.06em] sm:text-7xl">Make your next build matter.</h2><p class="mt-8 max-w-lg text-lg leading-relaxed text-black/70">Tell us what you are building. Our engineers, project teams, and partners are ready to help you move the idea forward.</p><a href="{{ route('public.contact') }}" class="rk-button mt-10">Get a quotation <span>↗</span></a></div></section>
     </div>
 
     @push('head')<style>

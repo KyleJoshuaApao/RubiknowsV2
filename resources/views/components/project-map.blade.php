@@ -31,7 +31,7 @@
         <style>
             .rk-map-section { position: relative; z-index: 0; isolation: isolate; background: #0b0c0c; color: #fff; padding: clamp(3rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem); }
             .rk-map-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; max-width: 90rem; margin: 0 auto 2rem; }
-            .rk-map-heading h2 { margin-top: .65rem; max-width: 42rem; font-size: clamp(2.5rem, 6vw, 6.25rem); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
+            .rk-map-heading h2 { margin-top: .65rem; max-width: 42rem; color: #fff; font-size: clamp(2.5rem, 6vw, 6.25rem); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
             .rk-map-copy { max-width: 25rem; color: #a7aaad; font-size: .9rem; line-height: 1.6; }
             .rk-map-canvas { position: relative; z-index: 0; max-width: 90rem; height: min(62vw, 44rem); min-height: 25rem; margin: 0 auto; overflow: hidden; border: 1px solid #3a3d3f; background: #202527; }
             .rk-map-canvas .leaflet-tile { filter: grayscale(1) contrast(1.1) brightness(.7); }

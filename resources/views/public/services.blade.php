@@ -144,11 +144,11 @@
     </section>
 
     <!-- ===== TESTIMONIALS ===== -->
-    <section class="py-10 lg:py-12 bg-richblack-950">
+    <section class="py-10 lg:py-12 bg-[#f7f7f5]">
         <div class="max-w-screen-2xl mx-auto px-6 lg:px-12">
-            <div class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-2 border-richblack-900 pb-3">
+            <div class="mb-6 flex flex-col md:flex-row justify-between items-end border-b-2 border-black/15 pb-3">
                 <div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-charcoal-700 tracking-tight">Client Success Stories</h2>
+                    <h2 class="text-2xl md:text-3xl font-bold text-richblack-900 tracking-tight">Client Success Stories</h2>
                 </div>
                 <div class="text-sm text-brand-500 font-medium uppercase tracking-widest">
                     Hear from those we've served
