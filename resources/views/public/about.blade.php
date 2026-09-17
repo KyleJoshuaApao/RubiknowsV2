@@ -4,7 +4,10 @@
     @php
         $settings = Cache::remember('site_settings', 3600, fn () => \App\Models\Setting::pluck('value', 'key')->toArray());
         $storyTitle = $settings['about_story_title'] ?? 'A people-first practice for work that has to endure.';
-        $storyContent = $settings['about_story_content'] ?? '<p>RubiKnows brings engineering, construction, and consultancy together around the needs of every project. We stay close to the work, communicate clearly, and keep client success in view from the earliest decisions through delivery.</p>';
+        $storyContent = $settings['about_story_content'] ?? '';
+        if (trim(strip_tags($storyContent)) === '') {
+            $storyContent = '<p>RubiKnows brings engineering, construction, and consultancy together around the needs of every project. We stay close to the work, communicate clearly, and keep client success in view from the earliest decisions through delivery.</p><p>Our team brings practical thinking to every stage: understanding the brief, coordinating the moving parts, and staying accountable until the work is ready to serve its purpose.</p>';
+        }
     @endphp
 
     <x-public.page-intro eyebrow="About RubiKnows" number="01" title="People, precision, and work built to last." lede="We approach every commission as a partnership: technically rigorous, practical in delivery, and attentive to the people who will use what we make." />
