@@ -16,22 +16,22 @@
     <div class="flex items-start justify-between gap-4 mb-4">
         <div>
             <legend class="form-label-v2 mb-1">Project Map Pin</legend>
-            <p id="project-map-help" class="text-xs text-gray-500">Click anywhere in the Philippines to place a pin. Existing projects appear as white dots; coordinates can also be edited manually.</p>
+            <p id="project-map-help" class="text-xs text-gray-500">Click anywhere in Mindanao to place a pin. Existing Mindanao projects appear as white dots; coordinates can also be edited manually.</p>
         </div>
         <button id="clear-project-pin" type="button" class="text-[10px] font-black uppercase tracking-widest text-brand-700 hover:text-richblack-900">Clear pin</button>
     </div>
-    <div id="project-location-picker" class="h-72 border border-gray-300 bg-richblack-900" role="application" aria-label="Philippine map project location picker" data-existing-pins='@json($existingPins)'>
+    <div id="project-location-picker" class="h-72 border border-gray-300 bg-richblack-900" role="application" aria-label="Mindanao project location picker" data-existing-pins='@json($existingPins)'>
         <p id="project-map-status" class="h-full grid place-items-center px-4 text-center text-xs font-bold uppercase tracking-widest text-gray-300" role="status">Loading map…</p>
     </div>
     <div class="grid grid-cols-2 gap-4 mt-4">
         <div>
             <label for="latitude" class="form-label-v2">Latitude</label>
-            <input type="number" step="0.0000001" min="4" max="22" name="latitude" id="latitude" value="{{ old('latitude', $latitude) }}" class="form-input-v2" placeholder="14.5995" inputmode="decimal">
+            <input type="number" step="0.0000001" min="4.3" max="10.9" name="latitude" id="latitude" value="{{ old('latitude', $latitude) }}" class="form-input-v2" placeholder="7.1907" inputmode="decimal">
             @error('latitude') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
         <div>
             <label for="longitude" class="form-label-v2">Longitude</label>
-            <input type="number" step="0.0000001" min="116" max="128" name="longitude" id="longitude" value="{{ old('longitude', $longitude) }}" class="form-input-v2" placeholder="120.9842" inputmode="decimal">
+            <input type="number" step="0.0000001" min="118.4" max="126.9" name="longitude" id="longitude" value="{{ old('longitude', $longitude) }}" class="form-input-v2" placeholder="125.4553" inputmode="decimal">
             @error('longitude') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
     </div>
@@ -67,7 +67,14 @@
                 return;
             }
 
-            const map = L.map(mount, { scrollWheelZoom: false, minZoom: 5, maxZoom: 14 }).setView([12.8797, 121.7740], 5);
+            const mindanaoBounds = L.latLngBounds([[4.3, 118.4], [10.9, 126.9]]);
+            const map = L.map(mount, {
+                scrollWheelZoom: false,
+                minZoom: 6,
+                maxZoom: 14,
+                maxBounds: mindanaoBounds.pad(.08),
+                maxBoundsViscosity: 0.9,
+            }).fitBounds(mindanaoBounds, { padding: [18, 18] });
             function setStatus(message, isError = false) {
                 status.textContent = message;
                 status.style.display = message ? 'grid' : 'none';
@@ -98,7 +105,7 @@
             function moveToManualCoordinates() {
                 const lat = Number.parseFloat(latitude.value);
                 const lng = Number.parseFloat(longitude.value);
-                if (Number.isFinite(lat) && Number.isFinite(lng) && lat >= 4 && lat <= 22 && lng >= 116 && lng <= 128) placePin(lat, lng, true);
+                if (Number.isFinite(lat) && Number.isFinite(lng) && lat >= 4.3 && lat <= 10.9 && lng >= 118.4 && lng <= 126.9) placePin(lat, lng, true);
             }
 
             moveToManualCoordinates();

@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\ProjectRequest;
 use App\Models\Project;
 use App\Services\FileUploadService;
 use App\Support\PublicContentCache;
+use App\Support\MindanaoMap;
 
 class ProjectController extends Controller
 {
@@ -83,6 +84,8 @@ class ProjectController extends Controller
     {
         return Project::whereNotNull('latitude')
             ->whereNotNull('longitude')
+            ->whereBetween('latitude', [MindanaoMap::MIN_LATITUDE, MindanaoMap::MAX_LATITUDE])
+            ->whereBetween('longitude', [MindanaoMap::MIN_LONGITUDE, MindanaoMap::MAX_LONGITUDE])
             ->when($except, fn ($query) => $query->whereKeyNot($except->getKey()))
             ->get(['id', 'title', 'latitude', 'longitude']);
     }

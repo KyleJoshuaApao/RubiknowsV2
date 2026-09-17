@@ -14,6 +14,7 @@ use App\Models\QuotationRequest;
 use App\Models\JobApplication;
 use App\Models\Setting;
 use App\Support\PublicContentCache;
+use App\Support\MindanaoMap;
 use App\Jobs\SendNewJobApplicationNotification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -79,6 +80,8 @@ class PublicController extends Controller
     {
         return Project::whereNotNull('latitude')
             ->whereNotNull('longitude')
+            ->whereBetween('latitude', [MindanaoMap::MIN_LATITUDE, MindanaoMap::MAX_LATITUDE])
+            ->whereBetween('longitude', [MindanaoMap::MIN_LONGITUDE, MindanaoMap::MAX_LONGITUDE])
             ->latest()
             ->get(['id', 'slug', 'title', 'category_id', 'location', 'latitude', 'longitude']);
     }

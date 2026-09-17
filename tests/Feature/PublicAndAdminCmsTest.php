@@ -186,15 +186,15 @@ class PublicAndAdminCmsTest extends TestCase
         $this->post(route('admin.projects.store'), [
             'title' => 'Bridge Retrofit',
             'status' => 'Featured',
-            'latitude' => '14.5995',
-            'longitude' => '120.9842',
+            'latitude' => '7.1907',
+            'longitude' => '125.4553',
             'image_file' => UploadedFile::fake()->create('bridge.jpg', 10, 'image/jpeg'),
         ])->assertRedirect(route('admin.projects.index'));
         $project = Project::firstOrFail();
         $this->assertDatabaseHas('projects', [
             'id' => $project->id,
-            'latitude' => 14.5995,
-            'longitude' => 120.9842,
+            'latitude' => 7.1907,
+            'longitude' => 125.4553,
         ]);
         Storage::disk('public')->assertExists($project->image_url);
         Storage::disk('s3')->assertMissing($project->image_url);
@@ -202,13 +202,13 @@ class PublicAndAdminCmsTest extends TestCase
         $this->put(route('admin.projects.update', $project), [
             'title' => 'Bridge Retrofit Updated',
             'status' => 'Completed',
-            'latitude' => '10.3157',
-            'longitude' => '123.8854',
+            'latitude' => '7.0731',
+            'longitude' => '125.6128',
         ])->assertRedirect(route('admin.projects.index'));
         $this->assertDatabaseHas('projects', [
             'title' => 'Bridge Retrofit Updated',
-            'latitude' => 10.3157,
-            'longitude' => 123.8854,
+            'latitude' => 7.0731,
+            'longitude' => 125.6128,
         ]);
 
         $this->post(route('admin.gallery.store'), [
@@ -298,8 +298,8 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertOk()
             ->assertSee('home-project-map')
             ->assertSee('Projects across')
-            ->assertSee('the Philippines.')
-            ->assertSee('Remarkable experiences across the map')
+            ->assertSee('Mindanao.')
+            ->assertSee('RubiKnows engineering and construction projects across Mindanao')
             ->assertSee('Davao Civic Center')
             ->assertSee(json_encode(route('public.project-details', $project)), false)
             ->assertSee('window.location.assign(point.url);', false)
@@ -310,6 +310,28 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertDontSee('API KEY REQUIRED', false)
             ->assertDontSee('grayscale', false)
             ->assertDontSee('src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"', false);
+    }
+
+    public function test_project_maps_are_scoped_to_mindanao(): void
+    {
+        $this->get(route('public.home'))
+            ->assertOk()
+            ->assertSee('Projects across<br><em>Mindanao.', false)
+            ->assertDontSee('Projects across<br><em>the Philippines.', false);
+
+        $this->actingAs($this->superAdmin());
+
+        $this->get(route('admin.projects.create'))
+            ->assertOk()
+            ->assertSee('Mindanao');
+
+        $this->post(route('admin.projects.store'), [
+            'title' => 'Out of bounds project',
+            'latitude' => '14.5995',
+            'longitude' => '110.9842',
+        ])->assertSessionHasErrors(['latitude', 'longitude']);
+
+        $this->assertDatabaseMissing('projects', ['title' => 'Out of bounds project']);
     }
 
     public function test_demo_content_seeder_is_repeatable_and_renders_remote_media(): void
@@ -336,20 +358,20 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertSee('placehold.co', false);
     }
 
-    public function test_admin_project_map_picker_lists_existing_pins_and_enforces_philippine_bounds(): void
+    public function test_admin_project_map_picker_lists_existing_pins_and_enforces_mindanao_bounds(): void
     {
         $this->actingAs($this->superAdmin());
         Project::create([
-            'title' => 'Cebu Reference Site',
-            'latitude' => 10.3157,
-            'longitude' => 123.8854,
+            'title' => 'Davao Reference Site',
+            'latitude' => 7.0731,
+            'longitude' => 125.6128,
         ]);
 
         $this->get(route('admin.projects.create'))
             ->assertOk()
             ->assertSee('project-location-picker')
-            ->assertSee('Cebu Reference Site')
-            ->assertSee('Click anywhere in the Philippines to place a pin.');
+            ->assertSee('Davao Reference Site')
+            ->assertSee('Click anywhere in Mindanao to place a pin.');
 
         $this->post(route('admin.projects.store'), [
             'title' => 'Invalid map location',
@@ -368,8 +390,8 @@ class PublicAndAdminCmsTest extends TestCase
 
         $this->post(route('admin.projects.store'), [
             'title' => 'Cache clearing project',
-            'latitude' => '14.5995',
-            'longitude' => '120.9842',
+            'latitude' => '7.1907',
+            'longitude' => '125.4553',
         ])->assertRedirect(route('admin.projects.index'));
 
         $this->assertFalse(Cache::has(PublicContentCache::HOME));

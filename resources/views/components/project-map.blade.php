@@ -1,8 +1,9 @@
 @props(['projects' => collect(), 'id' => 'rk-project-map'])
 
 @php
+    $mindanaoMap = \App\Support\MindanaoMap::class;
     $mapPoints = collect($projects)
-        ->filter(fn ($project) => filled($project->latitude) && filled($project->longitude))
+        ->filter(fn ($project) => $mindanaoMap::contains($project->latitude, $project->longitude))
         ->map(fn ($project) => [
             'title' => $project->title,
             'location' => $project->location,
@@ -14,15 +15,15 @@
 @endphp
 
 <section class="rk-map-section" aria-labelledby="{{ $id }}-title">
-    <div id="{{ $id }}" class="rk-map-canvas" role="region" aria-label="Interactive project map of the Philippines" aria-describedby="{{ $id }}-instructions {{ $id }}-status" aria-busy="true" data-projects='@json($mapPoints)'>
+    <div id="{{ $id }}" class="rk-map-canvas" role="region" aria-label="Interactive project map of Mindanao" aria-describedby="{{ $id }}-instructions {{ $id }}-status" aria-busy="true" data-projects='@json($mapPoints)'>
         <p id="{{ $id }}-status" class="rk-map-loading" role="status">Loading the project map<span aria-hidden="true">...</span></p>
     </div>
     <div class="rk-map-heading">
         <x-public.eyebrow>RubiKnows footprint</x-public.eyebrow>
-        <h2 id="{{ $id }}-title">Projects across<br><em>the Philippines.</em><span class="sr-only"> Remarkable experiences across the map</span></h2>
+        <h2 id="{{ $id }}-title">Projects across<br><em>Mindanao.</em><span class="sr-only"> RubiKnows engineering and construction projects across Mindanao</span></h2>
         <p>Every pin is linked to a portfolio project. Choose one to see the work in context.</p>
     </div>
-    <p id="{{ $id }}-instructions" class="sr-only">Use a project pin to open its portfolio page. A full list of mapped projects follows.</p>
+    <p id="{{ $id }}-instructions" class="sr-only">Use a Mindanao project pin to open its portfolio page. A full list of mapped projects follows.</p>
     @if($mapPoints->isNotEmpty())
         <ul class="sr-only" aria-label="Mapped RubiKnows projects">
             @foreach($mapPoints as $point)
@@ -115,15 +116,15 @@
                     if (!window.L) throw new Error('Leaflet did not load.');
 
                     const points = JSON.parse(container.dataset.projects || '[]');
-                    const philippinesBounds = L.latLngBounds([[4.35, 116.55], [21.45, 127.35]]);
+                    const mindanaoBounds = L.latLngBounds([[4.3, 118.4], [10.9, 126.9]]);
                     const map = L.map(container, {
                         scrollWheelZoom: false,
                         zoomControl: false,
-                        minZoom: 5,
-                        maxZoom: 12,
-                        maxBounds: philippinesBounds.pad(.08),
+                        minZoom: 6,
+                        maxZoom: 13,
+                        maxBounds: mindanaoBounds.pad(.08),
                         maxBoundsViscosity: 0.9,
-                    }).setView([12.45, 122.25], window.innerWidth < 700 ? 5 : 6);
+                    }).fitBounds(mindanaoBounds, { padding: [24, 24] });
 
                     L.control.zoom({ position: 'topright' }).addTo(map);
                     // OpenStreetMap's public tiles require no account or API key.
