@@ -15,7 +15,6 @@
                     </div>
                 </div>
             </div>
-            <span class="rk-home-hero__scroll" aria-hidden="true">Scroll to explore</span>
         </section>
 
         <section class="rk-stat-row" x-show="previewData.stats && previewData.stats.length" x-cloak aria-label="RubiKnows at a glance">

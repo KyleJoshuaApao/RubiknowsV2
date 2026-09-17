@@ -72,13 +72,13 @@
         </div>
     </section>
 
-    <section class="rk-section rk-section--ink rk-about-faith">
+    <section class="rk-section rk-about-faith">
         <div class="rk-container rk-editorial-copy">
             <div>
                 <x-public.eyebrow>Our guiding principle</x-public.eyebrow>
-                <h2 class="rk-editorial-copy__title text-white">With God, all things are possible.</h2>
+                <h2 class="rk-editorial-copy__title">With God, all things are possible.</h2>
             </div>
-            <div class="rk-editorial-copy__body text-white/75">
+            <div class="rk-editorial-copy__body">
                 <p>Our work is shaped by faith, diligence, and a belief that meaningful projects are built through service to people and communities.</p>
                 <p class="mt-8 text-sm font-bold uppercase tracking-[.16em] text-brand-500">Matthew 19:26</p>
             </div>

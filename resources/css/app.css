@@ -1739,3 +1739,126 @@ body.rk-public,
         gap: 1rem;
     }
 }
+
+/* Compact actions and content blocks: clear hierarchy with no decorative clutter. */
+.rk-public .rk-nav .rk-nav__contact {
+    position: relative;
+    min-height: 0;
+    margin-left: 1rem;
+    padding: .45rem 0 .45rem 1rem;
+    border: 0;
+    background: transparent;
+    color: var(--rk-ink);
+}
+
+.rk-public .rk-nav .rk-nav__contact::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    color: var(--rk-gold-deep);
+    content: '↗';
+    font-size: .9rem;
+    transform: translateY(-50%);
+    transition: transform .2s ease, color .2s ease;
+}
+
+.rk-public .rk-nav .rk-nav__contact:hover {
+    background: transparent;
+    color: var(--rk-gold-deep);
+    transform: none;
+}
+
+.rk-public .rk-nav .rk-nav__contact:hover::before {
+    color: var(--rk-ink);
+    transform: translate(2px, -60%);
+}
+
+.rk-public .rk-action {
+    min-height: 3.1rem;
+    gap: .8rem;
+    padding: .9rem 1.2rem;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.rk-public .rk-action__arrow {
+    width: auto;
+    height: auto;
+    border-left: 0;
+    font-size: 1rem;
+}
+
+.rk-public .rk-action:hover {
+    box-shadow: none;
+    transform: translateY(-2px);
+}
+
+.rk-public .rk-home-hero__scroll {
+    display: none;
+}
+
+.rk-public .rk-statement {
+    padding-inline: clamp(1.5rem, 4vw, 4.5rem);
+}
+
+.rk-public .rk-section,
+.rk-public .rk-about-faith,
+.rk-public .rk-testimonial-grid {
+    min-height: 0;
+}
+
+.rk-public .rk-about-faith {
+    padding-block: clamp(3rem, 5vw, 4.5rem);
+    background: #fff !important;
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-eyebrow,
+.rk-public .rk-about-faith .rk-editorial-copy__title,
+.rk-public .rk-about-faith .rk-editorial-copy__body,
+.rk-public .rk-about-faith .rk-editorial-copy__body p {
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-editorial-copy__body {
+    max-width: 39rem;
+    font-size: .98rem;
+    line-height: 1.65;
+}
+
+.rk-public .rk-about-faith .rk-editorial-copy__body .text-brand-500 {
+    color: var(--rk-gold-deep) !important;
+}
+
+.rk-public .rk-testimonial-card {
+    min-height: 18rem;
+    padding: clamp(1.25rem, 2.2vw, 1.75rem);
+}
+
+.rk-public .rk-testimonial-card__body {
+    margin-top: 1.25rem;
+    font-size: .94rem;
+    line-height: 1.55;
+}
+
+.rk-public .rk-testimonial-card__person {
+    padding-top: 1rem;
+    margin-top: 1.25rem;
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-nav .rk-nav__contact {
+        margin-left: 0;
+        padding: .9rem 1rem;
+        background: var(--rk-gold);
+    }
+
+    .rk-public .rk-nav .rk-nav__contact::before {
+        display: none;
+    }
+
+    .rk-public .rk-statement {
+        padding-inline: 1.25rem;
+    }
+}
