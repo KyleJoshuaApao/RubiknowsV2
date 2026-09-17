@@ -54,7 +54,9 @@ class PublicAndAdminCmsTest extends TestCase
     {
         $this->get(route('public.home'))
             ->assertOk()
-            ->assertSee('Build your career with the industry leaders.');
+            ->assertSee('Build your career with the industry leaders.')
+            ->assertSee('Admin CMS')
+            ->assertSee(route('login'));
     }
 
     public function test_public_services_page_links_to_each_service_detail_page(): void

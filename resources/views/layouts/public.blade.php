@@ -131,7 +131,7 @@
             </div>
             <div class="rk-container rk-footer__bottom">
                 <span>© {{ now()->year }} {{ $companyName }}. All rights reserved.</span>
-                <nav aria-label="Legal navigation"><a href="{{ route('public.privacy') }}">Privacy</a><a href="{{ route('public.terms') }}">Terms</a></nav>
+                <nav aria-label="Legal navigation"><a href="{{ route('public.privacy') }}">Privacy</a><a href="{{ route('public.terms') }}">Terms</a><a href="{{ auth()->check() ? route('dashboard') : route('login') }}">Admin CMS</a></nav>
             </div>
         </footer>
 

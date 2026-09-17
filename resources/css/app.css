@@ -419,7 +419,7 @@ body.rk-public {
 /* Home */
 .rk-public .rk-home-hero { position: relative; min-height: min(49rem, calc(100svh - 5.5rem)); overflow: hidden; background: var(--rk-paper); }
 .rk-public .rk-home-hero__image { position: absolute; inset: 0 0 0 42%; width: 58%; height: 100%; object-fit: cover; }
-.rk-public .rk-home-hero__wash { position: absolute; inset: 0; background: linear-gradient(90deg, var(--rk-paper) 0%, rgba(246,244,239,.96) 39%, rgba(246,244,239,.18) 72%, rgba(23,22,19,.12) 100%); }
+.rk-public .rk-home-hero__wash { position: absolute; inset: 0; background: linear-gradient(90deg, var(--rk-paper) 0 42%, transparent 42% 100%); }
 .rk-public .rk-home-hero::after { position: absolute; top: 0; right: 8%; bottom: 0; width: 1px; background: rgba(255,255,255,.55); content: ''; }
 .rk-public .rk-home-hero__inner { position: relative; z-index: 1; display: flex; align-items: end; min-height: inherit; padding-block: clamp(5rem, 12vw, 10rem) clamp(3rem, 7vw, 6rem); }
 .rk-public .rk-home-hero__copy { max-width: 48rem; }
@@ -660,7 +660,7 @@ body:not(.rk-public) main .text-brand-500 { color: #825003 !important; }
     .rk-public .rk-page-intro__meta { justify-content: flex-start; }
     .rk-public .rk-page-intro__number { display: none; }
     .rk-public .rk-home-hero__image { left: 32%; width: 68%; }
-    .rk-public .rk-home-hero__wash { background: linear-gradient(90deg, var(--rk-paper) 0%, rgba(246,244,239,.96) 45%, rgba(246,244,239,.35) 84%); }
+    .rk-public .rk-home-hero__wash { background: linear-gradient(90deg, var(--rk-paper) 0 38%, rgba(246,244,239,.82) 54%, transparent 78%); }
     .rk-public .rk-statement,
     .rk-public .rk-dual-cta { grid-template-columns: 1fr; }
     .rk-public .rk-dual-cta__panel:first-child,
@@ -693,7 +693,7 @@ body:not(.rk-public) main .text-brand-500 { color: #825003 !important; }
     .rk-public .rk-brand img { height: 2.8rem !important; }
     .rk-public .rk-home-hero { min-height: 39rem; }
     .rk-public .rk-home-hero__image { left: 17%; width: 83%; }
-    .rk-public .rk-home-hero__wash { background: linear-gradient(90deg, var(--rk-paper) 0%, rgba(246,244,239,.95) 45%, rgba(246,244,239,.45) 100%); }
+    .rk-public .rk-home-hero__wash { background: linear-gradient(90deg, var(--rk-paper) 0 42%, rgba(246,244,239,.78) 62%, transparent 100%); }
     .rk-public .rk-home-hero__bottom { align-items: start; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
     .rk-public .rk-home-hero__scroll { display: none; }
     .rk-public .rk-stat-row__inner { grid-template-columns: repeat(2, 1fr); }
