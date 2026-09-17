@@ -48,7 +48,7 @@
 
     /* --- Buttons --- */
     .btn-primary {
-        @apply inline-flex items-center justify-center px-6 py-3 text-xs font-bold uppercase tracking-widest text-white bg-brand-500
+        @apply inline-flex items-center justify-center px-6 py-3 text-xs font-bold uppercase tracking-widest text-richblack-900 bg-brand-500
                hover:bg-brand-600 active:bg-brand-700
                shadow-sm hover:shadow-md
                transition-colors duration-200;
@@ -332,7 +332,7 @@ body.rk-public {
     --rk-white: #ffffff;
     --rk-gold: #e0a92a;
     /* A text-only contrast variant of the logo gold for pale surfaces. */
-    --rk-gold-deep: #b98107;
+    --rk-gold-deep: #825003;
     --rk-line: rgba(23, 22, 19, .16);
     --rk-muted: #69665f;
     background: var(--rk-paper);
@@ -412,6 +412,8 @@ body.rk-public {
 .rk-public .rk-section--ink .rk-section__lede { color: rgba(255,255,255,.7); }
 .rk-public .rk-section--ink .rk-text-link { color: var(--rk-white); }
 .rk-public .rk-section--ink .rk-eyebrow { color: var(--rk-gold); }
+.rk-public .rk-statement .rk-eyebrow,
+.rk-public .rk-dual-cta__panel:first-child .rk-eyebrow { color: var(--rk-ink); }
 .rk-public .rk-empty { padding: 3rem; border: 1px solid var(--rk-line); color: var(--rk-muted); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-align: center; text-transform: uppercase; }
 
 /* Home */
@@ -458,6 +460,9 @@ body.rk-public {
 .rk-public .rk-project-tile__meta b { margin-inline: .55rem; color: var(--rk-gold); }
 .rk-public .rk-quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rk-line); border-left: 1px solid var(--rk-line); }
 .rk-public .rk-quote { display: flex; min-height: 19rem; flex-direction: column; padding: 2rem; border-right: 1px solid var(--rk-line); border-bottom: 1px solid var(--rk-line); background: var(--rk-paper); }
+.rk-public .rk-quote { color: var(--rk-ink); }
+.rk-public .rk-section--ink .rk-quote { background: rgba(255,255,255,.09); color: var(--rk-white); }
+.rk-public .rk-section--ink .rk-quote__company { color: rgba(255,255,255,.7); }
 .rk-public .rk-quote__mark { color: var(--rk-gold-deep); font-family: Georgia, serif; font-size: 3.5rem; line-height: .5; }
 .rk-public .rk-quote__body { margin: 1.5rem 0 auto; font-size: 1rem; line-height: 1.65; }
 .rk-public .rk-quote__by { margin: 2rem 0 0; font-size: .65rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
@@ -557,6 +562,17 @@ body.rk-public {
 .rk-public .rk-service-detail { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 8vw, 8rem); }
 .rk-public .rk-service-detail__image { min-height: 29rem; object-fit: cover; }
 
+/* The legacy rich-text rules use !important for CMS content. Keep them from
+   overriding the editorial theme or turning action links into gold-on-gold. */
+.rk-public .rich-text h1,
+.rk-public .rich-text h2,
+.rk-public .rich-text h3,
+.rk-public .rich-text p,
+.rk-public .rich-text blockquote { color: inherit !important; }
+.rk-public .rich-text a { color: var(--rk-gold-deep) !important; }
+.rk-public .rich-text .rk-action { color: var(--rk-ink) !important; }
+.rk-public .rich-text .rk-action:hover { color: var(--rk-white) !important; }
+
 /* Careers, contact and forms */
 .rk-public .rk-career-layout { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(21rem, .75fr); gap: clamp(2rem, 7vw, 7rem); align-items: start; }
 .rk-public .rk-job-list { border-top: 1px solid var(--rk-line); }
@@ -614,6 +630,12 @@ body.rk-public {
 .rk-public .rk-footer a:hover { color: var(--rk-gold); }
 .rk-public .rk-footer__bottom { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; padding-block: 1.5rem; border-top: 1px solid rgba(255,255,255,.16); color: rgba(255,255,255,.5); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; }
 .rk-public .rk-footer__bottom nav { display: flex; gap: 1rem; }
+
+/* Admin contrast guardrails: the logo gold stays #E0A92A, while text on
+   gold controls and pale content surfaces uses the readable dark variant. */
+body:not(.rk-public) .bg-brand-500.text-white,
+body:not(.rk-public) .bg-brand-500.text-white:hover { color: #171613 !important; }
+body:not(.rk-public) main .text-brand-500 { color: #825003 !important; }
 
 @media (max-width: 1100px) {
     .rk-public .rk-nav a { padding-inline: .45rem; font-size: .58rem; }

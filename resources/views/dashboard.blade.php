@@ -221,10 +221,10 @@
                     datasets: [{
                         label: 'Projects Created',
                         data: @json($projectActivity['data']),
-                        borderColor: '#E07B2A',
+                        borderColor: '#E0A92A',
                         backgroundColor: 'transparent',
                         borderWidth: 3,
-                        pointBackgroundColor: '#E07B2A',
+                        pointBackgroundColor: '#E0A92A',
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2,
                         pointRadius: 4,
