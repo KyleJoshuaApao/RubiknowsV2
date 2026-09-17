@@ -117,6 +117,32 @@ class PublicAndAdminCmsTest extends TestCase
         }
     }
 
+    public function test_dashboard_charts_use_current_project_and_inquiry_activity(): void
+    {
+        $this->actingAs($this->superAdmin());
+        Project::create(['title' => 'Dashboard activity project']);
+        ContactMessage::create([
+            'name' => 'Dashboard contact',
+            'email' => 'dashboard-contact@example.com',
+            'message' => 'A dashboard chart test inquiry.',
+        ]);
+        QuotationRequest::create([
+            'name' => 'Dashboard quote',
+            'email' => 'dashboard-quote@example.com',
+            'service_needed' => 'Engineering',
+            'project_location' => 'Manila',
+            'description' => 'A dashboard chart test quotation.',
+        ]);
+
+        $response = $this->get(route('dashboard'))->assertOk();
+
+        $response->assertViewHas('projectActivity', fn (array $activity) => array_sum($activity['data']) === 1);
+        $response->assertViewHas('inquiriesOverview', fn (array $overview) =>
+            array_sum($overview['messages']) === 1 && array_sum($overview['quotations']) === 1
+        );
+        $response->assertSee('z-40')->assertSee('z-[100]');
+    }
+
     public function test_public_migration_endpoint_is_not_exposed_and_download_route_names_are_stable(): void
     {
         $this->get('/migrate-supabase')->assertNotFound();

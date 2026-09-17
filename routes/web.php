@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\DashboardController;
 use App\Models\JobApplication;
 use App\Models\QuotationRequest;
 use Illuminate\Support\Facades\Route;
@@ -50,9 +51,9 @@ Route::post('/careers/apply', [PublicController::class, 'applyForJob'])
     ->name('public.careers.apply');
 
 // Admin Dashboard Route
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', DashboardController::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 // Auth Routes
 Route::middleware('auth')->group(function () {

@@ -217,10 +217,10 @@
                 new Chart(ctx1, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    labels: @json($projectActivity['labels']),
                     datasets: [{
                         label: 'Projects Created',
-                        data: [0, 0, 0, 0, 0, 0, 0], 
+                        data: @json($projectActivity['data']),
                         borderColor: '#E07B2A',
                         backgroundColor: 'transparent',
                         borderWidth: 3,
@@ -247,18 +247,23 @@
                 new Chart(ctx2, {
                 type: 'bar',
                 data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: @json($inquiriesOverview['labels']),
                     datasets: [{
                         label: 'Contact Messages',
-                        data: [0, 0, 0, 0, 0, 0, 0],
+                        data: @json($inquiriesOverview['messages']),
                         backgroundColor: '#0A0A0A',
+                        borderRadius: 0
+                    }, {
+                        label: 'Quotations',
+                        data: @json($inquiriesOverview['quotations']),
+                        backgroundColor: '#E0A92A',
                         borderRadius: 0
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { legend: { display: true, labels: { usePointStyle: true, font: { family: 'Inter', weight: 'bold' } } } },
                     scales: {
                         y: { beginAtZero: true, suggestedMax: 10, grid: { color: '#f3f4f6' }, ticks: { font: { family: 'Inter', weight: 'bold' } } },
                         x: { grid: { display: false }, ticks: { font: { family: 'Inter', weight: 'bold' } } }

@@ -253,7 +253,7 @@
         <main class="flex-1 flex flex-col h-screen overflow-hidden">
 
             <!-- Top Navbar -->
-            <header class="h-20 bg-white border-b-4 border-gray-100 flex items-center justify-between px-6 lg:px-8 z-10 flex-shrink-0 relative">
+            <header class="h-20 bg-white border-b-4 border-gray-100 flex items-center justify-between px-6 lg:px-8 z-40 flex-shrink-0 relative">
                 <!-- Subtle top geometric accent -->
                 <div class="absolute top-0 left-0 w-1/3 h-1 bg-gradient-to-r from-brand-500 to-transparent"></div>
                 <div class="flex items-center flex-1 min-w-0">
@@ -289,7 +289,7 @@
                          x-transition:leave="transition ease-in duration-100"
                          x-transition:leave-start="transform opacity-100 scale-100 translate-y-0"
                          x-transition:leave-end="transform opacity-0 scale-95 translate-y-2"
-                         class="absolute right-0 mt-2 w-[22rem] bg-white  shadow-xl border border-gray-100 py-2 z-50 text-gray-800"
+                         class="absolute right-0 mt-2 w-[22rem] bg-white shadow-xl border border-gray-100 py-2 z-[100] text-gray-800"
                          style="top: 100%; display: none;">
                         <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
                             <span class="text-xs font-semibold uppercase text-gray-500 tracking-wider">Notifications</span>
