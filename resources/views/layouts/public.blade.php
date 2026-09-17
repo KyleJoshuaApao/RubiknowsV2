@@ -3,404 +3,138 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Dynamic Meta tags from settings -->
         @php
-            $settings = Cache::remember('site_settings', 3600, fn() =>
-                \App\Models\Setting::pluck('value', 'key')->toArray()
-            );
-            $companyName    = $settings['company_name'] ?? 'RubiKnows';
-            $seoDescription = $settings['seo_description'] ?? 'World-class engineering, construction, and consultancy services.';
-            $pageTitle      = isset($title) ? $title . ' | ' . $companyName : $companyName;
+            $settings = Cache::remember('site_settings', 3600, fn () => \App\Models\Setting::pluck('value', 'key')->toArray());
+            $companyName = $settings['company_name'] ?? 'RubiKnows';
+            $seoDescription = $settings['seo_description'] ?? 'Engineering, construction, and consultancy services in the Philippines.';
+            $pageTitle = isset($title) && $title !== 'Home' ? $title . ' | ' . $companyName : $companyName;
+            $navItems = [
+                ['label' => 'Home', 'route' => 'public.home', 'active' => 'public.home'],
+                ['label' => 'About', 'route' => 'public.about', 'active' => 'public.about'],
+                ['label' => 'Services', 'route' => 'public.services', 'active' => 'public.services*'],
+                ['label' => 'Projects', 'route' => 'public.projects', 'active' => 'public.projects|public.project-details'],
+                ['label' => 'Gallery', 'route' => 'public.gallery', 'active' => 'public.gallery'],
+                ['label' => 'Testimonials', 'route' => 'public.testimonials', 'active' => 'public.testimonials'],
+                ['label' => 'Clients', 'route' => 'public.clients', 'active' => 'public.clients'],
+                ['label' => 'Careers', 'route' => 'public.careers', 'active' => 'public.careers*'],
+            ];
+            $footerServices = Cache::remember('public_footer_services', 300, fn () => \App\Models\Service::latest()->take(5)->get(['id', 'slug', 'title']));
         @endphp
 
         <title>{{ $pageTitle }}</title>
         <meta name="description" content="{{ $seoDescription }}">
-        <meta name="keywords" content="Rubiknows, engineering, construction, consultancy, architecture, project management, services">
         <link rel="canonical" href="{{ url()->current() }}">
-
-        <!-- Open Graph / Social Sharing -->
-        <meta property="og:type"        content="website">
-        <meta property="og:url"         content="{{ url()->current() }}">
-        <meta property="og:title"       content="{{ $pageTitle }}">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:title" content="{{ $pageTitle }}">
         <meta property="og:description" content="{{ $seoDescription }}">
-        <meta property="og:image"       content="{{ asset('RK4.webp') }}">
-        <meta property="og:site_name"   content="{{ $companyName }}">
-        <meta name="twitter:card"        content="summary_large_image">
-        <meta name="twitter:title"       content="{{ $pageTitle }}">
+        <meta property="og:image" content="{{ asset('RK4.webp') }}">
+        <meta property="og:site_name" content="{{ $companyName }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $pageTitle }}">
         <meta name="twitter:description" content="{{ $seoDescription }}">
-        <meta name="twitter:image"       content="{{ asset('RK4.webp') }}">
-
-        <!-- JSON-LD Schema Markup -->
-        <script type="application/ld+json">
-        {
-            "@@context": "https://schema.org",
-            "@type": "Organization",
-            "name": "{{ $companyName }}",
-            "url": "{{ url('/') }}",
-            "logo": "{{ asset('RK4.webp') }}",
-            "description": "{{ $seoDescription }}"
-        }
-        </script>
-
-        <!-- Favicon -->
+        <meta name="twitter:image" content="{{ asset('RK4.webp') }}">
+        <script type="application/ld+json">{"@@context":"https://schema.org","@@type":"Organization","name":@json($companyName),"url":@json(url('/')),"logo":@json(asset('RK4.webp')),"description":@json($seoDescription)}</script>
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
-
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link rel="dns-prefetch" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:300,400,500,600,700,900|dm-serif-display:400,400i&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
+        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('head')
-        
-        <style>
-            /* Custom Scrollbar for Mega Menus */
-            .mega-menu-scroll::-webkit-scrollbar { width: 6px; }
-            .mega-menu-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
-            .mega-menu-scroll::-webkit-scrollbar-thumb { background: #E0A92A; }
-
-            /* Page-transition progress bar */
-            #rk-progress-bar {
-                position: fixed; top: 0; left: 0; width: 0%; height: 3px;
-                background: linear-gradient(90deg, #E07B2A, #f5a623);
-                z-index: 99999;
-                box-shadow: 0 0 8px rgba(224,123,42,0.6);
-                pointer-events: none;
-                opacity: 0;
-                transition: width 0.25s ease, opacity 0.15s ease;
-            }
-        </style>
+        <style>[x-cloak] { display: none !important; }</style>
     </head>
-    <body class="font-sans antialiased text-gray-700 bg-white flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
+    <body class="rk-public flex min-h-screen flex-col antialiased">
+        <a class="rk-skip-link" href="#main-content">Skip to content</a>
 
-        <!-- ===== STYLISTIC NAVIGATION ===== -->
-        <header x-data="{ mobileOpen: false }" class="w-full z-[1000] relative sticky top-0 bg-white shadow-sm border-b border-black/10">
-            <div class="flex items-stretch h-24 lg:h-28 w-full relative">
-                
-                <!-- Left: Logo Area with Stylistic Accents -->
-                <div class="relative h-full flex items-center z-20">
-                    <!-- The Gold Main Wing -->
-                    <div class="absolute top-2 lg:top-3 left-0 h-[100%] w-[55%] bg-gold-600  shadow-xl -z-10 pointer-events-none"></div>
-                    
-                    <!-- The White Logo Background -->
-                    <div class="absolute inset-0 bg-white shadow-md -z-10 pointer-events-none"></div>
-                    
-                    <a href="{{ route('public.home') }}" class="flex items-center gap-3 pl-4 sm:pl-8 lg:pl-12 pr-16 lg:pr-32 py-2">
-                        <x-logo textSize="text-2xl sm:text-3xl lg:text-4xl" class="h-14 sm:h-16 lg:h-20 w-auto" />
+        <header class="rk-header" x-data="{ mobileOpen: false }" @keydown.escape.window="if (mobileOpen) { mobileOpen = false; $nextTick(() => $refs.menuToggle.focus()) }">
+            <div class="rk-header__inner">
+                <div class="rk-brand">
+                    <a href="{{ route('public.home') }}" aria-label="{{ $companyName }} home" class="rk-logo-wordmark">
+                        <x-logo textSize="text-2xl sm:text-3xl" class="h-12 sm:h-14 w-auto" />
                     </a>
                 </div>
 
-                <!-- Right: Desktop Navigation -->
-                <nav class="hidden lg:flex items-center flex-1 justify-end space-x-1 xl:space-x-4 h-full pr-6 lg:pr-12">
-                    <a href="{{ route('public.home') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Home
-                    </a>
-                    <a href="{{ route('public.about') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        About Us
-                    </a>
-                    <a href="{{ route('public.services') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Services
-                    </a>
-                    <a href="{{ route('public.projects') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Projects
-                    </a>
-                    <a href="{{ route('public.gallery') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Gallery
-                    </a>
-                    <a href="{{ route('public.testimonials') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Testimonials
-                    </a>
-                    <a href="{{ route('public.clients') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Clients
-                    </a>
-                    <a href="{{ route('public.careers') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-[#0b0c0c]/75 hover:text-brand-600 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
-                        Careers
-                    </a>
-
-                    <div class="flex items-center h-full ml-4 xl:ml-6">
-                        <a href="{{ route('public.contact') }}" class="btn-primary">
-                            Contact Us
-                        </a>
-                    </div>
+                <nav class="rk-nav" aria-label="Primary navigation">
+                    @foreach($navItems as $item)
+                        <a href="{{ route($item['route']) }}" class="{{ request()->routeIs(...explode('|', $item['active'])) ? 'is-active' : '' }}">{{ $item['label'] }}</a>
+                    @endforeach
+                    <a href="{{ route('public.contact') }}" class="rk-nav__contact {{ request()->routeIs('public.contact') ? 'is-active' : '' }}">Contact us</a>
                 </nav>
 
-                <!-- Mobile Menu Button -->
-                <div class="flex items-center lg:hidden ml-auto pr-6">
-                    <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-[#0b0c0c] hover:text-brand-600 focus:outline-none z-50">
-                        <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path x-show="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            <path x-show="mobileOpen" style="display: none;" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+                <button x-ref="menuToggle" type="button" class="rk-mobile-toggle" @click="mobileOpen = !mobileOpen; if (mobileOpen) $nextTick(() => $refs.firstMobileLink.focus())" :aria-expanded="mobileOpen.toString()" aria-controls="rk-mobile-menu" aria-label="Toggle navigation">
+                    <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" /></svg>
+                    <svg x-cloak x-show="mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18" /></svg>
+                </button>
             </div>
 
-            <!-- Mobile Menu -->
-            <div x-show="mobileOpen" @click.outside="mobileOpen = false" style="display: none;"
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 -translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 class="lg:hidden bg-white border-t-4 border-brand-500 absolute w-full shadow-2xl z-50">
-                <div class="px-6 py-6 flex flex-col space-y-4">
-                    <a @click="mobileOpen = false" href="{{ route('public.home') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Home</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.about') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">About</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.services') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Services</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.projects') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Portfolio</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.gallery') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Gallery</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.testimonials') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Testimonials</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.clients') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Clients</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.careers') }}" class="text-xl font-bold text-richblack-900 hover:text-brand-500 uppercase tracking-tight">Careers</a>
-                    <a @click="mobileOpen = false" href="{{ route('public.contact') }}" class="mt-4 text-center px-6 py-3 bg-brand-500 text-white font-bold uppercase tracking-wide text-[14px]">Contact Us</a>
+            <nav id="rk-mobile-menu" class="rk-mobile-menu" x-cloak x-show="mobileOpen" x-transition.opacity @click.outside="mobileOpen = false" aria-label="Mobile navigation">
+                <div class="rk-mobile-menu__inner">
+                    @foreach($navItems as $item)
+                        <a @if($loop->first) x-ref="firstMobileLink" @endif @click="mobileOpen = false" href="{{ route($item['route']) }}">{{ $item['label'] }}</a>
+                    @endforeach
+                    <a @click="mobileOpen = false" href="{{ route('public.contact') }}" class="rk-mobile-menu__contact">Contact us</a>
                 </div>
-            </div>
+            </nav>
         </header>
 
-        <!-- ===== PAGE TRANSITION BAR ===== -->
-        <div id="rk-progress-bar"></div>
-
-        <!-- ===== INLINE FLASH BANNER ===== -->
-        @php $flashSuccess = session()->pull('success'); $flashError = session()->pull('error'); @endphp
-        @if($flashSuccess)
-        <div id="rk-flash-banner" role="alert" style="background:#166534;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700;font-size:15px;letter-spacing:.02em;">
-            <span style="display:flex;align-items:center;gap:10px;">
-                <svg style="width:22px;height:22px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                {{ $flashSuccess }}
-            </span>
-            <button onclick="document.getElementById('rk-flash-banner').remove()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;" aria-label="Dismiss">
-                <svg style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-        </div>
+        @if(session('success'))
+            <div class="rk-alert rk-alert--success" role="status" x-data="{ open: true }" x-show="open">
+                <span>{{ session('success') }}</span><button type="button" @click="open = false" aria-label="Dismiss message">×</button>
+            </div>
         @endif
-        @if($flashError)
-        <div id="rk-flash-banner-err" role="alert" style="background:#7f1d1d;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700;font-size:15px;letter-spacing:.02em;">
-            <span style="display:flex;align-items:center;gap:10px;">
-                <svg style="width:22px;height:22px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                {{ $flashError }}
-            </span>
-            <button onclick="document.getElementById('rk-flash-banner-err').remove()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;" aria-label="Dismiss">
-                <svg style="width:18px;height:18px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
-        </div>
+        @if(session('error'))
+            <div class="rk-alert rk-alert--error" role="alert" x-data="{ open: true }" x-show="open">
+                <span>{{ session('error') }}</span><button type="button" @click="open = false" aria-label="Dismiss message">×</button>
+            </div>
         @endif
 
-        {{-- Auto-dismiss flash banners after 5 seconds --}}
-        @if($flashSuccess || $flashError)
-        <script>
-        (function(){
-            function dismiss(id, delay) {
-                var el = document.getElementById(id);
-                if (!el) return;
-                setTimeout(function(){
-                    el.style.transition = 'opacity 0.5s';
-                    el.style.opacity = '0';
-                    setTimeout(function(){ el && el.remove(); }, 500);
-                }, delay);
-            }
-            dismiss('rk-flash-banner', 5000);
-            dismiss('rk-flash-banner-err', 7000);
-        })();
-        </script>
-        @endif
-
-
-        <main class="flex-grow">
+        <main id="main-content" class="flex-grow">
             {{ $slot }}
         </main>
 
-        <!-- ===== KIMLEY-HORN STYLE "FAT" FOOTER (RESTORED LINKS) ===== -->
-        <footer class="bg-richblack-950 text-white pt-24 pb-12 mt-auto border-t-[16px] border-brand-500 relative overflow-hidden">
-            <!-- Decorative geometric element -->
-            <div class="absolute bottom-0 right-0 w-1/3 h-1/2 bg-richblack-950 "></div>
-            
-            <div class="max-w-screen-2xl mx-auto px-6 relative z-10">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16">
-                    
-                    <!-- Brand Section -->
-                    <div class="lg:col-span-5 pr-8">
-                        <a href="{{ route('public.home') }}" class="inline-flex items-center gap-3 mb-8">
-                            <x-logo :dark="true" textSize="text-3xl sm:text-4xl" class="h-24 w-auto" />
-                        </a>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-10 max-w-sm font-bold uppercase tracking-wider">
-                            World-class engineering, construction, and consultancy services. We engineer the future, blending world-class precision with visionary design.
-                        </p>
-                        
-                        <div>
-                            <h4 class="text-xs font-bold text-brand-500 tracking-wider uppercase mb-4">Start a Project</h4>
-                            <a href="{{ route('public.contact', ['tab' => 'quote']) }}" class="inline-flex items-center justify-center px-8 py-4 bg-brand-500 text-white font-bold uppercase tracking-wide text-sm hover:bg-white hover:text-richblack-950 transition-all duration-300">
-                                Initiate Proposal
-                                <svg class="w-4 h-4 ml-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Directory Section -->
-                    <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-12">
-                        
-                        <!-- Company Links -->
-                        <div>
-                            <h3 class="text-sm font-bold text-brand-500 tracking-wider uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
-                                Company
-                            </h3>
-                            <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
-                                <li><a href="{{ route('public.about') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">About Us</a></li>
-                                <li><a href="{{ route('public.projects') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Portfolio</a></li>
-                                <li><a href="{{ route('public.clients') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Clients & Partners</a></li>
-                                <li><a href="{{ route('public.careers') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Careers</a></li>
-                                <li><a href="{{ route('public.contact') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">Contact</a></li>
-                            </ul>
-                        </div>
-
-                        <!-- Services List -->
-                        <div>
-                            <h3 class="text-sm font-bold text-brand-500 tracking-wider uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
-                                Services
-                            </h3>
-                            <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
-                                @php
-                                    $footerServices = \App\Models\Service::latest()->take(6)->get();
-                                @endphp
-                                @foreach($footerServices as $fs)
-                                    <li><a href="{{ route('public.services') }}" class="hover:text-white hover:translate-x-1 transition-all duration-300 block">{{ $fs->title }}</a></li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <!-- Global HQ / Contact -->
-                        <div>
-                            <h3 class="text-sm font-bold text-brand-500 tracking-wider uppercase mb-6 border-b-2 border-brand-500 pb-2 inline-block">
-                                Global HQ
-                            </h3>
-                            <ul class="space-y-4 text-xs font-bold text-gray-400 tracking-widest uppercase">
-                                @if(!empty($settings['office_address']))
-                                    <li class="flex flex-col gap-1">
-                                        <span class="text-brand-500">Address</span>
-                                        <span class="text-white">{{ $settings['office_address'] }}</span>
-                                    </li>
-                                @endif
-                                @if(!empty($settings['contact_phone']))
-                                    <li class="flex flex-col gap-1">
-                                        <span class="text-brand-500">Phone</span>
-                                        <span class="text-white">{{ $settings['contact_phone'] }}</span>
-                                    </li>
-                                @endif
-                                @if(!empty($settings['contact_email']))
-                                    <li class="flex flex-col gap-1">
-                                        <span class="text-brand-500">Email</span>
-                                        <a href="mailto:{{ $settings['contact_email'] }}" class="text-white hover:text-brand-500 transition-colors lowercase tracking-normal">{{ $settings['contact_email'] }}</a>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div>
-                    </div>
+        <footer class="rk-footer">
+            <div class="rk-container rk-footer__grid">
+                <div class="rk-footer__brand">
+                    <a href="{{ route('public.home') }}" class="rk-logo-wordmark inline-flex" aria-label="{{ $companyName }} home">
+                        <x-logo :dark="true" textSize="text-3xl" class="h-16 w-auto" />
+                    </a>
+                    <p>Engineering, construction, and consultancy work shaped with rigor, care, and a practical commitment to what lasts.</p>
+                    <x-public.action href="{{ route('public.contact', ['tab' => 'quote']) }}" tone="gold" class="mt-7">Start a project</x-public.action>
                 </div>
-
-                <div class="pt-8 border-t border-white/20 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-500 font-bold uppercase tracking-wide">
-                    <p>&copy; {{ date('Y') }} {{ $companyName }}. All Rights Reserved.</p>
-                    <div class="flex flex-wrap gap-6 justify-center items-center">
-                        <a href="{{ route('public.privacy') }}" class="hover:text-white transition-colors">Privacy</a>
-                        <a href="{{ route('public.terms') }}" class="hover:text-white transition-colors">Terms</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="ml-4 px-4 py-2 bg-brand-500 text-white hover:bg-white hover:text-richblack-950 transition-colors">Admin</a>
-                        @else
-                            <a href="{{ route('login') }}" class="ml-4 px-4 py-2 border border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white transition-colors">Portal</a>
-                        @endauth
-                    </div>
+                <div>
+                    <h2>Explore</h2>
+                    <ul>
+                        <li><a href="{{ route('public.about') }}">About RubiKnows</a></li>
+                        <li><a href="{{ route('public.projects') }}">Project portfolio</a></li>
+                        <li><a href="{{ route('public.gallery') }}">Gallery</a></li>
+                        <li><a href="{{ route('public.careers') }}">Careers</a></li>
+                    </ul>
                 </div>
+                <div>
+                    <h2>Services</h2>
+                    <ul>
+                        @forelse($footerServices as $service)
+                            <li><a href="{{ route('public.service-details', $service) }}">{{ $service->title }}</a></li>
+                        @empty
+                            <li><a href="{{ route('public.services') }}">View our services</a></li>
+                        @endforelse
+                    </ul>
+                </div>
+                <div>
+                    <h2>Contact</h2>
+                    <address>
+                        @if(!empty($settings['office_address'])){{ $settings['office_address'] }}<br>@endif
+                        @if(!empty($settings['contact_phone']))<a href="tel:{{ $settings['contact_phone'] }}">{{ $settings['contact_phone'] }}</a><br>@endif
+                        @if(!empty($settings['contact_email']))<a href="mailto:{{ $settings['contact_email'] }}">{{ $settings['contact_email'] }}</a>@endif
+                    </address>
+                </div>
+            </div>
+            <div class="rk-container rk-footer__bottom">
+                <span>© {{ now()->year }} {{ $companyName }}. All rights reserved.</span>
+                <nav aria-label="Legal navigation"><a href="{{ route('public.privacy') }}">Privacy</a><a href="{{ route('public.terms') }}">Terms</a></nav>
             </div>
         </footer>
 
-        <!-- ===== PAGE TRANSITION SCRIPT ===== -->
-        <script>
-        (function () {
-            var bar = document.getElementById('rk-progress-bar');
-            var timer;
-            var showTimer;
-            function startProgress() {
-                clearTimeout(timer);
-                clearTimeout(showTimer);
-                bar.style.width = '0%';
-                bar.style.opacity = '0';
-                // Avoid flashing on fast local/client-cached navigations.
-                showTimer = setTimeout(function () {
-                    bar.style.opacity = '1';
-                    bar.style.width = '70%';
-                }, 120);
-            }
-            function finishProgress() {
-                clearTimeout(showTimer);
-                bar.style.transition = 'width 0.2s ease';
-                bar.style.width = '100%';
-                bar.style.opacity = '1';
-                timer = setTimeout(function () {
-                    bar.style.transition = 'opacity 0.3s';
-                    bar.style.opacity = '0';
-                    setTimeout(function () { bar.style.width = '0'; bar.style.opacity = '1'; }, 300);
-                }, 200);
-            }
-            document.addEventListener('click', function (e) {
-                var link = e.target.closest('a');
-                if (!link) return;
-                var href = link.getAttribute('href');
-                if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || link.target === '_blank' || e.ctrlKey || e.metaKey || e.shiftKey) return;
-                startProgress();
-            });
-            document.addEventListener('submit', function () { startProgress(); });
-            window.addEventListener('pageshow', function () { finishProgress(); });
-            window.addEventListener('load', function () { finishProgress(); });
-        })();
-        </script>
-
-        <!-- ===== TOAST NOTIFICATION SYSTEM ===== -->
-        <div id="rk-toast-container" class="fixed top-5 right-5 z-[99999] flex flex-col gap-3 pointer-events-none" aria-live="polite"></div>
-        <script>
-        (function () {
-            var _c = document.getElementById('rk-toast-container');
-            function rkToast(message, type) {
-                type = type || 'success';
-                var colors = {
-                    success: { bar: '#E07B2A', label: 'Success' },
-                    error:   { bar: '#ef4444', label: 'Error' },
-                    info:    { bar: '#3b82f6', label: 'Notice' },
-                };
-                var c = colors[type] || colors.success;
-                var icons = {
-                    success: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>',
-                    error:   '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/>',
-                    info:    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>',
-                };
-                var t = document.createElement('div');
-                t.setAttribute('data-rk-toast', '1');
-                t.style.cssText = 'pointer-events:all;min-width:320px;max-width:400px;background:#0f172a;border-left:4px solid ' + c.bar + ';border-radius:0;box-shadow:0 10px 30px rgba(0,0,0,0.5);overflow:hidden;transform:translateX(120%);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .2s ease;';
-                t.innerHTML =
-                    '<div style="display:flex;align-items:flex-start;gap:12px;padding:16px;">' +
-                    '<svg style="width:20px;height:20px;flex-shrink:0;margin-top:2px" fill="none" viewBox="0 0 24 24" stroke="' + c.bar + '">' + (icons[type] || icons.success) + '</svg>' +
-                    '<div style="flex:1;min-width:0;">' +
-                    '<p style="font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:' + c.bar + ';margin:0 0 4px 0;">' + c.label + '</p>' +
-                    '<p style="font-size:14px;font-weight:600;color:#f8fafc;margin:0;line-height:1.5;">' + message + '</p></div>' +
-                    '<button onclick="this.closest(\'[data-rk-toast]\').remove()" style="flex-shrink:0;padding:2px;background:none;border:none;cursor:pointer;color:#64748b;transition:color .2s;">' +
-                    '<svg style="width:16px;height:16px" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg></button>' +
-                    '</div>';
-                _c.appendChild(t);
-                requestAnimationFrame(function () { requestAnimationFrame(function () { t.style.transform = 'translateX(0)'; t.style.opacity = '1'; }); });
-                setTimeout(function () { t.style.transform = 'translateX(120%)'; t.style.opacity = '0'; setTimeout(function () { t.parentNode && t.parentNode.removeChild(t); }, 400); }, 5000);
-            }
-            window.rkToast = rkToast;
-            @php
-$success = session()->pull('success');
-@endphp
-@if($success)
-window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode($success) }}, 'success'); });
-@endif
-@php
-$error = session()->pull('error');
-@endphp
-@if($error)
-window.addEventListener('DOMContentLoaded', function () { rkToast({{ json_encode($error) }}, 'error'); });
-@endif
-        })();
-        </script>
         @stack('scripts')
     </body>
 </html>

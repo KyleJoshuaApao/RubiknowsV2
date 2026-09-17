@@ -15,6 +15,7 @@ use App\Models\Testimonial;
 use App\Models\User;
 use App\Services\FileUploadService;
 use App\Support\PublicContentCache;
+use App\Support\MediaUrl;
 use App\Jobs\SendNewJobApplicationNotification;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
@@ -84,7 +85,14 @@ class PublicAndAdminCmsTest extends TestCase
         $this->get(route('public.gallery'))
             ->assertOk()
             ->assertSee('Bridge construction progress')
-            ->assertSee(Storage::disk('public')->url($media->url));
+            ->assertSee('/storage/gallery/bridge.webp');
+    }
+
+    public function test_public_media_urls_are_same_origin_when_app_url_is_stale(): void
+    {
+        $this->assertSame('/storage/projects/site.webp', MediaUrl::for('projects/site.webp'));
+        $this->assertSame('/storage/gallery/site.webp', MediaUrl::for('http://localhost:8000/storage/gallery/site.webp'));
+        $this->assertSame('https://images.unsplash.com/photo-1?w=800', MediaUrl::for('https://images.unsplash.com/photo-1?w=800'));
     }
 
     public function test_admin_cms_pages_render_successfully(): void
@@ -287,12 +295,18 @@ class PublicAndAdminCmsTest extends TestCase
         $this->get(route('public.home'))
             ->assertOk()
             ->assertSee('home-project-map')
+            ->assertSee('Projects across')
+            ->assertSee('the Philippines.')
             ->assertSee('Remarkable experiences across the map')
             ->assertSee('Davao Civic Center')
             ->assertSee(json_encode(route('public.project-details', $project)), false)
             ->assertSee('window.location.assign(point.url);', false)
             ->assertSee('tile.openstreetmap.org', false)
+            ->assertSee('maxBounds', false)
             ->assertDontSee('basemaps.cartocdn.com', false)
+            ->assertDontSee('google.com/maps', false)
+            ->assertDontSee('API KEY REQUIRED', false)
+            ->assertDontSee('grayscale', false)
             ->assertDontSee('src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"', false);
     }
 

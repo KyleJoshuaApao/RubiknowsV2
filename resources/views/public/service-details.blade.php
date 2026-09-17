@@ -1,39 +1,37 @@
 <x-public-layout>
     <x-slot name="title">{{ $service->title }}</x-slot>
 
-    <section class="relative overflow-hidden bg-richblack-900 py-20 text-white md:py-28">
-        <div class="absolute inset-0 opacity-10" aria-hidden="true">
-            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <pattern id="service-grid" width="48" height="48" patternUnits="userSpaceOnUse">
-                        <path d="M48 0H0V48" fill="none" stroke="white" stroke-width="0.5" />
-                    </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#service-grid)" />
-            </svg>
-        </div>
+    <x-public.page-intro :eyebrow="$service->category ?: 'Service'" number="03" :title="$service->title" :lede="$service->short_description" />
 
-        <div class="relative mx-auto max-w-screen-xl px-6 lg:px-12">
-            <a href="{{ route('public.services') }}" class="mb-8 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-brand-300 transition-colors hover:text-white">
-                <span aria-hidden="true">&larr;</span> All services
-            </a>
-            @if($service->category)
-                <p class="mb-4 text-xs font-black uppercase tracking-[0.2em] text-brand-300">{{ $service->category }}</p>
-            @endif
-            <h1 class="max-w-4xl text-4xl font-black uppercase tracking-tight md:text-6xl">{{ $service->title }}</h1>
-            @if($service->short_description)
-                <p class="mt-6 max-w-3xl text-lg font-medium leading-relaxed text-gray-200 md:text-xl">{{ $service->short_description }}</p>
-            @endif
-        </div>
-    </section>
-
-    <section class="bg-white py-16 md:py-24">
-        <article class="prose prose-lg mx-auto max-w-4xl px-6 prose-headings:font-black prose-headings:text-richblack-900 prose-a:text-brand-600 lg:px-12">
-            @if($service->content)
-                {!! nl2br(e($service->content)) !!}
+    <section class="rk-section">
+        <div class="rk-container rk-service-detail">
+            @if($service->image_path)
+                <img class="rk-service-detail__image" loading="lazy" decoding="async" src="{{ \App\Support\MediaUrl::for($service->image_path) }}" alt="{{ $service->title }}">
             @else
-                <p>Our team will tailor this service to your project requirements. Contact us to discuss your needs.</p>
+                <div class="rk-service-detail__image flex items-end bg-[#e0a92a] p-8">
+                    <span class="text-5xl font-extrabold tracking-[-.08em] text-[#171613]">RK</span>
+                </div>
             @endif
-        </article>
+            <div class="rk-rich-copy rich-text">
+                @if($service->content)
+                    {!! nl2br(e($service->content)) !!}
+                @else
+                    <p>Our team will tailor this service to the needs of your project. Contact RubiKnows to start a conversation.</p>
+                @endif
+
+                @php($features = is_string($service->features ?? null) ? preg_split('/\r?\n/', $service->features) : ($service->features ?? []))
+                @if(!empty(array_filter((array) $features)))
+                    <div class="mt-10 border-t border-black/15 pt-8">
+                        <x-public.eyebrow>What this can include</x-public.eyebrow>
+                        <ul class="mt-5 space-y-3 text-base leading-relaxed">
+                            @foreach($features as $feature)
+                                @if(trim($feature) !== '')<li class="border-l-2 border-brand-500 pl-4">{{ trim($feature) }}</li>@endif
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <x-public.action href="{{ route('public.contact', ['subject' => 'Inquiry about ' . $service->title]) }}" class="mt-10">Talk to our team</x-public.action>
+            </div>
+        </div>
     </section>
 </x-public-layout>

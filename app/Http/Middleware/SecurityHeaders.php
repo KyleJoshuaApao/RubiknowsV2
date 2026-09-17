@@ -28,7 +28,7 @@ class SecurityHeaders
             "img-src 'self' data: blob: https://images.unsplash.com https://placehold.co https://*.tile.openstreetmap.org",
             "connect-src 'self' $viteHosts",
             "media-src 'self' blob: *",
-            "frame-src 'self' https://www.google.com",
+            "frame-src 'self'",
             "frame-ancestors 'self'",
             "base-uri 'self'",
             "form-action 'self'",
