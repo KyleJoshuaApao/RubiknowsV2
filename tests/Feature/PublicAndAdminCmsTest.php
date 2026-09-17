@@ -102,6 +102,17 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertSee('Start the<br>next build.', false);
     }
 
+    public function test_about_team_cards_reveal_accessible_roles_on_focus(): void
+    {
+        $this->get(route('public.about'))
+            ->assertOk()
+            ->assertSee('rk-people-grid')
+            ->assertSee('rk-person-card__role-overlay')
+            ->assertSee('What is your role?')
+            ->assertSee('tabindex="0"', false)
+            ->assertSee('Founder / Owner');
+    }
+
     public function test_public_media_urls_are_same_origin_when_app_url_is_stale(): void
     {
         $this->assertSame('/storage/projects/site.webp', MediaUrl::for('projects/site.webp'));

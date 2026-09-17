@@ -95,20 +95,30 @@
                 <a class="rk-text-link" href="{{ route('public.careers') }}">Work with us</a>
             </div>
             <div class="rk-people-grid">
-                <article class="rk-person-card">
+                <article class="rk-person-card" tabindex="0" aria-label="Ruvelyn S. Rubinos, Founder and Owner">
                     <div class="rk-person-card__portrait">
                         <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=78&w=1000&auto=format&fit=crop" alt="Team members collaborating around a table">
                         <span>RSR</span>
+                        <div class="rk-person-card__role-overlay" aria-hidden="true">
+                            <span class="rk-person-card__role-kicker">What is your role?</span>
+                            <strong>Founder / Owner</strong>
+                            <span class="rk-person-card__role-name">Ruvelyn S. Rubinos</span>
+                        </div>
                     </div>
                     <div class="rk-person-card__meta">
                         <span class="rk-person-card__number">01</span>
                         <div><h3>Ruvelyn S. Rubinos</h3><p>Founder / Owner</p></div>
                     </div>
                 </article>
-                <article class="rk-person-card">
+                <article class="rk-person-card" tabindex="0" aria-label="Kevin C. Rubinos, Founder and Owner">
                     <div class="rk-person-card__portrait">
                         <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=78&w=1000&auto=format&fit=crop" alt="Construction team at work on site">
                         <span>KCR</span>
+                        <div class="rk-person-card__role-overlay" aria-hidden="true">
+                            <span class="rk-person-card__role-kicker">What is your role?</span>
+                            <strong>Founder / Owner</strong>
+                            <span class="rk-person-card__role-name">Kevin C. Rubinos</span>
+                        </div>
                     </div>
                     <div class="rk-person-card__meta">
                         <span class="rk-person-card__number">02</span>
