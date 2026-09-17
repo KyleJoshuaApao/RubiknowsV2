@@ -264,6 +264,8 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertSee('Davao Civic Center')
             ->assertSee(json_encode(route('public.project-details', $project)), false)
             ->assertSee('window.location.assign(point.url);', false)
+            ->assertSee('tile.openstreetmap.org', false)
+            ->assertDontSee('basemaps.cartocdn.com', false)
             ->assertDontSee('src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"', false);
     }
 

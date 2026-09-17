@@ -74,8 +74,8 @@
                 status.classList.toggle('text-red-300', isError);
             }
 
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors', maxZoom: 18
             }).on('tileerror', function () {
                 setStatus('Map tiles are unavailable. You can still enter coordinates manually.', true);
             }).addTo(map);

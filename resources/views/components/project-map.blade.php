@@ -29,11 +29,11 @@
 @once
     @push('head')
         <style>
-            .rk-map-section { background: #0b0c0c; color: #fff; padding: clamp(3rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem); }
+            .rk-map-section { position: relative; z-index: 0; isolation: isolate; background: #0b0c0c; color: #fff; padding: clamp(3rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem); }
             .rk-map-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; max-width: 90rem; margin: 0 auto 2rem; }
             .rk-map-heading h2 { margin-top: .65rem; max-width: 42rem; font-size: clamp(2.5rem, 6vw, 6.25rem); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
             .rk-map-copy { max-width: 25rem; color: #a7aaad; font-size: .9rem; line-height: 1.6; }
-            .rk-map-canvas { max-width: 90rem; height: min(62vw, 44rem); min-height: 25rem; margin: 0 auto; overflow: hidden; border: 1px solid #3a3d3f; background: #202527; }
+            .rk-map-canvas { position: relative; z-index: 0; max-width: 90rem; height: min(62vw, 44rem); min-height: 25rem; margin: 0 auto; overflow: hidden; border: 1px solid #3a3d3f; background: #202527; }
             .rk-map-canvas .leaflet-tile { filter: grayscale(1) contrast(1.1) brightness(.7); }
             .rk-map-canvas .leaflet-control-zoom a { color: #0b0c0c; }
             .rk-map-canvas .leaflet-control-attribution { background: rgba(11,12,12,.82); color: #899094; }
@@ -103,8 +103,8 @@
 
                     const points = JSON.parse(container.dataset.projects || '[]');
                     const map = L.map(container, { scrollWheelZoom: false, minZoom: 5, maxZoom: 14 }).setView([12.8797, 121.7740], 5.4);
-                    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                        attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; OpenStreetMap contributors', maxZoom: 18
                     }).on('tileerror', function () {
                         setStatus('Map tiles are unavailable. You can still explore every project from the portfolio.', true);
                     }).addTo(map);

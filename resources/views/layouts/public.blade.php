@@ -76,7 +76,7 @@
     <body class="font-sans antialiased text-gray-700 bg-white flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
         <!-- ===== STYLISTIC NAVIGATION ===== -->
-        <header x-data="{ mobileOpen: false }" class="w-full z-50 relative sticky top-0 bg-[#0b0c0c] shadow-sm border-b border-white/10">
+        <header x-data="{ mobileOpen: false }" class="w-full z-[1000] relative sticky top-0 bg-[#0b0c0c] shadow-sm border-b border-white/10">
             <div class="flex items-stretch h-24 lg:h-28 w-full relative">
                 
                 <!-- Left: Logo Area with Stylistic Accents -->

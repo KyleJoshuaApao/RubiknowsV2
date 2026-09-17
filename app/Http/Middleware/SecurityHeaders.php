@@ -25,7 +25,7 @@ class SecurityHeaders
             "script-src 'self' cdn.jsdelivr.net 'unsafe-inline' $unsafeEval $viteHosts",
             "style-src 'self' fonts.bunny.net cdn.jsdelivr.net 'unsafe-inline' $viteHosts",
             "font-src 'self' fonts.bunny.net data:",
-            "img-src 'self' data: blob: *",
+            "img-src 'self' data: blob: https://images.unsplash.com https://*.tile.openstreetmap.org",
             "connect-src 'self' $viteHosts",
             "media-src 'self' blob: *",
             "frame-src 'self' https://www.google.com",
