@@ -83,7 +83,9 @@ class PublicController extends Controller
             ->whereBetween('latitude', [MindanaoMap::MIN_LATITUDE, MindanaoMap::MAX_LATITUDE])
             ->whereBetween('longitude', [MindanaoMap::MIN_LONGITUDE, MindanaoMap::MAX_LONGITUDE])
             ->latest()
-            ->get(['id', 'slug', 'title', 'category_id', 'location', 'latitude', 'longitude']);
+            ->get(['id', 'slug', 'title', 'category_id', 'location', 'latitude', 'longitude'])
+            ->filter(fn (Project $project) => MindanaoMap::contains($project->latitude, $project->longitude))
+            ->values();
     }
 
     public function projectDetails(Project $project)

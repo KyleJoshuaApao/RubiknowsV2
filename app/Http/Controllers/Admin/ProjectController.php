@@ -87,6 +87,8 @@ class ProjectController extends Controller
             ->whereBetween('latitude', [MindanaoMap::MIN_LATITUDE, MindanaoMap::MAX_LATITUDE])
             ->whereBetween('longitude', [MindanaoMap::MIN_LONGITUDE, MindanaoMap::MAX_LONGITUDE])
             ->when($except, fn ($query) => $query->whereKeyNot($except->getKey()))
-            ->get(['id', 'title', 'latitude', 'longitude']);
+            ->get(['id', 'title', 'latitude', 'longitude'])
+            ->filter(fn (Project $project) => MindanaoMap::contains($project->latitude, $project->longitude))
+            ->values();
     }
 }

@@ -88,7 +88,18 @@ class PublicAndAdminCmsTest extends TestCase
         $this->get(route('public.gallery'))
             ->assertOk()
             ->assertSee('Bridge construction progress')
-            ->assertSee('/storage/gallery/bridge.webp');
+            ->assertSee('/storage/gallery/bridge.webp')
+            ->assertSee('rk-portfolio-mosaic')
+            ->assertSee('rk-gallery-mosaic__cta');
+    }
+
+    public function test_public_projects_use_the_editorial_work_mosaic(): void
+    {
+        $this->get(route('public.projects'))
+            ->assertOk()
+            ->assertSee('rk-portfolio-mosaic')
+            ->assertSee('rk-project-mosaic__cta')
+            ->assertSee('Start the<br>next build.', false);
     }
 
     public function test_public_media_urls_are_same_origin_when_app_url_is_stale(): void

@@ -5,16 +5,17 @@
 
     <section class="rk-section" x-data="{ selectedImage: null, opener: null, openImage(url, event) { this.opener = event.currentTarget; this.selectedImage = url; this.$nextTick(() => this.$refs.lightboxClose.focus()) }, closeImage() { this.selectedImage = null; this.$nextTick(() => { if (this.opener && this.opener.isConnected) this.opener.focus() }) } }">
         <div class="rk-container">
-            <div class="rk-gallery-grid">
+            <div class="rk-gallery-grid rk-portfolio-mosaic">
                 @forelse($media as $image)
                     @php($mediaUrl = \App\Support\MediaUrl::for($image->url))
-                    <figure class="rk-gallery-tile" @if($image->type === 'Photo') role="button" tabindex="0" aria-label="View {{ $image->title }} in a larger size" @click="openImage(@js($mediaUrl), $event)" @keydown.enter.prevent="openImage(@js($mediaUrl), $event)" @keydown.space.prevent="openImage(@js($mediaUrl), $event)" @endif>
+                    <figure class="rk-gallery-tile rk-mosaic-card" data-mosaic-index="{{ $loop->iteration }}" @if($image->type === 'Photo') role="button" tabindex="0" aria-label="View {{ $image->title }} in a larger size" @click="openImage(@js($mediaUrl), $event)" @keydown.enter.prevent="openImage(@js($mediaUrl), $event)" @keydown.space.prevent="openImage(@js($mediaUrl), $event)" @endif>
                         @if($image->type === 'Video')
                             <video controls preload="metadata" aria-label="{{ $image->title }}"><source src="{{ $mediaUrl }}">Your browser does not support this video.</video>
                         @else
                             <img loading="lazy" decoding="async" src="{{ $mediaUrl }}" alt="{{ $image->title }}">
                         @endif
                         <figcaption class="rk-gallery-tile__caption">
+                            <span class="rk-gallery-tile__index">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                             <h2>{{ $image->title }}</h2>
                             @if($image->category)<p>{{ $image->category }}</p>@endif
                         </figcaption>
@@ -22,6 +23,11 @@
                 @empty
                     <p class="rk-empty col-span-full">No images have been added to the gallery yet.</p>
                 @endforelse
+                <a class="rk-portfolio-mosaic__cta rk-gallery-mosaic__cta" href="{{ route('public.projects') }}">
+                    <span class="rk-portfolio-mosaic__cta-kicker">RubiKnows / Work</span>
+                    <strong>View all<br>projects.</strong>
+                    <span class="rk-portfolio-mosaic__cta-link">Open portfolio &rarr;</span>
+                </a>
             </div>
 
             @if($media->hasPages())

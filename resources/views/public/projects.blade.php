@@ -14,21 +14,26 @@
                     <p class="rk-section__lede">Each entry connects to its exact location on the map above when a CMS pin has been added.</p>
                 </div>
             </div>
-            <div class="rk-project-grid">
+            <div class="rk-project-grid rk-portfolio-mosaic">
                 @forelse($projects as $project)
-                    <a class="rk-project-tile" href="{{ route('public.project-details', $project) }}">
+                    <a class="rk-project-tile rk-mosaic-card" data-mosaic-index="{{ $loop->iteration }}" href="{{ route('public.project-details', $project) }}">
                         @if($project->cover_image_path)
                             <img loading="lazy" decoding="async" src="{{ \App\Support\MediaUrl::for($project->cover_image_path) }}" alt="{{ $project->title }}">
                         @endif
                         <div class="rk-project-tile__copy">
                             <span class="rk-project-tile__category">{{ $project->category ?: 'Project' }}</span>
                             <h3>{{ $project->title }}</h3>
-                            <p class="rk-project-tile__meta">{{ $project->location ?: 'Philippines' }} <b>/</b> View project ↗</p>
+                            <p class="rk-project-tile__meta">{{ $project->location ?: 'Mindanao, Philippines' }} <b>/</b> View project ↗</p>
                         </div>
                     </a>
                 @empty
                     <p class="rk-empty col-span-full">No projects have been published yet.</p>
                 @endforelse
+                <a class="rk-portfolio-mosaic__cta rk-project-mosaic__cta" href="{{ route('public.contact') }}">
+                    <span class="rk-portfolio-mosaic__cta-kicker">RubiKnows / 07</span>
+                    <strong>Start the<br>next build.</strong>
+                    <span class="rk-portfolio-mosaic__cta-link">Discuss a project &rarr;</span>
+                </a>
             </div>
             @if($projects->hasPages())
                 <div class="mt-12 flex justify-center">{{ $projects->links('vendor.pagination.tailwind') }}</div>

@@ -976,3 +976,251 @@ body.rk-public {
     .rk-public .rk-people-grid { grid-template-columns: 1fr; }
     .rk-public .rk-person-card__portrait, .rk-public .rk-person-card__portrait img { min-height: 19rem; }
 }
+
+/* Editorial work mosaic: image-led, asymmetric, and construction-focused. */
+.rk-public .rk-portfolio-mosaic {
+    display: grid;
+    grid-template-columns: repeat(11, minmax(0, 1fr));
+    grid-auto-rows: clamp(9.5rem, 12vw, 11rem);
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card {
+    min-height: 0 !important;
+    margin-left: 0 !important;
+    box-shadow: none;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="1"] {
+    grid-column: 1 / span 3 !important;
+    grid-row: span 2 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="2"] {
+    grid-column: 4 / span 3 !important;
+    grid-row: span 1 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="3"] {
+    grid-column: 7 / span 5 !important;
+    grid-row: span 1 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="4"] {
+    grid-column: 4 / span 5 !important;
+    grid-row: span 1 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="5"] {
+    grid-column: 9 / span 3 !important;
+    grid-row: span 1 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="6"] {
+    grid-column: 1 / span 3 !important;
+    grid-row: span 2 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="7"] {
+    grid-column: 4 / span 3 !important;
+    grid-row: span 1 !important;
+}
+
+.rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="8"] {
+    grid-column: 7 / span 3 !important;
+    grid-row: span 1 !important;
+}
+
+.rk-public .rk-project-grid .rk-mosaic-card[data-mosaic-index="6"] {
+    grid-column: 1 / span 3 !important;
+}
+
+.rk-public .rk-project-grid .rk-project-mosaic__cta {
+    grid-column: 7 / span 5;
+    grid-row: span 2;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-mosaic__cta {
+    grid-column: 10 / span 2;
+    grid-row: span 1;
+}
+
+.rk-public .rk-project-grid .rk-project-tile {
+    display: flex;
+    align-items: stretch;
+}
+
+.rk-public .rk-project-grid .rk-project-tile::after {
+    background: linear-gradient(180deg, rgba(10,10,8,.1), rgba(10,10,8,.9));
+}
+
+.rk-public .rk-project-grid .rk-project-tile__copy {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.rk-public .rk-project-grid .rk-project-tile h3 {
+    max-width: 20rem;
+    margin: .8rem 0 auto;
+    font-size: clamp(1.45rem, 2.3vw, 2.8rem);
+}
+
+.rk-public .rk-project-grid .rk-project-tile__meta {
+    margin-top: 2rem;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile {
+    display: flex;
+    min-height: 0 !important;
+    cursor: zoom-in;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile::after {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(10,10,8,.58), transparent 48%, rgba(10,10,8,.28));
+    content: '';
+    pointer-events: none;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile img,
+.rk-public .rk-gallery-grid .rk-gallery-tile video {
+    min-height: 100%;
+    filter: saturate(.86) contrast(1.04);
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile__caption {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: clamp(1.15rem, 2.4vw, 2rem);
+    background: transparent;
+    color: var(--rk-white);
+    opacity: 1;
+    transform: none;
+    pointer-events: none;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile__index {
+    color: var(--rk-gold);
+    font-size: .65rem;
+    font-weight: 800;
+    letter-spacing: .16em;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile__caption h2 {
+    max-width: 20rem;
+    margin: .8rem 0 0;
+    color: var(--rk-white);
+    font-size: clamp(1.2rem, 2.25vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -.045em;
+    line-height: .92;
+    text-transform: uppercase;
+}
+
+.rk-public .rk-gallery-grid .rk-gallery-tile__caption p {
+    margin: .75rem 0 0;
+    color: rgba(255,255,255,.82);
+}
+
+.rk-public .rk-portfolio-mosaic__cta {
+    display: flex;
+    min-height: 0;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    background: var(--rk-gold);
+    color: var(--rk-ink);
+    transition: background-color .25s ease, color .25s ease, transform .25s ease;
+}
+
+.rk-public .rk-project-mosaic__cta {
+    background: var(--rk-ink);
+    color: var(--rk-white);
+}
+
+.rk-public .rk-portfolio-mosaic__cta:hover {
+    background: var(--rk-gold-deep);
+    color: var(--rk-white);
+    transform: translateY(-.35rem);
+}
+
+.rk-public .rk-project-mosaic__cta:hover {
+    background: var(--rk-gold);
+    color: var(--rk-ink);
+}
+
+.rk-public .rk-portfolio-mosaic__cta-kicker,
+.rk-public .rk-portfolio-mosaic__cta-link {
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+.rk-public .rk-portfolio-mosaic__cta strong {
+    margin-block: auto;
+    font-size: clamp(1.35rem, 2.3vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -.055em;
+    line-height: .94;
+}
+
+.rk-public .rk-portfolio-mosaic__cta-link {
+    margin-top: 2rem;
+}
+
+@media (max-width: 900px) {
+    .rk-public .rk-portfolio-mosaic {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 12rem;
+    }
+
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card,
+    .rk-public .rk-portfolio-mosaic .rk-project-mosaic__cta,
+    .rk-public .rk-portfolio-mosaic .rk-gallery-mosaic__cta {
+        grid-column: auto !important;
+        grid-row: span 2 !important;
+    }
+
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="1"],
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="6"],
+    .rk-public .rk-portfolio-mosaic .rk-portfolio-mosaic__cta {
+        grid-column: 1 / -1 !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-portfolio-mosaic {
+        grid-template-columns: 1fr;
+        grid-auto-rows: auto;
+        gap: .85rem;
+    }
+
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card,
+    .rk-public .rk-portfolio-mosaic .rk-project-mosaic__cta,
+    .rk-public .rk-portfolio-mosaic .rk-gallery-mosaic__cta {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+        min-height: 18rem !important;
+    }
+
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="1"],
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="6"] {
+        min-height: 23rem !important;
+    }
+
+    .rk-public .rk-portfolio-mosaic__cta {
+        min-height: 15rem !important;
+    }
+}
