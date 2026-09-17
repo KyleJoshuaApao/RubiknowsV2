@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\Support\PublicContentCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JobApplication extends Model
 {
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => PublicContentCache::forgetAdminNotificationCounts());
+        static::deleted(fn () => PublicContentCache::forgetAdminNotificationCounts());
+    }
 
     /**
      * Application documents are private and must not depend on the default

@@ -60,28 +60,7 @@
                         </div>
                     </div>
 
-                    <div class="mb-6 border border-gray-200 bg-gray-50 p-5">
-                        <div class="flex items-start justify-between gap-4 mb-4">
-                            <div>
-                                <label class="form-label-v2 mb-1">Project Map Pin</label>
-                                <p class="text-xs text-gray-500">Click the Philippine map to place the project. Coordinates can also be entered manually.</p>
-                            </div>
-                            <span class="text-[10px] font-black uppercase tracking-widest text-brand-600">Optional</span>
-                        </div>
-                        <div id="project-location-picker" class="h-72 border border-gray-300 bg-richblack-900"></div>
-                        <div class="grid grid-cols-2 gap-4 mt-4">
-                            <div>
-                                <label for="latitude" class="form-label-v2">Latitude</label>
-                                <input type="number" step="0.0000001" min="4" max="22" name="latitude" id="latitude" value="{{ old('latitude') }}" class="form-input-v2" placeholder="14.5995">
-                                @error('latitude') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label for="longitude" class="form-label-v2">Longitude</label>
-                                <input type="number" step="0.0000001" min="116" max="128" name="longitude" id="longitude" value="{{ old('longitude') }}" class="form-input-v2" placeholder="120.9842">
-                                @error('longitude') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-                    </div>
+                    <x-admin-project-map-picker :map-projects="$mapProjects" />
 
                     <div class="mb-4">
                         <label for="description" class="form-label-v2">Description</label>
@@ -98,32 +77,4 @@
     </div>
 </x-app-layout>
 
-@push('extra-head-scripts')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-@endpush
-@push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const map = L.map('project-location-picker', { scrollWheelZoom: false }).setView([12.8797, 121.7740], 5);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 18
-            }).addTo(map);
-            let marker;
-            function placePin(lat, lng) {
-                if (marker) marker.setLatLng([lat, lng]);
-                else marker = L.marker([lat, lng]).addTo(map);
-                document.getElementById('latitude').value = lat.toFixed(7);
-                document.getElementById('longitude').value = lng.toFixed(7);
-            }
-            const lat = parseFloat(document.getElementById('latitude').value);
-            const lng = parseFloat(document.getElementById('longitude').value);
-            if (Number.isFinite(lat) && Number.isFinite(lng)) {
-                placePin(lat, lng);
-                map.setView([lat, lng], 11);
-            }
-            map.on('click', event => placePin(event.latlng.lat, event.latlng.lng));
-        });
-    </script>
-@endpush
 

@@ -14,8 +14,10 @@ use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Models\User;
 use App\Services\FileUploadService;
+use App\Support\PublicContentCache;
 use App\Jobs\SendNewJobApplicationNotification;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -45,6 +47,13 @@ class PublicAndAdminCmsTest extends TestCase
         ] as $uri) {
             $this->get($uri)->assertOk();
         }
+    }
+
+    public function test_homepage_uses_a_safe_careers_call_to_action_when_live_content_is_empty(): void
+    {
+        $this->get(route('public.home'))
+            ->assertOk()
+            ->assertSee('Build your career with the industry leaders.');
     }
 
     public function test_public_services_page_links_to_each_service_detail_page(): void
@@ -157,8 +166,14 @@ class PublicAndAdminCmsTest extends TestCase
         $this->put(route('admin.projects.update', $project), [
             'title' => 'Bridge Retrofit Updated',
             'status' => 'Completed',
+            'latitude' => '10.3157',
+            'longitude' => '123.8854',
         ])->assertRedirect(route('admin.projects.index'));
-        $this->assertDatabaseHas('projects', ['title' => 'Bridge Retrofit Updated']);
+        $this->assertDatabaseHas('projects', [
+            'title' => 'Bridge Retrofit Updated',
+            'latitude' => 10.3157,
+            'longitude' => 123.8854,
+        ]);
 
         $this->post(route('admin.gallery.store'), [
             'title' => 'Site Photo',
@@ -247,7 +262,49 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertOk()
             ->assertSee('home-project-map')
             ->assertSee('Davao Civic Center')
-            ->assertSee(json_encode(route('public.project-details', $project)), false);
+            ->assertSee(json_encode(route('public.project-details', $project)), false)
+            ->assertSee('window.location.assign(point.url);', false)
+            ->assertDontSee('src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"', false);
+    }
+
+    public function test_admin_project_map_picker_lists_existing_pins_and_enforces_philippine_bounds(): void
+    {
+        $this->actingAs($this->superAdmin());
+        Project::create([
+            'title' => 'Cebu Reference Site',
+            'latitude' => 10.3157,
+            'longitude' => 123.8854,
+        ]);
+
+        $this->get(route('admin.projects.create'))
+            ->assertOk()
+            ->assertSee('project-location-picker')
+            ->assertSee('Cebu Reference Site')
+            ->assertSee('Click anywhere in the Philippines to place a pin.');
+
+        $this->post(route('admin.projects.store'), [
+            'title' => 'Invalid map location',
+            'latitude' => '42.0000',
+            'longitude' => '120.9842',
+        ])->assertSessionHasErrors('latitude');
+
+        $this->assertDatabaseMissing('projects', ['title' => 'Invalid map location']);
+    }
+
+    public function test_cms_writes_invalidate_the_public_home_and_project_map_caches(): void
+    {
+        $this->actingAs($this->superAdmin());
+        Cache::put(PublicContentCache::HOME, ['stale' => true], now()->addMinutes(5));
+        Cache::put(PublicContentCache::PROJECT_MAP, collect(), now()->addMinutes(5));
+
+        $this->post(route('admin.projects.store'), [
+            'title' => 'Cache clearing project',
+            'latitude' => '14.5995',
+            'longitude' => '120.9842',
+        ])->assertRedirect(route('admin.projects.index'));
+
+        $this->assertFalse(Cache::has(PublicContentCache::HOME));
+        $this->assertFalse(Cache::has(PublicContentCache::PROJECT_MAP));
     }
 
     public function test_gallery_upload_failures_return_a_field_error_instead_of_a_server_error(): void

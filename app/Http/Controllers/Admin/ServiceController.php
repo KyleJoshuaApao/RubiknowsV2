@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ServiceRequest;
 use App\Models\Service;
+use App\Support\PublicContentCache;
 
 class ServiceController extends Controller
 {
@@ -27,6 +28,7 @@ class ServiceController extends Controller
         $data['is_featured'] = $request->has('is_featured');
 
         Service::create($data);
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.services.index')->with('success', 'Service created successfully.');
     }
@@ -43,6 +45,7 @@ class ServiceController extends Controller
         $data['is_featured'] = $request->has('is_featured');
 
         $service->update($data);
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.services.index')->with('success', 'Service updated successfully.');
     }
@@ -50,6 +53,7 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         $service->delete();
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.services.index')->with('success', 'Service deleted successfully.');
     }

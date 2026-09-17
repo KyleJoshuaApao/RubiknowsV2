@@ -13,10 +13,12 @@ use App\Models\ContactMessage;
 use App\Models\QuotationRequest;
 use App\Models\JobApplication;
 use App\Models\Setting;
+use App\Support\PublicContentCache;
 use App\Jobs\SendNewJobApplicationNotification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use App\Mail\NewContactMessageNotification;
 use App\Mail\NewQuotationRequestNotification;
 
@@ -24,22 +26,29 @@ class PublicController extends Controller
 {
     public function index()
     {
-        $featuredProjects = Project::where('status', 'Featured')->latest()->take(3)->get();
-        $mapProjects = Project::whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->latest()
-            ->get();
-        $services = Service::latest()->take(6)->get();
-        $testimonials = Testimonial::where('is_published', true)->latest()->get();
-        $clients = Client::latest()->get();
-        $media = GalleryMedia::latest()->take(6)->get();
+        $home = Cache::remember(PublicContentCache::HOME, now()->addMinutes(5), function (): array {
+            $settings = Setting::whereIn('key', [
+                'home_stats_bar', 'home_markets', 'home_marquee', 'home_careers',
+            ])->pluck('value', 'key');
 
-        $homeStats = json_decode(Setting::getValue('home_stats_bar', '[]'), true);
-        $homeMarkets = json_decode(Setting::getValue('home_markets', '[]'), true);
-        $homeMarquee = json_decode(Setting::getValue('home_marquee', '[]'), true);
-        $homeCareers = json_decode(Setting::getValue('home_careers', '{}'), true);
+            $homeCareers = json_decode($settings->get('home_careers', '{}'), true);
 
-        return view('public.home', compact('featuredProjects', 'mapProjects', 'services', 'testimonials', 'clients', 'media', 'homeStats', 'homeMarkets', 'homeMarquee', 'homeCareers'));
+            return [
+                'featuredProjects' => Project::where('status', 'Featured')->latest()->take(3)->get(),
+                'mapProjects' => $this->mapProjects(),
+                'services' => Service::latest()->take(6)->get(),
+                'testimonials' => Testimonial::where('is_published', true)->latest()->take(3)->get(),
+                'homeStats' => json_decode($settings->get('home_stats_bar', '[]'), true),
+                'homeMarkets' => json_decode($settings->get('home_markets', '[]'), true),
+                'homeMarquee' => json_decode($settings->get('home_marquee', '[]'), true),
+                'homeCareers' => array_merge([
+                    'title' => 'Build your career with the industry leaders.',
+                    'description' => 'We are actively recruiting talented people to deliver work that lasts.',
+                ], is_array($homeCareers) ? $homeCareers : []),
+            ];
+        });
+
+        return view('public.home', $home);
     }
 
     public function about()
@@ -62,8 +71,16 @@ class PublicController extends Controller
     public function projects()
     {
         $projects = Project::latest()->paginate(12);
-        $mapProjects = Project::whereNotNull('latitude')->whereNotNull('longitude')->latest()->get();
+        $mapProjects = Cache::remember(PublicContentCache::PROJECT_MAP, now()->addMinutes(5), fn () => $this->mapProjects());
         return view('public.projects', compact('projects', 'mapProjects'));
+    }
+
+    private function mapProjects()
+    {
+        return Project::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->latest()
+            ->get(['id', 'slug', 'title', 'category_id', 'location', 'latitude', 'longitude']);
     }
 
     public function projectDetails(Project $project)

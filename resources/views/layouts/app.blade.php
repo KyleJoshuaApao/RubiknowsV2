@@ -26,6 +26,21 @@
         @stack('extra-head-scripts')
     </head>
     <body class="font-sans antialiased text-richblack-900 bg-white flex h-screen overflow-hidden">
+        @php
+            $adminNotificationCounts = \Illuminate\Support\Facades\Cache::remember(
+                \App\Support\PublicContentCache::ADMIN_NOTIFICATION_COUNTS,
+                now()->addSeconds(30),
+                fn () => [
+                    'messages' => \App\Models\ContactMessage::where('status', 'New')->count(),
+                    'quotations' => \App\Models\QuotationRequest::where('status', 'Pending')->count(),
+                    'applications' => \App\Models\JobApplication::where('status', 'Received')->count(),
+                ],
+            );
+            $unreadMsgs = $adminNotificationCounts['messages'];
+            $pendingQuotes = $adminNotificationCounts['quotations'];
+            $newApps = $adminNotificationCounts['applications'];
+            $totalNotifications = $unreadMsgs + $pendingQuotes + $newApps;
+        @endphp
 
         <!-- ===== SIDEBAR ===== -->
         <aside class="w-64 bg-richblack-950 flex-shrink-0 flex flex-col hidden md:flex text-gray-300 relative z-20">
@@ -126,7 +141,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"></path>
                         </svg>
                         <span>Inbox (Contact Us)</span>
-                        @php $unreadMsgs = \App\Models\ContactMessage::where('status', 'New')->count(); @endphp
                         @if($unreadMsgs > 0)
                             <span class="ml-auto bg-brand-500 text-white py-0.5 px-2 rounded-full text-[10px] font-semibold min-w-[20px] text-center">{{ $unreadMsgs }}</span>
                         @endif
@@ -140,7 +154,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                         <span>Quotation Requests</span>
-                        @php $pendingQuotes = \App\Models\QuotationRequest::where('status', 'Pending')->count(); @endphp
                         @if($pendingQuotes > 0)
                             <span class="ml-auto bg-blue-500 text-white py-0.5 px-2 rounded-full text-[10px] font-semibold min-w-[20px] text-center">{{ $pendingQuotes }}</span>
                         @endif
@@ -172,7 +185,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
                         <span>Applicants</span>
-                        @php $newApps = \App\Models\JobApplication::where('status', 'Received')->count(); @endphp
                         @if($newApps > 0)
                             <span class="ml-auto bg-green-500 text-white py-0.5 px-2 rounded-full text-[10px] font-semibold min-w-[20px] text-center">{{ $newApps }}</span>
                         @endif
@@ -258,12 +270,6 @@
                     @endisset
                 </div>
 
-                @php
-                    $unreadMsgs = \App\Models\ContactMessage::where('status', 'New')->count();
-                    $pendingQuotes = \App\Models\QuotationRequest::where('status', 'Pending')->count();
-                    $newApps = \App\Models\JobApplication::where('status', 'Received')->count();
-                    $totalNotifications = $unreadMsgs + $pendingQuotes + $newApps;
-                @endphp
                 <div class="flex items-center space-x-3 relative" x-data="{ open: false }">
                     <!-- Notification Bell -->
                     <button @click="open = !open" @click.outside="open = false" class="p-2.5  text-gray-400 hover:text-brand-500 hover:bg-brand-50 transition-all relative focus:outline-none" title="Notifications">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SettingRequest;
 use App\Models\Setting;
+use App\Support\PublicContentCache;
 use Illuminate\Support\Arr;
 
 class SettingController extends Controller
@@ -31,6 +32,7 @@ class SettingController extends Controller
         }
 
         \Illuminate\Support\Facades\Cache::forget('site_settings');
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully.');
     }

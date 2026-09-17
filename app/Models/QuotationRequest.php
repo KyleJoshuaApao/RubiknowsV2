@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\Support\PublicContentCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class QuotationRequest extends Model
 {
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => PublicContentCache::forgetAdminNotificationCounts());
+        static::deleted(fn () => PublicContentCache::forgetAdminNotificationCounts());
+    }
 
     protected $fillable = [
         'name',

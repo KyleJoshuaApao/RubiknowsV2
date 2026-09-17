@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\LiveEditorRequest;
 use App\Models\Setting;
+use App\Support\PublicContentCache;
 
 class LiveEditorController extends Controller
 {
@@ -43,6 +44,8 @@ class LiveEditorController extends Controller
         if (isset($data['home_careers'])) {
             Setting::updateOrCreate(['key' => 'home_careers'], ['value' => json_encode($data['home_careers'])]);
         }
+
+        PublicContentCache::forgetHome();
 
         return redirect()->back()->with('success', 'Homepage layout updated successfully!');
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\TestimonialRequest;
 use App\Models\Testimonial;
+use App\Support\PublicContentCache;
 
 class TestimonialController extends Controller
 {
@@ -27,6 +28,7 @@ class TestimonialController extends Controller
         $data['is_published'] = $request->has('is_published');
 
         Testimonial::create($data);
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial created successfully.');
     }
@@ -43,6 +45,7 @@ class TestimonialController extends Controller
         $data['is_published'] = $request->has('is_published');
 
         $testimonial->update($data);
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial updated successfully.');
     }
@@ -50,6 +53,7 @@ class TestimonialController extends Controller
     public function destroy(Testimonial $testimonial)
     {
         $testimonial->delete();
+        PublicContentCache::forgetHome();
 
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial deleted successfully.');
     }

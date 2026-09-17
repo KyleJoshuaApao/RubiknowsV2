@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProjectRequest;
 use App\Models\Project;
 use App\Services\FileUploadService;
+use App\Support\PublicContentCache;
 
 class ProjectController extends Controller
 {
@@ -25,7 +26,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('admin.projects.create');
+        return view('admin.projects.create', ['mapProjects' => $this->mapProjects()]);
     }
 
     public function store(ProjectRequest $request)
@@ -40,13 +41,14 @@ class ProjectController extends Controller
         }
 
         Project::create($data);
+        PublicContentCache::forgetProjects();
 
         return redirect()->route('admin.projects.index')->with('success', 'Project created successfully.');
     }
 
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        return view('admin.projects.edit', ['project' => $project, 'mapProjects' => $this->mapProjects($project)]);
     }
 
     public function update(ProjectRequest $request, Project $project)
@@ -61,6 +63,7 @@ class ProjectController extends Controller
         }
 
         $project->update($data);
+        PublicContentCache::forgetProjects();
 
         return redirect()->route('admin.projects.index')->with('success', 'Project updated successfully.');
     }
@@ -71,7 +74,16 @@ class ProjectController extends Controller
             $this->fileUploadService->delete($project->image_url);
         }
         $project->delete();
+        PublicContentCache::forgetProjects();
 
         return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
+    }
+
+    private function mapProjects(?Project $except = null)
+    {
+        return Project::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->when($except, fn ($query) => $query->whereKeyNot($except->getKey()))
+            ->get(['id', 'title', 'latitude', 'longitude']);
     }
 }
