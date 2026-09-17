@@ -24,12 +24,12 @@
         <meta property="og:url"         content="{{ url()->current() }}">
         <meta property="og:title"       content="{{ $pageTitle }}">
         <meta property="og:description" content="{{ $seoDescription }}">
-        <meta property="og:image"       content="{{ config('logo_base64') }}">
+        <meta property="og:image"       content="{{ asset('RK4.webp') }}">
         <meta property="og:site_name"   content="{{ $companyName }}">
         <meta name="twitter:card"        content="summary_large_image">
         <meta name="twitter:title"       content="{{ $pageTitle }}">
         <meta name="twitter:description" content="{{ $seoDescription }}">
-        <meta name="twitter:image"       content="{{ config('logo_base64') }}">
+        <meta name="twitter:image"       content="{{ asset('RK4.webp') }}">
 
         <!-- JSON-LD Schema Markup -->
         <script type="application/ld+json">
@@ -38,13 +38,13 @@
             "@type": "Organization",
             "name": "{{ $companyName }}",
             "url": "{{ url('/') }}",
-            "logo": "{{ config('logo_base64') }}",
+            "logo": "{{ asset('RK4.webp') }}",
             "description": "{{ $seoDescription }}"
         }
         </script>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ config('logo_base64') }}">
+        <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -64,9 +64,11 @@
             #rk-progress-bar {
                 position: fixed; top: 0; left: 0; width: 0%; height: 3px;
                 background: linear-gradient(90deg, #E07B2A, #f5a623);
-                z-index: 99999; transition: width 0.25s ease;
+                z-index: 99999;
                 box-shadow: 0 0 8px rgba(224,123,42,0.6);
                 pointer-events: none;
+                opacity: 0;
+                transition: width 0.25s ease, opacity 0.15s ease;
             }
         </style>
     </head>
@@ -313,18 +315,23 @@
         (function () {
             var bar = document.getElementById('rk-progress-bar');
             var timer;
+            var showTimer;
             function startProgress() {
                 clearTimeout(timer);
+                clearTimeout(showTimer);
                 bar.style.width = '0%';
-                bar.style.transition = 'none';
-                requestAnimationFrame(function () {
-                    bar.style.transition = 'width 8s ease';
-                    bar.style.width = '85%';
-                });
+                bar.style.opacity = '0';
+                // Avoid flashing on fast local/client-cached navigations.
+                showTimer = setTimeout(function () {
+                    bar.style.opacity = '1';
+                    bar.style.width = '70%';
+                }, 120);
             }
             function finishProgress() {
+                clearTimeout(showTimer);
                 bar.style.transition = 'width 0.2s ease';
                 bar.style.width = '100%';
+                bar.style.opacity = '1';
                 timer = setTimeout(function () {
                     bar.style.transition = 'opacity 0.3s';
                     bar.style.opacity = '0';

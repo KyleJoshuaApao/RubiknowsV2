@@ -21,7 +21,7 @@ RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip intl
 COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 
 # Enable Apache mod_rewrite for Laravel routing
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers deflate expires
 
 # Update Apache document root to point to Laravel's public directory
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public

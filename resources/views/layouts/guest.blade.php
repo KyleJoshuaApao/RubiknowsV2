@@ -18,7 +18,7 @@
         </title>
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="{{ config('logo_base64') }}">
+        <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

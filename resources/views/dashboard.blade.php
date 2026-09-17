@@ -210,8 +210,11 @@
     <!-- Chart.js Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const ctx1 = document.getElementById('activityChart').getContext('2d');
-            new Chart(ctx1, {
+            window.__rkChartReady.then(function(Chart) {
+                if (!Chart) return;
+
+                const ctx1 = document.getElementById('activityChart').getContext('2d');
+                new Chart(ctx1, {
                 type: 'line',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
@@ -238,10 +241,10 @@
                         x: { grid: { display: false }, ticks: { font: { family: 'Inter', weight: 'bold' } } }
                     }
                 }
-            });
+                });
 
-            const ctx2 = document.getElementById('inquiriesChart').getContext('2d');
-            new Chart(ctx2, {
+                const ctx2 = document.getElementById('inquiriesChart').getContext('2d');
+                new Chart(ctx2, {
                 type: 'bar',
                 data: {
                     labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -261,6 +264,7 @@
                         x: { grid: { display: false }, ticks: { font: { family: 'Inter', weight: 'bold' } } }
                     }
                 }
+                });
             });
         });
     </script>
