@@ -1224,3 +1224,28 @@ body.rk-public {
         min-height: 15rem !important;
     }
 }
+
+@media (max-width: 900px) {
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index] {
+        grid-column: auto !important;
+        grid-row: span 2 !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index] {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+        min-height: 18rem !important;
+    }
+
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="1"],
+    .rk-public .rk-portfolio-mosaic .rk-mosaic-card[data-mosaic-index="6"] {
+        min-height: 23rem !important;
+    }
+
+    .rk-public .rk-portfolio-mosaic .rk-portfolio-mosaic__cta {
+        grid-column: 1 !important;
+        grid-row: auto !important;
+    }
+}
