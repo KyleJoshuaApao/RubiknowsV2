@@ -283,9 +283,6 @@
    ========================================================= */
 .img-placeholder {
     @apply bg-stone-100 flex items-center justify-center;
-    background-image:
-        linear-gradient(45deg, transparent 48%, rgba(0,0,0,0.02) 48%, rgba(0,0,0,0.02) 52%, transparent 52%);
-    background-size: 12px 12px;
 }
 
 /* =========================================================
@@ -394,7 +391,7 @@ body.rk-public {
 
 /* Page foundations */
 .rk-public .rk-page-intro { position: relative; overflow: hidden; border-bottom: 1px solid var(--rk-line); background: var(--rk-paper); }
-.rk-public .rk-page-intro::before { position: absolute; inset: 0; background-image: linear-gradient(to right, rgba(23,22,19,.055) 1px, transparent 1px), linear-gradient(to bottom, rgba(23,22,19,.045) 1px, transparent 1px); background-size: min(14vw, 11rem) 100%, 100% 5rem; content: ''; mask-image: linear-gradient(90deg, #000, transparent 84%); }
+.rk-public .rk-page-intro::before { display: none; }
 .rk-public .rk-page-intro__rule { position: absolute; top: 0; left: max(1.5rem, calc((100vw - 88rem) / 2)); width: 7.5rem; height: .35rem; background: var(--rk-gold); }
 .rk-public .rk-page-intro__inner { position: relative; display: grid; grid-template-columns: minmax(8rem, .75fr) minmax(0, 2fr); gap: 2rem; min-height: 21rem; padding-top: clamp(4.5rem, 9vw, 8.5rem); padding-bottom: clamp(3.5rem, 7vw, 6.5rem); }
 .rk-public .rk-page-intro__meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
@@ -926,9 +923,8 @@ body.rk-public {
     --rk-gold-deep: #9a6400;
     --rk-line: rgba(17, 17, 15, .18);
     --rk-muted: #5d5b55;
-    background-color: var(--rk-paper);
-    background-image: radial-gradient(rgba(17,17,15,.11) .65px, transparent .65px), linear-gradient(90deg, rgba(255,255,255,.45), transparent 30%, rgba(17,17,15,.035));
-    background-size: 7px 7px, 100% 100%;
+    background-color: var(--rk-white);
+    background-image: none;
     font-family: 'Space Grotesk', 'Inter', sans-serif;
 }
 
@@ -949,7 +945,7 @@ body.rk-public {
 .rk-public .rk-action { min-height: 3.4rem; box-shadow: 5px 5px 0 var(--rk-ink); transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, background-color .25s ease; }
 .rk-public .rk-action:hover { box-shadow: 0 0 0 var(--rk-ink); transform: translate(4px, 4px); }
 .rk-public .rk-page-intro { min-height: 32rem; background: var(--rk-paper); }
-.rk-public .rk-page-intro::before { opacity: .7; background-image: linear-gradient(to right, rgba(17,17,15,.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(17,17,15,.08) 1px, transparent 1px); background-size: min(11vw, 9rem) 100%, 100% 4rem; }
+.rk-public .rk-page-intro::before { display: none; }
 .rk-public .rk-page-intro__rule { width: 12rem; height: .5rem; background: var(--rk-gold); box-shadow: 12rem 0 0 var(--rk-ink); }
 .rk-public .rk-page-intro__inner { min-height: 32rem; align-items: end; padding-bottom: clamp(4rem, 8vw, 7rem); }
 .rk-public .rk-page-intro h1 { max-width: 66rem; font-size: clamp(3.8rem, 8.5vw, 9rem); letter-spacing: -.09em; }
@@ -957,9 +953,9 @@ body.rk-public {
 .rk-public .rk-section { position: relative; padding-block: clamp(6rem, 12vw, 12rem); background: rgba(255,254,250,.84); }
 .rk-public .rk-section::before { position: absolute; top: 0; right: max(1.5rem, calc((100vw - 88rem) / 2)); left: max(1.5rem, calc((100vw - 88rem) / 2)); height: 1px; background: var(--rk-line); content: ''; }
 .rk-public .rk-section--paper { background: rgba(222,221,213,.68); }
-.rk-public .rk-section--ink { background: var(--rk-ink); background-image: linear-gradient(135deg, rgba(255,255,255,.04), transparent 40%), radial-gradient(rgba(255,255,255,.08) .6px, transparent .6px); background-size: 100% 100%, 7px 7px; }
+.rk-public .rk-section--ink { background: var(--rk-ink); background-image: none; }
 .rk-public .rk-section__title { font-size: clamp(2.7rem, 6vw, 6.7rem); letter-spacing: -.085em; }
-.rk-public .rk-statement { position: relative; isolation: isolate; padding-block: clamp(5rem, 10vw, 10rem); background: var(--rk-gold); background-image: linear-gradient(120deg, rgba(255,255,255,.18), transparent 35%), radial-gradient(rgba(17,17,15,.15) .7px, transparent .7px); background-size: 100% 100%, 8px 8px; }
+.rk-public .rk-statement { position: relative; isolation: isolate; padding-block: clamp(5rem, 10vw, 10rem); background: var(--rk-gold); background-image: none; }
 .rk-public .rk-statement::after { position: absolute; right: -10rem; bottom: -16rem; z-index: -1; width: 32rem; height: 32rem; border: 1px solid rgba(17,17,15,.28); border-radius: 50%; box-shadow: 0 0 0 2rem rgba(17,17,15,.06), 0 0 0 4rem rgba(17,17,15,.04); content: ''; }
 .rk-public .rk-services-rail, .rk-public .rk-quote-grid, .rk-public .rk-logo-grid { border-color: rgba(17,17,15,.28); }
 .rk-public .rk-service-link { min-height: 21rem; padding: 2rem; background: rgba(255,254,250,.68); transition: background-color .35s ease, color .35s ease, transform .35s cubic-bezier(.2,.8,.2,1); }
@@ -976,7 +972,7 @@ body.rk-public {
 .rk-public .rk-testimonial-card { min-height: 26rem; border-top-width: 5px; background: rgba(255,254,250,.78); box-shadow: 8px 8px 0 rgba(17,17,15,.1); }
 .rk-public .rk-testimonial-card:hover { transform: translateY(-.5rem); }
 .rk-public .rk-dual-cta__panel { position: relative; overflow: hidden; }
-.rk-public .rk-dual-cta__panel:first-child { background: var(--rk-gold); background-image: radial-gradient(rgba(17,17,15,.16) .7px, transparent .7px); background-size: 8px 8px; }
+.rk-public .rk-dual-cta__panel:first-child { background: var(--rk-gold); background-image: none; }
 .rk-public .rk-dual-cta__panel:last-child { background: var(--rk-ink); color: var(--rk-white); }
 .rk-public .rk-dual-cta__panel:last-child p { color: rgba(255,255,255,.7); }
 .rk-public .rk-dual-cta__panel:last-child .rk-eyebrow { color: var(--rk-gold); }
@@ -985,7 +981,7 @@ body.rk-public {
 .rk-public .rk-numbered-list__item:hover { padding-inline: 1rem; background: rgba(242,189,24,.16); }
 .rk-public .rk-form-panel, .rk-public .rk-form-section { border-top-width: 5px; background: rgba(222,221,213,.68); box-shadow: 8px 8px 0 rgba(17,17,15,.1); }
 .rk-public .rk-form input, .rk-public .rk-form select, .rk-public .rk-form textarea { background: rgba(255,254,250,.74); }
-.rk-public .rk-footer { background: var(--rk-ink); background-image: radial-gradient(rgba(255,255,255,.07) .6px, transparent .6px); background-size: 7px 7px; }
+.rk-public .rk-footer { background: var(--rk-ink); background-image: none; }
 .rk-public .rk-footer::before { width: 12rem; height: .5rem; box-shadow: 12rem 0 0 var(--rk-gold); }
 .rk-public .rk-footer__grid { padding-bottom: 6rem; }
 .rk-public .rk-footer__bottom { border-top-color: rgba(255,255,255,.28); }
@@ -1025,8 +1021,8 @@ body.rk-public {
     --rk-gold-deep: #825003;
     --rk-line: rgba(23, 22, 19, .14);
     --rk-muted: #5d5a54;
-    background-color: var(--rk-paper);
-    background-image: linear-gradient(90deg, rgba(255,255,255,.68), transparent 42%, rgba(23,22,19,.025));
+    background-color: var(--rk-white);
+    background-image: none;
 }
 
 .rk-public .rk-container { width: min(100% - 3rem, 84rem); }
@@ -1511,5 +1507,235 @@ body.rk-public {
 
     .rk-public .rk-about-team-section .rk-person-card {
         min-height: 21rem;
+    }
+}
+
+/* Clean editorial public system: original RubiKnows implementation, no decorative textures. */
+body.rk-public,
+.rk-public main {
+    background: #fff;
+    background-image: none !important;
+}
+
+.rk-public .rk-scroll-progress {
+    box-shadow: none;
+}
+
+.rk-public .rk-header {
+    border-bottom: 1px solid rgba(23, 22, 19, .12);
+    background: rgba(255, 255, 255, .98);
+    box-shadow: none;
+}
+
+.rk-public .rk-header__inner {
+    min-height: 5.25rem;
+}
+
+.rk-public .rk-brand {
+    min-width: 16.5rem;
+    border-right: 1px solid rgba(23, 22, 19, .08);
+    background: #fff;
+}
+
+.rk-public .rk-nav {
+    gap: .1rem;
+}
+
+.rk-public .rk-nav a {
+    padding-inline: .7rem;
+    color: var(--rk-ink);
+    font-size: .61rem;
+}
+
+.rk-public .rk-nav .rk-nav__contact {
+    margin-left: .85rem;
+    border: 1px solid var(--rk-ink);
+    background: var(--rk-gold);
+}
+
+.rk-public .rk-page-intro {
+    min-height: clamp(16rem, 28vw, 22rem);
+    border-bottom: 1px solid rgba(23, 22, 19, .13);
+    background: #fff;
+}
+
+.rk-public .rk-page-intro::before,
+.rk-public .rk-section::before {
+    display: none;
+}
+
+.rk-public .rk-page-intro__inner {
+    min-height: clamp(16rem, 28vw, 22rem);
+    gap: 1.5rem;
+    padding-top: clamp(3.5rem, 6vw, 5.5rem);
+    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+
+.rk-public .rk-page-intro__rule {
+    width: 5.5rem;
+    height: .25rem;
+    background: var(--rk-gold);
+    box-shadow: none;
+}
+
+.rk-public .rk-page-intro h1 {
+    max-width: 48rem;
+    font-size: clamp(2.6rem, 5.6vw, 5.5rem);
+    letter-spacing: -.075em;
+    line-height: .92;
+}
+
+.rk-public .rk-page-intro p {
+    margin-top: 1.15rem;
+    color: var(--rk-muted);
+    font-size: .98rem;
+}
+
+.rk-public .rk-section,
+.rk-public .rk-section--paper {
+    background: #fff !important;
+}
+
+.rk-public .rk-section {
+    padding-block: clamp(3.75rem, 7vw, 6.5rem);
+}
+
+.rk-public .rk-section__head {
+    align-items: flex-end;
+    margin-bottom: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.rk-public .rk-section__title {
+    max-width: 43rem;
+    font-size: clamp(2rem, 4.25vw, 4.25rem);
+    letter-spacing: -.07em;
+    line-height: .94;
+}
+
+.rk-public .rk-section__lede {
+    color: var(--rk-muted);
+    font-size: .95rem;
+}
+
+.rk-public .rk-statement {
+    margin-block: 0;
+    background: var(--rk-gold);
+    background-image: none !important;
+}
+
+.rk-public .rk-statement::after {
+    display: none;
+}
+
+.rk-public .rk-section--ink,
+.rk-public .rk-footer,
+.rk-public .rk-dual-cta__panel:last-child {
+    background-image: none !important;
+}
+
+.rk-public .rk-services-rail,
+.rk-public .rk-quote-grid,
+.rk-public .rk-logo-grid,
+.rk-public .rk-principle-grid {
+    gap: 0;
+    border-color: rgba(23, 22, 19, .16);
+}
+
+.rk-public .rk-service-link,
+.rk-public .rk-logo-tile,
+.rk-public .rk-testimonial-card,
+.rk-public .rk-form-panel,
+.rk-public .rk-form-section {
+    border-color: rgba(23, 22, 19, .16);
+    background: #fff;
+    box-shadow: none;
+}
+
+.rk-public .rk-service-link {
+    min-height: 17rem;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.rk-public .rk-service-link h3 {
+    margin-top: 4rem;
+    font-size: clamp(1.4rem, 2.2vw, 2.25rem);
+}
+
+.rk-public .rk-service-link:hover {
+    background: var(--rk-gold);
+    color: var(--rk-ink);
+    transform: none;
+}
+
+.rk-public .rk-service-link:hover p,
+.rk-public .rk-service-link:hover .rk-service-link__index {
+    color: var(--rk-ink);
+}
+
+.rk-public .rk-project-tile,
+.rk-public .rk-feature-card,
+.rk-public .rk-gallery-tile {
+    box-shadow: none;
+}
+
+.rk-public .rk-project-tile,
+.rk-public .rk-gallery-tile {
+    outline: 1px solid rgba(23, 22, 19, .12);
+    outline-offset: -1px;
+}
+
+.rk-public .rk-testimonial-card {
+    min-height: 22rem;
+    border-top-width: 3px;
+}
+
+.rk-public .rk-form input,
+.rk-public .rk-form select,
+.rk-public .rk-form textarea {
+    background: #fff;
+}
+
+.rk-public .rk-footer {
+    background: var(--rk-ink);
+}
+
+.rk-public .rk-footer::before {
+    box-shadow: none;
+}
+
+.rk-public .rk-reveal,
+.rk-public .rk-reveal.rk-is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+
+@media (max-width: 900px) {
+    .rk-public .rk-brand {
+        min-width: 0;
+    }
+
+    .rk-public .rk-page-intro__inner {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-header__inner {
+        min-height: 4.75rem;
+    }
+
+    .rk-public .rk-page-intro__inner {
+        min-height: 17rem;
+    }
+
+    .rk-public .rk-section {
+        padding-block: 3.25rem;
+    }
+
+    .rk-public .rk-section__head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1rem;
     }
 }

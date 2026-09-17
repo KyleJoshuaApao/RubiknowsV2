@@ -138,26 +138,6 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const revealItems = document.querySelectorAll('#main-content > .rk-home > section, #main-content > section, .rk-footer__grid');
-
-                if (!('IntersectionObserver' in window)) {
-                    revealItems.forEach((item) => item.classList.add('rk-is-visible'));
-                } else {
-                    const observer = new IntersectionObserver((entries, currentObserver) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('rk-is-visible');
-                                currentObserver.unobserve(entry.target);
-                            }
-                        });
-                    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
-
-                    revealItems.forEach((item) => {
-                        item.classList.add('rk-reveal');
-                        observer.observe(item);
-                    });
-                }
-
                 const progress = document.querySelector('.rk-scroll-progress');
                 if (progress) {
                     const updateProgress = () => {
