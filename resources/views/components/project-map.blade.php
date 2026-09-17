@@ -14,7 +14,7 @@
     <div class="rk-map-heading">
         <div>
             <p class="rk-kicker">RubiKnows footprint</p>
-            <h2 id="{{ $id }}-title">Projects across the Philippines</h2>
+            <h2 id="{{ $id }}-title">Remarkable experiences across the map</h2>
         </div>
         <p class="rk-map-copy">Every marker is connected to a project in our portfolio. Select a location to explore the work behind it.</p>
     </div>
@@ -29,25 +29,26 @@
 @once
     @push('head')
         <style>
-            .rk-map-section { position: relative; z-index: 0; isolation: isolate; background: #0b0c0c; color: #fff; padding: clamp(3rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem); }
-            .rk-map-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; max-width: 90rem; margin: 0 auto 2rem; }
+            .rk-map-section { position: relative; z-index: 0; isolation: isolate; height: 100svh; min-height: 42rem; overflow: hidden; background: #0b0c0c; color: #fff; }
+            .rk-map-heading { position: absolute; inset: calc(7rem + clamp(2rem, 7vw, 5rem)) clamp(1.25rem, 7vw, 7rem) auto; z-index: 2; display: flex; align-items: start; justify-content: space-between; gap: 2rem; max-width: none; margin: 0; pointer-events: none; text-shadow: 0 2px 18px rgba(0,0,0,.45); }
             .rk-map-heading h2 { margin-top: .65rem; max-width: 42rem; color: #fff; font-size: clamp(2.5rem, 6vw, 6.25rem); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
-            .rk-map-copy { max-width: 25rem; color: #a7aaad; font-size: .9rem; line-height: 1.6; }
-            .rk-map-canvas { position: relative; z-index: 0; max-width: 90rem; height: min(62vw, 44rem); min-height: 25rem; margin: 0 auto; overflow: hidden; border: 1px solid #3a3d3f; background: #202527; }
+            .rk-map-copy { max-width: 25rem; margin-top: 2.2rem; color: #e1e4e5; font-size: .9rem; line-height: 1.6; }
+            .rk-map-canvas { position: absolute; inset: 0; z-index: 0; max-width: none; height: 100%; min-height: 0; margin: 0; overflow: hidden; border: 0; background: #202527; }
             .rk-map-canvas .leaflet-tile { filter: grayscale(1) contrast(1.1) brightness(.7); }
+            .rk-map-canvas .leaflet-top { top: 7rem; }
             .rk-map-canvas .leaflet-control-zoom a { color: #0b0c0c; }
             .rk-map-canvas .leaflet-control-attribution { background: rgba(11,12,12,.82); color: #899094; }
             .rk-map-canvas .leaflet-control-attribution a { color: #dcae32; }
             .rk-map-pin { width: 2rem; height: 2rem; display: grid; place-items: center; border: 2px solid #0b0c0c; border-radius: 50% 50% 50% 0; background: #dcae32; box-shadow: 0 0 0 .35rem rgba(220,174,50,.18); transform: rotate(-45deg); }
             .rk-map-pin::before { position: absolute; inset: -.65rem; border: 1px solid rgba(220,174,50,.8); border-radius: inherit; content: ''; opacity: 0; animation: rk-map-marker-pulse 2.2s ease-out infinite; }
             .rk-map-pin::after { content: '+'; color: #0b0c0c; font-size: 1.2rem; font-weight: 900; transform: rotate(45deg); }
-            .rk-map-empty { max-width: 90rem; margin: 1rem auto 0; color: #899094; font-size: .75rem; text-transform: uppercase; letter-spacing: .15em; }
+            .rk-map-empty { position: absolute; right: clamp(1.25rem, 7vw, 7rem); bottom: 2rem; left: clamp(1.25rem, 7vw, 7rem); z-index: 2; max-width: 90rem; margin: 0 auto; color: #c2c7c9; font-size: .75rem; text-transform: uppercase; letter-spacing: .15em; text-shadow: 0 2px 12px rgba(0,0,0,.6); }
             .rk-map-loading { height: 100%; display: grid; place-items: center; padding: 1rem; color: #a7aaad; font-size: .72rem; text-align: center; text-transform: uppercase; letter-spacing: .18em; }
             .rk-map-loading span { color: #dcae32; animation: rk-map-pulse 1s infinite; }
             .rk-map-loading span:nth-child(2) { animation-delay: .15s; } .rk-map-loading span:nth-child(3) { animation-delay: .3s; }
             @keyframes rk-map-pulse { 50% { opacity: .2; } }
             @keyframes rk-map-marker-pulse { 25% { opacity: .85; } 100% { transform: scale(1.55); opacity: 0; } }
-            @media (max-width: 700px) { .rk-map-heading { display: block; } .rk-map-copy { margin-top: 1.25rem; } .rk-map-canvas { height: 28rem; } }
+            @media (max-width: 700px) { .rk-map-section { height: 100svh; min-height: 38rem; } .rk-map-heading { display: block; inset: calc(6rem + 2rem) 1.25rem auto; } .rk-map-heading h2 { font-size: clamp(2.5rem, 13vw, 4.5rem); } .rk-map-copy { margin-top: 1.25rem; } .rk-map-canvas .leaflet-top { top: 6rem; } .rk-map-empty { right: 1.25rem; bottom: 1.5rem; left: 1.25rem; } }
             @media (prefers-reduced-motion: reduce) { .rk-map-loading span, .rk-map-pin::before { animation: none; } }
         </style>
     @endpush
@@ -102,7 +103,8 @@
                     if (typeof window.L === 'undefined') throw new Error('Leaflet failed to load.');
 
                     const points = JSON.parse(container.dataset.projects || '[]');
-                    const map = L.map(container, { scrollWheelZoom: false, minZoom: 5, maxZoom: 14 }).setView([12.8797, 121.7740], 5.4);
+                    const map = L.map(container, { scrollWheelZoom: false, zoomControl: false, minZoom: 5, maxZoom: 14 }).setView([12.8797, 121.7740], 5.4);
+                    L.control.zoom({ position: 'topright' }).addTo(map);
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors', maxZoom: 18
                     }).on('tileerror', function () {

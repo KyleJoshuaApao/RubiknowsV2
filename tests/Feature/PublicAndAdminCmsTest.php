@@ -261,6 +261,7 @@ class PublicAndAdminCmsTest extends TestCase
         $this->get(route('public.home'))
             ->assertOk()
             ->assertSee('home-project-map')
+            ->assertSee('Remarkable experiences across the map')
             ->assertSee('Davao Civic Center')
             ->assertSee(json_encode(route('public.project-details', $project)), false)
             ->assertSee('window.location.assign(point.url);', false)
