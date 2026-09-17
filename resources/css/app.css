@@ -1417,3 +1417,80 @@ body.rk-public {
         grid-row: auto !important;
     }
 }
+
+/* Team section cleanup: pure white surface, quieter overlay, and one clear text layer. */
+.rk-public .rk-about-team-section {
+    background: #fff !important;
+    background-image: none !important;
+    padding-block: clamp(3.75rem, 7vw, 6.5rem);
+}
+
+.rk-public .rk-about-team-section::before {
+    display: none;
+}
+
+.rk-public .rk-about-team-section .rk-section__head {
+    align-items: end;
+    margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+.rk-public .rk-about-team-section .rk-section__title {
+    max-width: 36rem;
+    font-size: clamp(2rem, 4vw, 4.25rem);
+    line-height: .94;
+}
+
+.rk-public .rk-about-team-section .rk-people-grid {
+    gap: 1rem;
+    background: transparent;
+}
+
+.rk-public .rk-about-team-section .rk-person-card {
+    min-height: clamp(20rem, 36vw, 30rem);
+    background: #fff;
+}
+
+.rk-public .rk-about-team-section .rk-person-card__portrait {
+    background: #f4f4f2;
+}
+
+.rk-public .rk-about-team-section .rk-person-card__portrait img {
+    opacity: .82;
+}
+
+.rk-public .rk-about-team-section .rk-person-card__role-overlay {
+    background: rgba(224, 169, 42, .78);
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+}
+
+.rk-public .rk-about-team-section .rk-person-card__meta {
+    position: absolute;
+    display: grid;
+    color: #fff;
+}
+
+.rk-public .rk-about-team-section .rk-person-card:is(:hover, :focus-visible) .rk-person-card__meta {
+    opacity: 0 !important;
+    transform: translateY(.5rem);
+}
+
+.rk-public .rk-about-team-section .rk-person-card:is(:hover, :focus-visible) .rk-person-card__role-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-about-team-section {
+        padding-block: 3.5rem;
+    }
+
+    .rk-public .rk-about-team-section .rk-section__head {
+        align-items: start;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .rk-public .rk-about-team-section .rk-person-card {
+        min-height: 21rem;
+    }
+}

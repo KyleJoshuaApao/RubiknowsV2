@@ -85,7 +85,7 @@
         </div>
     </section>
 
-    <section class="rk-section rk-section--paper">
+    <section class="rk-section rk-section--paper rk-about-team-section">
         <div class="rk-container">
             <div class="rk-section__head">
                 <div class="rk-section__head-copy">
