@@ -53,6 +53,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('head')
         
         <style>
             /* Custom Scrollbar for Mega Menus */
@@ -75,7 +76,7 @@
     <body class="font-sans antialiased text-gray-700 bg-white flex flex-col min-h-screen selection:bg-brand-500 selection:text-white">
 
         <!-- ===== STYLISTIC NAVIGATION ===== -->
-        <header x-data="{ mobileOpen: false }" class="w-full z-50 relative sticky top-0 bg-gray-100 shadow-sm border-b border-gray-300">
+        <header x-data="{ mobileOpen: false }" class="w-full z-50 relative sticky top-0 bg-[#0b0c0c] shadow-sm border-b border-white/10">
             <div class="flex items-stretch h-24 lg:h-28 w-full relative">
                 
                 <!-- Left: Logo Area with Stylistic Accents -->
@@ -93,28 +94,28 @@
 
                 <!-- Right: Desktop Navigation -->
                 <nav class="hidden lg:flex items-center flex-1 justify-end space-x-1 xl:space-x-4 h-full pr-6 lg:pr-12">
-                    <a href="{{ route('public.home') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.home') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Home
                     </a>
-                    <a href="{{ route('public.about') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.about') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         About Us
                     </a>
-                    <a href="{{ route('public.services') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.services') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Services
                     </a>
-                    <a href="{{ route('public.projects') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.projects') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Projects
                     </a>
-                    <a href="{{ route('public.gallery') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.gallery') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Gallery
                     </a>
-                    <a href="{{ route('public.testimonials') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.testimonials') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Testimonials
                     </a>
-                    <a href="{{ route('public.clients') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.clients') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Clients
                     </a>
-                    <a href="{{ route('public.careers') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-charcoal-700 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
+                    <a href="{{ route('public.careers') }}" class="text-[13px] xl:text-[14px] font-bold uppercase tracking-wide text-white/80 hover:text-brand-500 transition-colors px-3 py-2 flex items-center h-full border-b-4 border-transparent hover:border-brand-500">
                         Careers
                     </a>
 
@@ -127,7 +128,7 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="flex items-center lg:hidden ml-auto pr-6">
-                    <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-charcoal-700 hover:text-brand-500 focus:outline-none z-50">
+                    <button @click="mobileOpen = !mobileOpen" type="button" class="p-2 text-white hover:text-brand-500 focus:outline-none z-50">
                         <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                             <path x-show="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                             <path x-show="mobileOpen" style="display: none;" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

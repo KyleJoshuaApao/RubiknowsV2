@@ -19,6 +19,9 @@ chmod -R 775 "$LARAVEL_STORAGE" "$PRIVATE_STORAGE_PATH" "$PUBLIC_STORAGE_PATH" b
 
 php artisan storage:link --force
 
+# Apply additive schema changes before caching views/configuration.
+php artisan migrate --force
+
 # Cache configuration for optimal production performance
 php artisan config:cache
 php artisan view:cache

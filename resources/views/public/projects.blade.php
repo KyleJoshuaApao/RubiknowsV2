@@ -28,6 +28,8 @@
         </div>
     </section>
 
+    <x-project-map :projects="$mapProjects" id="projects-map" />
+
     <!-- ===== PROJECTS GRID: EDGE-TO-EDGE CARDS ===== -->
     <section class="bg-gray-50 py-8 lg:py-12 border-t-2 border-brand-500">
         <div class="max-w-screen-2xl mx-auto px-6">

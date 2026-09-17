@@ -17,13 +17,13 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
         $response->headers->remove('X-Powered-By');
         $isLocal = app()->environment('local');
-        $viteHosts = $isLocal ? "http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:* [::1]:*" : "";
+        $viteHosts = $isLocal ? "http://127.0.0.1:* http://localhost:* ws://127.0.0.1:* ws://localhost:*" : "";
         $unsafeEval = "'unsafe-eval'"; // Alpine.js requires unsafe-eval to evaluate expressions
 
         $csp = implode('; ', [
             "default-src 'self'",
             "script-src 'self' cdn.jsdelivr.net 'unsafe-inline' $unsafeEval $viteHosts",
-            "style-src 'self' fonts.bunny.net 'unsafe-inline' $viteHosts",
+            "style-src 'self' fonts.bunny.net cdn.jsdelivr.net 'unsafe-inline' $viteHosts",
             "font-src 'self' fonts.bunny.net data:",
             "img-src 'self' data: blob: *",
             "connect-src 'self' $viteHosts",

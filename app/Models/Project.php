@@ -10,7 +10,12 @@ class Project extends Model
     protected $fillable = [
         'title', 'category_id', 'status', 'year', 'location',
         'client', 'duration', 'value', 'description',
-        'image_url', 'cover_image_path', 'slug',
+        'image_url', 'cover_image_path', 'slug', 'latitude', 'longitude',
+    ];
+
+    protected $casts = [
+        'latitude' => 'float',
+        'longitude' => 'float',
     ];
 
     /**

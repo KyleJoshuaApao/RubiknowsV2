@@ -25,6 +25,10 @@ class PublicController extends Controller
     public function index()
     {
         $featuredProjects = Project::where('status', 'Featured')->latest()->take(3)->get();
+        $mapProjects = Project::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->latest()
+            ->get();
         $services = Service::latest()->take(6)->get();
         $testimonials = Testimonial::where('is_published', true)->latest()->get();
         $clients = Client::latest()->get();
@@ -35,7 +39,7 @@ class PublicController extends Controller
         $homeMarquee = json_decode(Setting::getValue('home_marquee', '[]'), true);
         $homeCareers = json_decode(Setting::getValue('home_careers', '{}'), true);
 
-        return view('public.home', compact('featuredProjects', 'services', 'testimonials', 'clients', 'media', 'homeStats', 'homeMarkets', 'homeMarquee', 'homeCareers'));
+        return view('public.home', compact('featuredProjects', 'mapProjects', 'services', 'testimonials', 'clients', 'media', 'homeStats', 'homeMarkets', 'homeMarquee', 'homeCareers'));
     }
 
     public function about()
@@ -58,7 +62,8 @@ class PublicController extends Controller
     public function projects()
     {
         $projects = Project::latest()->paginate(12);
-        return view('public.projects', compact('projects'));
+        $mapProjects = Project::whereNotNull('latitude')->whereNotNull('longitude')->latest()->get();
+        return view('public.projects', compact('projects', 'mapProjects'));
     }
 
     public function projectDetails(Project $project)

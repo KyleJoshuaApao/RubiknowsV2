@@ -27,6 +27,8 @@ class ProjectRequest extends FormRequest
             'status'      => 'nullable|string|max:255',
             'year'        => 'nullable|string|max:4',
             'location'    => 'nullable|string|max:255',
+            'latitude'    => 'nullable|numeric|between:4,22',
+            'longitude'   => 'nullable|numeric|between:116,128',
             'client'      => 'nullable|string|max:255',
             'duration'    => 'nullable|string|max:255',
             'value'       => 'nullable|string|max:255',

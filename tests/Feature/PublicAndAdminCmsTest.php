@@ -141,9 +141,16 @@ class PublicAndAdminCmsTest extends TestCase
         $this->post(route('admin.projects.store'), [
             'title' => 'Bridge Retrofit',
             'status' => 'Featured',
+            'latitude' => '14.5995',
+            'longitude' => '120.9842',
             'image_file' => UploadedFile::fake()->create('bridge.jpg', 10, 'image/jpeg'),
         ])->assertRedirect(route('admin.projects.index'));
         $project = Project::firstOrFail();
+        $this->assertDatabaseHas('projects', [
+            'id' => $project->id,
+            'latitude' => 14.5995,
+            'longitude' => 120.9842,
+        ]);
         Storage::disk('public')->assertExists($project->image_url);
         Storage::disk('s3')->assertMissing($project->image_url);
 
@@ -225,6 +232,22 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertSessionHasErrors('image_file');
 
         $this->assertDatabaseMissing('projects', ['title' => 'Project with unavailable upload disk']);
+    }
+
+    public function test_public_project_map_links_coordinates_to_project_details(): void
+    {
+        $project = Project::create([
+            'title' => 'Davao Civic Center',
+            'location' => 'Davao City',
+            'latitude' => 7.1907,
+            'longitude' => 125.4553,
+        ]);
+
+        $this->get(route('public.home'))
+            ->assertOk()
+            ->assertSee('home-project-map')
+            ->assertSee('Davao Civic Center')
+            ->assertSee(json_encode(route('public.project-details', $project)), false);
     }
 
     public function test_gallery_upload_failures_return_a_field_error_instead_of_a_server_error(): void
