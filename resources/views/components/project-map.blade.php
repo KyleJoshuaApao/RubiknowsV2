@@ -116,7 +116,8 @@
                     if (!window.L) throw new Error('Leaflet did not load.');
 
                     const points = JSON.parse(container.dataset.projects || '[]');
-                    const mindanaoBounds = L.latLngBounds([[4.3, 118.4], [10.9, 126.9]]);
+                    const mindanaoPolygon = @json(\App\Support\MindanaoMap::POLYGON);
+                    const mindanaoBounds = L.latLngBounds(mindanaoPolygon);
                     const map = L.map(container, {
                         scrollWheelZoom: false,
                         zoomControl: false,

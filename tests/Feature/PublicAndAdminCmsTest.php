@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Services\FileUploadService;
 use App\Support\PublicContentCache;
 use App\Support\MediaUrl;
+use App\Support\MindanaoMap;
 use App\Jobs\SendNewJobApplicationNotification;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Cache;
@@ -345,6 +346,9 @@ class PublicAndAdminCmsTest extends TestCase
         $this->assertSame(5, Testimonial::where('client_name', 'like', '[Demo]%')->count());
         $this->assertSame(6, Client::where('name', 'like', '[Demo]%')->count());
         $this->assertSame(6, Project::where('slug', 'like', 'demo-%')->whereNotNull('latitude')->whereNotNull('longitude')->count());
+        Project::where('slug', 'like', 'demo-%')->get()->each(function (Project $project): void {
+            $this->assertTrue(MindanaoMap::contains($project->latitude, $project->longitude));
+        });
         $this->assertSame(6, Service::where('slug', 'like', 'demo-%')->whereNotNull('image_url')->count());
         $this->assertSame(5, Testimonial::where('client_name', 'like', '[Demo]%')->whereNotNull('avatar_url')->count());
 

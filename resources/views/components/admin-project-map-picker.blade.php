@@ -26,12 +26,12 @@
     <div class="grid grid-cols-2 gap-4 mt-4">
         <div>
             <label for="latitude" class="form-label-v2">Latitude</label>
-            <input type="number" step="0.0000001" min="4.3" max="10.9" name="latitude" id="latitude" value="{{ old('latitude', $latitude) }}" class="form-input-v2" placeholder="7.1907" inputmode="decimal">
+            <input type="number" step="0.0000001" min="{{ \App\Support\MindanaoMap::MIN_LATITUDE }}" max="{{ \App\Support\MindanaoMap::MAX_LATITUDE }}" name="latitude" id="latitude" value="{{ old('latitude', $latitude) }}" class="form-input-v2" placeholder="7.1907" inputmode="decimal">
             @error('latitude') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
         <div>
             <label for="longitude" class="form-label-v2">Longitude</label>
-            <input type="number" step="0.0000001" min="118.4" max="126.9" name="longitude" id="longitude" value="{{ old('longitude', $longitude) }}" class="form-input-v2" placeholder="125.4553" inputmode="decimal">
+            <input type="number" step="0.0000001" min="{{ \App\Support\MindanaoMap::MIN_LONGITUDE }}" max="{{ \App\Support\MindanaoMap::MAX_LONGITUDE }}" name="longitude" id="longitude" value="{{ old('longitude', $longitude) }}" class="form-input-v2" placeholder="125.4553" inputmode="decimal">
             @error('longitude') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
     </div>
@@ -67,7 +67,8 @@
                 return;
             }
 
-            const mindanaoBounds = L.latLngBounds([[4.3, 118.4], [10.9, 126.9]]);
+            const mindanaoPolygon = @json(\App\Support\MindanaoMap::POLYGON);
+            const mindanaoBounds = L.latLngBounds(mindanaoPolygon);
             const map = L.map(mount, {
                 scrollWheelZoom: false,
                 minZoom: 6,
@@ -102,14 +103,30 @@
                 if (centre) map.setView([lat, lng], 11);
             }
 
+            function isMindanaoCoordinate(latitude, longitude) {
+                if (latitude < {{ \App\Support\MindanaoMap::MIN_LATITUDE }} || latitude > {{ \App\Support\MindanaoMap::MAX_LATITUDE }} || longitude < {{ \App\Support\MindanaoMap::MIN_LONGITUDE }} || longitude > {{ \App\Support\MindanaoMap::MAX_LONGITUDE }}) return false;
+                let inside = false;
+                for (let index = 0, previous = mindanaoPolygon.length - 1; index < mindanaoPolygon.length; previous = index++) {
+                    const [currentLatitude, currentLongitude] = mindanaoPolygon[index];
+                    const [previousLatitude, previousLongitude] = mindanaoPolygon[previous];
+                    const intersects = ((currentLongitude > longitude) !== (previousLongitude > longitude))
+                        && (latitude < ((previousLatitude - currentLatitude) * (longitude - currentLongitude) / (previousLongitude - currentLongitude)) + currentLatitude);
+                    if (intersects) inside = !inside;
+                }
+                return inside;
+            }
+
             function moveToManualCoordinates() {
                 const lat = Number.parseFloat(latitude.value);
                 const lng = Number.parseFloat(longitude.value);
-                if (Number.isFinite(lat) && Number.isFinite(lng) && lat >= 4.3 && lat <= 10.9 && lng >= 118.4 && lng <= 126.9) placePin(lat, lng, true);
+                if (Number.isFinite(lat) && Number.isFinite(lng) && isMindanaoCoordinate(lat, lng)) placePin(lat, lng, true);
             }
 
             moveToManualCoordinates();
-            map.on('click', event => placePin(event.latlng.lat, event.latlng.lng));
+            map.on('click', event => {
+                if (isMindanaoCoordinate(event.latlng.lat, event.latlng.lng)) placePin(event.latlng.lat, event.latlng.lng);
+                else setStatus('Choose a location inside Mindanao.', true);
+            });
             latitude.addEventListener('change', moveToManualCoordinates);
             longitude.addEventListener('change', moveToManualCoordinates);
             clear.addEventListener('click', function () {
