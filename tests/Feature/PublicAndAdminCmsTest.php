@@ -66,10 +66,17 @@ class PublicAndAdminCmsTest extends TestCase
             'title' => 'Structural Audit',
             'short_description' => 'Independent structural review.',
         ]);
+        Testimonial::create([
+            'client_name' => 'Ava Santos',
+            'quote' => 'Clear, considered delivery from brief to handover.',
+            'is_published' => true,
+        ]);
 
         $this->get(route('public.services'))
             ->assertOk()
-            ->assertSee(route('public.service-details', $service));
+            ->assertSee(route('public.service-details', $service))
+            ->assertSee('Client perspective')
+            ->assertSee('rk-section--ink');
 
         $this->get(route('public.service-details', $service))
             ->assertOk()
@@ -108,6 +115,7 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertOk()
             ->assertSee('rk-people-grid')
             ->assertSee('rk-person-card__role-overlay')
+            ->assertSee('rk-about-faith__verse')
             ->assertSee('What is your role?')
             ->assertSee('tabindex="0"', false)
             ->assertSee('Founder / Owner');

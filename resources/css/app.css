@@ -1831,6 +1831,31 @@ body.rk-public,
     color: var(--rk-gold-deep) !important;
 }
 
+/* Contrast surfaces for content blocks that intentionally carry white type. */
+.rk-public .rk-section--ink {
+    background: var(--rk-ink) !important;
+    color: var(--rk-white) !important;
+}
+
+.rk-public .rk-about-faith {
+    background: var(--rk-gold) !important;
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-eyebrow,
+.rk-public .rk-about-faith .rk-editorial-copy__title,
+.rk-public .rk-about-faith .rk-editorial-copy__body,
+.rk-public .rk-about-faith .rk-editorial-copy__body p {
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-about-faith__verse {
+    display: inline-block;
+    padding: .55rem .8rem;
+    background: rgba(255, 255, 255, .24);
+    color: var(--rk-ink) !important;
+}
+
 .rk-public .rk-testimonial-card {
     min-height: 18rem;
     padding: clamp(1.25rem, 2.2vw, 1.75rem);

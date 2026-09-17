@@ -80,7 +80,7 @@
             </div>
             <div class="rk-editorial-copy__body">
                 <p>Our work is shaped by faith, diligence, and a belief that meaningful projects are built through service to people and communities.</p>
-                <p class="mt-8 text-sm font-bold uppercase tracking-[.16em] text-brand-500">Matthew 19:26</p>
+                <p class="rk-about-faith__verse mt-8 text-sm font-bold uppercase tracking-[.16em]">Matthew 19:26</p>
             </div>
         </div>
     </section>
