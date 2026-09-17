@@ -34,7 +34,7 @@
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-12 w-12 bg-gray-100  overflow-hidden flex items-center justify-center border border-gray-200">
                                         @if($client->logo_url)
-                                            <img src="{{ Storage::disk('public')->url($client->logo_url) }}" alt="{{ $client->name }}" class="h-full w-full object-contain p-1">
+                                            <img src="{{ \App\Support\MediaUrl::for($client->logo_url) }}" alt="{{ $client->name }}" class="h-full w-full object-contain p-1">
                                         @else
                                             <span class="text-gray-400 font-bold">{{ substr($client->name, 0, 1) }}</span>
                                         @endif

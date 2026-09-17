@@ -270,6 +270,30 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertDontSee('src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"', false);
     }
 
+    public function test_demo_content_seeder_is_repeatable_and_renders_remote_media(): void
+    {
+        $this->seed(\Database\Seeders\DemoContentSeeder::class);
+        $this->seed(\Database\Seeders\DemoContentSeeder::class);
+
+        $this->assertSame(6, Project::where('slug', 'like', 'demo-%')->count());
+        $this->assertSame(6, Service::where('slug', 'like', 'demo-%')->count());
+        $this->assertSame(8, GalleryMedia::where('title', 'like', '[Demo]%')->count());
+        $this->assertSame(5, Testimonial::where('client_name', 'like', '[Demo]%')->count());
+        $this->assertSame(6, Client::where('name', 'like', '[Demo]%')->count());
+        $this->assertSame(6, Project::where('slug', 'like', 'demo-%')->whereNotNull('latitude')->whereNotNull('longitude')->count());
+        $this->assertSame(6, Service::where('slug', 'like', 'demo-%')->whereNotNull('image_url')->count());
+        $this->assertSame(5, Testimonial::where('client_name', 'like', '[Demo]%')->whereNotNull('avatar_url')->count());
+
+        $this->get(route('public.projects'))
+            ->assertOk()
+            ->assertSee('[Demo] Bayline Transit Hub')
+            ->assertSee('images.unsplash.com', false);
+
+        $this->get(route('public.clients'))
+            ->assertOk()
+            ->assertSee('placehold.co', false);
+    }
+
     public function test_admin_project_map_picker_lists_existing_pins_and_enforces_philippine_bounds(): void
     {
         $this->actingAs($this->superAdmin());

@@ -6,7 +6,7 @@
         <!-- Hero Background -->
         @if($project->cover_image_path)
         <div class="absolute inset-0 z-0">
-            <img loading="lazy" src="{{ Storage::disk('public')->url($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale opacity-50">
+            <img loading="lazy" src="{{ \App\Support\MediaUrl::for($project->cover_image_path) }}" alt="{{ $project->title }}" class="w-full h-full object-cover grayscale opacity-50">
         </div>
         @else
         <div class="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -82,8 +82,8 @@
                         <h3 class="text-3xl font-black text-richblack-900 mb-8 uppercase tracking-tighter">Project Gallery</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach($images as $image)
-                            <div class="aspect-w-16 aspect-h-12 bg-gray-100 overflow-hidden cursor-zoom-in border-b-4 border-transparent hover:border-brand-500 transition-colors" onclick="window.open('{{ Storage::disk('public')->url($image) }}', '_blank')">
-                                <img loading="lazy" src="{{ Storage::disk('public')->url($image) }}" alt="Gallery Image" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+                            <div class="aspect-w-16 aspect-h-12 bg-gray-100 overflow-hidden cursor-zoom-in border-b-4 border-transparent hover:border-brand-500 transition-colors" onclick="window.open('{{ \App\Support\MediaUrl::for($image) }}', '_blank')">
+                                <img loading="lazy" src="{{ \App\Support\MediaUrl::for($image) }}" alt="Gallery Image" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
                             </div>
                             @endforeach
                         </div>

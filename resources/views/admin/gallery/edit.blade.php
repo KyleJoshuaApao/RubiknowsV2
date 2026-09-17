@@ -17,7 +17,7 @@
                         <x-input-label value="Current Media" />
                         <div class="mt-2 border rounded p-2 bg-gray-50 max-w-xs">
                             @if($gallery->type === 'Photo')
-                                <img src="{{ Storage::disk('public')->url($gallery->url) }}" class="rounded h-32 object-cover w-full">
+                                <img src="{{ \App\Support\MediaUrl::for($gallery->url) }}" class="rounded h-32 object-cover w-full">
                             @else
                                 <div class="h-32 bg-gray-800 text-white flex items-center justify-center rounded">
                                     <span class="text-xs">Video File</span>

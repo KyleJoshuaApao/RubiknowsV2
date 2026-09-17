@@ -22,7 +22,7 @@
                             <label for="image_file" class="form-label-v2">Project Cover Image</label>
                             @if($project->image_url)
                                 <div class="mt-2 mb-3 flex items-center gap-3">
-                                    <img src="{{ Storage::disk('public')->url($project->image_url) }}"
+                                    <img src="{{ \App\Support\MediaUrl::for($project->image_url) }}"
                                          alt="Current Cover"
                                          class="h-24 w-36 object-cover  border border-gray-200 shadow-sm">
                                     <div>

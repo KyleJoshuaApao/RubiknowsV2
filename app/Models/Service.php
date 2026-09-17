@@ -12,9 +12,16 @@ class Service extends Model
         'content',
         'category',
         'icon',
+        'image_url',
+        'slug',
         'is_featured',
         'price'
     ];
+
+    public function getImagePathAttribute(): ?string
+    {
+        return $this->image_url;
+    }
 
     /**
      * Boot model events to automate slug generation.

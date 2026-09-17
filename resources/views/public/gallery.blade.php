@@ -34,7 +34,7 @@
 
             <div class="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8">
                 @forelse($media as $image)
-                    @php($mediaUrl = Storage::disk('public')->url($image->url))
+                    @php($mediaUrl = \App\Support\MediaUrl::for($image->url))
                     <div x-data x-intersect.once="$el.classList.add('animate-fade-in-up')"
                          class="break-inside-avoid group relative overflow-hidden bg-gray-100 border-b-4 border-transparent hover:border-brand-500 transition-all duration-300 shadow-sm hover:shadow-xl"
                          style="animation-delay: {{ ($loop->index % 10) * 0.05 }}s"

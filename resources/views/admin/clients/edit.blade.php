@@ -34,7 +34,7 @@
                     <x-input-label for="logo" value="Organization Logo (Image)" />
                     @if($client->logo_url)
                         <div class="mt-2 mb-3">
-                            <img src="{{ Storage::disk('public')->url($client->logo_url) }}" class="h-16 rounded border bg-gray-50 p-1">
+                        <img src="{{ \App\Support\MediaUrl::for($client->logo_url) }}" class="h-16 rounded border bg-gray-50 p-1">
                         </div>
                     @endif
                     <input id="logo" name="logo" type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file: file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-600 hover:file:bg-orange-100" accept="image/*" />
