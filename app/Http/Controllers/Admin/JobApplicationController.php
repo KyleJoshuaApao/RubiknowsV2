@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesSubmissions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\JobApplicationReplyRequest;
 use App\Http\Requests\Admin\JobApplicationRequest;
-use App\Mail\AdminReplyNotification;
 use App\Models\JobApplication;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class JobApplicationController extends Controller
 {
+    use HandlesSubmissions;
+
     public function index()
     {
         $applications = JobApplication::with('job')->latest()->paginate(15);
@@ -28,20 +27,16 @@ class JobApplicationController extends Controller
 
     public function update(JobApplicationRequest $request, JobApplication $application)
     {
-        $data = $request->validated();
-
-        $application->update(['status' => $data['status']]);
+        $application->update(['status' => $request->validated('status')]);
 
         return back()->with('success', 'Application status updated.');
     }
 
     public function destroy(JobApplication $application)
     {
-        if ($application->resume_path) {
-            Storage::disk(JobApplication::UPLOAD_DISK)->delete($application->resume_path);
-        }
-        if ($application->portfolio_path) {
-            Storage::disk(JobApplication::UPLOAD_DISK)->delete($application->portfolio_path);
+        $documents = array_filter([$application->resume_path, $application->portfolio_path]);
+        if ($documents !== []) {
+            Storage::disk(JobApplication::UPLOAD_DISK)->delete($documents);
         }
 
         $application->delete();
@@ -51,30 +46,26 @@ class JobApplicationController extends Controller
 
     public function reply(JobApplicationReplyRequest $request, JobApplication $application)
     {
-        $data = $request->validated();
+        return $this->sendReply($application, $request->validated(), 'Update regarding your application at RubiKnows');
+    }
 
-        $updateData = [
-            'reply_message' => $data['reply_message'],
-            'replied_at' => now(),
-        ];
+    public function downloadResume(JobApplication $application)
+    {
+        return $this->downloadDocument($application->resume_path);
+    }
 
-        // Only update status if provided in request
-        if ($data['status'] !== null) {
-            $updateData['status'] = $data['status'];
-        }
+    public function downloadPortfolio(JobApplication $application)
+    {
+        return $this->downloadDocument($application->portfolio_path);
+    }
 
-        $application->update($updateData);
+    private function downloadDocument(?string $path)
+    {
+        abort_unless($path, 404);
 
-        try {
-            $subject = 'Update regarding your application at RubiKnows';
-            $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
-            Mail::to($application->email)->queue(new AdminReplyNotification($application->name, $data['reply_message'], $subject, $senderName));
-        } catch (\Exception $e) {
-            Log::error('Mail Error (Reply): '.$e->getMessage());
+        $disk = Storage::disk(JobApplication::UPLOAD_DISK);
+        abort_unless($disk->exists($path), 404);
 
-            return back()->with('error', 'Reply saved, but email could not be sent.');
-        }
-
-        return back()->with('success', 'Reply sent successfully.');
+        return $disk->download($path);
     }
 }

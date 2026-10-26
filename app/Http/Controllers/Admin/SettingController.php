@@ -6,33 +6,35 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SettingRequest;
 use App\Models\Setting;
 use App\Support\PublicContentCache;
-use Illuminate\Support\Arr;
+use App\Support\SafeHtml;
 
 class SettingController extends Controller
 {
+    /** Settings edited with the rich-text editor and rendered as HTML. */
+    private const RICH_TEXT_KEYS = ['about_story_content'];
+
     public function index()
     {
-        $settings = Setting::all()->pluck('value', 'key')->toArray();
+        $settings = Setting::pluck('value', 'key')->toArray();
 
         return view('admin.settings.index', compact('settings'));
     }
 
     public function store(SettingRequest $request)
     {
-        // Validate that only allowed settings keys are being updated
-        $data = $request->validated();
+        // SettingRequest only validates the allowed setting keys.
+        foreach ($request->validated() as $key => $value) {
+            if (in_array($key, self::RICH_TEXT_KEYS, true)) {
+                $value = SafeHtml::clean($value);
+            }
 
-        $data = Arr::except($data, ['_token', '_method']);
-
-        foreach ($data as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key],
                 ['value' => $value ?? '']
             );
         }
 
-        \Illuminate\Support\Facades\Cache::forget('site_settings');
-        PublicContentCache::forgetHome();
+        PublicContentCache::forgetSettings();
 
         return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully.');
     }

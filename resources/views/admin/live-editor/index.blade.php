@@ -84,7 +84,7 @@
     </div>
 
     @push('scripts')
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         document.addEventListener('alpine:init', () => {
             Alpine.data('liveEditor', () => ({
                 settings: {

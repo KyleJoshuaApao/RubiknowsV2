@@ -3,7 +3,7 @@
 
     <x-public.page-intro eyebrow="Careers" number="07" title="Build work you can stand behind." lede="We are looking for thoughtful, capable people who care about the quality of the work and the way it is delivered." />
 
-    <section class="rk-section" x-data="{ applyFor: @js(old('job_title', request('job'))), submitting: false }">
+    <section class="rk-section" x-data="{ applyFor: @js((string) old('job_id', request('job', ''))), submitting: false }">
         <div class="rk-container rk-career-layout">
             <div>
                 <x-public.eyebrow>Open positions</x-public.eyebrow>
@@ -19,7 +19,7 @@
                                         @if($job->location)<span>{{ $job->location }}</span>@endif
                                     </p>
                                 </div>
-                                <a href="#application-form" class="rk-job__apply" @click="applyFor = @js($job->title)">Apply now</a>
+                                <a href="#application-form" class="rk-job__apply" @click="applyFor = @js((string) $job->id)">Apply now</a>
                             </div>
                             @if($job->description)<p class="rk-job__description">{{ Str::limit(strip_tags($job->description), 400) }}</p>@endif
                         </article>
@@ -42,13 +42,13 @@
                 <form class="rk-form" action="{{ route('public.careers.apply') }}" method="POST" enctype="multipart/form-data" @submit="submitting = true" :aria-busy="submitting.toString()">
                     @csrf
                     <div>
-                        <label for="job_title">Position applied for *</label>
-                        <select id="job_title" name="job_title" x-model="applyFor" required>
+                        <label for="job_id">Position applied for *</label>
+                        <select id="job_id" name="job_id" x-model="applyFor" required>
                             <option value="">Select a position</option>
-                            <option value="General Application">General Application</option>
-                            @foreach($jobs as $job)<option value="{{ $job->title }}">{{ $job->title }}</option>@endforeach
+                            <option value="{{ \App\Http\Requests\StoreJobApplicationRequest::GENERAL_APPLICATION }}">General Application</option>
+                            @foreach($jobs as $job)<option value="{{ $job->id }}">{{ $job->title }}</option>@endforeach
                         </select>
-                        @error('job_title')<p class="rk-field-error">{{ $message }}</p>@enderror
+                        @error('job_id')<p class="rk-field-error">{{ $message }}</p>@enderror
                     </div>
                     <div class="rk-form__split">
                         <div>

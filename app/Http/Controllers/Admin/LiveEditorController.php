@@ -11,12 +11,11 @@ class LiveEditorController extends Controller
 {
     public function index()
     {
-        // Fetch specific dynamic settings
         $settings = [
-            'home_stats_bar' => json_decode(Setting::getValue('home_stats_bar', '[]'), true),
-            'home_markets' => json_decode(Setting::getValue('home_markets', '[]'), true),
-            'home_marquee' => json_decode(Setting::getValue('home_marquee', '[]'), true),
-            'home_careers' => json_decode(Setting::getValue('home_careers', '{}'), true),
+            'home_stats_bar' => Setting::getJson('home_stats_bar'),
+            'home_markets' => Setting::getJson('home_markets'),
+            'home_marquee' => Setting::getJson('home_marquee'),
+            'home_careers' => Setting::getJson('home_careers'),
         ];
 
         return view('admin.live-editor.index', compact('settings'));
@@ -27,26 +26,37 @@ class LiveEditorController extends Controller
         $data = $request->validated();
 
         if (isset($data['home_stats_bar'])) {
-            // Re-index array to prevent weird JSON object generation if keys were missing
-            Setting::updateOrCreate(['key' => 'home_stats_bar'], ['value' => json_encode(array_values($data['home_stats_bar']))]);
+            // Re-index so missing keys don't turn the list into a JSON object.
+            $this->saveJson('home_stats_bar', array_values($data['home_stats_bar']));
         }
 
         if (isset($data['home_markets'])) {
-            $markets = array_filter(array_map('trim', explode(',', $data['home_markets'])));
-            Setting::updateOrCreate(['key' => 'home_markets'], ['value' => json_encode(array_values($markets))]);
+            $this->saveJson('home_markets', $this->commaList($data['home_markets']));
         }
 
         if (isset($data['home_marquee'])) {
-            $marquee = array_filter(array_map('trim', explode(',', $data['home_marquee'])));
-            Setting::updateOrCreate(['key' => 'home_marquee'], ['value' => json_encode(array_values($marquee))]);
+            $this->saveJson('home_marquee', $this->commaList($data['home_marquee']));
         }
 
         if (isset($data['home_careers'])) {
-            Setting::updateOrCreate(['key' => 'home_careers'], ['value' => json_encode($data['home_careers'])]);
+            $this->saveJson('home_careers', $data['home_careers']);
         }
 
         PublicContentCache::forgetHome();
 
         return redirect()->back()->with('success', 'Homepage layout updated successfully!');
+    }
+
+    private function saveJson(string $key, array $value): void
+    {
+        Setting::updateOrCreate(['key' => $key], ['value' => json_encode($value)]);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function commaList(string $value): array
+    {
+        return array_values(array_filter(array_map('trim', explode(',', $value))));
     }
 }

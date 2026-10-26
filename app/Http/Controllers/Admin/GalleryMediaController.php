@@ -9,11 +9,8 @@ use App\Services\FileUploadService;
 
 class GalleryMediaController extends Controller
 {
-    protected $fileUploadService;
-
-    public function __construct(FileUploadService $fileUploadService)
+    public function __construct(private FileUploadService $fileUploadService)
     {
-        $this->fileUploadService = $fileUploadService;
     }
 
     public function index()
@@ -30,8 +27,7 @@ class GalleryMediaController extends Controller
 
     public function store(GalleryMediaRequest $request)
     {
-        $data = $request->validated();
-
+        $data = $request->safe()->except('media_file');
         if ($request->hasFile('media_file')) {
             try {
                 $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery');
@@ -41,8 +37,6 @@ class GalleryMediaController extends Controller
             $data['thumbnail_url'] = $data['url'];
         }
 
-        unset($data['media_file']);
-
         GalleryMedia::create($data);
 
         return redirect()->route('admin.gallery.index')->with('success', 'Media uploaded successfully.');
@@ -50,8 +44,7 @@ class GalleryMediaController extends Controller
 
     public function update(GalleryMediaRequest $request, GalleryMedia $gallery)
     {
-        $data = $request->validated();
-
+        $data = $request->safe()->except('media_file');
         if ($request->hasFile('media_file')) {
             try {
                 $data['url'] = $this->fileUploadService->upload($request->file('media_file'), 'gallery', $gallery->url);
@@ -60,8 +53,6 @@ class GalleryMediaController extends Controller
             }
             $data['thumbnail_url'] = $data['url'];
         }
-
-        unset($data['media_file']);
 
         $gallery->update($data);
 

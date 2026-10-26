@@ -208,7 +208,7 @@
     </div>
 
     <!-- Chart.js Scripts -->
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         document.addEventListener('DOMContentLoaded', function() {
             window.__rkChartReady.then(function(Chart) {
                 if (!Chart) return;

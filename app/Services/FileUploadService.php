@@ -10,6 +10,8 @@ class FileUploadService
 {
     public const PUBLIC_UPLOAD_DISK = 'public';
 
+    private const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf', 'doc', 'docx', 'mp4', 'mov', 'zip'];
+
     /**
      * Upload a file and return the stored path.
      *
@@ -26,14 +28,13 @@ class FileUploadService
 
         // Generate a short, safe filename using UUID + actual extension (not what the client claims)
         $extension = strtolower($file->extension()) ?: 'jpg';
-        
+
         // Security: strict ALLOWLIST — only permitted types can be uploaded
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf', 'doc', 'docx', 'mp4', 'mov', 'zip'];
-        if (!in_array($extension, $allowedExtensions)) {
+        if (! in_array($extension, self::ALLOWED_EXTENSIONS, true)) {
             throw new \Exception("File upload failed: File type '{$extension}' is not permitted.");
         }
 
-        $filename  = (string) \Illuminate\Support\Str::uuid() . '.' . $extension;
+        $filename = Str::uuid().'.'.$extension;
 
         try {
             $path = $file->storeAs($directory, $filename, $disk);

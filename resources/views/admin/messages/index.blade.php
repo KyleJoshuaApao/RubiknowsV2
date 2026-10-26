@@ -103,7 +103,7 @@
         </form>
     @endforeach
 
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         document.addEventListener('DOMContentLoaded', function () {
             const selectAllCheckbox = document.getElementById('select-all');
             const itemCheckboxes = document.querySelectorAll('.select-item');

@@ -26,21 +26,7 @@
         @stack('extra-head-scripts')
     </head>
     <body class="font-sans antialiased text-richblack-900 bg-white flex h-screen overflow-hidden">
-        @php
-            $adminNotificationCounts = \Illuminate\Support\Facades\Cache::remember(
-                \App\Support\PublicContentCache::ADMIN_NOTIFICATION_COUNTS,
-                now()->addSeconds(30),
-                fn () => [
-                    'messages' => \App\Models\ContactMessage::where('status', 'New')->count(),
-                    'quotations' => \App\Models\QuotationRequest::where('status', 'Pending')->count(),
-                    'applications' => \App\Models\JobApplication::where('status', 'Received')->count(),
-                ],
-            );
-            $unreadMsgs = $adminNotificationCounts['messages'];
-            $pendingQuotes = $adminNotificationCounts['quotations'];
-            $newApps = $adminNotificationCounts['applications'];
-            $totalNotifications = $unreadMsgs + $pendingQuotes + $newApps;
-        @endphp
+        {{-- $unreadMsgs, $pendingQuotes, $newApps, $totalNotifications come from AdminNotificationComposer --}}
 
         <!-- ===== SIDEBAR ===== -->
         <aside class="w-64 bg-richblack-950 flex-shrink-0 flex flex-col hidden md:flex text-gray-300 relative z-20">
@@ -200,7 +186,7 @@
                         <h3 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">System</h3>
                         <div class="w-6 h-px bg-white/10"></div>
                     </div>
-                    @if(Auth::user()->role === 'Super Admin')
+                    @if(Auth::user()->isSuperAdmin())
                         <a href="{{ route('admin.users.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mb-0.5 {{ request()->routeIs('admin.users.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
                             <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.users.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -423,7 +409,7 @@
             </div>
         </div>
 
-        <script>
+        <script nonce="{{ Vite::cspNonce() }}">
         /* ================================================================
            RubiKnows — Notification & Confirm System
            ================================================================ */
@@ -450,10 +436,13 @@
                     + '<div style="flex:1;min-width:0;">'
                     + '<p style="font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:'+c.bar+';margin:0 0 2px 0;">'
                     + (type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Notice') + '</p>'
-                    + '<p style="font-size:13px;font-weight:500;color:#1a1a1a;margin:0;line-height:1.5;">'+message+'</p></div>'
-                    + '<button onclick="this.closest(\'[data-rk-toast]\').remove()" style="flex-shrink:0;padding:2px;background:none;border:none;cursor:pointer;color:#9ca3af;margin-top:1px;">'
+                    + '<p data-rk-toast-message style="font-size:13px;font-weight:500;color:#1a1a1a;margin:0;line-height:1.5;"></p></div>'
+                    + '<button type="button" data-rk-toast-close style="flex-shrink:0;padding:2px;background:none;border:none;cursor:pointer;color:#9ca3af;margin-top:1px;">'
                     + '<svg style="width:15px;height:15px" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>'
                     + '</div>';
+                // textContent (not innerHTML) so messages can never inject markup.
+                toast.querySelector('[data-rk-toast-message]').textContent = message;
+                toast.querySelector('[data-rk-toast-close]').addEventListener('click', function () { toast.remove(); });
                 toast.setAttribute('data-rk-toast', '1');
                 _toastContainer.appendChild(toast);
                 requestAnimationFrame(function () {
@@ -476,12 +465,12 @@
             /* ---------- Auto-fire session flash toasts ---------- */
             @if(session('success'))
             window.addEventListener('DOMContentLoaded', function () {
-                rkToast({{ json_encode(session('success')) }}, 'success');
+                rkToast(@js(session('success')), 'success');
             });
             @endif
             @if(session('error'))
             window.addEventListener('DOMContentLoaded', function () {
-                rkToast({{ json_encode(session('error')) }}, 'error');
+                rkToast(@js(session('error')), 'error');
             });
             @endif
 

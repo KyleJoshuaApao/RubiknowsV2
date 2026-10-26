@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Middleware\CheckSuperAdmin;
-use App\Http\Middleware\EnsureSuperAdmin;
+use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,19 +14,15 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Append security headers to ALL web responses
         $middleware->append(SecurityHeaders::class);
 
-        // Guarantee superadmin always exists in Supabase (runs once per deploy)
-        $middleware->append(EnsureSuperAdmin::class);
-
         $middleware->alias([
+            'admin' => EnsureAdmin::class,
             'superadmin' => CheckSuperAdmin::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        // Allow Laravel to handle exceptions normally
-        // The previous closure caught ALL throwables including ValidationException
+    ->withExceptions(function (Exceptions $exceptions): void {
+        //
     })->create();
 
 $storagePath = $_ENV['APP_STORAGE'] ?? $_SERVER['APP_STORAGE'] ?? null;
@@ -34,7 +30,7 @@ if ($storagePath) {
     $app->useStoragePath($storagePath);
 }
 
-// Vercel's serverless filesystem needs runtime-safe stores; local and tests use config/env.
+// Serverless filesystems need runtime-safe stores; local and tests use config/env.
 $app->booting(function ($app) {
     if ($_ENV['APP_STORAGE'] ?? $_SERVER['APP_STORAGE'] ?? false) {
         $app['config']->set('app.maintenance.driver', 'file');

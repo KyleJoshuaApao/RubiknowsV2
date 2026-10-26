@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="public/RK3.png" alt="Rubiknows Logo" width="350"/>
+  <img src="public/RK4.webp" alt="Rubiknows Logo" width="350"/>
   <h1>Rubiknows</h1>
 </div>
 
@@ -11,7 +11,7 @@ Rubiknows is a high-performance engineering design, analysis, and implementation
 
 - **Public Site**: Beautiful, responsive layout featuring projects, services, testimonials, and gallery.
 - **Admin Dashboard**: Manage users, clients, testimonials, and job applications securely.
-- **Auto CI/CD Ready**: Vercel configuration included.
+- **Docker deploy**: `Dockerfile` + `render-start.sh` for Render.
 
 ## Tech Stack
 

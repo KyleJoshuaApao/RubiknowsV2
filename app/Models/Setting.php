@@ -2,14 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Support\PublicContentCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
     use HasFactory;
 
-    // Explicit fillable to prevent mass assignment attacks
     protected $fillable = ['key', 'value', 'description', 'group'];
 
     /**
@@ -18,6 +19,30 @@ class Setting extends Model
     public static function getValue(string $key, $default = null)
     {
         return static::where('key', $key)->value('value') ?? $default;
+    }
+
+    /**
+     * Decode a JSON setting, falling back when it is missing or malformed.
+     */
+    public static function getJson(string $key, array $default = []): array
+    {
+        $decoded = json_decode((string) static::getValue($key, ''), true);
+
+        return is_array($decoded) ? $decoded : $default;
+    }
+
+    /**
+     * All settings as a key => value map, cached for public pages.
+     *
+     * @return array<string, mixed>
+     */
+    public static function allCached(): array
+    {
+        return Cache::remember(
+            PublicContentCache::SITE_SETTINGS,
+            now()->addHour(),
+            fn () => static::pluck('value', 'key')->toArray()
+        );
     }
 
     /**

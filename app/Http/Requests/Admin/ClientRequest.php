@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClientRequest extends FormRequest
 {
@@ -23,7 +25,7 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'type' => 'required|string|max:50',
+            'type' => ['required', Rule::in(Client::TYPES)],
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
             'success_story_url' => 'nullable|url'
         ];

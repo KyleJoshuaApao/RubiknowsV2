@@ -13,25 +13,14 @@ class AdminReplyNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public $recipientName;
-    public $replyText;
-    public $subjectLine;
-    public $senderName;
-
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($recipientName, $replyText, $subjectLine, $senderName = 'The RubiKnows Team')
-    {
-        $this->recipientName = $recipientName;
-        $this->replyText = $replyText;
-        $this->subjectLine = $subjectLine;
-        $this->senderName = $senderName;
+    public function __construct(
+        public string $recipientName,
+        public string $replyText,
+        public string $subjectLine,
+        public string $senderName = 'The RubiKnows Team',
+    ) {
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -39,23 +28,10 @@ class AdminReplyNotification extends Mailable implements ShouldQueue
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
             view: 'emails.admin.reply',
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }

@@ -7,15 +7,13 @@ use App\Http\Requests\Admin\ProjectRequest;
 use App\Models\Project;
 use App\Services\FileUploadService;
 use App\Support\PublicContentCache;
-use App\Support\MindanaoMap;
 
 class ProjectController extends Controller
 {
-    protected $fileUploadService;
+    private const MAP_COLUMNS = ['id', 'title', 'latitude', 'longitude'];
 
-    public function __construct(FileUploadService $fileUploadService)
+    public function __construct(private FileUploadService $fileUploadService)
     {
-        $this->fileUploadService = $fileUploadService;
     }
 
     public function index()
@@ -27,7 +25,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        return view('admin.projects.create', ['mapProjects' => $this->mapProjects()]);
+        return view('admin.projects.create', ['mapProjects' => Project::mapPins(self::MAP_COLUMNS)]);
     }
 
     public function store(ProjectRequest $request)
@@ -49,7 +47,10 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', ['project' => $project, 'mapProjects' => $this->mapProjects($project)]);
+        return view('admin.projects.edit', [
+            'project' => $project,
+            'mapProjects' => Project::mapPins(self::MAP_COLUMNS, except: $project),
+        ]);
     }
 
     public function update(ProjectRequest $request, Project $project)
@@ -71,24 +72,10 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
-        if ($project->image_url) {
-            $this->fileUploadService->delete($project->image_url);
-        }
+        $this->fileUploadService->delete($project->image_url);
         $project->delete();
         PublicContentCache::forgetProjects();
 
         return redirect()->route('admin.projects.index')->with('success', 'Project deleted successfully.');
-    }
-
-    private function mapProjects(?Project $except = null)
-    {
-        return Project::whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->whereBetween('latitude', [MindanaoMap::MIN_LATITUDE, MindanaoMap::MAX_LATITUDE])
-            ->whereBetween('longitude', [MindanaoMap::MIN_LONGITUDE, MindanaoMap::MAX_LONGITUDE])
-            ->when($except, fn ($query) => $query->whereKeyNot($except->getKey()))
-            ->get(['id', 'title', 'latitude', 'longitude'])
-            ->filter(fn (Project $project) => MindanaoMap::contains($project->latitude, $project->longitude))
-            ->values();
     }
 }

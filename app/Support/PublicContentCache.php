@@ -8,6 +8,7 @@ final class PublicContentCache
 {
     public const HOME = 'public-content:home:v1';
     public const PROJECT_MAP = 'public-content:project-map:v1';
+    public const SITE_SETTINGS = 'site_settings';
     public const ADMIN_NOTIFICATION_COUNTS = 'admin:notification-counts:v1';
 
     public static function forgetHome(): void
@@ -19,6 +20,12 @@ final class PublicContentCache
     {
         Cache::forget(self::HOME);
         Cache::forget(self::PROJECT_MAP);
+    }
+
+    public static function forgetSettings(): void
+    {
+        Cache::forget(self::SITE_SETTINGS);
+        Cache::forget(self::HOME);
     }
 
     public static function forgetAdminNotificationCounts(): void

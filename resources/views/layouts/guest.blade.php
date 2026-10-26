@@ -8,8 +8,6 @@
         <title>
             @if(request()->routeIs('login'))
                 Admin Login | RubiKnows
-            @elseif(request()->routeIs('register'))
-                Register | RubiKnows
             @elseif(request()->routeIs('password.request'))
                 Forgot Password | RubiKnows
             @else
@@ -38,7 +36,7 @@
                 <!-- Logo -->
                 <div class="mb-10">
                     <div class="w-36 h-36 bg-transparent flex items-center justify-center">
-                        <x-logo class="w-28 h-28 object-contain" />
+                        <x-logo :hideText="true" class="w-28 h-28 object-contain" />
                     </div>
                 </div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight font-['Roboto_Slab'] mb-2">
@@ -56,7 +54,7 @@
                 <!-- Mobile Logo (hidden on desktop) -->
                 <div class="flex justify-center mb-6 lg:hidden">
                     <a href="/" class="inline-block transform transition duration-300 hover:scale-105">
-                        <x-logo class="w-16 object-contain" />
+                        <x-logo :hideText="true" class="w-16 object-contain" />
                     </a>
                 </div>
 

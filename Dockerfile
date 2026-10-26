@@ -1,56 +1,56 @@
-FROM php:8.4-apache
+# ---- Stage 1: PHP runtime + Composer dependencies ----------------------------
+FROM php:8.4-apache AS app
 
-# Install system dependencies and required libraries
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    libicu-dev \
-    libpng-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    gnupg \
-    && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-    && apt-get install -y nodejs
+# System libraries for the PHP extensions below (PostgreSQL/Supabase, intl, gd, zip)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libpq-dev \
+        libicu-dev \
+        libpng-dev \
+        libzip-dev \
+        unzip \
+        git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions needed for Laravel and PostgreSQL (Supabase)
 RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip intl
 
 # Align PHP's multipart limits with the largest validated admin/public uploads.
 COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
 
-# Enable Apache mod_rewrite for Laravel routing
 RUN a2enmod rewrite headers deflate expires
 
-# Update Apache document root to point to Laravel's public directory
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+# Serve Laravel's public directory
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
+    && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# Set the working directory
 WORKDIR /var/www/html
 
-# Get Composer from the official image
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy the rest of the application files
 COPY . .
-
-# Install PHP dependencies (ignoring dev dependencies for production)
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-# Install Node dependencies and build the frontend assets (Tailwind/Vite)
-RUN npm install
+# ---- Stage 2: build front-end assets (Node is not shipped in the final image) --
+FROM node:24-slim AS assets
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . .
+# Tailwind scans vendor pagination views, so bring in the Composer packages.
+COPY --from=app /var/www/html/vendor ./vendor
 RUN npm run build
 
-# Fix permissions for Laravel storage and cache directories
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# ---- Stage 3: final image ----------------------------------------------------
+FROM app
 
-# Add the startup script
+COPY --from=assets /app/public/build ./public/build
+
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
 COPY render-start.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/render-start.sh
 
-# Use the startup script to launch Apache
 CMD ["render-start.sh"]

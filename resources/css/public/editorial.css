@@ -1,0 +1,377 @@
+/* Clean editorial public system: original RubiKnows implementation, no decorative textures. */
+body.rk-public,
+.rk-public main {
+    background: #fff;
+    background-image: none !important;
+}
+
+.rk-public .rk-scroll-progress {
+    box-shadow: none;
+}
+
+.rk-public .rk-header {
+    border-bottom: 1px solid rgba(23, 22, 19, .12);
+    background: rgba(255, 255, 255, .98);
+    box-shadow: none;
+}
+
+.rk-public .rk-header__inner {
+    min-height: 5.25rem;
+}
+
+.rk-public .rk-brand {
+    min-width: 16.5rem;
+    border-right: 1px solid rgba(23, 22, 19, .08);
+    background: #fff;
+}
+
+.rk-public .rk-nav {
+    gap: .1rem;
+}
+
+.rk-public .rk-nav a {
+    padding-inline: .7rem;
+    color: var(--rk-ink);
+    font-size: .61rem;
+}
+
+.rk-public .rk-nav .rk-nav__contact {
+    margin-left: .85rem;
+    border: 1px solid var(--rk-ink);
+    background: var(--rk-gold);
+}
+
+.rk-public .rk-page-intro {
+    min-height: clamp(16rem, 28vw, 22rem);
+    border-bottom: 1px solid rgba(23, 22, 19, .13);
+    background: #fff;
+}
+
+.rk-public .rk-page-intro::before,
+.rk-public .rk-section::before {
+    display: none;
+}
+
+.rk-public .rk-page-intro__inner {
+    min-height: clamp(16rem, 28vw, 22rem);
+    gap: 1.5rem;
+    padding-top: clamp(3.5rem, 6vw, 5.5rem);
+    padding-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+
+.rk-public .rk-page-intro__rule {
+    width: 5.5rem;
+    height: .25rem;
+    background: var(--rk-gold);
+    box-shadow: none;
+}
+
+.rk-public .rk-page-intro h1 {
+    max-width: 48rem;
+    font-size: clamp(2.6rem, 5.6vw, 5.5rem);
+    letter-spacing: -.075em;
+    line-height: .92;
+}
+
+.rk-public .rk-page-intro p {
+    margin-top: 1.15rem;
+    color: var(--rk-muted);
+    font-size: .98rem;
+}
+
+.rk-public .rk-section,
+.rk-public .rk-section--paper {
+    background: #fff !important;
+}
+
+.rk-public .rk-section {
+    padding-block: clamp(3.75rem, 7vw, 6.5rem);
+}
+
+.rk-public .rk-section__head {
+    align-items: flex-end;
+    margin-bottom: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.rk-public .rk-section__title {
+    max-width: 43rem;
+    font-size: clamp(2rem, 4.25vw, 4.25rem);
+    letter-spacing: -.07em;
+    line-height: .94;
+}
+
+.rk-public .rk-section__lede {
+    color: var(--rk-muted);
+    font-size: .95rem;
+}
+
+.rk-public .rk-statement {
+    margin-block: 0;
+    background: var(--rk-gold);
+    background-image: none !important;
+}
+
+.rk-public .rk-statement::after {
+    display: none;
+}
+
+.rk-public .rk-section--ink,
+.rk-public .rk-footer,
+.rk-public .rk-dual-cta__panel:last-child {
+    background-image: none !important;
+}
+
+.rk-public .rk-services-rail,
+.rk-public .rk-quote-grid,
+.rk-public .rk-logo-grid,
+.rk-public .rk-principle-grid {
+    gap: 0;
+    border-color: rgba(23, 22, 19, .16);
+}
+
+.rk-public .rk-service-link,
+.rk-public .rk-logo-tile,
+.rk-public .rk-testimonial-card,
+.rk-public .rk-form-panel,
+.rk-public .rk-form-section {
+    border-color: rgba(23, 22, 19, .16);
+    background: #fff;
+    box-shadow: none;
+}
+
+.rk-public .rk-service-link {
+    min-height: 17rem;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.rk-public .rk-service-link h3 {
+    margin-top: 4rem;
+    font-size: clamp(1.4rem, 2.2vw, 2.25rem);
+}
+
+.rk-public .rk-service-link:hover {
+    background: var(--rk-gold);
+    color: var(--rk-ink);
+    transform: none;
+}
+
+.rk-public .rk-service-link:hover p,
+.rk-public .rk-service-link:hover .rk-service-link__index {
+    color: var(--rk-ink);
+}
+
+.rk-public .rk-project-tile,
+.rk-public .rk-feature-card,
+.rk-public .rk-gallery-tile {
+    box-shadow: none;
+}
+
+.rk-public .rk-project-tile,
+.rk-public .rk-gallery-tile {
+    outline: 1px solid rgba(23, 22, 19, .12);
+    outline-offset: -1px;
+}
+
+.rk-public .rk-testimonial-card {
+    min-height: 22rem;
+    border-top-width: 3px;
+}
+
+.rk-public .rk-form input,
+.rk-public .rk-form select,
+.rk-public .rk-form textarea {
+    background: #fff;
+}
+
+.rk-public .rk-footer {
+    background: var(--rk-ink);
+}
+
+.rk-public .rk-footer::before {
+    box-shadow: none;
+}
+
+.rk-public .rk-reveal,
+.rk-public .rk-reveal.rk-is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+}
+
+@media (max-width: 900px) {
+    .rk-public .rk-brand {
+        min-width: 0;
+    }
+
+    .rk-public .rk-page-intro__inner {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-header__inner {
+        min-height: 4.75rem;
+    }
+
+    .rk-public .rk-page-intro__inner {
+        min-height: 17rem;
+    }
+
+    .rk-public .rk-section {
+        padding-block: 3.25rem;
+    }
+
+    .rk-public .rk-section__head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Compact actions and content blocks: clear hierarchy with no decorative clutter. */
+.rk-public .rk-nav .rk-nav__contact {
+    position: relative;
+    min-height: 0;
+    margin-left: 1rem;
+    padding: .45rem 0 .45rem 1rem;
+    border: 0;
+    background: transparent;
+    color: var(--rk-ink);
+}
+
+.rk-public .rk-nav .rk-nav__contact::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    color: var(--rk-gold-deep);
+    content: '↗';
+    font-size: .9rem;
+    transform: translateY(-50%);
+    transition: transform .2s ease, color .2s ease;
+}
+
+.rk-public .rk-nav .rk-nav__contact:hover {
+    background: transparent;
+    color: var(--rk-gold-deep);
+    transform: none;
+}
+
+.rk-public .rk-nav .rk-nav__contact:hover::before {
+    color: var(--rk-ink);
+    transform: translate(2px, -60%);
+}
+
+.rk-public .rk-action {
+    min-height: 3.1rem;
+    gap: .8rem;
+    padding: .9rem 1.2rem;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.rk-public .rk-action__arrow {
+    width: auto;
+    height: auto;
+    border-left: 0;
+    font-size: 1rem;
+}
+
+.rk-public .rk-action:hover {
+    box-shadow: none;
+    transform: translateY(-2px);
+}
+
+.rk-public .rk-home-hero__scroll {
+    display: none;
+}
+
+.rk-public .rk-statement {
+    padding-inline: clamp(1.5rem, 4vw, 4.5rem);
+}
+
+.rk-public .rk-section,
+.rk-public .rk-about-faith,
+.rk-public .rk-testimonial-grid {
+    min-height: 0;
+}
+
+.rk-public .rk-about-faith {
+    padding-block: clamp(3rem, 5vw, 4.5rem);
+    background: #fff !important;
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-eyebrow,
+.rk-public .rk-about-faith .rk-editorial-copy__title,
+.rk-public .rk-about-faith .rk-editorial-copy__body,
+.rk-public .rk-about-faith .rk-editorial-copy__body p {
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-editorial-copy__body {
+    max-width: 39rem;
+    font-size: .98rem;
+    line-height: 1.65;
+}
+
+.rk-public .rk-about-faith .rk-editorial-copy__body .text-brand-500 {
+    color: var(--rk-gold-deep) !important;
+}
+
+/* Contrast surfaces for content blocks that intentionally carry white type. */
+.rk-public .rk-section--ink {
+    background: var(--rk-ink) !important;
+    color: var(--rk-white) !important;
+}
+
+.rk-public .rk-about-faith {
+    background: var(--rk-gold) !important;
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-eyebrow,
+.rk-public .rk-about-faith .rk-editorial-copy__title,
+.rk-public .rk-about-faith .rk-editorial-copy__body,
+.rk-public .rk-about-faith .rk-editorial-copy__body p {
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-about-faith .rk-about-faith__verse {
+    display: inline-block;
+    padding: .55rem .8rem;
+    background: rgba(255, 255, 255, .24);
+    color: var(--rk-ink) !important;
+}
+
+.rk-public .rk-testimonial-card {
+    min-height: 18rem;
+    padding: clamp(1.25rem, 2.2vw, 1.75rem);
+}
+
+.rk-public .rk-testimonial-card__body {
+    margin-top: 1.25rem;
+    font-size: .94rem;
+    line-height: 1.55;
+}
+
+.rk-public .rk-testimonial-card__person {
+    padding-top: 1rem;
+    margin-top: 1.25rem;
+}
+
+@media (max-width: 640px) {
+    .rk-public .rk-nav .rk-nav__contact {
+        margin-left: 0;
+        padding: .9rem 1rem;
+        background: var(--rk-gold);
+    }
+
+    .rk-public .rk-nav .rk-nav__contact::before {
+        display: none;
+    }
+
+    .rk-public .rk-statement {
+        padding-inline: 1.25rem;
+    }
+}

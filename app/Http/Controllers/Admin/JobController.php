@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Job;
 use App\Http\Requests\Admin\JobRequest;
-use Illuminate\Http\Request;
+use App\Models\Job;
 
 class JobController extends Controller
 {

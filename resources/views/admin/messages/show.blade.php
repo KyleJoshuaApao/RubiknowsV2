@@ -13,7 +13,7 @@
             <form action="{{ route('admin.messages.update', $message) }}" method="POST" class="flex items-center space-x-2">
                 @csrf
                 @method('PUT')
-                <select name="status" class="text-sm border-gray-300  shadow-sm focus:border-orange-500 focus:ring-orange-500" onchange="this.form.submit()">
+                <select name="status" class="text-sm border-gray-300  shadow-sm focus:border-orange-500 focus:ring-orange-500" x-data x-on:change="$el.form.submit()">
                     <option value="New" {{ $message->status === 'New' ? 'selected' : '' }}>New</option>
                     <option value="Read" {{ $message->status === 'Read' ? 'selected' : '' }}>Read</option>
                     <option value="Replied" {{ $message->status === 'Replied' ? 'selected' : '' }}>Replied</option>

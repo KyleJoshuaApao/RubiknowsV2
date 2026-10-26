@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\QuotationRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -14,22 +15,10 @@ class NewQuotationRequestNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public $quotation;
-
-    /**
-     * Create a new message instance.
-     */
-    public function __construct($quotation)
+    public function __construct(public QuotationRequest $quotation)
     {
-        $this->quotation = $quotation;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -37,9 +26,6 @@ class NewQuotationRequestNotification extends Mailable implements ShouldQueue
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -48,21 +34,12 @@ class NewQuotationRequestNotification extends Mailable implements ShouldQueue
     }
 
     /**
-     * Get the attachments for the message.
-     *
      * @return array<int, Attachment>
      */
     public function attachments(): array
     {
-        $attachments = [];
+        $disk = $this->quotation->attachmentDisk();
 
-        if ($this->quotation->attachment_path) {
-            $path = storage_path('app/public/' . $this->quotation->attachment_path);
-            if (file_exists($path)) {
-                $attachments[] = Attachment::fromPath($path);
-            }
-        }
-
-        return $attachments;
+        return $disk ? [Attachment::fromStorageDisk($disk, $this->quotation->attachment_path)] : [];
     }
 }

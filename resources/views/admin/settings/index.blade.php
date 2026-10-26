@@ -107,7 +107,7 @@
                             <input type="hidden" name="about_story_content" id="about_story_content" value="{{ $settings['about_story_content'] ?? '' }}">
                             <div class="mt-1">
                                 <div id="about_story_editor">
-                                    {!! $settings['about_story_content'] ?? "Founded with a vision to redefine structural integrity and innovative design, RubiKnows has grown into a premier engineering and construction firm. We specialize in delivering comprehensive solutions from initial consultancy to final build.\n\nOur team of dedicated engineers, architects, and project managers work synergistically to ensure that every project we undertake not only meets but exceeds industry standards. We pride ourselves on safety, sustainability, and unparalleled craftsmanship." !!}
+                                    {!! \App\Support\SafeHtml::clean($settings['about_story_content'] ?? null) ?: e("Founded with a vision to redefine structural integrity and innovative design, RubiKnows has grown into a premier engineering and construction firm. We specialize in delivering comprehensive solutions from initial consultancy to final build.\n\nOur team of dedicated engineers, architects, and project managers work synergistically to ensure that every project we undertake not only meets but exceeds industry standards. We pride ourselves on safety, sustainability, and unparalleled craftsmanship.") !!}
                                 </div>
                             </div>
                         </div>
@@ -131,7 +131,7 @@
                 </div>
 
                 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-                <script>
+                <script nonce="{{ Vite::cspNonce() }}">
                     document.addEventListener('DOMContentLoaded', function () {
                         // Simplified toolbar options as requested
                         const toolbarOptions = [

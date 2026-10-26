@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\View\Composers\AdminNotificationComposer;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,10 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->environment('production')) {
-        if (! app()->environment(['local', 'testing'])) {
-            \Illuminate\Support\Facades\URL::forceScheme('https');
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
         }
-        }
+
+        View::composer('layouts.app', AdminNotificationComposer::class);
     }
 }

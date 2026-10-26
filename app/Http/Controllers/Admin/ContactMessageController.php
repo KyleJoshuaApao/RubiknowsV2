@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\HandlesSubmissions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ReplyContactMessageRequest;
 use App\Http\Requests\Admin\UpdateContactMessageRequest;
-use App\Mail\AdminReplyNotification;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class ContactMessageController extends Controller
 {
+    use HandlesSubmissions;
+
     public function index()
     {
         $messages = ContactMessage::latest()->paginate(15);
@@ -27,9 +27,7 @@ class ContactMessageController extends Controller
 
     public function update(UpdateContactMessageRequest $request, ContactMessage $message)
     {
-        $data = $request->validated();
-
-        $message->update(['status' => $data['status']]);
+        $message->update(['status' => $request->validated('status')]);
 
         return back()->with('success', 'Message status updated.');
     }
@@ -43,42 +41,13 @@ class ContactMessageController extends Controller
 
     public function bulkDestroy(Request $request)
     {
-        $ids = $request->input('ids', []);
-        if (! empty($ids)) {
-            ContactMessage::whereIn('id', $ids)->delete();
-
-            return redirect()->route('admin.messages.index')->with('success', 'Selected messages deleted successfully.');
-        }
-
-        return redirect()->route('admin.messages.index')->with('error', 'No messages selected.');
+        return $this->bulkDelete($request, ContactMessage::class, 'admin.messages.index', 'messages');
     }
 
     public function reply(ReplyContactMessageRequest $request, ContactMessage $message)
     {
-        $data = $request->validated();
+        $subject = 'Re: '.($message->subject ?: 'Your inquiry at RubiKnows');
 
-        $updateData = [
-            'reply_message' => $data['reply_message'],
-            'replied_at' => now(),
-        ];
-
-        // Only update status if provided in request
-        if ($data['status'] !== null) {
-            $updateData['status'] = $data['status'];
-        }
-
-        $message->update($updateData);
-
-        try {
-            $subject = 'Re: '.($message->subject ?: 'Your inquiry at RubiKnows');
-            $senderName = $data['sender_name'] ?? 'The RubiKnows Team';
-            Mail::to($message->email)->queue(new AdminReplyNotification($message->name, $data['reply_message'], $subject, $senderName));
-        } catch (\Exception $e) {
-            Log::error('Mail Error (Reply): '.$e->getMessage());
-
-            return back()->with('error', 'Reply saved, but email could not be sent.');
-        }
-
-        return back()->with('success', 'Reply sent successfully.');
+        return $this->sendReply($message, $request->validated(), $subject);
     }
 }

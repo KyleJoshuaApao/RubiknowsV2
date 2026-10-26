@@ -20,8 +20,8 @@
     <section class="rk-section">
         <div class="rk-container rk-detail-layout">
             <article class="rk-rich-copy rich-text">
-                @if($project->content)
-                    {!! $project->content !!}
+                @if($project->description)
+                    <p>{!! nl2br(e($project->description)) !!}</p>
                 @else
                     <p>Project details will be shared here soon. Contact RubiKnows to discuss related work or a similar brief.</p>
                 @endif

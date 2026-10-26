@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @php
-            $settings = Cache::remember('site_settings', 3600, fn () => \App\Models\Setting::pluck('value', 'key')->toArray());
+            $settings = \App\Models\Setting::allCached();
             $companyName = $settings['company_name'] ?? 'RubiKnows';
             $seoDescription = $settings['seo_description'] ?? 'Engineering, construction, and consultancy services in the Philippines.';
             $pageTitle = isset($title) && $title !== 'Home' ? $title . ' | ' . $companyName : $companyName;
@@ -34,7 +34,7 @@
         <meta name="twitter:title" content="{{ $pageTitle }}">
         <meta name="twitter:description" content="{{ $seoDescription }}">
         <meta name="twitter:image" content="{{ asset('RK4.webp') }}">
-        <script type="application/ld+json">{"@@context":"https://schema.org","@@type":"Organization","name":@json($companyName),"url":@json(url('/')),"logo":@json(asset('RK4.webp')),"description":@json($seoDescription)}</script>
+        <script nonce="{{ Vite::cspNonce() }}" type="application/ld+json">{"@@context":"https://schema.org","@@type":"Organization","name":@json($companyName),"url":@json(url('/')),"logo":@json(asset('RK4.webp')),"description":@json($seoDescription)}</script>
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link rel="dns-prefetch" href="https://fonts.bunny.net">
@@ -136,7 +136,7 @@
             </div>
         </footer>
 
-        <script>
+        <script nonce="{{ Vite::cspNonce() }}">
             document.addEventListener('DOMContentLoaded', function () {
                 const progress = document.querySelector('.rk-scroll-progress');
                 if (progress) {

@@ -131,7 +131,7 @@
     </div>
 
     @push('scripts')
-        <script>
+        <script nonce="{{ Vite::cspNonce() }}">
             document.addEventListener('alpine:init', function () {
                 Alpine.data('homeLivePreview', function () {
                     return {

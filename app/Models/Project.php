@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Support\MindanaoMap;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class Project extends Model
 {
-    // Explicit fillable to prevent mass assignment attacks
     protected $fillable = [
         'title', 'category_id', 'status', 'year', 'location',
         'client', 'duration', 'value', 'description',
@@ -17,6 +19,24 @@ class Project extends Model
         'latitude' => 'float',
         'longitude' => 'float',
     ];
+
+    /**
+     * Projects whose coordinates fall inside the Mindanao map boundary.
+     *
+     * @param  array<int, string>  $columns
+     */
+    public static function mapPins(array $columns, ?self $except = null): Collection
+    {
+        return static::whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->whereBetween('latitude', [MindanaoMap::MIN_LATITUDE, MindanaoMap::MAX_LATITUDE])
+            ->whereBetween('longitude', [MindanaoMap::MIN_LONGITUDE, MindanaoMap::MAX_LONGITUDE])
+            ->when($except, fn ($query) => $query->whereKeyNot($except->getKey()))
+            ->latest()
+            ->get($columns)
+            ->filter(fn (self $project) => MindanaoMap::contains($project->latitude, $project->longitude))
+            ->values();
+    }
 
     /**
      * Get the cover image path (alias for image_url).
@@ -41,13 +61,13 @@ class Project extends Model
     {
         static::creating(function ($project) {
             if (empty($project->slug)) {
-                $project->slug = \Illuminate\Support\Str::slug($project->title) . '-' . uniqid();
+                $project->slug = Str::slug($project->title).'-'.uniqid();
             }
         });
 
         static::updating(function ($project) {
             if ($project->isDirty('title')) {
-                $project->slug = \Illuminate\Support\Str::slug($project->title) . '-' . $project->id;
+                $project->slug = Str::slug($project->title).'-'.$project->id;
             }
         });
     }

@@ -52,7 +52,7 @@
 @endonce
 
 @push('scripts')
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         document.addEventListener('DOMContentLoaded', function () {
             const mount = document.getElementById('project-location-picker');
             const status = document.getElementById('project-map-status');

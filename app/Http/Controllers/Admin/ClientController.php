@@ -9,11 +9,8 @@ use App\Services\FileUploadService;
 
 class ClientController extends Controller
 {
-    protected $fileUploadService;
-
-    public function __construct(FileUploadService $fileUploadService)
+    public function __construct(private FileUploadService $fileUploadService)
     {
-        $this->fileUploadService = $fileUploadService;
     }
 
     public function index()
@@ -30,8 +27,7 @@ class ClientController extends Controller
 
     public function store(ClientRequest $request)
     {
-        $data = $request->validated();
-        unset($data['logo']); // Remove logo from validated data as it's handled separately
+        $data = $request->safe()->except('logo');
         if ($request->hasFile('logo')) {
             try {
                 $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients');
@@ -52,9 +48,7 @@ class ClientController extends Controller
 
     public function update(ClientRequest $request, Client $client)
     {
-        $data = $request->validated();
-
-        unset($data['logo']);
+        $data = $request->safe()->except('logo');
         if ($request->hasFile('logo')) {
             try {
                 $data['logo_url'] = $this->fileUploadService->upload($request->file('logo'), 'clients', $client->logo_url);

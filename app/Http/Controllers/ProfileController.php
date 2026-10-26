@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -64,6 +65,13 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+
+        // Deleting the only super admin would leave nobody able to manage users.
+        if ($user->isSuperAdmin() && User::where('role', User::ROLE_SUPER_ADMIN)->count() === 1) {
+            return back()->withErrors([
+                'password' => 'You are the only super admin, so this account cannot be deleted.',
+            ], 'userDeletion');
+        }
 
         Auth::logout();
 

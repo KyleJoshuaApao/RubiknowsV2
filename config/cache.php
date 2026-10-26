@@ -131,6 +131,16 @@ return [
     |
     */
 
-    'serializable_classes' => false,
+    'serializable_classes' => [
+        \Illuminate\Database\Eloquent\Collection::class,
+        \Illuminate\Support\Collection::class,
+        \Illuminate\Support\Carbon::class,
+        \Carbon\Carbon::class,
+        \Carbon\CarbonImmutable::class,
+        \App\Models\Project::class,
+        \App\Models\Service::class,
+        \App\Models\Testimonial::class,
+        \App\Models\Setting::class,
+    ],
 
 ];

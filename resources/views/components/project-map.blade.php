@@ -47,8 +47,7 @@
             .rk-map-heading h2 { max-width: 29rem; margin: .9rem 0 0; color: #171613; font-size: clamp(2.5rem, 4.2vw, 4.75rem); font-weight: 800; letter-spacing: -.078em; line-height: .84; text-transform: uppercase; text-shadow: 0 1px 0 rgba(255,255,255,.5); }
             .rk-map-heading h2 em { color: var(--rk-gold-deep); font-style: normal; }
             .rk-map-heading p { max-width: 21rem; margin: 1.5rem 0 0; color: #47443e; font-size: .88rem; line-height: 1.6; }
-            .rk-map-canvas .leaflet-top { top: 1.5rem; }
-            .rk-map-canvas .leaflet-right { right: 1.25rem; }
+            .rk-map-canvas .leaflet-bottom.leaflet-right { bottom: 2.25rem; right: 1.25rem; }
             .rk-map-canvas .leaflet-control-zoom { border: 1px solid rgba(23,22,19,.28); border-radius: 0; box-shadow: none; }
             .rk-map-canvas .leaflet-control-zoom a { width: 2.25rem; height: 2.25rem; border-radius: 0; color: #171613; font-weight: 700; line-height: 2.15rem; }
             .rk-map-canvas .leaflet-control-attribution { padding: .2rem .4rem; background: rgba(255,255,255,.88); color: #5e5a53; font-size: .62rem; }
@@ -61,14 +60,14 @@
             .rk-map-loading span { color: var(--rk-gold-deep); animation: rk-map-pulse 1.1s infinite; }
             @keyframes rk-map-pulse { 50% { opacity: .2; } }
             @keyframes rk-map-marker-pulse { 75% { opacity: .75; } 100% { opacity: 0; transform: scale(1.5); } }
-            @media (max-width: 700px) { .rk-map-section { min-height: 100svh; } .rk-map-canvas::after { background: linear-gradient(180deg, rgba(246,244,239,.9) 0%, rgba(246,244,239,.32) 45%, transparent 75%); } .rk-map-heading { top: 1.5rem; } .rk-map-heading h2 { font-size: clamp(2.35rem, 11vw, 3.8rem); } .rk-map-heading p { max-width: 17rem; margin-top: 1rem; font-size: .8rem; } .rk-map-canvas .leaflet-top { top: auto; bottom: 1.5rem; } .rk-map-canvas .leaflet-right { right: 1rem; } .rk-map-canvas .leaflet-control-attribution { display: none; } .rk-map-empty { right: 1rem; bottom: 1rem; left: 1rem; } }
+            @media (max-width: 700px) { .rk-map-section { min-height: 100svh; } .rk-map-canvas::after { background: linear-gradient(180deg, rgba(246,244,239,.9) 0%, rgba(246,244,239,.32) 45%, transparent 75%); } .rk-map-heading { top: 1.5rem; } .rk-map-heading h2 { font-size: clamp(2.35rem, 11vw, 3.8rem); } .rk-map-heading p { max-width: 17rem; margin-top: 1rem; font-size: .8rem; } .rk-map-canvas .leaflet-bottom.leaflet-right { bottom: 1.5rem; right: 1rem; } .rk-map-canvas .leaflet-control-attribution { display: none; } .rk-map-empty { right: 1rem; bottom: 1rem; left: 1rem; } }
             @media (prefers-reduced-motion: reduce) { .rk-map-pin::before, .rk-map-loading span { animation: none; } }
         </style>
     @endpush
 @endonce
 
 @push('scripts')
-    <script>
+    <script nonce="{{ Vite::cspNonce() }}">
         document.addEventListener('DOMContentLoaded', function () {
             const container = document.getElementById(@json($id));
             if (!container || container.dataset.ready) return;
@@ -127,7 +126,7 @@
                         maxBoundsViscosity: 0.9,
                     }).fitBounds(mindanaoBounds, { padding: [24, 24] });
 
-                    L.control.zoom({ position: 'topright' }).addTo(map);
+                    L.control.zoom({ position: 'bottomright' }).addTo(map);
                     // OpenStreetMap's public tiles require no account or API key.
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                         attribution: '&copy; OpenStreetMap contributors',

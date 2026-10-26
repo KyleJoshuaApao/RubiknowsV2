@@ -32,7 +32,15 @@ chown -R www-data:www-data bootstrap/cache storage
 chmod -R 775 bootstrap/cache storage
 
 # Process queued notifications without blocking public form submissions.
-php artisan queue:work --no-interaction --sleep=1 --tries=3 --backoff=60 --timeout=60 &
+# Restart the worker if it ever exits (crash, memory limit, max-time) so
+# notifications never silently stop being sent.
+(
+  while true; do
+    php artisan queue:work --no-interaction --sleep=1 --tries=3 --backoff=60 --timeout=60 --max-time=3600
+    echo "queue:work exited with status $?; restarting in 5s" >&2
+    sleep 5
+  done
+) &
 
 # Start Apache in the foreground
 apache2-foreground

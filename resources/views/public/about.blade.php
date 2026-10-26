@@ -2,7 +2,7 @@
     <x-slot name="title">About Us</x-slot>
 
     @php
-        $settings = Cache::remember('site_settings', 3600, fn () => \App\Models\Setting::pluck('value', 'key')->toArray());
+        $settings = \App\Models\Setting::allCached();
         $storyTitle = $settings['about_story_title'] ?? 'A people-first practice for work that has to endure.';
         $storyContent = $settings['about_story_content'] ?? '';
         if (trim(strip_tags($storyContent)) === '') {
@@ -20,7 +20,7 @@
                 <a class="rk-text-link" href="{{ route('public.contact') }}">Talk with our team</a>
             </div>
             <div class="rk-about-story__body rich-text">
-                {!! $storyContent !!}
+                {!! \App\Support\SafeHtml::clean($storyContent) !!}
             </div>
             <div class="rk-about-metrics" aria-label="RubiKnows at a glance">
                 <div><strong>{{ $settings['about_est_year'] ?? '2020' }}</strong><span>Established</span></div>

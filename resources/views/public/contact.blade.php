@@ -2,7 +2,7 @@
     <x-slot name="title">Contact Us</x-slot>
 
     @php
-        $settings = Cache::remember('site_settings', 3600, fn () => \App\Models\Setting::pluck('value', 'key')->toArray());
+        $settings = \App\Models\Setting::allCached();
         $activeTab = old('_tab', request('tab', 'general'));
     @endphp
 

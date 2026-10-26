@@ -568,9 +568,10 @@ class PublicAndAdminCmsTest extends TestCase
         config(['filesystems.default' => 's3']);
         Storage::fake('local');
         Storage::fake('s3');
+        $job = Job::create(['title' => 'Site Engineer', 'is_archived' => false]);
 
         $this->post(route('public.careers.apply'), [
-            'job_title' => 'Site Engineer',
+            'job_id' => $job->id,
             'name' => 'Applicant',
             'email' => 'applicant@example.com',
             'phone' => '09171234567',
@@ -580,6 +581,7 @@ class PublicAndAdminCmsTest extends TestCase
         ])->assertRedirect();
 
         $this->assertDatabaseHas('job_applications', [
+            'job_id' => $job->id,
             'name' => 'Applicant',
             'email' => 'applicant@example.com',
             'status' => 'Received',
@@ -600,7 +602,7 @@ class PublicAndAdminCmsTest extends TestCase
         $this->followingRedirects()
             ->from(route('public.careers'))
             ->post(route('public.careers.apply'), [
-                'job_title' => 'General Application',
+                'job_id' => 'general',
                 'name' => 'Applicant',
                 'email' => 'applicant@example.com',
             ])

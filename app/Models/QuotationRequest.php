@@ -5,10 +5,17 @@ namespace App\Models;
 use App\Support\PublicContentCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class QuotationRequest extends Model
 {
     use HasFactory;
+
+    /**
+     * Attachments are private and served only through the authenticated
+     * admin download route.
+     */
+    public const UPLOAD_DISK = 'local';
 
     protected static function booted(): void
     {
@@ -43,5 +50,24 @@ class QuotationRequest extends Model
     public function assignedEngineer()
     {
         return $this->belongsTo(User::class, 'assigned_engineer_id');
+    }
+
+    /**
+     * The disk holding the attachment, or null if there is none. Attachments
+     * uploaded before they were made private live on the default disk.
+     */
+    public function attachmentDisk(): ?string
+    {
+        if (! $this->attachment_path) {
+            return null;
+        }
+
+        foreach (array_unique([self::UPLOAD_DISK, config('filesystems.default')]) as $disk) {
+            if (Storage::disk($disk)->exists($this->attachment_path)) {
+                return $disk;
+            }
+        }
+
+        return null;
     }
 }

@@ -1,0 +1,16 @@
+/* =========================================================
+   Base Layer — Typography & Reset
+   ========================================================= */
+@layer base {
+    body {
+        @apply text-gray-700 antialiased;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    /* Proper heading hierarchy — grotesque font for large headings */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Inter', sans-serif;
+        @apply text-richblack-900 tracking-tight font-bold;
+    }
+}
+

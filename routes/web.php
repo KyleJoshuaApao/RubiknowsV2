@@ -12,13 +12,10 @@ use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
-use App\Http\Controllers\DashboardController;
-use App\Models\JobApplication;
-use App\Models\QuotationRequest;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
 // Public Website Routes
 Route::get('/', [PublicController::class, 'index'])->name('public.home');
@@ -31,12 +28,8 @@ Route::get('/gallery', [PublicController::class, 'gallery'])->name('public.galle
 Route::get('/testimonials', [PublicController::class, 'testimonials'])->name('public.testimonials');
 Route::get('/clients-and-partners', [PublicController::class, 'clients'])->name('public.clients');
 Route::get('/careers', [PublicController::class, 'careers'])->name('public.careers');
-Route::get('/privacy-policy', function () {
-    return view('public.privacy');
-})->name('public.privacy');
-Route::get('/terms-of-service', function () {
-    return view('public.terms');
-})->name('public.terms');
+Route::view('/privacy-policy', 'public.privacy')->name('public.privacy');
+Route::view('/terms-of-service', 'public.terms')->name('public.terms');
 Route::get('/contact', [PublicController::class, 'contact'])->name('public.contact');
 
 // Form Submissions — Rate limited to prevent spam and disk exhaustion
@@ -52,7 +45,7 @@ Route::post('/careers/apply', [PublicController::class, 'applyForJob'])
 
 // Admin Dashboard Route
 Route::get('/dashboard', DashboardController::class)
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'admin'])
     ->name('dashboard');
 
 // Auth Routes
@@ -61,8 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Admin CMS Routes
-    Route::prefix('admin')->name('admin.')->group(function () {
+    // Admin CMS Routes — admin role required, not just a login
+    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::resource('services', ServiceController::class)->except(['show']);
         Route::resource('projects', ProjectController::class)->except(['show']);
         Route::resource('gallery', GalleryMediaController::class)->except(['show']);
@@ -88,29 +81,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('messages', ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::resource('quotations', QuotationRequestController::class)->only(['index', 'show', 'update', 'destroy']);
 
-        // Protected file downloads — files are on private disk, auth required
-        Route::get('applications/{application}/resume', function (JobApplication $application) {
-            $disk = Storage::disk(JobApplication::UPLOAD_DISK);
-            abort_unless($disk->exists($application->resume_path), 404);
-
-            return $disk->download($application->resume_path);
-        })->name('applications.resume.download');
-
-        Route::get('applications/{application}/portfolio', function (JobApplication $application) {
-            abort_unless($application->portfolio_path, 404);
-            $disk = Storage::disk(JobApplication::UPLOAD_DISK);
-            abort_unless($disk->exists($application->portfolio_path), 404);
-
-            return $disk->download($application->portfolio_path);
-        })->name('applications.portfolio.download');
-
-        Route::get('quotations/{quotation}/attachment', function (QuotationRequest $quotation) {
-            abort_unless($quotation->attachment_path, 404);
-            $disk = Storage::disk(config('filesystems.default'));
-            abort_unless($disk->exists($quotation->attachment_path), 404);
-
-            return $disk->download($quotation->attachment_path);
-        })->name('quotations.attachment.download');
+        // Protected file downloads — files are on the private disk, auth required
+        Route::get('applications/{application}/resume', [JobApplicationController::class, 'downloadResume'])->name('applications.resume.download');
+        Route::get('applications/{application}/portfolio', [JobApplicationController::class, 'downloadPortfolio'])->name('applications.portfolio.download');
+        Route::get('quotations/{quotation}/attachment', [QuotationRequestController::class, 'downloadAttachment'])->name('quotations.attachment.download');
     });
 });
 

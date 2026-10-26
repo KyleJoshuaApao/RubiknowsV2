@@ -6,18 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Models\User;
 use App\Services\FileUploadService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
-    protected $fileUploadService;
-
-    public function __construct(FileUploadService $fileUploadService)
+    public function __construct(private FileUploadService $fileUploadService)
     {
-        $this->fileUploadService = $fileUploadService;
     }
 
     public function index()
@@ -34,7 +28,7 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        $data = $request->validated();
+        $data = $request->safe()->only(['name', 'email', 'password']);
 
         if ($request->hasFile('profile_photo')) {
             try {
@@ -44,31 +38,20 @@ class UserController extends Controller
             }
         }
 
-        unset($data['profile_photo'], $data['password_confirmation']);
-        $data['role'] = 'Admin';
+        $data['role'] = User::ROLE_ADMIN;
 
         User::create($data);
 
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
+        $data = $request->safe()->only(['name', 'email']);
 
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
-            'profile_photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
-        ]);
-
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-        ];
-
+        // The model's "hashed" cast hashes the new password on save.
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $data['password'] = $request->validated('password');
         }
 
         if ($request->hasFile('profile_photo')) {
@@ -86,7 +69,6 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-
         if ($user->id === Auth::id()) {
             return redirect()->route('admin.users.index')->with('error', 'You cannot delete yourself.');
         }

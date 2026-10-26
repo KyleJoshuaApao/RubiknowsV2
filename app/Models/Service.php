@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Service extends Model
 {
@@ -15,7 +16,7 @@ class Service extends Model
         'image_url',
         'slug',
         'is_featured',
-        'price'
+        'price',
     ];
 
     public function getImagePathAttribute(): ?string
@@ -30,13 +31,13 @@ class Service extends Model
     {
         static::creating(function ($service) {
             if (empty($service->slug)) {
-                $service->slug = \Illuminate\Support\Str::slug($service->title) . '-' . uniqid();
+                $service->slug = Str::slug($service->title).'-'.uniqid();
             }
         });
 
         static::updating(function ($service) {
             if ($service->isDirty('title')) {
-                $service->slug = \Illuminate\Support\Str::slug($service->title) . '-' . $service->id;
+                $service->slug = Str::slug($service->title).'-'.$service->id;
             }
         });
     }
