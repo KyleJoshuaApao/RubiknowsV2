@@ -646,6 +646,77 @@ class PublicAndAdminCmsTest extends TestCase
         });
     }
 
+    public function test_every_routed_controller_action_exists(): void
+    {
+        foreach (Route::getRoutes() as $route) {
+            $action = $route->getActionName();
+            if (! str_contains($action, '@')) {
+                continue;
+            }
+
+            [$controller, $method] = explode('@', $action);
+            $this->assertTrue(method_exists($controller, $method), "Route {$route->uri()} points to missing {$action}");
+        }
+    }
+
+    public function test_admin_edit_pages_render_for_users_and_gallery(): void
+    {
+        $this->actingAs($this->superAdmin());
+        $user = User::factory()->create(['role' => User::ROLE_ADMIN]);
+        $media = GalleryMedia::create([
+            'title' => 'Site walk',
+            'type' => 'Photo',
+            'category' => 'General',
+            'url' => 'gallery/site.jpg',
+        ]);
+
+        $this->get(route('admin.users.edit', $user))->assertOk()->assertSee($user->email);
+        $this->get(route('admin.gallery.edit', $media))->assertOk()->assertSee('Site walk');
+    }
+
+    public function test_quotation_delete_removes_record_and_attachment(): void
+    {
+        $this->actingAs($this->superAdmin());
+        $disk = QuotationRequest::UPLOAD_DISK;
+        Storage::fake($disk);
+        Storage::disk($disk)->put('quotations/plan.pdf', 'plan');
+
+        $quotation = QuotationRequest::create([
+            'name' => 'Client',
+            'email' => 'client@example.com',
+            'service_needed' => 'Structural design',
+            'project_location' => 'Davao City',
+            'description' => 'Two-storey building',
+            'attachment_path' => 'quotations/plan.pdf',
+            'status' => 'Pending',
+        ]);
+
+        $this->delete(route('admin.quotations.destroy', $quotation))
+            ->assertRedirect(route('admin.quotations.index'));
+
+        Storage::disk($disk)->assertMissing('quotations/plan.pdf');
+        $this->assertDatabaseMissing('quotation_requests', ['id' => $quotation->id]);
+    }
+
+    public function test_quotation_storage_failure_returns_a_form_error_instead_of_a_server_error(): void
+    {
+        Storage::shouldReceive('disk')->andThrow(new \RuntimeException('Disk unavailable.'));
+
+        $this->from(route('public.contact', ['tab' => 'quote']))
+            ->post(route('public.quotation.submit'), [
+                'name' => 'Client',
+                'email' => 'client@example.com',
+                'service_needed' => 'Structural design',
+                'project_location' => 'Davao City',
+                'description' => 'Two-storey building',
+                'attachment' => UploadedFile::fake()->create('plan.pdf', 10, 'application/pdf'),
+            ])
+            ->assertRedirect()
+            ->assertSessionHasErrors('quotation');
+
+        $this->assertDatabaseMissing('quotation_requests', ['email' => 'client@example.com']);
+    }
+
     private function superAdmin(): User
     {
         return User::factory()->create([

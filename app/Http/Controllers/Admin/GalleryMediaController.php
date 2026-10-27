@@ -42,6 +42,11 @@ class GalleryMediaController extends Controller
         return redirect()->route('admin.gallery.index')->with('success', 'Media uploaded successfully.');
     }
 
+    public function edit(GalleryMedia $gallery)
+    {
+        return view('admin.gallery.edit', compact('gallery'));
+    }
+
     public function update(GalleryMediaRequest $request, GalleryMedia $gallery)
     {
         $data = $request->safe()->except('media_file');

@@ -36,6 +36,17 @@ class QuotationRequestController extends Controller
         return back()->with('success', 'Quotation request updated successfully.');
     }
 
+    public function destroy(QuotationRequest $quotation)
+    {
+        if ($disk = $quotation->attachmentDisk()) {
+            Storage::disk($disk)->delete($quotation->attachment_path);
+        }
+
+        $quotation->delete();
+
+        return redirect()->route('admin.quotations.index')->with('success', 'Quotation request deleted.');
+    }
+
     public function bulkDestroy(Request $request)
     {
         return $this->bulkDelete($request, QuotationRequest::class, 'admin.quotations.index', 'quotation requests');

@@ -138,16 +138,38 @@ class PublicController extends Controller
 
     public function submitQuotation(StoreQuotationRequest $request)
     {
-        // Stored privately; served only via the authenticated admin route.
-        $attachmentPath = $request->hasFile('attachment')
-            ? $request->file('attachment')->store('quotations', QuotationRequest::UPLOAD_DISK)
-            : null;
+        $disk = QuotationRequest::UPLOAD_DISK;
+        $attachmentPath = null;
 
-        $quotation = QuotationRequest::create([
-            ...Arr::except($request->validated(), 'attachment'),
-            'attachment_path' => $attachmentPath,
-            'status' => 'Pending',
-        ]);
+        try {
+            // Stored privately; served only via the authenticated admin route.
+            if ($request->hasFile('attachment')) {
+                $attachmentPath = $request->file('attachment')->store('quotations', $disk);
+                if (! $attachmentPath) {
+                    throw new \RuntimeException('The attachment could not be stored.');
+                }
+            }
+
+            $quotation = QuotationRequest::create([
+                ...Arr::except($request->validated(), 'attachment'),
+                'attachment_path' => $attachmentPath,
+                'status' => 'Pending',
+            ]);
+        } catch (\Throwable $e) {
+            if ($attachmentPath) {
+                Storage::disk($disk)->delete($attachmentPath);
+            }
+
+            try {
+                report($e);
+            } catch (\Throwable) {
+                // The user-facing error below is still the correct response.
+            }
+
+            return back()
+                ->withInput($request->except('attachment'))
+                ->withErrors(['quotation' => 'We could not submit your request. Please try again shortly.']);
+        }
 
         $this->notifyAdmin(fn (string $admin) => Mail::to($admin)->queue(new NewQuotationRequestNotification($quotation)));
 

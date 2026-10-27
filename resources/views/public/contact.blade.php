@@ -94,6 +94,7 @@
                             <div class="mt-5"><label for="quote_description">Project description *</label><textarea id="quote_description" name="description" required>{{ old('description') }}</textarea>@error('description')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
                             <div class="mt-5"><label for="quote_attachment">Attach documents</label><input id="quote_attachment" name="attachment" type="file" accept=".pdf,.doc,.docx,.jpg,.png,.zip"><p class="mt-2 text-xs text-[#69665f]">Optional · PDF, DOC, JPG, PNG, or ZIP · maximum 10 MB</p>@error('attachment')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
                         </section>
+                        @error('quotation')<p class="rk-field-error" role="alert">{{ $message }}</p>@enderror
                         <x-public.action type="submit" class="w-full sm:w-auto">Submit request</x-public.action>
                     </form>
                 </div>
