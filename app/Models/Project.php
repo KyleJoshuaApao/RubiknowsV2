@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RefreshesPublicContent;
 use App\Support\MindanaoMap;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
 
 class Project extends Model
 {
+    use RefreshesPublicContent;
+
     protected $fillable = [
         'title', 'category_id', 'status', 'year', 'location',
         'client', 'duration', 'value', 'description',

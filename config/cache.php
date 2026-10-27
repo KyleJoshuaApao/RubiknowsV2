@@ -141,6 +141,7 @@ return [
         \App\Models\Service::class,
         \App\Models\Testimonial::class,
         \App\Models\Setting::class,
+        \App\Models\Job::class,
     ],
 
 ];

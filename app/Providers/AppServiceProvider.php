@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Mail\Transport\ResendApiTransport;
 use App\View\Composers\AdminNotificationComposer;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -28,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
         }
 
         View::composer('layouts.app', AdminNotificationComposer::class);
+
+        Mail::extend('resend-api', fn (array $config) => new ResendApiTransport((string) ($config['key'] ?? '')));
 
         // Models bind by numeric id; Postgres throws on non-numeric ids, so
         // reject them at the router and return a 404 instead of a 500.

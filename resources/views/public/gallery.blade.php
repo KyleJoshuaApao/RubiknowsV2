@@ -1,43 +1,44 @@
 <x-public-layout>
     <x-slot name="title">Gallery</x-slot>
+    <x-slot name="description">Photos from RubiKnows construction sites and finished projects in Davao del Norte and across Mindanao.</x-slot>
 
-    <x-public.page-intro eyebrow="In the field" number="04" title="A closer look at the work." lede="Scenes from planning, construction, collaboration, and the projects that reach completion." />
+    <x-public.page-header title="Gallery" lede="Photos from our sites and finished work." :breadcrumbs="['Gallery' => null]" />
 
-    <section class="rk-section" x-data="{ selectedImage: null, opener: null, openImage(url, event) { this.opener = event.currentTarget; this.selectedImage = url; this.$nextTick(() => this.$refs.lightboxClose.focus()) }, closeImage() { this.selectedImage = null; this.$nextTick(() => { if (this.opener && this.opener.isConnected) this.opener.focus() }) } }">
+    <section class="rk-section" x-data="{ selected: null, caption: '', opener: null, open(url, text, event) { this.opener = event.currentTarget; this.selected = url; this.caption = text; this.$nextTick(() => this.$refs.close.focus()) }, close() { this.selected = null; this.$nextTick(() => { if (this.opener && this.opener.isConnected) this.opener.focus() }) } }">
         <div class="rk-container">
-            <div class="rk-gallery-grid rk-portfolio-mosaic">
-                @forelse($media as $image)
-                    @php($mediaUrl = \App\Support\MediaUrl::for($image->url))
-                    <figure class="rk-gallery-tile rk-mosaic-card" data-mosaic-index="{{ $loop->iteration }}" @if($image->type === 'Photo') role="button" tabindex="0" aria-label="View {{ $image->title }} in a larger size" @click="openImage(@js($mediaUrl), $event)" @keydown.enter.prevent="openImage(@js($mediaUrl), $event)" @keydown.space.prevent="openImage(@js($mediaUrl), $event)" @endif>
-                        @if($image->type === 'Video')
-                            <video controls preload="metadata" aria-label="{{ $image->title }}"><source src="{{ $mediaUrl }}">Your browser does not support this video.</video>
-                        @else
-                            <img loading="lazy" decoding="async" src="{{ $mediaUrl }}" alt="{{ $image->title }}">
-                        @endif
-                        <figcaption class="rk-gallery-tile__caption">
-                            <span class="rk-gallery-tile__index">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                            <h2>{{ $image->title }}</h2>
-                            @if($image->category)<p>{{ $image->category }}</p>@endif
-                        </figcaption>
-                    </figure>
-                @empty
-                    <p class="rk-empty col-span-full">No images have been added to the gallery yet.</p>
-                @endforelse
-                <a class="rk-portfolio-mosaic__cta rk-gallery-mosaic__cta" href="{{ route('public.projects') }}">
-                    <span class="rk-portfolio-mosaic__cta-kicker">RubiKnows / Work</span>
-                    <strong>View all<br>projects.</strong>
-                    <span class="rk-portfolio-mosaic__cta-link">Open portfolio &rarr;</span>
-                </a>
-            </div>
-
-            @if($media->hasPages())
-                <div class="mt-12 flex justify-center">{{ $media->links('vendor.pagination.tailwind') }}</div>
+            @if($media->isNotEmpty())
+                <div class="rk-gallery-grid">
+                    @foreach($media as $item)
+                        @php($url = \App\Support\MediaUrl::for($item->url))
+                        <figure class="rk-gallery-item">
+                            @if($item->type === 'Video')
+                                <video controls preload="metadata" aria-label="{{ $item->title }}"><source src="{{ $url }}">Your browser cannot play this video.</video>
+                            @else
+                                <button type="button" @click="open(@js($url), @js($item->title), $event)" aria-label="View larger: {{ $item->title }}">
+                                    <img src="{{ $url }}" alt="{{ $item->title }}" loading="lazy" decoding="async">
+                                </button>
+                            @endif
+                            <figcaption>
+                                {{ $item->title }}
+                                @if($item->category)<span>{{ $item->category }}</span>@endif
+                            </figcaption>
+                        </figure>
+                    @endforeach
+                </div>
+                {{ $media->links('vendor.pagination.public') }}
+            @else
+                <x-public.empty-state title="Photos are on the way" message="We are gathering photos from recent projects. Check back soon, or contact us to see examples of our work.">
+                    <a class="rk-btn rk-btn--primary" href="{{ route('public.contact') }}">Contact us</a>
+                </x-public.empty-state>
             @endif
         </div>
 
-        <div x-cloak x-show="selectedImage" class="rk-lightbox" @click.self="closeImage()" @keydown.escape.window="closeImage()" @keydown.tab.prevent="$refs.lightboxClose.focus()" role="dialog" aria-modal="true" aria-label="Image preview">
-            <button x-ref="lightboxClose" type="button" class="rk-lightbox__close" @click="closeImage()" aria-label="Close image preview">×</button>
-            <img :src="selectedImage" alt="Gallery image preview">
+        <div class="rk-lightbox" x-cloak x-show="selected" @click.self="close()" @keydown.escape.window="close()" @keydown.tab.prevent="$refs.close.focus()" role="dialog" aria-modal="true" aria-label="Photo viewer">
+            <button type="button" class="rk-lightbox__close" x-ref="close" @click="close()">Close</button>
+            <figure>
+                <img :src="selected" :alt="caption">
+                <figcaption x-text="caption"></figcaption>
+            </figure>
         </div>
     </section>
 </x-public-layout>

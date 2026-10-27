@@ -43,6 +43,7 @@
                 <div>
                     <x-input-label for="description" value="Job Description" />
                     <textarea id="description" name="description" rows="5" class="block w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors" required>{{ old('description', $job->description) }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">Leave a blank line between paragraphs. Start a line with “- ” to make a bullet list.</p>
                     <x-input-error class="mt-2" :messages="$errors->get('description')" />
                 </div>
 
@@ -50,6 +51,7 @@
                 <div>
                     <x-input-label for="requirements" value="Requirements / Qualifications (Optional)" />
                     <textarea id="requirements" name="requirements" rows="5" class="block w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors">{{ old('requirements', $job->requirements) }}</textarea>
+                    <p class="text-xs text-gray-500 mt-1">Leave a blank line between paragraphs. Start a line with “- ” to make a bullet list.</p>
                     <x-input-error class="mt-2" :messages="$errors->get('requirements')" />
                 </div>
 

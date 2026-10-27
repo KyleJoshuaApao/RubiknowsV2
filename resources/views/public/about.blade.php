@@ -1,131 +1,124 @@
 <x-public-layout>
-    <x-slot name="title">About Us</x-slot>
+    <x-slot name="title">About us</x-slot>
 
     @php
         $settings = \App\Models\Setting::allCached();
-        $storyTitle = $settings['about_story_title'] ?? 'A people-first practice for work that has to endure.';
-        $storyContent = $settings['about_story_content'] ?? '';
+        $established = $settings['about_est_year'] ?? '2020';
+        $storyTitle = trim((string) ($settings['about_story_title'] ?? '')) ?: 'Who we are';
+        $storyContent = (string) ($settings['about_story_content'] ?? '');
         if (trim(strip_tags($storyContent)) === '') {
-            $storyContent = '<p>RubiKnows brings engineering, construction, and consultancy together around the needs of every project. We stay close to the work, communicate clearly, and keep client success in view from the earliest decisions through delivery.</p><p>Our team brings practical thinking to every stage: understanding the brief, coordinating the moving parts, and staying accountable until the work is ready to serve its purpose.</p>';
+            $storyContent = '<p>RubiKnows was started in '.e($established).' by Ruvelyn S. Rubinos and Kevin C. Rubinos to give property owners in Davao del Norte one team they can rely on for engineering and construction.</p>'
+                .'<p>We design structures, prepare plans and estimates, build, and manage projects for clients who want their work done properly and explained clearly. Our office is in Magugpo West, Tagum City, and our projects take us across Mindanao.</p>'
+                .'<p>We keep our promises specific: an honest estimate, regular updates, and a site that is run safely and to plan.</p>';
         }
+        $facts = array_values(array_filter([
+            filled($established) ? ['value' => $established, 'label' => 'Established'] : null,
+            filled($settings['about_experience_years'] ?? null) ? ['value' => $settings['about_experience_years'].'+', 'label' => 'Years in practice'] : null,
+            filled($settings['about_projects_count'] ?? null) ? ['value' => $settings['about_projects_count'].'+', 'label' => 'Projects completed'] : null,
+        ]));
+        $leaders = [
+            ['name' => 'Ruvelyn S. Rubinos', 'initials' => 'RSR', 'role' => 'Founder and Owner'],
+            ['name' => 'Kevin C. Rubinos', 'initials' => 'KCR', 'role' => 'Founder and Owner'],
+        ];
     @endphp
 
-    <x-public.page-intro eyebrow="About RubiKnows" number="01" title="People, precision, and work built to last." lede="We approach every commission as a partnership: technically rigorous, practical in delivery, and attentive to the people who will use what we make." />
+    <x-slot name="description">RubiKnows is an engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}.</x-slot>
 
-    <section class="rk-section rk-about-story">
-        <div class="rk-container rk-about-story__grid">
-            <div class="rk-about-story__lead">
-                <x-public.eyebrow>Our story</x-public.eyebrow>
-                <h2>{{ $storyTitle }}</h2>
-                <a class="rk-text-link" href="{{ route('public.contact') }}">Talk with our team</a>
+    <x-public.page-header title="About RubiKnows" lede="An engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}." :breadcrumbs="['About' => null]" />
+
+    <section class="rk-section" aria-labelledby="story-title">
+        <div class="rk-container rk-split">
+            <div>
+                <h2 id="story-title">{{ $storyTitle }}</h2>
+                @if($facts)
+                    <dl class="rk-facts rk-facts--stacked">
+                        @foreach($facts as $fact)
+                            <div><dt>{{ $fact['label'] }}</dt><dd>{{ $fact['value'] }}</dd></div>
+                        @endforeach
+                    </dl>
+                @endif
             </div>
-            <div class="rk-about-story__body rich-text">
+            <div class="rk-prose">
                 {!! \App\Support\SafeHtml::clean($storyContent) !!}
             </div>
-            <div class="rk-about-metrics" aria-label="RubiKnows at a glance">
-                <div><strong>{{ $settings['about_est_year'] ?? '2020' }}</strong><span>Established</span></div>
-                <div><strong>{{ $settings['about_experience_years'] ?? '5' }}+</strong><span>Years of experience</span></div>
-                <div><strong>{{ $settings['about_projects_count'] ?? '100' }}+</strong><span>Projects delivered</span></div>
-            </div>
         </div>
     </section>
 
-    <section class="rk-about-visual" aria-label="The work behind the work">
-        <div class="rk-about-visual__image rk-about-visual__image--large">
-            <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=78&w=1600&auto=format&fit=crop" alt="Construction team working on a structure">
-        </div>
-        <div class="rk-about-visual__image rk-about-visual__image--small">
-            <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1541888081-3e4b1a4767e7?q=78&w=1000&auto=format&fit=crop" alt="Construction detail in progress">
-        </div>
-        <div class="rk-about-visual__caption">
-            <x-public.eyebrow>In the field</x-public.eyebrow>
-            <p>Good outcomes start with people who stay close to the details.</p>
-        </div>
-    </section>
+    <div class="rk-container">
+        <img class="rk-wide-image" src="/images/site/rebar-deck-1600.webp" srcset="/images/site/rebar-deck-800.webp 800w, /images/site/rebar-deck-1600.webp 1600w" sizes="(min-width: 1240px) 1200px, 100vw" width="1600" height="1060" alt="Site crew placing steel reinforcement on a concrete deck" loading="lazy">
+    </div>
 
-    <section class="rk-section rk-section--paper">
+    <section class="rk-section" aria-labelledby="values-title">
         <div class="rk-container">
-            <div class="rk-section__head">
-                <div class="rk-section__head-copy">
-                    <x-public.eyebrow>How we work</x-public.eyebrow>
-                    <h2 class="rk-section__title">A connected team, from first idea to final handover.</h2>
+            <div class="rk-section-head">
+                <div class="rk-section-head__text">
+                    <h2 id="values-title">How we work</h2>
+                    <p>Three habits we hold ourselves to on every job, large or small.</p>
                 </div>
-                <p class="rk-section__lede">The work is technical, but the way we work is human: clear conversations, shared accountability, and practical decisions made at the right time.</p>
             </div>
-            <div class="rk-principle-grid">
-                <article>
-                    <span>01</span>
-                    <h3>Listen closely.</h3>
-                    <p>We begin with the brief, the site, and the people who will live with the result.</p>
-                </article>
-                <article>
-                    <span>02</span>
-                    <h3>Make it buildable.</h3>
-                    <p>We turn design intent into decisions that teams, budgets, and schedules can carry.</p>
-                </article>
-                <article>
-                    <span>03</span>
-                    <h3>Stay accountable.</h3>
-                    <p>We keep communication open and remain present through delivery and close-out.</p>
-                </article>
+            <div class="rk-values">
+                <div>
+                    <h3>Straight answers</h3>
+                    <p>We tell you what your project needs, what it will cost and how long it will take, even when the answer is not the one you hoped for.</p>
+                </div>
+                <div>
+                    <h3>Work done to plan</h3>
+                    <p>We build what was designed and approved. Changes are discussed, priced and agreed with you before they happen.</p>
+                </div>
+                <div>
+                    <h3>Safety and care on site</h3>
+                    <p>We keep sites orderly and safe for our workers, your neighbours and everyone who will use the building.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="rk-section rk-about-faith">
-        <div class="rk-container rk-editorial-copy">
-            <div>
-                <x-public.eyebrow>Our guiding principle</x-public.eyebrow>
-                <h2 class="rk-editorial-copy__title">With God, all things are possible.</h2>
-            </div>
-            <div class="rk-editorial-copy__body">
-                <p>Our work is shaped by faith, diligence, and a belief that meaningful projects are built through service to people and communities.</p>
-                <p class="rk-about-faith__verse mt-8 text-sm font-bold uppercase tracking-[.16em]">Matthew 19:26</p>
-            </div>
+    <section class="rk-section rk-section--paper" aria-labelledby="faith-title">
+        <div class="rk-container rk-split rk-split--center">
+            <h2 id="faith-title">What guides us</h2>
+            <figure class="rk-verse">
+                <blockquote><p>“With God, all things are possible.”</p></blockquote>
+                <figcaption>Matthew 19:26</figcaption>
+                <p>Our work is shaped by faith, diligence and a belief that good buildings come from serving the people and communities who use them.</p>
+            </figure>
         </div>
     </section>
 
-    <section class="rk-section rk-section--paper rk-about-team-section">
+    <section class="rk-section" aria-labelledby="leaders-title">
         <div class="rk-container">
-            <div class="rk-section__head">
-                <div class="rk-section__head-copy">
-                    <x-public.eyebrow>The people behind the work</x-public.eyebrow>
-                    <h2 class="rk-section__title">Leadership with both hands on the work.</h2>
+            <div class="rk-section-head">
+                <div class="rk-section-head__text">
+                    <h2 id="leaders-title">Leadership</h2>
+                    <p>RubiKnows is owner-managed. The founders stay involved in every project, from the first estimate to turnover.</p>
                 </div>
-                <a class="rk-text-link" href="{{ route('public.careers') }}">Work with us</a>
             </div>
-            <div class="rk-people-grid">
-                <article class="rk-person-card" tabindex="0" aria-label="Ruvelyn S. Rubinos, Founder and Owner">
-                    <div class="rk-person-card__portrait">
-                        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=78&w=1000&auto=format&fit=crop" alt="Team members collaborating around a table">
-                        <span>RSR</span>
-                        <div class="rk-person-card__role-overlay" aria-hidden="true">
-                            <span class="rk-person-card__role-kicker">What is your role?</span>
-                            <strong>Founder / Owner</strong>
-                            <span class="rk-person-card__role-name">Ruvelyn S. Rubinos</span>
+            <ul class="rk-people">
+                @foreach($leaders as $leader)
+                    <li class="rk-person">
+                        <span class="rk-person__initials" aria-hidden="true">{{ $leader['initials'] }}</span>
+                        <div>
+                            <h3>{{ $leader['name'] }}</h3>
+                            <p>{{ $leader['role'] }}</p>
                         </div>
-                    </div>
-                    <div class="rk-person-card__meta">
-                        <span class="rk-person-card__number">01</span>
-                        <div><h3>Ruvelyn S. Rubinos</h3><p>Founder / Owner</p></div>
-                    </div>
-                </article>
-                <article class="rk-person-card" tabindex="0" aria-label="Kevin C. Rubinos, Founder and Owner">
-                    <div class="rk-person-card__portrait">
-                        <img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=78&w=1000&auto=format&fit=crop" alt="Construction team at work on site">
-                        <span>KCR</span>
-                        <div class="rk-person-card__role-overlay" aria-hidden="true">
-                            <span class="rk-person-card__role-kicker">What is your role?</span>
-                            <strong>Founder / Owner</strong>
-                            <span class="rk-person-card__role-name">Kevin C. Rubinos</span>
-                        </div>
-                    </div>
-                    <div class="rk-person-card__meta">
-                        <span class="rk-person-card__number">02</span>
-                        <div><h3>Kevin C. Rubinos</h3><p>Founder / Owner</p></div>
-                    </div>
-                </article>
-            </div>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </section>
+
+    @if($testimonial)
+        <section class="rk-section rk-section--paper" aria-label="What clients say">
+            <div class="rk-container">
+                <figure class="rk-quote">
+                    <blockquote><p>{{ $testimonial->quote }}</p></blockquote>
+                    <figcaption>
+                        <strong>{{ $testimonial->client_name }}</strong>
+                        @if($testimonial->role || $testimonial->company)<span>{{ collect([$testimonial->role, $testimonial->company])->filter()->join(', ') }}</span>@endif
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+    @endif
+
+    <x-public.contact-band title="Talk to the team" text="Tell us about the project you have in mind. We will arrange a call or a site visit and give you an honest view of what it will take." />
 </x-public-layout>

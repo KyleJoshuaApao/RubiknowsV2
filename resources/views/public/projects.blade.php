@@ -1,56 +1,43 @@
 <x-public-layout>
-    <x-slot name="title">Our Projects</x-slot>
+    <x-slot name="title">Projects</x-slot>
+    <x-slot name="description">Projects designed, built and managed by RubiKnows, an engineering and construction company in Tagum City, Davao del Norte.</x-slot>
 
-    <x-public.page-intro eyebrow="Project portfolio" number="02" title="Work with a clear point of view." lede="Explore the engineering and construction work our team has brought from plan to place." />
-
-    <x-project-map :projects="$mapProjects" id="projects-map" />
+    <x-public.page-header title="Projects" lede="Work we have designed, built or managed for clients in Davao del Norte and across Mindanao." :breadcrumbs="['Projects' => null]" />
 
     <section class="rk-section">
         <div class="rk-container">
-            <div class="rk-section__head">
-                <div class="rk-section__head-copy">
-                    <x-public.eyebrow>Portfolio</x-public.eyebrow>
-                    <h2 class="rk-section__title">Selected projects, grounded in place.</h2>
-                    <p class="rk-section__lede">Each entry connects to its exact location on the map above when a CMS pin has been added.</p>
+            @if($categories->count() > 1)
+                <nav aria-label="Filter projects by category">
+                    <ul class="rk-filter">
+                        <li><a href="{{ route('public.projects') }}" @if(! $category) aria-current="true" @endif>All projects</a></li>
+                        @foreach($categories as $option)
+                            <li><a href="{{ route('public.projects', ['category' => $option]) }}" @if($category === $option) aria-current="true" @endif>{{ $option }}</a></li>
+                        @endforeach
+                    </ul>
+                </nav>
+            @endif
+
+            @if($projects->isNotEmpty())
+                <div class="rk-project-grid">
+                    @foreach($projects as $project)
+                        @include('public.partials.project-card', ['project' => $project])
+                    @endforeach
                 </div>
-            </div>
-            <div class="rk-project-grid rk-portfolio-mosaic">
-                @forelse($projects as $project)
-                    <a class="rk-project-tile rk-mosaic-card" data-mosaic-index="{{ $loop->iteration }}" href="{{ route('public.project-details', $project) }}">
-                        @if($project->cover_image_path)
-                            <img loading="lazy" decoding="async" src="{{ \App\Support\MediaUrl::for($project->cover_image_path) }}" alt="{{ $project->title }}">
-                        @endif
-                        <div class="rk-project-tile__copy">
-                            <span class="rk-project-tile__category">{{ $project->category ?: 'Project' }}</span>
-                            <h3>{{ $project->title }}</h3>
-                            <p class="rk-project-tile__meta">{{ $project->location ?: 'Mindanao, Philippines' }} <b>/</b> View project ↗</p>
-                        </div>
-                    </a>
-                @empty
-                    <p class="rk-empty col-span-full">No projects have been published yet.</p>
-                @endforelse
-                <a class="rk-portfolio-mosaic__cta rk-project-mosaic__cta" href="{{ route('public.contact') }}">
-                    <span class="rk-portfolio-mosaic__cta-kicker">RubiKnows / 07</span>
-                    <strong>Start the<br>next build.</strong>
-                    <span class="rk-portfolio-mosaic__cta-link">Discuss a project &rarr;</span>
-                </a>
-            </div>
-            @if($projects->hasPages())
-                <div class="mt-12 flex justify-center">{{ $projects->links('vendor.pagination.tailwind') }}</div>
+                {{ $projects->links('vendor.pagination.public') }}
+            @else
+                <x-public.empty-state title="Project write-ups are on the way" message="We are preparing case studies of recent work. In the meantime, ask us for references or examples of projects similar to yours.">
+                    <a class="rk-btn rk-btn--primary" href="{{ route('public.contact') }}">Ask about our work</a>
+                    <a class="rk-btn rk-btn--outline" href="{{ route('public.services') }}">See our services</a>
+                </x-public.empty-state>
+            @endif
+
+            @if($mapProjects->isNotEmpty() && ! $category)
+                <div class="rk-projects-map">
+                    <x-project-map :projects="$mapProjects" id="projects-map" />
+                </div>
             @endif
         </div>
     </section>
 
-    <section class="rk-section rk-section--paper">
-        <div class="rk-container rk-editorial-copy">
-            <div>
-                <x-public.eyebrow>Bring us in early</x-public.eyebrow>
-                <h2 class="rk-editorial-copy__title">Have a project in mind?</h2>
-            </div>
-            <div class="rk-editorial-copy__body">
-                <p>We can help turn the next important decision into a project with a clear path forward.</p>
-                <x-public.action href="{{ route('public.contact') }}" class="mt-8">Discuss your project</x-public.action>
-            </div>
-        </div>
-    </section>
+    <x-public.contact-band title="Have a project in mind?" />
 </x-public-layout>

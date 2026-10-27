@@ -1,9 +1,5 @@
-
-
 import Alpine from 'alpinejs';
-import intersect from '@alpinejs/intersect';
 
-Alpine.plugin(intersect);
 window.Alpine = Alpine;
 
 // Chart.js is only needed by the admin dashboard. Keep it out of the shared

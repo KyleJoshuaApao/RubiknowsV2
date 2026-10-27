@@ -19,6 +19,7 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Support\PublicContentCache;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -33,24 +34,23 @@ class PublicController extends Controller
     public function index()
     {
         $home = Cache::remember(PublicContentCache::HOME, now()->addMinutes(5), function (): array {
-            $settings = Setting::whereIn('key', [
-                'home_stats_bar', 'home_markets', 'home_marquee', 'home_careers',
-            ])->pluck('value', 'key');
+            $settings = Setting::whereIn('key', ['home_stats_bar', 'home_careers'])->pluck('value', 'key');
 
-            $homeCareers = json_decode($settings->get('home_careers', '{}'), true);
+            $stats = json_decode((string) $settings->get('home_stats_bar', '[]'), true);
+            $careers = json_decode((string) $settings->get('home_careers', '{}'), true);
 
             return [
-                'featuredProjects' => Project::where('status', 'Featured')->latest()->take(3)->get(),
+                'services' => $this->orderedServices()->take(6)->get(),
+                'featuredProjects' => Project::query()
+                    ->orderByRaw("case when status = 'Featured' then 0 else 1 end")
+                    ->latest()
+                    ->take(3)
+                    ->get(),
                 'mapProjects' => Project::mapPins(self::MAP_COLUMNS),
-                'services' => Service::latest()->take(6)->get(),
-                'testimonials' => $this->publishedTestimonials()->take(3)->get(),
-                'homeStats' => json_decode($settings->get('home_stats_bar', '[]'), true),
-                'homeMarkets' => json_decode($settings->get('home_markets', '[]'), true),
-                'homeMarquee' => json_decode($settings->get('home_marquee', '[]'), true),
-                'homeCareers' => array_merge([
-                    'title' => 'Build your career with the industry leaders.',
-                    'description' => 'We are actively recruiting talented people to deliver work that lasts.',
-                ], is_array($homeCareers) ? $homeCareers : []),
+                'testimonial' => $this->publishedTestimonials()->first(),
+                'openJobs' => Job::where('is_archived', false)->latest()->take(3)->get(['id', 'title', 'type', 'location']),
+                'homeStats' => array_values(array_filter(is_array($stats) ? $stats : [], fn ($stat) => is_array($stat) && filled($stat['value'] ?? null) && filled($stat['label'] ?? null))),
+                'homeCareers' => is_array($careers) ? array_filter($careers, 'filled') : [],
             ];
         });
 
@@ -59,37 +59,58 @@ class PublicController extends Controller
 
     public function about()
     {
-        return view('public.about');
+        return view('public.about', [
+            'testimonial' => $this->publishedTestimonials()->first(),
+        ]);
     }
 
     public function services()
     {
-        $services = Service::latest()->get();
-        $testimonials = $this->publishedTestimonials()->take(3)->get();
-
-        return view('public.services', compact('services', 'testimonials'));
+        return view('public.services', [
+            'services' => $this->orderedServices()->get(),
+        ]);
     }
 
     public function serviceDetails(Service $service)
     {
-        return view('public.service-details', compact('service'));
+        return view('public.service-details', [
+            'service' => $service,
+            'otherServices' => $this->orderedServices()->whereKeyNot($service->getKey())->get(['id', 'title']),
+        ]);
     }
 
-    public function projects()
+    public function projects(Request $request)
     {
-        $projects = Project::latest()->paginate(12);
+        $categories = Project::query()
+            ->whereNotNull('category_id')
+            ->where('category_id', '!=', '')
+            ->distinct()
+            ->orderBy('category_id')
+            ->pluck('category_id');
+
+        $category = $categories->contains($request->query('category')) ? $request->query('category') : null;
+
+        $projects = Project::query()
+            ->when($category, fn ($query) => $query->where('category_id', $category))
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
         $mapProjects = Cache::remember(
             PublicContentCache::PROJECT_MAP,
             now()->addMinutes(5),
             fn () => Project::mapPins(self::MAP_COLUMNS)
         );
 
-        return view('public.projects', compact('projects', 'mapProjects'));
+        return view('public.projects', compact('projects', 'mapProjects', 'categories', 'category'));
     }
 
     public function projectDetails(Project $project)
     {
-        return view('public.project-details', compact('project'));
+        return view('public.project-details', [
+            'project' => $project,
+            'moreProjects' => Project::query()->whereKeyNot($project->getKey())->latest()->take(3)->get(),
+        ]);
     }
 
     public function gallery()
@@ -124,7 +145,9 @@ class PublicController extends Controller
 
     public function contact()
     {
-        return view('public.contact');
+        return view('public.contact', [
+            'serviceOptions' => $this->orderedServices()->pluck('title'),
+        ]);
     }
 
     public function submitContact(StoreContactMessageRequest $request)
@@ -231,6 +254,11 @@ class PublicController extends Controller
     private function publishedTestimonials()
     {
         return Testimonial::where('is_published', true)->latest();
+    }
+
+    private function orderedServices()
+    {
+        return Service::query()->orderByDesc('is_featured')->oldest('id');
     }
 
     /**

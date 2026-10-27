@@ -103,28 +103,30 @@ class SecurityHardeningTest extends TestCase
             ->assertDontSee('alert(2)', false);
     }
 
-    public function test_project_details_show_the_description(): void
+    public function test_project_descriptions_render_as_text_without_raw_html(): void
     {
-        $project = Project::create(['title' => 'River Bridge', 'description' => "Phase one <b>done</b>.\nPhase two next."]);
+        $project = Project::create(['title' => 'River Bridge', 'description' => "Phase one <b>done</b>.\nPhase two next.\n\n- Deck poured"]);
 
         $this->get(route('public.project-details', $project))
             ->assertOk()
-            ->assertSee('Phase one &lt;b&gt;done&lt;/b&gt;.<br />', false)
-            ->assertSee('Phase two next.');
+            ->assertDontSee('<b>done</b>', false)
+            ->assertSee('Phase one')
+            ->assertSee('Phase two next.')
+            ->assertSee('<li>Deck poured</li>', false);
     }
 
     public function test_job_applications_cannot_target_archived_jobs(): void
     {
-        Storage::fake('local');
+        Storage::fake('documents');
         $archived = Job::create(['title' => 'Old Role', 'is_archived' => true]);
 
         $this->from(route('public.careers'))
-            ->post(route('public.careers.apply'), [
+            ->post(route('public.careers.apply'), $this->publicForm([
                 'job_id' => $archived->id,
                 'name' => 'Applicant',
                 'email' => 'applicant@example.com',
                 'resume' => UploadedFile::fake()->create('resume.pdf', 10, 'application/pdf'),
-            ])
+            ]))
             ->assertSessionHasErrors('job_id');
 
         $this->assertDatabaseCount('job_applications', 0);
@@ -132,14 +134,14 @@ class SecurityHardeningTest extends TestCase
 
     public function test_general_applications_are_stored_without_a_job(): void
     {
-        Storage::fake('local');
+        Storage::fake('documents');
 
-        $this->post(route('public.careers.apply'), [
+        $this->post(route('public.careers.apply'), $this->publicForm([
             'job_id' => 'general',
             'name' => 'Applicant',
             'email' => 'applicant@example.com',
             'resume' => UploadedFile::fake()->create('resume.pdf', 10, 'application/pdf'),
-        ])->assertSessionHasNoErrors();
+        ]))->assertSessionHasNoErrors();
 
         $this->assertDatabaseHas('job_applications', ['email' => 'applicant@example.com', 'job_id' => null]);
     }
@@ -147,21 +149,21 @@ class SecurityHardeningTest extends TestCase
     public function test_quotation_attachments_are_private_and_downloadable_by_admins(): void
     {
         Mail::fake();
-        Storage::fake('local');
-        Storage::fake('public');
+        Storage::fake('documents');
+        Storage::fake('media');
 
-        $this->post(route('public.quotation.submit'), [
+        $this->post(route('public.quotation.submit'), $this->publicForm([
             'name' => 'Client',
             'email' => 'client@example.com',
             'service_needed' => 'Design',
             'project_location' => 'Davao',
             'description' => 'A new building.',
             'attachment' => UploadedFile::fake()->create('brief.pdf', 10, 'application/pdf'),
-        ])->assertSessionHasNoErrors();
+        ]))->assertSessionHasNoErrors();
 
         $quotation = QuotationRequest::firstOrFail();
-        Storage::disk('local')->assertExists($quotation->attachment_path);
-        Storage::disk('public')->assertMissing($quotation->attachment_path);
+        Storage::disk('documents')->assertExists($quotation->attachment_path);
+        Storage::disk('media')->assertMissing($quotation->attachment_path);
 
         $this->get(route('admin.quotations.attachment.download', $quotation))->assertRedirect(route('login'));
 
@@ -172,6 +174,7 @@ class SecurityHardeningTest extends TestCase
 
     public function test_legacy_quotation_attachments_on_the_public_disk_still_download(): void
     {
+        Storage::fake('documents');
         Storage::fake('local');
         Storage::fake('public');
         config(['filesystems.default' => 'public']);

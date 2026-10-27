@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\SeoController;
 use Illuminate\Support\Facades\Route;
 
 // Public Website Routes
@@ -32,15 +33,18 @@ Route::view('/privacy-policy', 'public.privacy')->name('public.privacy');
 Route::view('/terms-of-service', 'public.terms')->name('public.terms');
 Route::get('/contact', [PublicController::class, 'contact'])->name('public.contact');
 
-// Form Submissions — Rate limited to prevent spam and disk exhaustion
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('robots');
+
+// Public forms are rate limited per visitor and filtered for bots.
 Route::post('/contact', [PublicController::class, 'submitContact'])
-    ->middleware('throttle:5,1')
+    ->middleware(['throttle:5,1', 'spam'])
     ->name('public.contact.submit');
 Route::post('/quotation', [PublicController::class, 'submitQuotation'])
-    ->middleware('throttle:3,1')
+    ->middleware(['throttle:3,1', 'spam'])
     ->name('public.quotation.submit');
 Route::post('/careers/apply', [PublicController::class, 'applyForJob'])
-    ->middleware('throttle:3,1')
+    ->middleware(['throttle:3,1', 'spam'])
     ->name('public.careers.apply');
 
 // Admin Dashboard Route
@@ -68,7 +72,7 @@ Route::middleware('auth')->group(function () {
             Route::get('live-editor', [LiveEditorController::class, 'index'])->name('live-editor.index');
             Route::post('live-editor', [LiveEditorController::class, 'store'])->name('live-editor.store');
         });
-        // Phase 3: Submissions & HR
+        // Inbound submissions and hiring
         Route::post('messages/bulk-delete', [ContactMessageController::class, 'bulkDestroy'])->name('messages.bulk-delete');
         Route::post('quotations/bulk-delete', [QuotationRequestController::class, 'bulkDestroy'])->name('quotations.bulk-delete');
 
@@ -81,7 +85,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('messages', ContactMessageController::class)->only(['index', 'show', 'update', 'destroy']);
         Route::resource('quotations', QuotationRequestController::class)->only(['index', 'show', 'update', 'destroy']);
 
-        // Protected file downloads — files are on the private disk, auth required
+        // Applicant and quotation files live on the private documents disk
         Route::get('applications/{application}/resume', [JobApplicationController::class, 'downloadResume'])->name('applications.resume.download');
         Route::get('applications/{application}/portfolio', [JobApplicationController::class, 'downloadPortfolio'])->name('applications.portfolio.download');
         Route::get('quotations/{quotation}/attachment', [QuotationRequestController::class, 'downloadAttachment'])->name('quotations.attachment.download');

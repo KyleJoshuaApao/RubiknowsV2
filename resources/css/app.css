@@ -1,10 +1,5 @@
-/* =========================================================
-   RubiKnows V2 — Premium Engineering Design System
-   Deep Slate + Warm Gold. Editorial. Professional.
-
-   Import order matters: later public/ files intentionally
-   override earlier ones, so add new files at the end.
-   ========================================================= */
+/* RubiKnows stylesheet. Tailwind powers the admin panel; the public site uses
+   the scoped .rk-public styles in ./public. */
 
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
@@ -17,9 +12,7 @@
 @import './base/rich-text.css';
 @import './base/global.css';
 
-/* Public site, in cascade order */
-@import './public/site.css';
-@import './public/about-team.css';
-@import './public/experience.css';
-@import './public/team.css';
-@import './public/editorial.css';
+/* Public site */
+@import './public/base.css';
+@import './public/layout.css';
+@import './public/components.css';

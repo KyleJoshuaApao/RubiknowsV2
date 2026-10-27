@@ -17,10 +17,9 @@ class JobApplication extends Model
     }
 
     /**
-     * Application documents are private and must not depend on the default
-     * upload disk, which may be configured for public CMS media.
+     * Resumes and portfolios are private; see the "documents" disk.
      */
-    public const UPLOAD_DISK = 'local';
+    public const UPLOAD_DISK = 'documents';
 
     protected $fillable = [
         'job_id',

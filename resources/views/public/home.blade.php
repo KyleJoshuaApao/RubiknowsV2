@@ -1,154 +1,178 @@
 <x-public-layout>
     <x-slot name="title">Home</x-slot>
 
-    <div class="rk-home" x-data="homeLivePreview">
-        <section class="rk-home-hero">
-            <img class="rk-home-hero__image" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=75&w=1600&auto=format&fit=crop" srcset="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=75&w=720&auto=format&fit=crop 720w, https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=75&w=1200&auto=format&fit=crop 1200w, https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=75&w=1600&auto=format&fit=crop 1600w, https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=75&w=2200&auto=format&fit=crop 2200w" sizes="100vw" alt="RubiKnows engineering and construction work" fetchpriority="high" decoding="async">
-            <div class="rk-home-hero__wash" aria-hidden="true"></div>
-            <div class="rk-container rk-home-hero__inner">
-                <div class="rk-home-hero__copy">
-                    <x-public.eyebrow>Established 2020 · Engineering excellence</x-public.eyebrow>
-                    <h1>Building<br><em>what lasts.</em></h1>
-                    <div class="rk-home-hero__bottom">
-                        <p>We bring civil and structural engineering, construction, and practical project thinking together to make ambitious work real.</p>
-                        <x-public.action href="{{ route('public.projects') }}">Explore work</x-public.action>
-                    </div>
+    @php
+        $settings = \App\Models\Setting::allCached();
+        $facts = $homeStats ?: array_values(array_filter([
+            filled($settings['about_est_year'] ?? null) ? ['value' => $settings['about_est_year'], 'label' => 'Established in Tagum City'] : null,
+            filled($settings['about_experience_years'] ?? null) ? ['value' => $settings['about_experience_years'].'+', 'label' => 'Years in practice'] : null,
+            filled($settings['about_projects_count'] ?? null) ? ['value' => $settings['about_projects_count'].'+', 'label' => 'Projects completed'] : null,
+        ]));
+        $careersTitle = $homeCareers['title'] ?? 'Work with us';
+        $careersText = $homeCareers['description'] ?? 'We are always glad to hear from engineers, foremen and skilled workers who take pride in their work.';
+    @endphp
+
+    <section class="rk-hero">
+        <div class="rk-container rk-hero__grid">
+            <div class="rk-hero__copy">
+                <h1>Building design and construction in Tagum City and across Mindanao</h1>
+                <p class="rk-hero__lede">RubiKnows plans, engineers and builds houses, commercial buildings and civil works. Bring us in early and we will help you get the design, permits, budget and construction right.</p>
+                <div class="rk-hero__actions">
+                    <a class="rk-btn rk-btn--primary rk-btn--lg" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quotation</a>
+                    <a class="rk-btn rk-btn--outline rk-btn--lg" href="{{ route('public.services') }}">See our services</a>
                 </div>
+                <dl class="rk-facts" data-preview="stats" @if(! $facts) hidden @endif>
+                    @foreach($facts as $fact)
+                        <div><dt>{{ $fact['label'] }}</dt><dd>{{ $fact['value'] }}</dd></div>
+                    @endforeach
+                </dl>
             </div>
-        </section>
-
-        <section class="rk-stat-row" x-show="previewData.stats && previewData.stats.length" x-cloak aria-label="RubiKnows at a glance">
-            <div class="rk-container rk-stat-row__inner">
-                <template x-for="(stat, index) in previewData.stats" :key="`${stat.label}-${index}`">
-                    <div class="rk-stat">
-                        <p class="rk-stat__value" x-text="stat.value"></p>
-                        <p class="rk-stat__label" x-text="stat.label"></p>
-                    </div>
-                </template>
+            <div class="rk-hero__media">
+                <img src="/images/site/column-works-1600.webp" srcset="/images/site/column-works-800.webp 800w, /images/site/column-works-1600.webp 1600w" sizes="(min-width: 960px) 46vw, 100vw" width="1600" height="1166" alt="Construction workers fixing steel reinforcement for concrete columns" fetchpriority="high">
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="rk-statement rk-container">
-            <div>
-                <x-public.eyebrow class="text-[#171613]">The RubiKnows practice</x-public.eyebrow>
-                <h2>Precision in the details. Clarity in the whole.</h2>
+    <section class="rk-section" aria-labelledby="services-title">
+        <div class="rk-container">
+            <div class="rk-section-head">
+                <div class="rk-section-head__text">
+                    <h2 id="services-title">What we do</h2>
+                    <p>Hire us for the whole project, from plans to turnover, or for the part where you need an engineer.</p>
+                </div>
+                <a class="rk-arrow-link" href="{{ route('public.services') }}">All services</a>
             </div>
-            <p>RubiKnows pairs technical discipline with a hands-on understanding of place, people, and delivery. From the first drawing through close-out, we make complex work feel considered and buildable.</p>
-        </section>
 
-        <section class="rk-section rk-section--paper">
-            <div class="rk-container">
-                <div class="rk-section__head">
-                    <div class="rk-section__head-copy">
-                        <x-public.eyebrow>Capabilities</x-public.eyebrow>
-                        <h2 class="rk-section__title">Ideas, engineered into enduring work.</h2>
-                    </div>
-                    <a class="rk-text-link" href="{{ route('public.services') }}">All services</a>
-                </div>
-                <div class="rk-services-rail">
-                    @forelse($services as $service)
-                        <a class="rk-service-link" href="{{ route('public.service-details', $service) }}">
-                            <span class="rk-service-link__index">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                            <h3>{{ $service->title }}</h3>
-                            <p>{{ $service->short_description ?? Str::limit(strip_tags($service->content), 145) }}</p>
-                            <span class="rk-service-link__more">Discover service →</span>
-                        </a>
-                    @empty
-                        <p class="rk-empty col-span-full">Services are being prepared.</p>
-                    @endforelse
-                </div>
-            </div>
-        </section>
-
-        <section class="rk-section">
-            <div class="rk-container">
-                <div class="rk-section__head">
-                    <div class="rk-section__head-copy">
-                        <x-public.eyebrow>Selected work</x-public.eyebrow>
-                        <h2 class="rk-section__title">Built for the real world.</h2>
-                    </div>
-                    <a class="rk-text-link" href="{{ route('public.projects') }}">Complete portfolio</a>
-                </div>
-                <div class="rk-project-mosaic">
-                    @forelse($featuredProjects as $project)
-                        <a class="rk-project-tile" href="{{ route('public.project-details', $project) }}">
-                            @if($project->cover_image_path)
-                                <img loading="lazy" decoding="async" src="{{ \App\Support\MediaUrl::for($project->cover_image_path) }}" alt="{{ $project->title }}">
-                            @endif
-                            <div class="rk-project-tile__copy">
-                                <span class="rk-project-tile__category">{{ $project->category ?: 'Project' }}</span>
-                                <h3>{{ $project->title }}</h3>
-                                <p class="rk-project-tile__meta">{{ $project->location ?: 'Philippines' }} <b>/</b> View project ↗</p>
-                            </div>
-                        </a>
-                    @empty
-                        <p class="rk-empty col-span-full">Projects are being prepared.</p>
-                    @endforelse
-                </div>
-            </div>
-        </section>
-
-        <x-project-map :projects="$mapProjects" id="home-project-map" />
-
-        <section class="rk-section rk-section--paper">
-            <div class="rk-container">
-                <div class="rk-section__head">
-                    <div class="rk-section__head-copy">
-                        <x-public.eyebrow>Client perspective</x-public.eyebrow>
-                        <h2 class="rk-section__title">Good work speaks.</h2>
-                    </div>
-                    <a class="rk-text-link" href="{{ route('public.testimonials') }}">All testimonials</a>
-                </div>
-                <div class="rk-quote-grid">
-                    @forelse($testimonials->take(3) as $testimonial)
-                        <article class="rk-quote">
-                            <span class="rk-quote__mark" aria-hidden="true">“</span>
-                            <p class="rk-quote__body">{{ $testimonial->quote }}</p>
-                            <p class="rk-quote__by">{{ $testimonial->client_name }}</p>
-                            <p class="rk-quote__company">{{ $testimonial->company ?? 'RubiKnows client' }}</p>
+            @if($services->isNotEmpty())
+                <div class="rk-service-grid">
+                    @foreach($services as $service)
+                        <article class="rk-service-card">
+                            @if($service->category)<p class="rk-service-card__tag">{{ $service->category }}</p>@endif
+                            <h3><a href="{{ route('public.service-details', $service) }}">{{ $service->title }}</a></h3>
+                            <p>{{ $service->short_description ?: Str::limit(strip_tags((string) $service->content), 140) }}</p>
+                            <span class="rk-service-card__more" aria-hidden="true">Read more</span>
                         </article>
-                    @empty
-                        <p class="rk-empty col-span-full">Client stories are being prepared.</p>
-                    @endforelse
+                    @endforeach
+                </div>
+            @else
+                <x-public.empty-state title="Our service list is being updated" message="Call or message us and we will tell you how we can help with your project." />
+            @endif
+        </div>
+    </section>
+
+    <section class="rk-section rk-section--paper" aria-labelledby="process-title">
+        <div class="rk-container">
+            <div class="rk-section-head">
+                <div class="rk-section-head__text">
+                    <h2 id="process-title">How a project runs</h2>
+                    <p>A clear sequence, so you always know what happens next and who is responsible for it.</p>
                 </div>
             </div>
-        </section>
+            @include('public.partials.process-steps')
+        </div>
+    </section>
 
-        <section class="rk-dual-cta">
-            <div class="rk-dual-cta__panel">
-                <x-public.eyebrow class="text-[#171613]">Join the team</x-public.eyebrow>
-                <h2 x-text="previewData.careers.title"></h2>
-                <p x-text="previewData.careers.description"></p>
-                <x-public.action href="{{ route('public.careers') }}" tone="dark" class="mt-8">Open positions</x-public.action>
-            </div>
-            <div class="rk-dual-cta__panel">
-                <x-public.eyebrow>Start a conversation</x-public.eyebrow>
-                <h2>Make your next build matter.</h2>
-                <p>Tell us what you are building. Our engineers, project teams, and partners are ready to move the idea forward with you.</p>
-                <x-public.action href="{{ route('public.contact') }}" class="mt-8">Get a quotation</x-public.action>
+    @if($featuredProjects->isNotEmpty())
+        <section class="rk-section" aria-labelledby="projects-title">
+            <div class="rk-container">
+                <div class="rk-section-head">
+                    <div class="rk-section-head__text">
+                        <h2 id="projects-title">Recent projects</h2>
+                        <p>A selection of the work we have designed, built or managed.</p>
+                    </div>
+                    <a class="rk-arrow-link" href="{{ route('public.projects') }}">All projects</a>
+                </div>
+                <div class="rk-project-grid">
+                    @foreach($featuredProjects as $project)
+                        @include('public.partials.project-card', ['project' => $project])
+                    @endforeach
+                </div>
+                @if($mapProjects->isNotEmpty())
+                    <div class="rk-home-map">
+                        <x-project-map :projects="$mapProjects" id="home-project-map" title="Where we have worked" />
+                    </div>
+                @endif
             </div>
         </section>
-    </div>
+    @endif
 
-    @push('scripts')
-        <script nonce="{{ Vite::cspNonce() }}">
-            document.addEventListener('alpine:init', function () {
-                Alpine.data('homeLivePreview', function () {
-                    return {
-                        previewData: {
-                            stats: @json($homeStats ?? []),
-                            markets: @json($homeMarkets ?? []),
-                            marquee: @json($homeMarquee ?? []),
-                            careers: @json($homeCareers ?? ['title' => 'Build your career with the industry leaders.', 'description' => 'We are actively recruiting talented people.']),
-                        },
-                        init() {
-                            window.addEventListener('message', (event) => {
-                                if (event.data && event.data.type === 'live-editor-update') this.previewData = event.data.data;
-                            });
-                        },
-                    };
+    <section class="rk-section {{ $featuredProjects->isNotEmpty() ? 'rk-section--paper' : '' }}" aria-labelledby="about-title">
+        <div class="rk-container rk-feature">
+            <div class="rk-feature__media">
+                <img src="/images/site/site-team-1600.webp" srcset="/images/site/site-team-800.webp 800w, /images/site/site-team-1600.webp 1600w" sizes="(min-width: 960px) 50vw, 100vw" width="1600" height="1066" alt="Engineers and site staff reviewing foundation work" loading="lazy">
+            </div>
+            <div class="rk-feature__text">
+                <h2 id="about-title">Based in Tagum City</h2>
+                <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, from the first meeting to turnover, and we stay reachable after the work is done.</p>
+                <p>We are guided by faith, by honest work and by care for the families and communities who use what we build.</p>
+                <a class="rk-arrow-link" href="{{ route('public.about') }}">More about RubiKnows</a>
+            </div>
+        </div>
+    </section>
+
+    @if($testimonial)
+        <section class="rk-section" aria-label="What clients say">
+            <div class="rk-container">
+                <figure class="rk-quote">
+                    <blockquote><p>{{ $testimonial->quote }}</p></blockquote>
+                    <figcaption>
+                        <strong>{{ $testimonial->client_name }}</strong>
+                        @if($testimonial->role || $testimonial->company)<span>{{ collect([$testimonial->role, $testimonial->company])->filter()->join(', ') }}</span>@endif
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+    @endif
+
+    <section class="rk-section rk-section--tight" aria-labelledby="careers-title">
+        <div class="rk-container">
+            <div class="rk-hiring">
+                <div>
+                    <h2 id="careers-title" data-preview="careers-title">{{ $careersTitle }}</h2>
+                    <p data-preview="careers-text">{{ $careersText }}</p>
+                    @if($openJobs->isNotEmpty())
+                        <ul class="rk-hiring__jobs">
+                            @foreach($openJobs as $job)
+                                <li><a href="{{ route('public.careers') }}#job-{{ $job->id }}">{{ $job->title }}</a>@if($job->location || $job->type)<span>{{ collect([$job->type, $job->location])->filter()->join(' · ') }}</span>@endif</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+                <a class="rk-btn rk-btn--dark" href="{{ route('public.careers') }}">{{ $openJobs->isNotEmpty() ? 'See open positions' : 'Send your application' }}</a>
+            </div>
+        </div>
+    </section>
+
+    <x-public.contact-band title="Planning a build?" />
+
+    @if(request()->boolean('preview') && auth()->user()?->isAdmin())
+        @push('scripts')
+            <script nonce="{{ Vite::cspNonce() }}">
+                // Live preview for the admin homepage editor (same-origin iframe only).
+                window.addEventListener('message', function (event) {
+                    if (event.origin !== window.location.origin || !event.data || event.data.type !== 'live-editor-update') return;
+                    const data = event.data.data || {};
+                    const stats = document.querySelector('[data-preview="stats"]');
+                    if (stats && Array.isArray(data.stats)) {
+                        stats.replaceChildren(...data.stats.filter(s => s && s.value && s.label).map(function (stat) {
+                            const row = document.createElement('div');
+                            const dt = document.createElement('dt');
+                            const dd = document.createElement('dd');
+                            dt.textContent = stat.label;
+                            dd.textContent = stat.value;
+                            row.append(dt, dd);
+                            return row;
+                        }));
+                        stats.hidden = stats.children.length === 0;
+                    }
+                    if (data.careers) {
+                        const title = document.querySelector('[data-preview="careers-title"]');
+                        const text = document.querySelector('[data-preview="careers-text"]');
+                        if (title && data.careers.title) title.textContent = data.careers.title;
+                        if (text && data.careers.description) text.textContent = data.careers.description;
+                    }
                 });
-            });
-        </script>
-    @endpush
+            </script>
+        @endpush
+    @endif
 </x-public-layout>

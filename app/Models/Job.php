@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RefreshesPublicContent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    use HasFactory;
+    use HasFactory, RefreshesPublicContent;
 
     protected $table = 'career_jobs';
     protected $fillable = [

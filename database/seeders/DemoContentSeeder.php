@@ -4,184 +4,133 @@ namespace Database\Seeders;
 
 use App\Models\Client;
 use App\Models\GalleryMedia;
+use App\Models\Job;
 use App\Models\Project;
 use App\Models\Service;
+use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Support\PublicContentCache;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Sample content for previewing the website on a development machine.
+ *
+ * The projects, testimonials and clients here are illustrative only, so the
+ * seeder refuses to run in production.
+ *
+ * Run with: php artisan db:seed --class=DemoContentSeeder
+ */
 class DemoContentSeeder extends Seeder
 {
-    /**
-     * Seed clearly labelled, repeatable demo content without deleting real CMS data.
-     *
-     * Run explicitly with: php artisan db:seed --class=DemoContentSeeder
-     */
     public function run(): void
     {
-        $photos = [
-            'transit' => 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1600&q=85',
-            'tower' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=85',
-            'bridge' => 'https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=85',
-            'concrete' => 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=85',
-            'interior' => 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1600&q=85',
-            'facade' => 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=85',
-            'site' => 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1600&q=85',
-            'road' => 'https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1600&q=85',
-        ];
+        if (app()->environment('production')) {
+            $this->command?->error('Sample content is for local previews only and was not added to the production database.');
 
-        DB::transaction(function () use ($photos): void {
+            return;
+        }
+
+        $image = fn (string $name) => "/images/site/{$name}-1600.webp";
+
+        DB::transaction(function () use ($image): void {
+            // Public company details, only filled in where a value is missing.
             foreach ([
-                [
-                    'slug' => 'demo-bayline-transit-hub',
-                    'title' => '[Demo] Bayline Transit Hub',
-                    'category_id' => 'Infrastructure',
-                    'status' => 'Featured',
-                    'year' => '2025',
-                    'location' => 'Cagayan de Oro City, Philippines',
-                    'client' => 'Northline Development Group',
-                    'duration' => '24 months',
-                    'value' => '₱185M',
-                    'description' => 'A resilient multimodal hub designed to make everyday movement safer, clearer, and more connected.',
-                    'image_url' => $photos['transit'],
-                    'latitude' => 8.4542,
-                    'longitude' => 124.6319,
-                ],
-                [
-                    'slug' => 'demo-golden-hour-tower',
-                    'title' => '[Demo] Golden Hour Tower',
-                    'category_id' => 'Structural Engineering',
-                    'status' => 'Featured',
-                    'year' => '2024',
-                    'location' => 'Davao City, Philippines',
-                    'client' => 'Aurelia Properties',
-                    'duration' => '30 months',
-                    'value' => '₱420M',
-                    'description' => 'A high-performance mixed-use structure balancing a bold silhouette with efficient, durable systems.',
-                    'image_url' => $photos['tower'],
-                    'latitude' => 7.0731,
-                    'longitude' => 125.6128,
-                ],
-                [
-                    'slug' => 'demo-north-channel-bridge',
-                    'title' => '[Demo] North Channel Bridge',
-                    'category_id' => 'Civil Works',
-                    'status' => 'Completed',
-                    'year' => '2023',
-                    'location' => 'Davao City, Philippines',
-                    'client' => 'Pacific Corridor Authority',
-                    'duration' => '18 months',
-                    'value' => '₱96M',
-                    'description' => 'A long-span crossing engineered for dependable daily service and demanding tropical conditions.',
-                    'image_url' => $photos['bridge'],
-                    'latitude' => 7.1907,
-                    'longitude' => 125.4553,
-                ],
-                [
-                    'slug' => 'demo-harbor-logistics-campus',
-                    'title' => '[Demo] Harbor Logistics Campus',
-                    'category_id' => 'Construction Management',
-                    'status' => 'Completed',
-                    'year' => '2022',
-                    'location' => 'General Santos City, Philippines',
-                    'client' => 'Harborlink Ventures',
-                    'duration' => '20 months',
-                    'value' => '₱255M',
-                    'description' => 'A coordinated logistics campus built around efficient circulation, clear phasing, and long-term adaptability.',
-                    'image_url' => $photos['concrete'],
-                    'latitude' => 6.1164,
-                    'longitude' => 125.1716,
-                ],
-                [
-                    'slug' => 'demo-lumen-civic-center',
-                    'title' => '[Demo] Lumen Civic Center',
-                    'category_id' => 'Architecture',
-                    'status' => 'Featured',
-                    'year' => '2025',
-                    'location' => 'Butuan City, Philippines',
-                    'client' => 'Lumen Civic Foundation',
-                    'duration' => '16 months',
-                    'value' => '₱138M',
-                    'description' => 'A flexible public venue that brings daylight, community, and practical civic operations together.',
-                    'image_url' => $photos['interior'],
-                    'latitude' => 8.9475,
-                    'longitude' => 125.5406,
-                ],
-                [
-                    'slug' => 'demo-highland-access-road',
-                    'title' => '[Demo] Highland Access Road',
-                    'category_id' => 'Project Management',
-                    'status' => 'Completed',
-                    'year' => '2021',
-                    'location' => 'Malaybalay City, Philippines',
-                    'client' => 'Summit Estates',
-                    'duration' => '14 months',
-                    'value' => '₱74M',
-                    'description' => 'A carefully staged access improvement that strengthens safety and reliability across a steep terrain.',
-                    'image_url' => $photos['road'],
-                    'latitude' => 8.1575,
-                    'longitude' => 125.1276,
-                ],
+                'company_name' => 'RubiKnows',
+                'contact_phone' => '0945 411 6141',
+                'office_address' => 'Prk Mencidor, Magugpo West, Tagum City, Davao del Norte',
+                'about_est_year' => '2020',
+                'about_experience_years' => '5',
+                'about_projects_count' => '100',
+            ] as $key => $value) {
+                Setting::firstOrCreate(['key' => $key], ['value' => $value]);
+            }
+
+            foreach ($this->services($image) as $service) {
+                Service::updateOrCreate(['slug' => $service['slug']], $service);
+            }
+
+            foreach ([
+                ['slug' => 'sample-two-storey-residence-visayan-village', 'title' => 'Two-storey residence, Visayan Village', 'category_id' => 'Residential', 'status' => 'Featured', 'year' => '2025', 'location' => 'Tagum City, Davao del Norte', 'client' => 'Private owner', 'duration' => '9 months', 'image_url' => $image('column-works'), 'latitude' => 7.4372, 'longitude' => 125.7965,
+                    'description' => "A four-bedroom family home on a corner lot. We prepared the structural design and permit plans, then built the house from foundation to finishing.\n\n- Reinforced concrete frame designed for the site's soft soil\n- Roof framing and waterproofing detailed for heavy rain\n- Turned over with as-built plans and a maintenance guide"],
+                ['slug' => 'sample-commercial-building-apokon', 'title' => 'Three-storey commercial building, Apokon', 'category_id' => 'Commercial', 'status' => 'Featured', 'year' => '2024', 'location' => 'Tagum City, Davao del Norte', 'client' => 'Local retail owner', 'duration' => '14 months', 'image_url' => $image('rebar-deck'), 'latitude' => 7.4583, 'longitude' => 125.8221,
+                    'description' => "Ground-floor shops with offices above. The owner kept the existing shop trading while we built the new structure behind it, then connected the two in a single weekend."],
+                ['slug' => 'sample-warehouse-panabo', 'title' => 'Warehouse and loading bay', 'category_id' => 'Industrial', 'status' => 'Completed', 'year' => '2024', 'location' => 'Panabo City, Davao del Norte', 'client' => 'Agricultural supplier', 'duration' => '7 months', 'image_url' => $image('building-frame'), 'latitude' => 7.3074, 'longitude' => 125.6838,
+                    'description' => "A steel-framed warehouse with a raised concrete loading bay and a yard for delivery trucks. We managed the project and supervised the steel fabricator and electrical contractor."],
+                ['slug' => 'sample-farm-to-market-road', 'title' => 'Farm-to-market road concreting', 'category_id' => 'Civil works', 'status' => 'Completed', 'year' => '2023', 'location' => 'New Corella, Davao del Norte', 'client' => 'Barangay local government', 'duration' => '5 months', 'image_url' => $image('earthworks'), 'latitude' => 7.5869, 'longitude' => 125.8233,
+                    'description' => "1.2 kilometres of concrete road with side drainage and two box culverts, built so farmers can move produce through the rainy season."],
+                ['slug' => 'sample-school-building-assessment', 'title' => 'Structural assessment of a school building', 'category_id' => 'Consultancy', 'status' => 'Completed', 'year' => '2023', 'location' => 'Carmen, Davao del Norte', 'client' => 'Private school', 'duration' => '3 weeks', 'image_url' => $image('inspection'), 'latitude' => 7.3600, 'longitude' => 125.7100,
+                    'description' => "After visible cracking appeared following an earthquake, we inspected the building, tested the concrete and gave the school a report with repair priorities and costs."],
+                ['slug' => 'sample-subdivision-site-development', 'title' => 'Residential subdivision site development', 'category_id' => 'Civil works', 'status' => 'Completed', 'year' => '2022', 'location' => 'Mati City, Davao Oriental', 'client' => 'Property developer', 'duration' => '10 months', 'image_url' => $image('site-team'), 'latitude' => 6.9551, 'longitude' => 126.2165,
+                    'description' => "Clearing, cut and fill, roads and drainage for a 60-lot subdivision, prepared so house construction could start immediately."],
             ] as $project) {
                 Project::updateOrCreate(['slug' => $project['slug']], $project);
             }
 
             foreach ([
-                ['slug' => 'demo-civil-structural-engineering', 'title' => '[Demo] Civil & Structural Engineering', 'category' => 'Engineering', 'short_description' => 'Clear, resilient engineering from concept through construction.', 'content' => 'We develop practical civil and structural solutions that keep ambitious projects safe, efficient, and built for the long term.', 'image_url' => $photos['bridge'], 'is_featured' => true],
-                ['slug' => 'demo-construction-management', 'title' => '[Demo] Construction Management', 'category' => 'Delivery', 'short_description' => 'Disciplined coordination for complex project delivery.', 'content' => 'Our project teams align people, schedules, budgets, and quality so every phase moves with purpose.', 'image_url' => $photos['concrete'], 'is_featured' => true],
-                ['slug' => 'demo-project-management', 'title' => '[Demo] Project Management', 'category' => 'Advisory', 'short_description' => 'Strategic oversight that turns plans into progress.', 'content' => 'From feasibility to handover, we create visibility and accountability across the full project lifecycle.', 'image_url' => $photos['site'], 'is_featured' => true],
-                ['slug' => 'demo-architecture-design', 'title' => '[Demo] Architecture & Design', 'category' => 'Design', 'short_description' => 'Places that perform beautifully and endure.', 'content' => 'We shape thoughtful environments through a balance of context, materiality, function, and identity.', 'image_url' => $photos['facade'], 'is_featured' => true],
-                ['slug' => 'demo-site-development', 'title' => '[Demo] Site Development', 'category' => 'Infrastructure', 'short_description' => 'Site systems designed for real-world conditions.', 'content' => 'Our site development work connects grading, drainage, access, and utilities into one coordinated outcome.', 'image_url' => $photos['road'], 'is_featured' => false],
-                ['slug' => 'demo-technical-consultancy', 'title' => '[Demo] Technical Consultancy', 'category' => 'Advisory', 'short_description' => 'Experienced guidance for high-stakes decisions.', 'content' => 'We bring independent technical thinking to reviews, audits, value engineering, and delivery strategy.', 'image_url' => $photos['tower'], 'is_featured' => false],
-            ] as $service) {
-                Service::updateOrCreate(['slug' => $service['slug']], $service);
-            }
-
-            foreach ([
-                ['title' => '[Demo] Foundations in motion', 'url' => $photos['site'], 'category' => 'On site', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] Structure and light', 'url' => $photos['facade'], 'category' => 'Architecture', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] Built for the crossing', 'url' => $photos['bridge'], 'category' => 'Infrastructure', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] The work behind the work', 'url' => $photos['concrete'], 'category' => 'Construction', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] A place to gather', 'url' => $photos['interior'], 'category' => 'Interiors', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] City lines', 'url' => $photos['tower'], 'category' => 'Urban', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] On the access road', 'url' => $photos['road'], 'category' => 'Civil works', 'album_name' => 'Demo portfolio'],
-                ['title' => '[Demo] Site team', 'url' => $photos['transit'], 'category' => 'People', 'album_name' => 'Demo portfolio'],
+                ['title' => 'Column reinforcement for a three-storey building', 'url' => $image('column-works'), 'category' => 'Construction'],
+                ['title' => 'Slab reinforcement before concrete pouring', 'url' => $image('rebar-deck'), 'category' => 'Construction'],
+                ['title' => 'Tower cranes on a building project', 'url' => $image('building-frame'), 'category' => 'Project management'],
+                ['title' => 'Earthworks for a subdivision road', 'url' => $image('earthworks'), 'category' => 'Site development'],
+                ['title' => 'Foundation layout check', 'url' => $image('site-team'), 'category' => 'Construction'],
+                ['title' => 'Preparing permit drawings', 'url' => $image('drawing-plans'), 'category' => 'Design'],
             ] as $media) {
-                GalleryMedia::updateOrCreate(['title' => $media['title']], array_merge($media, [
-                    'type' => 'Photo',
-                    'thumbnail_url' => $media['url'],
-                ]));
+                GalleryMedia::updateOrCreate(['title' => $media['title']], [...$media, 'type' => 'Photo', 'thumbnail_url' => $media['url'], 'album_name' => 'Sample photos']);
             }
 
             foreach ([
-                ['client_name' => 'Elena Ramos', 'company' => 'Northline Development Group', 'role' => 'Development Director', 'avatar_url' => $photos['interior'], 'quote' => 'RubiKnows gave our team clarity at every decision point. The result feels considered, resilient, and ready for the future.'],
-                ['client_name' => 'Marcus Villanueva', 'company' => 'Pacific Corridor Authority', 'role' => 'Program Lead', 'avatar_url' => $photos['bridge'], 'quote' => 'Their engineering discipline made a complex infrastructure program feel coordinated from the first workshop to final handover.'],
-                ['client_name' => 'Sofia Tan', 'company' => 'Aurelia Properties', 'role' => 'Project Executive', 'avatar_url' => $photos['tower'], 'quote' => 'The RubiKnows team combines technical depth with a genuine understanding of how people experience a place.'],
-                ['client_name' => 'Adrian Cruz', 'company' => 'Harborlink Ventures', 'role' => 'Managing Partner', 'avatar_url' => $photos['site'], 'quote' => 'We always knew what was happening, why it mattered, and what decision came next. That level of trust is rare.'],
-                ['client_name' => 'Mina Garcia', 'company' => 'Lumen Civic Foundation', 'role' => 'Board Trustee', 'avatar_url' => $photos['facade'], 'quote' => 'They translated an ambitious civic brief into a practical, welcoming project our community can be proud of.'],
+                ['client_name' => 'Maria Santos', 'company' => 'Homeowner, Tagum City', 'role' => null, 'quote' => 'They explained every stage before it started and the house was finished close to the schedule they gave us. When something had to change, we heard it from the engineer first.'],
+                ['client_name' => 'Ramon dela Cruz', 'company' => 'Retail business owner', 'role' => null, 'quote' => 'Our shop stayed open the whole time the new building went up. The site was tidy and safe, and the weekly photo updates meant I never had to chase anyone.'],
+                ['client_name' => 'Engr. Liza Bautista', 'company' => 'Agricultural supplier', 'role' => 'Operations manager', 'quote' => 'Clear estimates, honest advice on where we could save, and a warehouse that was ready before our peak season.'],
             ] as $testimonial) {
-                Testimonial::updateOrCreate(['client_name' => '[Demo] '.$testimonial['client_name']], array_merge($testimonial, [
-                    'client_name' => '[Demo] '.$testimonial['client_name'],
-                    'is_published' => true,
-                ]));
+                Testimonial::updateOrCreate(['client_name' => $testimonial['client_name']], [...$testimonial, 'is_published' => true]);
             }
 
             foreach ([
-                ['name' => '[Demo] Northline Development Group', 'type' => 'Client', 'logo_url' => 'https://placehold.co/640x320/E0A92A/0B0C0C.png?text=NORTHLINE'],
-                ['name' => '[Demo] Aurelia Properties', 'type' => 'Client', 'logo_url' => 'https://placehold.co/640x320/0B0C0C/E0A92A.png?text=AURELIA'],
-                ['name' => '[Demo] Pacific Corridor Authority', 'type' => 'Client', 'logo_url' => 'https://placehold.co/640x320/F4F4F4/0B0C0C.png?text=PACIFIC+CORRIDOR'],
-                ['name' => '[Demo] Harborlink Ventures', 'type' => 'Partner', 'logo_url' => 'https://placehold.co/640x320/E0A92A/0B0C0C.png?text=HARBORLINK'],
-                ['name' => '[Demo] Lumen Civic Foundation', 'type' => 'Partner', 'logo_url' => 'https://placehold.co/640x320/0B0C0C/FFFFFF.png?text=LUMEN+CIVIC'],
-                ['name' => '[Demo] Summit Estates', 'type' => 'Client', 'logo_url' => 'https://placehold.co/640x320/F4F4F4/0B0C0C.png?text=SUMMIT+ESTATES'],
+                ['name' => 'Davao del Norte Agri Supply', 'type' => 'Client'],
+                ['name' => 'Apokon Commercial Center', 'type' => 'Client'],
+                ['name' => 'Carmen Christian School', 'type' => 'Client'],
+                ['name' => 'Northpoint Steel Fabricators', 'type' => 'Partner'],
             ] as $client) {
                 Client::updateOrCreate(['name' => $client['name']], $client);
             }
+
+            Job::updateOrCreate(['title' => 'Site Foreman'], [
+                'type' => 'Full-time',
+                'location' => 'Tagum City',
+                'is_archived' => false,
+                'description' => "We are looking for an experienced foreman to lead our crews on residential and commercial projects.\n\n- Organise daily work and materials on site\n- Check workmanship against the plans\n- Keep the site safe and tidy",
+                'requirements' => "- At least five years of experience as a foreman or leadman\n- Able to read construction plans\n- Based in or willing to relocate to Tagum City",
+            ]);
         });
 
-        // The production app uses shared database-backed cache entries. Make
-        // the newly seeded CMS records visible immediately after this command.
-        PublicContentCache::forgetProjects();
-        PublicContentCache::forgetHome();
+        PublicContentCache::forgetSettings();
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function services(callable $image): array
+    {
+        return [
+            ['slug' => 'civil-structural-engineering', 'title' => 'Civil & Structural Engineering', 'category' => 'Engineering', 'is_featured' => true, 'image_url' => $image('rebar-deck'),
+                'short_description' => 'Structural design, analysis and computations for houses, commercial buildings and institutional projects.',
+                'content' => "Every building we work on starts with sound structural design. Our engineers study the loads, the soil and the site, then design the foundations, columns, beams, slabs and roof framing.\n\n- Structural plans and details for building permit applications\n- Structural computations and design analysis\n- Foundation recommendations\n- Bill of quantities and cost estimates"],
+            ['slug' => 'general-construction', 'title' => 'General Construction', 'category' => 'Construction', 'is_featured' => true, 'image_url' => $image('column-works'),
+                'short_description' => 'Houses, commercial buildings and extensions, built to the approved plans from foundation to finishing.',
+                'content' => "We build to the approved plans with our own site team and subcontractors we know well.\n\n- New houses and apartment buildings\n- Commercial buildings, shops and warehouses\n- Extensions, additional floors and renovations"],
+            ['slug' => 'construction-project-management', 'title' => 'Construction & Project Management', 'category' => 'Management', 'is_featured' => true, 'image_url' => $image('building-frame'),
+                'short_description' => 'Planning, scheduling, cost control and site supervision that keep a project on track.',
+                'content' => "For owners who want an experienced team looking after their project, we manage the work from mobilisation to turnover."],
+            ['slug' => 'design-planning', 'title' => 'Design & Planning', 'category' => 'Design', 'is_featured' => true, 'image_url' => $image('drawing-plans'),
+                'short_description' => 'Floor plans, 3D views and permit-ready plans that turn an idea into a buildable design.',
+                'content' => "Good projects start with a design that fits the site, the budget and the way the space will be used."],
+            ['slug' => 'site-development', 'title' => 'Site Development', 'category' => 'Civil works', 'is_featured' => false, 'image_url' => $image('earthworks'),
+                'short_description' => 'Earthworks, drainage, access roads and site preparation, done right before building starts.',
+                'content' => "A building is only as good as the ground it stands on. We prepare sites so construction can start on a firm, well-drained base."],
+            ['slug' => 'technical-consultancy', 'title' => 'Technical Consultancy', 'category' => 'Advisory', 'is_featured' => false, 'image_url' => $image('inspection'),
+                'short_description' => 'Independent assessments, inspections and advice for owners facing important building decisions.',
+                'content' => "Sometimes you need a clear engineering opinion before you commit. We give owners practical, independent advice."],
+        ];
     }
 }

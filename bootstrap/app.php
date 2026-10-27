@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\BlockSpamSubmissions;
 use App\Http\Middleware\CheckSuperAdmin;
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\SecurityHeaders;
@@ -14,11 +15,16 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Render terminates TLS at its load balancer; trust it so client IPs
+        // (used by rate limiting) and the https scheme are read correctly.
+        $middleware->trustProxies(at: '*');
+
         $middleware->append(SecurityHeaders::class);
 
         $middleware->alias([
             'admin' => EnsureAdmin::class,
             'superadmin' => CheckSuperAdmin::class,
+            'spam' => BlockSpamSubmissions::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -35,7 +41,8 @@ $app->booting(function ($app) {
     if ($_ENV['APP_STORAGE'] ?? $_SERVER['APP_STORAGE'] ?? false) {
         $app['config']->set('app.maintenance.driver', 'file');
         $app['config']->set('session.driver', 'cookie');
-        $app['config']->set('cache.default', 'array');
+        // The database store survives between requests, so rate limits hold.
+        $app['config']->set('cache.default', 'database');
     }
 });
 

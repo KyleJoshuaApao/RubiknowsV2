@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\RefreshesPublicContent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Service extends Model
 {
+    use RefreshesPublicContent;
+
     protected $fillable = [
         'title',
         'short_description',

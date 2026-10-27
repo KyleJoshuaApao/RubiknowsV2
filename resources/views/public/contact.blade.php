@@ -1,101 +1,170 @@
 <x-public-layout>
-    <x-slot name="title">Contact Us</x-slot>
+    <x-slot name="title">Contact us</x-slot>
+    <x-slot name="description">Contact RubiKnows in Tagum City, Davao del Norte. Call, email or send a message, or request a quotation for your project.</x-slot>
 
     @php
-        $settings = \App\Models\Setting::allCached();
-        $activeTab = old('_tab', request('tab', 'general'));
+        $contact = \App\Support\ContactDetails::fromSettings();
+        [$phone, $email, $address] = [$contact->phone, $contact->email, $contact->address];
+        $activeTab = old('_tab', request('tab') === 'quote' ? 'quote' : 'general');
+        $selectedService = old('service_needed', request('service'));
+        $serviceChoices = $serviceOptions->push('Other or not sure')->unique()->values();
     @endphp
 
-    <x-public.page-intro eyebrow="Contact" number="08" title="Start with the next right conversation." lede="Whether you are exploring an idea or ready to discuss a scope, our team is here to listen." />
+    <x-public.page-header title="Contact us" lede="Call, email or visit the office, or send us the details of your project using the form." :breadcrumbs="['Contact' => null]" />
 
     <section class="rk-section">
-        <div class="rk-container rk-contact-layout" x-data="{ tab: @js($activeTab) }">
-            <aside>
-                <x-public.eyebrow>Contact details</x-public.eyebrow>
-                <h2 class="rk-section__title mt-4">Find the right way to reach us.</h2>
+        <div class="rk-container rk-contact-grid" x-data="{ tab: @js($activeTab) }">
+            <aside aria-labelledby="details-title">
+                <h2 id="details-title" class="rk-subheading">Contact details</h2>
                 <dl class="rk-contact-list">
-                    @if(!empty($settings['office_address']))
-                        <div><dt>Head office</dt><dd>{{ $settings['office_address'] }}</dd></div>
+                    @if($phone)
+                        <div><dt>Phone</dt><dd><a href="tel:{{ $contact->phoneHref }}">{{ $phone }}</a></dd></div>
                     @endif
-                    @if(!empty($settings['contact_phone']))
-                        <div><dt>Phone</dt><dd><a href="tel:{{ $settings['contact_phone'] }}">{{ $settings['contact_phone'] }}</a></dd></div>
+                    @if($email)
+                        <div><dt>Email</dt><dd><a href="mailto:{{ $email }}">{{ $email }}</a></dd></div>
                     @endif
-                    @if(!empty($settings['contact_email']))
-                        <div><dt>Email</dt><dd><a href="mailto:{{ $settings['contact_email'] }}">{{ $settings['contact_email'] }}</a></dd></div>
+                    @if($address)
+                        <div>
+                            <dt>Office</dt>
+                            <dd>
+                                {{ $address }}
+                                <a class="rk-contact-list__map" href="https://www.openstreetmap.org/?mlat=7.450816&mlon=125.816674#map=17/7.450816/125.816674" target="_blank" rel="noopener">View on map</a>
+                            </dd>
+                        </div>
                     @endif
                 </dl>
-                @if(!empty($settings['office_address']))
-                    <div class="rk-contact-note">
-                        <strong class="block text-[#171613]">Visiting us?</strong>
-                        Use the office address above to plan your visit or <a class="underline decoration-[#e0a92a] underline-offset-4" href="https://www.openstreetmap.org/?mlat=7.450816&mlon=125.816674#map=17/7.450816/125.816674" target="_blank" rel="noopener">open the location in OpenStreetMap</a>.
-                    </div>
-                @endif
+                <div class="rk-note rk-note--muted">
+                    <h3>Requesting a quotation?</h3>
+                    <p>Plans, a sketch, photos of the site or a short description all help. Attach what you have and we will tell you what else we need.</p>
+                </div>
             </aside>
 
             <div>
-                <div class="rk-tabs" role="tablist" aria-label="Contact request type">
-                    <button type="button" role="tab" @click="tab = 'general'" :class="{ 'is-active': tab === 'general' }" :aria-selected="(tab === 'general').toString()">General inquiry</button>
-                    <button type="button" role="tab" @click="tab = 'quote'" :class="{ 'is-active': tab === 'quote' }" :aria-selected="(tab === 'quote').toString()">Request a quotation</button>
+                <div class="rk-tabs" role="tablist" aria-label="Type of enquiry">
+                    <button type="button" role="tab" id="tab-general" aria-controls="panel-general" @click="tab = 'general'" :aria-selected="(tab === 'general').toString()" :tabindex="tab === 'general' ? 0 : -1" @keydown.arrow-right.prevent="tab = 'quote'; $nextTick(() => document.getElementById('tab-quote').focus())">Send a message</button>
+                    <button type="button" role="tab" id="tab-quote" aria-controls="panel-quote" @click="tab = 'quote'" :aria-selected="(tab === 'quote').toString()" :tabindex="tab === 'quote' ? 0 : -1" @keydown.arrow-left.prevent="tab = 'general'; $nextTick(() => document.getElementById('tab-general').focus())">Request a quotation</button>
                 </div>
 
-                <div class="pt-8" x-show="tab === 'general'" x-transition.opacity role="tabpanel">
-                    <x-public.eyebrow>General inquiry</x-public.eyebrow>
-                    <h2 class="mt-4 text-3xl tracking-[-.05em] sm:text-4xl">Tell us what you need.</h2>
-                    <form class="rk-form mt-8" action="{{ route('public.contact.submit') }}" method="POST">
+                @error('form')<p class="rk-form-alert" role="alert">{{ $message }}</p>@enderror
+
+                <div id="panel-general" role="tabpanel" aria-labelledby="tab-general" x-show="tab === 'general'" @if($activeTab !== 'general') x-cloak @endif>
+                    <form class="rk-form" action="{{ route('public.contact.submit') }}" method="POST">
                         @csrf
+                        <x-public.spam-guard />
                         <input type="hidden" name="_tab" value="general">
-                        <div class="rk-form__split">
-                            <div><label for="contact_name">Name *</label><input id="contact_name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name">@error('name')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                            <div><label for="contact_email">Email *</label><input id="contact_email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email">@error('email')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
+                        <div class="rk-form__row">
+                            <div class="rk-field">
+                                <label for="contact_name">Name *</label>
+                                <input class="rk-input" id="contact_name" name="name" type="text" value="{{ old('_tab') === 'general' ? old('name') : '' }}" required autocomplete="name">
+                                @if(old('_tab') === 'general') @error('name')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                            </div>
+                            <div class="rk-field">
+                                <label for="contact_email">Email *</label>
+                                <input class="rk-input" id="contact_email" name="email" type="email" value="{{ old('_tab') === 'general' ? old('email') : '' }}" required autocomplete="email">
+                                @if(old('_tab') === 'general') @error('email')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                            </div>
                         </div>
-                        <div class="rk-form__split">
-                            <div><label for="contact_company">Company</label><input id="contact_company" name="company" type="text" value="{{ old('company') }}" autocomplete="organization">@error('company')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                            <div><label for="contact_phone">Phone</label><input id="contact_phone" name="phone" type="text" value="{{ old('phone') }}" autocomplete="tel">@error('phone')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
+                        <div class="rk-form__row">
+                            <div class="rk-field">
+                                <label for="contact_phone">Mobile number <span class="rk-optional">(optional)</span></label>
+                                <input class="rk-input" id="contact_phone" name="phone" type="tel" value="{{ old('_tab') === 'general' ? old('phone') : '' }}" autocomplete="tel">
+                                @if(old('_tab') === 'general') @error('phone')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                            </div>
+                            <div class="rk-field">
+                                <label for="contact_company">Company <span class="rk-optional">(optional)</span></label>
+                                <input class="rk-input" id="contact_company" name="company" type="text" value="{{ old('_tab') === 'general' ? old('company') : '' }}" autocomplete="organization">
+                                @if(old('_tab') === 'general') @error('company')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                            </div>
                         </div>
-                        <div><label for="contact_subject">Subject *</label><input id="contact_subject" name="subject" type="text" value="{{ old('subject', request('subject')) }}" required>@error('subject')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                        <div><label for="contact_message">Message *</label><textarea id="contact_message" name="message" required>{{ old('message') }}</textarea>@error('message')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                        <x-public.action type="submit" class="w-full sm:w-auto">Send message</x-public.action>
+                        <div class="rk-field">
+                            <label for="contact_subject">Subject *</label>
+                            <input class="rk-input" id="contact_subject" name="subject" type="text" value="{{ old('_tab') === 'general' ? old('subject') : request('subject') }}" required>
+                            @if(old('_tab') === 'general') @error('subject')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                        </div>
+                        <div class="rk-field">
+                            <label for="contact_message">Message *</label>
+                            <textarea class="rk-input" id="contact_message" name="message" rows="6" required>{{ old('_tab') === 'general' ? old('message') : '' }}</textarea>
+                            @if(old('_tab') === 'general') @error('message')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                        </div>
+                        <p class="rk-field__hint">We use your details only to reply to you. See our <a href="{{ route('public.privacy') }}">privacy policy</a>.</p>
+                        <div><button type="submit" class="rk-btn rk-btn--primary">Send message</button></div>
                     </form>
                 </div>
 
-                <div class="pt-8" x-cloak x-show="tab === 'quote'" x-transition.opacity role="tabpanel">
-                    <x-public.eyebrow>Project quotation</x-public.eyebrow>
-                    <h2 class="mt-4 text-3xl tracking-[-.05em] sm:text-4xl">Give us the important details.</h2>
-                    <p class="mt-4 max-w-2xl text-[#69665f] leading-relaxed">A little context helps our engineering team understand your project and respond thoughtfully.</p>
-                    <form class="rk-form mt-8" action="{{ route('public.quotation.submit') }}" method="POST" enctype="multipart/form-data">
+                <div id="panel-quote" role="tabpanel" aria-labelledby="tab-quote" x-show="tab === 'quote'" @if($activeTab !== 'quote') x-cloak @endif>
+                    @error('quotation')<p class="rk-form-alert" role="alert">{{ $message }}</p>@enderror
+                    <form class="rk-form" action="{{ route('public.quotation.submit') }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <x-public.spam-guard />
                         <input type="hidden" name="_tab" value="quote">
-                        <section class="rk-form-section">
-                            <h3>Contact information</h3>
-                            <div class="rk-form__split">
-                                <div><label for="quote_name">Full name *</label><input id="quote_name" name="name" type="text" value="{{ old('name') }}" required autocomplete="name">@error('name')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                                <div><label for="quote_company">Company</label><input id="quote_company" name="company" type="text" value="{{ old('company') }}" autocomplete="organization">@error('company')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                                <div><label for="quote_email">Email *</label><input id="quote_email" name="email" type="email" value="{{ old('email') }}" required autocomplete="email">@error('email')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                                <div><label for="quote_phone">Phone</label><input id="quote_phone" name="phone" type="text" value="{{ old('phone') }}" autocomplete="tel">@error('phone')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
+                        <fieldset class="rk-fieldset">
+                            <legend>Your details</legend>
+                            <div class="rk-form__row">
+                                <div class="rk-field">
+                                    <label for="quote_name">Full name *</label>
+                                    <input class="rk-input" id="quote_name" name="name" type="text" value="{{ old('_tab') === 'quote' ? old('name') : '' }}" required autocomplete="name">
+                                    @if(old('_tab') === 'quote') @error('name')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                                </div>
+                                <div class="rk-field">
+                                    <label for="quote_company">Company <span class="rk-optional">(optional)</span></label>
+                                    <input class="rk-input" id="quote_company" name="company" type="text" value="{{ old('_tab') === 'quote' ? old('company') : '' }}" autocomplete="organization">
+                                    @if(old('_tab') === 'quote') @error('company')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                                </div>
+                                <div class="rk-field">
+                                    <label for="quote_email">Email *</label>
+                                    <input class="rk-input" id="quote_email" name="email" type="email" value="{{ old('_tab') === 'quote' ? old('email') : '' }}" required autocomplete="email">
+                                    @if(old('_tab') === 'quote') @error('email')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                                </div>
+                                <div class="rk-field">
+                                    <label for="quote_phone">Mobile number <span class="rk-optional">(optional)</span></label>
+                                    <input class="rk-input" id="quote_phone" name="phone" type="tel" value="{{ old('_tab') === 'quote' ? old('phone') : '' }}" autocomplete="tel">
+                                    @if(old('_tab') === 'quote') @error('phone')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
+                                </div>
                             </div>
-                        </section>
-                        <section class="rk-form-section">
-                            <h3>Project details</h3>
-                            <div class="rk-form__split">
-                                <div>
-                                    <label for="quote_service">Primary service needed *</label>
-                                    <select id="quote_service" name="service_needed" required>
+                        </fieldset>
+                        <fieldset class="rk-fieldset">
+                            <legend>Your project</legend>
+                            <div class="rk-form__row">
+                                <div class="rk-field">
+                                    <label for="quote_service">Service needed *</label>
+                                    <select class="rk-input" id="quote_service" name="service_needed" required>
                                         <option value="">Select a service</option>
-                                        @foreach(['General Construction', 'Structural Engineering', 'Civil Engineering', 'Project Management', 'Consultancy', 'Other'] as $option)
-                                            <option value="{{ $option }}" @selected(old('service_needed') === $option)>{{ $option }}</option>
+                                        @foreach($serviceChoices as $option)
+                                            <option value="{{ $option }}" @selected($selectedService === $option)>{{ $option }}</option>
                                         @endforeach
                                     </select>
-                                    @error('service_needed')<p class="rk-field-error">{{ $message }}</p>@enderror
+                                    @error('service_needed')<p class="rk-field__error">{{ $message }}</p>@enderror
                                 </div>
-                                <div><label for="quote_location">Project location *</label><input id="quote_location" name="project_location" type="text" value="{{ old('project_location') }}" required placeholder="City, Province">@error('project_location')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                                <div><label for="quote_budget">Estimated budget range</label><input id="quote_budget" name="budget" type="text" value="{{ old('budget') }}">@error('budget')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                                <div><label for="quote_timeline">Expected timeline</label><input id="quote_timeline" name="timeline" type="text" value="{{ old('timeline') }}">@error('timeline')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
+                                <div class="rk-field">
+                                    <label for="quote_location">Project location *</label>
+                                    <input class="rk-input" id="quote_location" name="project_location" type="text" value="{{ old('project_location') }}" required placeholder="Barangay, city or municipality">
+                                    @error('project_location')<p class="rk-field__error">{{ $message }}</p>@enderror
+                                </div>
+                                <div class="rk-field">
+                                    <label for="quote_budget">Budget range <span class="rk-optional">(optional)</span></label>
+                                    <input class="rk-input" id="quote_budget" name="budget" type="text" value="{{ old('budget') }}" placeholder="e.g. ₱2–3 million">
+                                    @error('budget')<p class="rk-field__error">{{ $message }}</p>@enderror
+                                </div>
+                                <div class="rk-field">
+                                    <label for="quote_timeline">Target start or completion <span class="rk-optional">(optional)</span></label>
+                                    <input class="rk-input" id="quote_timeline" name="timeline" type="text" value="{{ old('timeline') }}" placeholder="e.g. start by March">
+                                    @error('timeline')<p class="rk-field__error">{{ $message }}</p>@enderror
+                                </div>
                             </div>
-                            <div class="mt-5"><label for="quote_description">Project description *</label><textarea id="quote_description" name="description" required>{{ old('description') }}</textarea>@error('description')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                            <div class="mt-5"><label for="quote_attachment">Attach documents</label><input id="quote_attachment" name="attachment" type="file" accept=".pdf,.doc,.docx,.jpg,.png,.zip"><p class="mt-2 text-xs text-[#69665f]">Optional · PDF, DOC, JPG, PNG, or ZIP · maximum 10 MB</p>@error('attachment')<p class="rk-field-error">{{ $message }}</p>@enderror</div>
-                        </section>
-                        @error('quotation')<p class="rk-field-error" role="alert">{{ $message }}</p>@enderror
-                        <x-public.action type="submit" class="w-full sm:w-auto">Submit request</x-public.action>
+                            <div class="rk-field">
+                                <label for="quote_description">Describe the work *</label>
+                                <textarea class="rk-input" id="quote_description" name="description" rows="6" required placeholder="What do you want to build or fix? Floor area, number of storeys, and anything else you know.">{{ old('description') }}</textarea>
+                                @error('description')<p class="rk-field__error">{{ $message }}</p>@enderror
+                            </div>
+                            <div class="rk-field">
+                                <label for="quote_attachment">Plans, sketches or photos <span class="rk-optional">(optional)</span></label>
+                                <input class="rk-input" id="quote_attachment" name="attachment" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip" aria-describedby="attachment-hint">
+                                <p class="rk-field__hint" id="attachment-hint">One file: PDF, DOC, JPG, PNG or ZIP, up to 10 MB.</p>
+                                @error('attachment')<p class="rk-field__error">{{ $message }}</p>@enderror
+                            </div>
+                        </fieldset>
+                        <p class="rk-field__hint">We use your details only to prepare and follow up on your quotation. See our <a href="{{ route('public.privacy') }}">privacy policy</a>.</p>
+                        <div><button type="submit" class="rk-btn rk-btn--primary">Send quotation request</button></div>
                     </form>
                 </div>
             </div>

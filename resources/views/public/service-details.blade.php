@@ -1,37 +1,61 @@
 <x-public-layout>
     <x-slot name="title">{{ $service->title }}</x-slot>
+    <x-slot name="description">{{ $service->short_description }}</x-slot>
+    @php
+        $image = \App\Support\MediaUrl::for($service->image_path);
+        $contact = \App\Support\ContactDetails::fromSettings();
+        $features = is_string($service->features ?? null) ? preg_split('/\r?\n/', $service->features) : (array) ($service->features ?? []);
+        $features = array_values(array_filter(array_map('trim', $features)));
+    @endphp
+    <x-slot name="image">{{ $image }}</x-slot>
 
-    <x-public.page-intro :eyebrow="$service->category ?: 'Service'" number="03" :title="$service->title" :lede="$service->short_description" />
+    <x-public.page-header :title="$service->title" :lede="$service->short_description" :breadcrumbs="['Services' => route('public.services'), $service->title => null]" />
 
     <section class="rk-section">
-        <div class="rk-container rk-service-detail">
-            @if($service->image_path)
-                <img class="rk-service-detail__image" loading="lazy" decoding="async" src="{{ \App\Support\MediaUrl::for($service->image_path) }}" alt="{{ $service->title }}">
-            @else
-                <div class="rk-service-detail__image flex items-end bg-[#e0a92a] p-8">
-                    <span class="text-5xl font-extrabold tracking-[-.08em] text-[#171613]">RK</span>
-                </div>
-            @endif
-            <div class="rk-rich-copy rich-text">
-                @if($service->content)
-                    {!! nl2br(e($service->content)) !!}
-                @else
-                    <p>Our team will tailor this service to the needs of your project. Contact RubiKnows to start a conversation.</p>
+        <div class="rk-container rk-detail-grid">
+            <article>
+                @if($image)
+                    <img class="rk-detail-image" src="{{ $image }}" alt="" width="1600" height="1000">
                 @endif
+                <div class="rk-prose">
+                    @if(trim((string) $service->content) !== '')
+                        {{ \App\Support\Markdown::render($service->content) }}
+                    @else
+                        <p>We tailor this service to each project. Contact us and we will explain how we can help with yours.</p>
+                    @endif
 
-                @php($features = is_string($service->features ?? null) ? preg_split('/\r?\n/', $service->features) : ($service->features ?? []))
-                @if(!empty(array_filter((array) $features)))
-                    <div class="mt-10 border-t border-black/15 pt-8">
-                        <x-public.eyebrow>What this can include</x-public.eyebrow>
-                        <ul class="mt-5 space-y-3 text-base leading-relaxed">
-                            @foreach($features as $feature)
-                                @if(trim($feature) !== '')<li class="border-l-2 border-brand-500 pl-4">{{ trim($feature) }}</li>@endif
+                    @if($features)
+                        <h2>What this can include</h2>
+                        <ul>
+                            @foreach($features as $feature)<li>{{ $feature }}</li>@endforeach
+                        </ul>
+                    @endif
+                </div>
+            </article>
+
+            <aside class="rk-aside">
+                <div class="rk-aside-card">
+                    <h2>Get a quotation</h2>
+                    <p>Tell us about your project and we will reply with the next steps for {{ Str::lower($service->title) }}.</p>
+                    <a class="rk-btn rk-btn--primary rk-btn--block" href="{{ route('public.contact', ['tab' => 'quote', 'service' => $service->title]) }}">Request a quotation</a>
+                    @if($contact->phone)
+                        <a class="rk-btn rk-btn--outline rk-btn--block" href="tel:{{ $contact->phoneHref }}">Call {{ $contact->phone }}</a>
+                    @endif
+                </div>
+
+                @if($otherServices->isNotEmpty())
+                    <nav class="rk-aside-links" aria-labelledby="other-services">
+                        <h2 id="other-services">Other services</h2>
+                        <ul>
+                            @foreach($otherServices as $other)
+                                <li><a href="{{ route('public.service-details', $other) }}">{{ $other->title }}</a></li>
                             @endforeach
                         </ul>
-                    </div>
+                    </nav>
                 @endif
-                <x-public.action href="{{ route('public.contact', ['subject' => 'Inquiry about ' . $service->title]) }}" class="mt-10">Talk to our team</x-public.action>
-            </div>
+            </aside>
         </div>
     </section>
+
+    <x-public.contact-band />
 </x-public-layout>

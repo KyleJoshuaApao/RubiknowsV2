@@ -1,6 +1,25 @@
 <?php
 
 $publicUploadRoot = env('PUBLIC_STORAGE_PATH', storage_path('app/public'));
+$privateUploadRoot = env('PRIVATE_STORAGE_PATH', storage_path('app/private'));
+
+// Uploads go to Supabase Storage (S3 protocol) when its keys are configured, so
+// they survive redeploys. Without the keys they stay on the local disk.
+$supabaseUrl = rtrim((string) env('SUPABASE_URL', ''), '/');
+$useSupabaseStorage = $supabaseUrl !== ''
+    && filled(env('SUPABASE_S3_ACCESS_KEY_ID'))
+    && filled(env('SUPABASE_S3_SECRET_ACCESS_KEY'));
+$mediaBucket = env('SUPABASE_MEDIA_BUCKET', 'media');
+$supabaseDisk = [
+    'driver' => 's3',
+    'key' => env('SUPABASE_S3_ACCESS_KEY_ID'),
+    'secret' => env('SUPABASE_S3_SECRET_ACCESS_KEY'),
+    'region' => env('SUPABASE_S3_REGION', 'ap-northeast-2'),
+    'endpoint' => $supabaseUrl.'/storage/v1/s3',
+    'use_path_style_endpoint' => true,
+    'throw' => true,
+    'report' => false,
+];
 
 return [
 
@@ -22,21 +41,37 @@ return [
     | Filesystem Disks
     |--------------------------------------------------------------------------
     |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
-    |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
+    | "media" holds public uploads (project, service and gallery images).
+    | "documents" holds private uploads (resumes, portfolios, quotation
+    | attachments) that are only served through authenticated admin routes.
     |
     */
 
     'disks' => [
 
+        'media' => $useSupabaseStorage
+            ? [...$supabaseDisk, 'bucket' => $mediaBucket, 'url' => $supabaseUrl.'/storage/v1/object/public/'.$mediaBucket]
+            : [
+                'driver' => 'local',
+                'root' => $publicUploadRoot,
+                'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
+                'visibility' => 'public',
+                'throw' => true,
+                'report' => false,
+            ],
+
+        'documents' => $useSupabaseStorage
+            ? [...$supabaseDisk, 'bucket' => env('SUPABASE_DOCUMENTS_BUCKET', 'documents')]
+            : [
+                'driver' => 'local',
+                'root' => $privateUploadRoot,
+                'throw' => false,
+                'report' => false,
+            ],
+
         'local' => [
             'driver' => 'local',
-            // Render may mount or overlay the application storage directory.
-            // Keep private uploads on an explicit runtime-writable path there.
-            'root' => env('PRIVATE_STORAGE_PATH', storage_path('app/private')),
+            'root' => $privateUploadRoot,
             'serve' => true,
             'throw' => false,
             'report' => false,
@@ -48,19 +83,6 @@ return [
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => true,
-            'report' => false,
-        ],
-
-        's3' => [
-            'driver' => 's3',
-            'key' => env('AWS_ACCESS_KEY_ID'),
-            'secret' => env('AWS_SECRET_ACCESS_KEY'),
-            'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'),
-            'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
             'report' => false,
         ],
 

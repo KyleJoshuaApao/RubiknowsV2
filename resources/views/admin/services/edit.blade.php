@@ -42,6 +42,7 @@
                     <div class="mb-4">
                         <label for="content" class="form-label-v2">Full Content</label>
                         <textarea name="content" id="content" rows="6" class="form-input-v2">{{ old('content', $service->content) }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Leave a blank line between paragraphs. Start a line with “- ” to make a bullet list.</p>
                     </div>
 
                     <div class="mb-4 flex items-center">

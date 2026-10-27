@@ -80,13 +80,13 @@
                                 @if($application->portfolio_path || $application->resume_path)
                                     <div class="mt-2 flex space-x-3 text-sm">
                                         @if($application->resume_path)
-                                            <a href="{{ Storage::url($application->resume_path) }}" target="_blank" class="inline-flex items-center px-3 py-1 bg-white border border-gray-300 text-sm text-gray-700 hover:bg-gray-50">
+                                            <a href="{{ route('admin.applications.resume.download', $application) }}" class="inline-flex items-center px-3 py-1 bg-white border border-gray-300 text-sm text-gray-700 hover:bg-gray-50">
                                                 <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 2l4 4m0 0l-4 4m4-4H4a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-9"></path></svg>
                                                 View Resume
                                             </a>
                                         @endif
                                         @if($application->portfolio_path)
-                                            <a href="{{ Storage::url($application->portfolio_path) }}" target="_blank" class="inline-flex items-center px-3 py-1 bg-white border border-gray-300 text-sm text-gray-700 hover:bg-gray-50">
+                                            <a href="{{ route('admin.applications.portfolio.download', $application) }}" class="inline-flex items-center px-3 py-1 bg-white border border-gray-300 text-sm text-gray-700 hover:bg-gray-50">
                                                 <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.163 5.477 3 6.253v13C4.163 18.527 5.749 19 7.5 19s3.337-.477 4.5-1.253m0-13C13.168 5.477 14.754 5 16.5 5s1.663.477 2.5 1.253v13"></path></svg>
                                                 View Portfolio
                                             </a>

@@ -15,7 +15,7 @@ class QuotationRequest extends Model
      * Attachments are private and served only through the authenticated
      * admin download route.
      */
-    public const UPLOAD_DISK = 'local';
+    public const UPLOAD_DISK = 'documents';
 
     protected static function booted(): void
     {
@@ -53,8 +53,8 @@ class QuotationRequest extends Model
     }
 
     /**
-     * The disk holding the attachment, or null if there is none. Attachments
-     * uploaded before they were made private live on the default disk.
+     * The disk holding the attachment, or null if there is none. Older
+     * attachments may still sit on the local private or default disks.
      */
     public function attachmentDisk(): ?string
     {
@@ -62,7 +62,7 @@ class QuotationRequest extends Model
             return null;
         }
 
-        foreach (array_unique([self::UPLOAD_DISK, config('filesystems.default')]) as $disk) {
+        foreach (array_unique([self::UPLOAD_DISK, 'local', config('filesystems.default')]) as $disk) {
             if (Storage::disk($disk)->exists($this->attachment_path)) {
                 return $disk;
             }

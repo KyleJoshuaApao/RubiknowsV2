@@ -32,10 +32,9 @@ class SettingRequest extends FormRequest
             'about_projects_count' => 'nullable|string',
             'about_experience_years' => 'nullable|string',
             'about_est_year' => 'nullable|string',
-            'seo_description' => 'nullable|string',
-            'social_facebook' => 'nullable|string',
-            'social_linkedin' => 'nullable|string',
-            'nvidia_nim_api_key' => 'nullable|string',
+            'seo_description' => 'nullable|string|max:300',
+            'social_facebook' => 'nullable|url:https|max:255',
+            'social_linkedin' => 'nullable|url:https|max:255',
         ];
     }
 }

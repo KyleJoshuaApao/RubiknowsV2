@@ -5,150 +5,199 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @php
             $settings = \App\Models\Setting::allCached();
+            $sections = \App\Support\PublicContentCache::sections();
+            $footerServices = \App\Support\PublicContentCache::footerServices();
+
             $companyName = $settings['company_name'] ?? 'RubiKnows';
-            $seoDescription = $settings['seo_description'] ?? 'Engineering, construction, and consultancy services in the Philippines.';
-            $pageTitle = isset($title) && $title !== 'Home' ? $title . ' | ' . $companyName : $companyName;
-            $navItems = [
-                ['label' => 'Home', 'route' => 'public.home', 'active' => 'public.home'],
-                ['label' => 'About', 'route' => 'public.about', 'active' => 'public.about'],
-                ['label' => 'Services', 'route' => 'public.services', 'active' => 'public.services*'],
-                ['label' => 'Projects', 'route' => 'public.projects', 'active' => 'public.projects|public.project-details'],
-                ['label' => 'Gallery', 'route' => 'public.gallery', 'active' => 'public.gallery'],
-                ['label' => 'Testimonials', 'route' => 'public.testimonials', 'active' => 'public.testimonials'],
-                ['label' => 'Clients', 'route' => 'public.clients', 'active' => 'public.clients'],
-                ['label' => 'Careers', 'route' => 'public.careers', 'active' => 'public.careers*'],
-            ];
-            $footerServices = Cache::remember('public_footer_services', 300, fn () => \App\Models\Service::latest()->take(5)->get(['id', 'slug', 'title']));
+            $brandName = mb_strtoupper($companyName) === $companyName ? 'RubiKnows' : $companyName;
+            $contact = \App\Support\ContactDetails::fromSettings();
+            [$phone, $phoneHref, $email, $address] = [$contact->phone, $contact->phoneHref, $contact->email, $contact->address];
+
+            $pageTitle = isset($title) && trim((string) $title) !== '' && (string) $title !== 'Home'
+                ? trim((string) $title).' | '.$brandName
+                : $brandName.' | Engineering and Construction in Tagum City';
+            $metaDescription = isset($description) && trim((string) $description) !== ''
+                ? trim(preg_replace('/\s+/', ' ', strip_tags((string) $description)))
+                : ($settings['seo_description'] ?? 'Engineering, design and construction company in Tagum City, Davao del Norte, serving property owners across Mindanao.');
+            $shareImage = isset($image) && trim((string) $image) !== '' ? url(trim((string) $image)) : asset('images/og-default.png');
+
+            $navItems = array_values(array_filter([
+                ['label' => 'Services', 'route' => 'public.services', 'active' => ['public.services', 'public.service-details']],
+                $sections['projects'] ? ['label' => 'Projects', 'route' => 'public.projects', 'active' => ['public.projects', 'public.project-details']] : null,
+                ['label' => 'About', 'route' => 'public.about', 'active' => ['public.about']],
+                ['label' => 'Careers', 'route' => 'public.careers', 'active' => ['public.careers']],
+                ['label' => 'Contact', 'route' => 'public.contact', 'active' => ['public.contact']],
+            ]));
+
+            $socialLinks = array_filter([
+                'Facebook' => $settings['social_facebook'] ?? null,
+                'LinkedIn' => $settings['social_linkedin'] ?? null,
+            ], fn ($url) => is_string($url) && filter_var($url, FILTER_VALIDATE_URL));
+
+            $organization = array_filter([
+                '@context' => 'https://schema.org',
+                '@type' => 'GeneralContractor',
+                'name' => $brandName,
+                'url' => url('/'),
+                'logo' => asset('RK4.webp'),
+                'image' => asset('images/og-default.png'),
+                'description' => $metaDescription,
+                'telephone' => $phone ?: null,
+                'email' => $email ?: null,
+                'foundingDate' => $settings['about_est_year'] ?? null,
+                'address' => $address ? ['@type' => 'PostalAddress', 'streetAddress' => $address, 'addressCountry' => 'PH'] : null,
+                'areaServed' => 'Mindanao, Philippines',
+                'sameAs' => array_values($socialLinks) ?: null,
+            ]);
         @endphp
 
         <title>{{ $pageTitle }}</title>
-        <meta name="description" content="{{ $seoDescription }}">
+        <meta name="description" content="{{ $metaDescription }}">
         <link rel="canonical" href="{{ url()->current() }}">
         <meta property="og:type" content="website">
+        <meta property="og:site_name" content="{{ $brandName }}">
         <meta property="og:url" content="{{ url()->current() }}">
         <meta property="og:title" content="{{ $pageTitle }}">
-        <meta property="og:description" content="{{ $seoDescription }}">
-        <meta property="og:image" content="{{ asset('RK4.webp') }}">
-        <meta property="og:site_name" content="{{ $companyName }}">
+        <meta property="og:description" content="{{ $metaDescription }}">
+        <meta property="og:image" content="{{ $shareImage }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="{{ $pageTitle }}">
-        <meta name="twitter:description" content="{{ $seoDescription }}">
-        <meta name="twitter:image" content="{{ asset('RK4.webp') }}">
-        <script nonce="{{ Vite::cspNonce() }}" type="application/ld+json">{"@@context":"https://schema.org","@@type":"Organization","name":@json($companyName),"url":@json(url('/')),"logo":@json(asset('RK4.webp')),"description":@json($seoDescription)}</script>
+        <meta name="theme-color" content="#1d1c19">
+        <script nonce="{{ Vite::cspNonce() }}" type="application/ld+json">{!! json_encode($organization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link rel="dns-prefetch" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900|space-grotesk:400,500,600,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|inter:400,900&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('head')
         <style>[x-cloak] { display: none !important; }</style>
     </head>
-    <body class="rk-public flex min-h-screen flex-col antialiased">
+    <body class="rk-public">
         <a class="rk-skip-link" href="#main-content">Skip to content</a>
-        <div class="rk-scroll-progress" aria-hidden="true"></div>
 
-        <header class="rk-header" x-data="{ mobileOpen: false }" @keydown.escape.window="if (mobileOpen) { mobileOpen = false; $nextTick(() => $refs.menuToggle.focus()) }">
-            <div class="rk-header__inner">
-                <div class="rk-brand">
-                    <a href="{{ route('public.home') }}" aria-label="{{ $companyName }} home" class="rk-logo-wordmark">
-                        <x-logo textSize="text-2xl sm:text-3xl" class="h-12 sm:h-14 w-auto" />
-                    </a>
-                </div>
+        <header class="rk-header" x-data="{ open: false }" @keydown.escape.window="if (open) { open = false; $nextTick(() => $refs.menuButton.focus()) }">
+            <div class="rk-container rk-header__bar">
+                <a class="rk-brand" href="{{ route('public.home') }}" aria-label="{{ $brandName }} home">
+                    <x-logo textSize="text-[1.6rem]" class="h-11 w-auto" />
+                </a>
 
-                <nav class="rk-nav" aria-label="Primary navigation">
+                <nav class="rk-nav" aria-label="Main">
                     @foreach($navItems as $item)
-                        <a href="{{ route($item['route']) }}" class="{{ request()->routeIs(...explode('|', $item['active'])) ? 'is-active' : '' }}">{{ $item['label'] }}</a>
+                        <a href="{{ route($item['route']) }}" @if(request()->routeIs(...$item['active'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                     @endforeach
-                    <a href="{{ route('public.contact') }}" class="rk-nav__contact {{ request()->routeIs('public.contact') ? 'is-active' : '' }}">Contact us</a>
                 </nav>
 
-                <button x-ref="menuToggle" type="button" class="rk-mobile-toggle" @click="mobileOpen = !mobileOpen; if (mobileOpen) $nextTick(() => $refs.firstMobileLink.focus())" :aria-expanded="mobileOpen.toString()" aria-controls="rk-mobile-menu" aria-label="Toggle navigation">
-                    <svg x-show="!mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16" /></svg>
-                    <svg x-cloak x-show="mobileOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" d="m6 6 12 12M18 6 6 18" /></svg>
+                <div class="rk-header__actions">
+                    @if($phone)
+                        <a class="rk-header__phone" href="tel:{{ $phoneHref }}">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" stroke-linejoin="round"/></svg>
+                            {{ $phone }}
+                        </a>
+                    @endif
+                    <a class="rk-btn rk-btn--primary" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quote</a>
+                </div>
+
+                <button type="button" class="rk-menu-button" x-ref="menuButton" @click="open = !open" :aria-expanded="open.toString()" aria-controls="rk-mobile-menu">
+                    <span x-text="open ? 'Close' : 'Menu'">Menu</span>
+                    <svg x-show="!open" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/></svg>
+                    <svg x-cloak x-show="open" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round"/></svg>
                 </button>
             </div>
 
-            <nav id="rk-mobile-menu" class="rk-mobile-menu" x-cloak x-show="mobileOpen" x-transition.opacity @click.outside="mobileOpen = false" aria-label="Mobile navigation">
-                <div class="rk-mobile-menu__inner">
+            <div id="rk-mobile-menu" class="rk-mobile-menu" x-cloak x-show="open" @click.outside="open = false">
+                <nav class="rk-container" aria-label="Main">
                     @foreach($navItems as $item)
-                        <a @if($loop->first) x-ref="firstMobileLink" @endif @click="mobileOpen = false" href="{{ route($item['route']) }}">{{ $item['label'] }}</a>
+                        <a href="{{ route($item['route']) }}" @if(request()->routeIs(...$item['active'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                     @endforeach
-                    <a @click="mobileOpen = false" href="{{ route('public.contact') }}" class="rk-mobile-menu__contact">Contact us</a>
-                </div>
-            </nav>
+                    <div class="rk-mobile-menu__actions">
+                        <a class="rk-btn rk-btn--primary" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quote</a>
+                        @if($phone)
+                            <a class="rk-btn rk-btn--outline" href="tel:{{ $phoneHref }}">Call {{ $phone }}</a>
+                        @endif
+                    </div>
+                </nav>
+            </div>
         </header>
 
         @if(session('success'))
-            <div class="rk-alert rk-alert--success" role="status" x-data="{ open: true }" x-show="open">
-                <span>{{ session('success') }}</span><button type="button" @click="open = false" aria-label="Dismiss message">×</button>
+            <div class="rk-alert rk-alert--success" role="status" x-data="{ shown: true }" x-show="shown">
+                <div class="rk-container rk-alert__inner">
+                    <p>{{ session('success') }}</p>
+                    <button type="button" @click="shown = false" aria-label="Dismiss message">&times;</button>
+                </div>
             </div>
         @endif
         @if(session('error'))
-            <div class="rk-alert rk-alert--error" role="alert" x-data="{ open: true }" x-show="open">
-                <span>{{ session('error') }}</span><button type="button" @click="open = false" aria-label="Dismiss message">×</button>
+            <div class="rk-alert rk-alert--error" role="alert" x-data="{ shown: true }" x-show="shown">
+                <div class="rk-container rk-alert__inner">
+                    <p>{{ session('error') }}</p>
+                    <button type="button" @click="shown = false" aria-label="Dismiss message">&times;</button>
+                </div>
             </div>
         @endif
 
-        <main id="main-content" class="flex-grow">
+        <main id="main-content">
             {{ $slot }}
         </main>
 
         <footer class="rk-footer">
             <div class="rk-container rk-footer__grid">
-                <div class="rk-footer__brand">
-                    <a href="{{ route('public.home') }}" class="rk-logo-wordmark inline-flex" aria-label="{{ $companyName }} home">
-                        <x-logo :dark="true" textSize="text-3xl" class="h-16 w-auto" />
+                <div class="rk-footer__about">
+                    <a class="rk-brand" href="{{ route('public.home') }}" aria-label="{{ $brandName }} home">
+                        <x-logo :dark="true" textSize="text-[1.6rem]" class="h-11 w-auto" />
                     </a>
-                    <p>Engineering, construction, and consultancy work shaped with rigor, care, and a practical commitment to what lasts.</p>
-                    <x-public.action href="{{ route('public.contact', ['tab' => 'quote']) }}" tone="gold" class="mt-7">Start a project</x-public.action>
+                    <p>Engineering, design and construction from Tagum City, Davao del Norte. Serving homeowners, businesses and institutions across Mindanao{{ !empty($settings['about_est_year']) ? ' since '.$settings['about_est_year'] : '' }}.</p>
                 </div>
+
                 <div>
-                    <h2>Explore</h2>
+                    <h2>Company</h2>
                     <ul>
-                        <li><a href="{{ route('public.about') }}">About RubiKnows</a></li>
-                        <li><a href="{{ route('public.projects') }}">Project portfolio</a></li>
-                        <li><a href="{{ route('public.gallery') }}">Gallery</a></li>
+                        <li><a href="{{ route('public.about') }}">About us</a></li>
+                        @if($sections['projects'])<li><a href="{{ route('public.projects') }}">Projects</a></li>@endif
+                        @if($sections['gallery'])<li><a href="{{ route('public.gallery') }}">Gallery</a></li>@endif
+                        @if($sections['testimonials'])<li><a href="{{ route('public.testimonials') }}">Testimonials</a></li>@endif
+                        @if($sections['clients'])<li><a href="{{ route('public.clients') }}">Clients and partners</a></li>@endif
                         <li><a href="{{ route('public.careers') }}">Careers</a></li>
+                        <li><a href="{{ route('public.contact') }}">Contact</a></li>
                     </ul>
                 </div>
+
                 <div>
                     <h2>Services</h2>
                     <ul>
                         @forelse($footerServices as $service)
                             <li><a href="{{ route('public.service-details', $service) }}">{{ $service->title }}</a></li>
                         @empty
-                            <li><a href="{{ route('public.services') }}">View our services</a></li>
+                            <li><a href="{{ route('public.services') }}">Our services</a></li>
                         @endforelse
                     </ul>
                 </div>
+
                 <div>
-                    <h2>Contact</h2>
+                    <h2>Get in touch</h2>
                     <address>
-                        @if(!empty($settings['office_address'])){{ $settings['office_address'] }}<br>@endif
-                        @if(!empty($settings['contact_phone']))<a href="tel:{{ $settings['contact_phone'] }}">{{ $settings['contact_phone'] }}</a><br>@endif
-                        @if(!empty($settings['contact_email']))<a href="mailto:{{ $settings['contact_email'] }}">{{ $settings['contact_email'] }}</a>@endif
+                        @if($phone)<a href="tel:{{ $phoneHref }}">{{ $phone }}</a>@endif
+                        @if($email)<a href="mailto:{{ $email }}">{{ $email }}</a>@endif
+                        @if($address)<span>{{ $address }}</span>@endif
                     </address>
+                    @if($socialLinks)
+                        <ul class="rk-footer__social">
+                            @foreach($socialLinks as $network => $url)
+                                <li><a href="{{ $url }}" rel="noopener" target="_blank">{{ $network }}</a></li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             </div>
+
             <div class="rk-container rk-footer__bottom">
-                <span>© {{ now()->year }} {{ $companyName }}. All rights reserved.</span>
-                <nav aria-label="Legal navigation"><a href="{{ route('public.privacy') }}">Privacy</a><a href="{{ route('public.terms') }}">Terms</a><a href="{{ auth()->check() ? route('dashboard') : route('login') }}">Admin CMS</a></nav>
+                <p>&copy; {{ now()->year }} {{ $brandName }}. All rights reserved.</p>
+                <nav class="rk-footer__legal" aria-label="Legal">
+                    <a href="{{ route('public.privacy') }}">Privacy policy</a>
+                    <a href="{{ route('public.terms') }}">Terms of use</a>
+                    <a href="{{ auth()->check() ? route('dashboard') : route('login') }}">Staff login</a>
+                </nav>
             </div>
         </footer>
 
-        <script nonce="{{ Vite::cspNonce() }}">
-            document.addEventListener('DOMContentLoaded', function () {
-                const progress = document.querySelector('.rk-scroll-progress');
-                if (progress) {
-                    const updateProgress = () => {
-                        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-                        progress.style.transform = `scaleX(${scrollable > 0 ? window.scrollY / scrollable : 0})`;
-                    };
-                    window.addEventListener('scroll', updateProgress, { passive: true });
-                    updateProgress();
-                }
-            });
-        </script>
         @stack('scripts')
     </body>
 </html>

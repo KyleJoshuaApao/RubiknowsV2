@@ -14,7 +14,8 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    // With a Resend key present, mail goes out through Resend's HTTPS API.
+    'default' => env('MAIL_MAILER', env('RESEND_API_KEY') ? 'resend' : 'log'),
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +63,8 @@ return [
         ],
 
         'resend' => [
-            'transport' => 'resend',
+            'transport' => 'resend-api',
+            'key' => env('RESEND_API_KEY'),
         ],
 
         'sendmail' => [

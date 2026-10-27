@@ -1,34 +1,36 @@
 <x-public-layout>
     <x-slot name="title">Testimonials</x-slot>
+    <x-slot name="description">What clients say about working with RubiKnows on their engineering and construction projects.</x-slot>
 
-    <x-public.page-intro eyebrow="Client perspective" number="06" title="The work is remembered by the people it serves." lede="A few words from clients and collaborators who have trusted RubiKnows with their projects." />
+    <x-public.page-header title="Testimonials" lede="What clients say about working with us." :breadcrumbs="['Testimonials' => null]" />
 
-    <section class="rk-section rk-section--paper">
+    <section class="rk-section">
         <div class="rk-container">
-            <div class="rk-testimonial-grid">
-                @forelse($testimonials as $testimonial)
-                    <article class="rk-testimonial-card">
-                        <span class="rk-testimonial-card__quote" aria-hidden="true">“</span>
-                        <p class="rk-testimonial-card__body">{{ $testimonial->quote }}</p>
-                        <div class="rk-testimonial-card__person">
-                            @if($testimonial->avatar_path)
-                                <img loading="lazy" decoding="async" src="{{ \App\Support\MediaUrl::for($testimonial->avatar_path) }}" alt="{{ $testimonial->client_name }}">
-                            @else
-                                <span class="rk-avatar">{{ strtoupper(substr($testimonial->client_name, 0, 1)) }}</span>
-                            @endif
-                            <div>
-                                <p class="rk-testimonial-card__name">{{ $testimonial->client_name }}</p>
-                                <p class="rk-testimonial-card__role">{{ collect([$testimonial->role, $testimonial->company])->filter()->join(' · ') }}</p>
-                            </div>
-                        </div>
-                    </article>
-                @empty
-                    <p class="rk-empty col-span-full">No testimonials have been added yet.</p>
-                @endforelse
-            </div>
-            @if($testimonials->hasPages())
-                <div class="mt-12 flex justify-center">{{ $testimonials->links('vendor.pagination.tailwind') }}</div>
+            @if($testimonials->isNotEmpty())
+                <div class="rk-testimonials">
+                    @foreach($testimonials as $testimonial)
+                        <figure class="rk-testimonial">
+                            <blockquote><p>{{ $testimonial->quote }}</p></blockquote>
+                            <figcaption>
+                                @if($testimonial->avatar_path)
+                                    <img src="{{ \App\Support\MediaUrl::for($testimonial->avatar_path) }}" alt="" loading="lazy">
+                                @else
+                                    <span class="rk-testimonial__initial" aria-hidden="true">{{ mb_strtoupper(mb_substr($testimonial->client_name, 0, 1)) }}</span>
+                                @endif
+                                <span>
+                                    <strong>{{ $testimonial->client_name }}</strong>
+                                    @if($testimonial->role || $testimonial->company)<span>{{ collect([$testimonial->role, $testimonial->company])->filter()->join(', ') }}</span>@endif
+                                </span>
+                            </figcaption>
+                        </figure>
+                    @endforeach
+                </div>
+                {{ $testimonials->links('vendor.pagination.public') }}
+            @else
+                <x-public.empty-state title="No testimonials yet" message="Client feedback will appear here. Ask us for references from past clients." />
             @endif
         </div>
     </section>
+
+    <x-public.contact-band />
 </x-public-layout>

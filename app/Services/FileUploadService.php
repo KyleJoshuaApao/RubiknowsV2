@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class FileUploadService
 {
-    public const PUBLIC_UPLOAD_DISK = 'public';
+    public const PUBLIC_UPLOAD_DISK = 'media';
 
     private const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'pdf', 'doc', 'docx', 'mp4', 'mov', 'zip'];
 
@@ -62,8 +62,18 @@ class FileUploadService
      */
     public function delete(?string $filePath, string $disk = self::PUBLIC_UPLOAD_DISK): void
     {
-        if ($filePath && Storage::disk($disk)->exists($filePath)) {
-            Storage::disk($disk)->delete($filePath);
+        // Remote URLs and files shipped in public/ are not ours to delete.
+        if (! $filePath || filter_var($filePath, FILTER_VALIDATE_URL) || str_starts_with($filePath, '/')) {
+            return;
+        }
+
+        try {
+            if (Storage::disk($disk)->exists($filePath)) {
+                Storage::disk($disk)->delete($filePath);
+            }
+        } catch (\Throwable $exception) {
+            // Cleaning up a file must never block deleting or updating the record.
+            report($exception);
         }
     }
 }

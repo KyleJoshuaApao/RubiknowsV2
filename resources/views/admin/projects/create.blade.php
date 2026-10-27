@@ -65,6 +65,7 @@
                     <div class="mb-4">
                         <label for="description" class="form-label-v2">Description</label>
                         <textarea name="description" id="description" rows="5" class="form-input-v2">{{ old('description') }}</textarea>
+                        <p class="text-xs text-gray-500 mt-1">Leave a blank line between paragraphs. Start a line with “- ” to make a bullet list.</p>
                     </div>
 
                     <div class="flex justify-end">

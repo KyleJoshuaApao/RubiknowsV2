@@ -26,7 +26,7 @@
                         </div>
                         <div>
                             <x-input-label for="contact_email" value="Contact Email" />
-                            <x-text-input id="contact_email" name="contact_email" type="email" class="mt-1 block w-full" value="{{ $settings['contact_email'] ?? 'info@rubiknows.com' }}" />
+                            <x-text-input id="contact_email" name="contact_email" type="email" class="mt-1 block w-full" value="{{ $settings['contact_email'] ?? '' }}" placeholder="Where website notifications are sent" />
                         </div>
                         <div>
                             <x-input-label for="contact_phone" value="Contact Phone" />
@@ -44,7 +44,7 @@
                     <h3 class="text-lg font-medium text-gray-900 border-b pb-2 mb-4">About Page Content</h3>
                     
                     <!-- Include Quill CDN Assets directly -->
-                    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+                    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" integrity="sha384-VvSC4PGxeMkOaAmyuDGZECjY2dkqdO/IdBYBUK+BCYNc3WIvRxHLUzQ5OSgUaMA7" crossorigin="anonymous">
                     <style>
                         /* Set a clean, professional theme border & heights for editor */
                         .ql-toolbar.ql-snow {
@@ -98,7 +98,7 @@
                         <!-- Story Title -->
                         <div>
                             <x-input-label for="about_story_title" value="Our Story Title" />
-                            <x-text-input id="about_story_title" name="about_story_title" type="text" class="mt-1 block w-full" value="{{ $settings['about_story_title'] ?? 'Building Trust, Delivering Excellence' }}" />
+                            <x-text-input id="about_story_title" name="about_story_title" type="text" class="mt-1 block w-full" value="{{ $settings['about_story_title'] ?? '' }}" placeholder="Who we are" />
                         </div>
                         
                         <!-- Story Content (Rich Editor) -->
@@ -107,42 +107,43 @@
                             <input type="hidden" name="about_story_content" id="about_story_content" value="{{ $settings['about_story_content'] ?? '' }}">
                             <div class="mt-1">
                                 <div id="about_story_editor">
-                                    {!! \App\Support\SafeHtml::clean($settings['about_story_content'] ?? null) ?: e("Founded with a vision to redefine structural integrity and innovative design, RubiKnows has grown into a premier engineering and construction firm. We specialize in delivering comprehensive solutions from initial consultancy to final build.\n\nOur team of dedicated engineers, architects, and project managers work synergistically to ensure that every project we undertake not only meets but exceeds industry standards. We pride ourselves on safety, sustainability, and unparalleled craftsmanship.") !!}
+                                    {!! \App\Support\SafeHtml::clean($settings['about_story_content'] ?? null) !!}
                                 </div>
                             </div>
+                            <p class="text-xs text-gray-500 mt-1">Leave empty to show the standard company introduction on the About page.</p>
                         </div>
 
                         <!-- Story Stats -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             <div>
                                 <x-input-label for="about_projects_count" value="Projects Completed Count" />
-                                <x-text-input id="about_projects_count" name="about_projects_count" type="number" class="mt-1 block w-full" value="{{ $settings['about_projects_count'] ?? '100' }}" />
+                                <x-text-input id="about_projects_count" name="about_projects_count" type="number" class="mt-1 block w-full" value="{{ $settings['about_projects_count'] ?? '' }}" placeholder="e.g. 100" />
                             </div>
                             <div>
                                 <x-input-label for="about_experience_years" value="Years Experience" />
-                                <x-text-input id="about_experience_years" name="about_experience_years" type="number" class="mt-1 block w-full" value="{{ $settings['about_experience_years'] ?? '5' }}" />
+                                <x-text-input id="about_experience_years" name="about_experience_years" type="number" class="mt-1 block w-full" value="{{ $settings['about_experience_years'] ?? '' }}" placeholder="e.g. 5" />
                             </div>
                             <div>
                                 <x-input-label for="about_est_year" value="Est. Year" />
-                                <x-text-input id="about_est_year" name="about_est_year" type="text" class="mt-1 block w-full" value="{{ $settings['about_est_year'] ?? '2020' }}" />
+                                <x-text-input id="about_est_year" name="about_est_year" type="text" class="mt-1 block w-full" value="{{ $settings['about_est_year'] ?? '' }}" placeholder="e.g. 2020" />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js" integrity="sha384-hcxmSutM10NL6iGBAA0LStIhy+kWJxfrhqWVMRuABZH5Vqztexq2nBz/Xnfllly9" crossorigin="anonymous"></script>
                 <script nonce="{{ Vite::cspNonce() }}">
                     document.addEventListener('DOMContentLoaded', function () {
-                        // Simplified toolbar options as requested
+                        // Only formatting the public About page supports.
                         const toolbarOptions = [
                             ['bold', 'italic'],
-                            [{ 'font': [] }],
-                            [{ 'align': [] }]
+                            ['link'],
+                            ['clean']
                         ];
 
-                        // Initialize Quill for Story
                         const quillStory = new Quill('#about_story_editor', {
                             theme: 'snow',
+                            placeholder: 'Tell visitors how the company started, what you do and who you work with.',
                             modules: { toolbar: toolbarOptions }
                         });
 
@@ -164,7 +165,8 @@
                     <div class="space-y-4">
                         <div>
                             <x-input-label for="seo_description" value="Default Meta Description" />
-                            <textarea id="seo_description" name="seo_description" rows="3" class="block w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors">{{ $settings['seo_description'] ?? 'Top-tier engineering, construction, and consultancy services.' }}</textarea>
+                            <textarea id="seo_description" name="seo_description" rows="3" maxlength="300" class="block w-full bg-gray-50 border-0 border-b-4 border-gray-200 focus:border-brand-500 focus:ring-0 px-4 py-4 font-bold text-gray-900 transition-colors">{{ $settings['seo_description'] ?? '' }}</textarea>
+                            <p class="text-xs text-gray-500 mt-1">Shown by Google and when links are shared. Aim for one or two sentences (up to about 155 characters) saying what you do and where.</p>
                         </div>
                     </div>
                 </div>
@@ -180,22 +182,12 @@
                         </div>
                         <div>
                             <x-input-label for="social_linkedin" value="LinkedIn URL" />
-                            <x-text-input id="social_linkedin" name="social_linkedin" type="url" class="mt-1 block w-full" value="{{ $settings['social_linkedin'] ?? '' }}" placeholder="https://linkedin.com/in/..." />
+                            <x-text-input id="social_linkedin" name="social_linkedin" type="url" class="mt-1 block w-full" value="{{ $settings['social_linkedin'] ?? '' }}" placeholder="https://linkedin.com/company/..." />
                         </div>
                     </div>
-                </div>
-
-                <!-- Integrations Section -->
-                <div>
-                    <h3 class="text-lg font-medium text-gray-900 border-b pb-2 mb-4">Integrations</h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <x-input-label for="nvidia_nim_api_key" value="NVIDIA NIM API Key" />
-                            <x-text-input id="nvidia_nim_api_key" name="nvidia_nim_api_key" type="password" class="mt-1 block w-full" value="{{ $settings['nvidia_nim_api_key'] ?? '' }}" placeholder="nvapi-..." />
-                            <p class="text-xs text-gray-500 mt-1">API Key for NVIDIA NIM services.</p>
-                        </div>
-                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Links appear in the website footer. Leave a field empty to hide it.</p>
+                    <x-input-error class="mt-2" :messages="$errors->get('social_facebook')" />
+                    <x-input-error class="mt-2" :messages="$errors->get('social_linkedin')" />
                 </div>
             </div>
 

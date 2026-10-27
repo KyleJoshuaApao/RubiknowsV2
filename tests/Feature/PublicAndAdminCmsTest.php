@@ -51,13 +51,17 @@ class PublicAndAdminCmsTest extends TestCase
         }
     }
 
-    public function test_homepage_uses_a_safe_careers_call_to_action_when_live_content_is_empty(): void
+    public function test_homepage_falls_back_to_default_copy_and_hides_empty_sections(): void
     {
         $this->get(route('public.home'))
             ->assertOk()
-            ->assertSee('Build your career with the industry leaders.')
-            ->assertSee('Admin CMS')
-            ->assertSee(route('login'));
+            ->assertSee('Work with us')
+            ->assertSee('Send your application')
+            ->assertSee('Staff login')
+            ->assertSee(route('login'))
+            ->assertDontSee('Recent projects')
+            ->assertDontSee('href="'.route('public.projects').'"', false)
+            ->assertDontSee('href="'.route('public.gallery').'"', false);
     }
 
     public function test_public_services_page_links_to_each_service_detail_page(): void
@@ -65,27 +69,39 @@ class PublicAndAdminCmsTest extends TestCase
         $service = Service::create([
             'title' => 'Structural Audit',
             'short_description' => 'Independent structural review.',
+            'content' => "We check the structure.\n\n- Site inspection\n- Written report",
         ]);
-        Testimonial::create([
-            'client_name' => 'Ava Santos',
-            'quote' => 'Clear, considered delivery from brief to handover.',
-            'is_published' => true,
-        ]);
+        $other = Service::create(['title' => 'Site Development']);
 
         $this->get(route('public.services'))
             ->assertOk()
             ->assertSee(route('public.service-details', $service))
-            ->assertSee('Client perspective')
-            ->assertSee('rk-section--ink');
+            ->assertSee('Independent structural review.');
 
         $this->get(route('public.service-details', $service))
             ->assertOk()
-            ->assertSee('Structural Audit');
+            ->assertSee('Structural Audit')
+            ->assertSee('<li>Site inspection</li>', false)
+            ->assertSee(route('public.service-details', $other))
+            ->assertSee(route('public.contact', ['tab' => 'quote', 'service' => 'Structural Audit']));
+    }
+
+    public function test_service_content_cannot_inject_html(): void
+    {
+        $service = Service::create([
+            'title' => 'Structural Audit',
+            'content' => "<script>alert(1)</script>\n\n[click](javascript:alert(1))",
+        ]);
+
+        $this->get(route('public.service-details', $service))
+            ->assertOk()
+            ->assertDontSee('<script>alert(1)</script>', false)
+            ->assertDontSee('href="javascript:', false);
     }
 
     public function test_public_gallery_renders_the_uploaded_media_title_and_url(): void
     {
-        $media = GalleryMedia::create([
+        GalleryMedia::create([
             'title' => 'Bridge construction progress',
             'type' => 'Photo',
             'category' => 'Construction Progress',
@@ -96,29 +112,62 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertOk()
             ->assertSee('Bridge construction progress')
             ->assertSee('/storage/gallery/bridge.webp')
-            ->assertSee('rk-portfolio-mosaic')
-            ->assertSee('rk-gallery-mosaic__cta');
+            ->assertSee('Photo viewer');
     }
 
-    public function test_public_projects_use_the_editorial_work_mosaic(): void
+    public function test_projects_page_explains_when_nothing_is_published_yet(): void
     {
         $this->get(route('public.projects'))
             ->assertOk()
-            ->assertSee('rk-portfolio-mosaic')
-            ->assertSee('rk-project-mosaic__cta')
-            ->assertSee('Start the<br>next build.', false);
+            ->assertSee('Project write-ups are on the way')
+            ->assertSee(route('public.contact'));
     }
 
-    public function test_about_team_cards_reveal_accessible_roles_on_focus(): void
+    public function test_projects_can_be_filtered_by_category(): void
+    {
+        Project::create(['title' => 'Family Home', 'category_id' => 'Residential']);
+        Project::create(['title' => 'Farm Road', 'category_id' => 'Civil works']);
+
+        $this->get(route('public.projects'))
+            ->assertOk()
+            ->assertSee('Family Home')
+            ->assertSee('Farm Road')
+            ->assertSee(route('public.projects', ['category' => 'Residential']), false);
+
+        $this->get(route('public.projects', ['category' => 'Residential']))
+            ->assertOk()
+            ->assertSee('Family Home')
+            ->assertDontSee('Farm Road');
+
+        // Unknown categories are ignored rather than returning an empty list.
+        $this->get(route('public.projects', ['category' => 'Nope']))
+            ->assertOk()
+            ->assertSee('Farm Road');
+    }
+
+    public function test_public_lists_paginate_with_the_site_pagination(): void
+    {
+        foreach (range(1, 13) as $number) {
+            Project::create(['title' => "Project {$number}"]);
+        }
+
+        $this->get(route('public.projects'))
+            ->assertOk()
+            ->assertSee('rk-pagination')
+            ->assertSee(route('public.projects', ['page' => 2]), false);
+
+        $this->get(route('public.projects', ['page' => 2]))->assertOk();
+    }
+
+    public function test_about_page_lists_the_founders_without_stock_portraits(): void
     {
         $this->get(route('public.about'))
             ->assertOk()
-            ->assertSee('rk-people-grid')
-            ->assertSee('rk-person-card__role-overlay')
-            ->assertSee('rk-about-faith__verse')
-            ->assertSee('What is your role?')
-            ->assertSee('tabindex="0"', false)
-            ->assertSee('Founder / Owner');
+            ->assertSee('Ruvelyn S. Rubinos')
+            ->assertSee('Kevin C. Rubinos')
+            ->assertSee('Founder and Owner')
+            ->assertSee('Matthew 19:26')
+            ->assertDontSee('images.unsplash.com', false);
     }
 
     public function test_public_media_urls_are_same_origin_when_app_url_is_stale(): void
@@ -126,6 +175,8 @@ class PublicAndAdminCmsTest extends TestCase
         $this->assertSame('/storage/projects/site.webp', MediaUrl::for('projects/site.webp'));
         $this->assertSame('/storage/gallery/site.webp', MediaUrl::for('http://localhost:8000/storage/gallery/site.webp'));
         $this->assertSame('https://images.unsplash.com/photo-1?w=800', MediaUrl::for('https://images.unsplash.com/photo-1?w=800'));
+        $this->assertSame('/images/site/rebar-deck-1600.webp', MediaUrl::for('/images/site/rebar-deck-1600.webp'));
+        $this->assertNull(MediaUrl::for(null));
     }
 
     public function test_admin_cms_pages_render_successfully(): void
@@ -199,7 +250,7 @@ class PublicAndAdminCmsTest extends TestCase
     {
         $this->actingAs($this->superAdmin());
         config(['filesystems.default' => 's3']);
-        Storage::fake('public');
+        Storage::fake('media');
         Storage::fake('s3');
 
         $this->post(route('admin.services.store'), [
@@ -227,7 +278,7 @@ class PublicAndAdminCmsTest extends TestCase
             'latitude' => 7.1907,
             'longitude' => 125.4553,
         ]);
-        Storage::disk('public')->assertExists($project->image_url);
+        Storage::disk('media')->assertExists($project->image_url);
         Storage::disk('s3')->assertMissing($project->image_url);
 
         $this->put(route('admin.projects.update', $project), [
@@ -250,7 +301,7 @@ class PublicAndAdminCmsTest extends TestCase
         ])->assertRedirect(route('admin.gallery.index'));
         $this->assertDatabaseHas('gallery_media', ['title' => 'Site Photo']);
         $gallery = GalleryMedia::where('title', 'Site Photo')->firstOrFail();
-        Storage::disk('public')->assertExists($gallery->url);
+        Storage::disk('media')->assertExists($gallery->url);
         Storage::disk('s3')->assertMissing($gallery->url);
 
         $this->post(route('admin.testimonials.store'), [
@@ -328,10 +379,10 @@ class PublicAndAdminCmsTest extends TestCase
         $this->get(route('public.home'))
             ->assertOk()
             ->assertSee('home-project-map')
-            ->assertSee('Projects across')
-            ->assertSee('Mindanao.')
-            ->assertSee('RubiKnows engineering and construction projects across Mindanao')
+            ->assertSee('Where we have worked')
+            ->assertSee('Map of RubiKnows projects in Mindanao')
             ->assertSee('Davao Civic Center')
+            ->assertSee('sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=', false)
             ->assertSee(json_encode(route('public.project-details', $project)), false)
             ->assertSee('window.location.assign(point.url);', false)
             ->assertSee('tile.openstreetmap.org', false)
@@ -345,10 +396,12 @@ class PublicAndAdminCmsTest extends TestCase
 
     public function test_project_maps_are_scoped_to_mindanao(): void
     {
+        Project::create(['title' => 'Manila Tower', 'latitude' => 14.5995, 'longitude' => 120.9842]);
+
+        // Pins outside Mindanao never reach the map, and an empty map is not shown.
         $this->get(route('public.home'))
             ->assertOk()
-            ->assertSee('Projects across<br><em>Mindanao.', false)
-            ->assertDontSee('Projects across<br><em>the Philippines.', false);
+            ->assertDontSee('home-project-map');
 
         $this->actingAs($this->superAdmin());
 
@@ -365,31 +418,37 @@ class PublicAndAdminCmsTest extends TestCase
         $this->assertDatabaseMissing('projects', ['title' => 'Out of bounds project']);
     }
 
-    public function test_demo_content_seeder_is_repeatable_and_renders_remote_media(): void
+    public function test_sample_content_seeder_is_repeatable_and_uses_bundled_images(): void
     {
         $this->seed(\Database\Seeders\DemoContentSeeder::class);
         $this->seed(\Database\Seeders\DemoContentSeeder::class);
 
-        $this->assertSame(6, Project::where('slug', 'like', 'demo-%')->count());
-        $this->assertSame(6, Service::where('slug', 'like', 'demo-%')->count());
-        $this->assertSame(8, GalleryMedia::where('title', 'like', '[Demo]%')->count());
-        $this->assertSame(5, Testimonial::where('client_name', 'like', '[Demo]%')->count());
-        $this->assertSame(6, Client::where('name', 'like', '[Demo]%')->count());
-        $this->assertSame(6, Project::where('slug', 'like', 'demo-%')->whereNotNull('latitude')->whereNotNull('longitude')->count());
-        Project::where('slug', 'like', 'demo-%')->get()->each(function (Project $project): void {
+        $this->assertSame(6, Project::where('slug', 'like', 'sample-%')->count());
+        $this->assertSame(6, Service::count());
+        $this->assertSame(6, GalleryMedia::count());
+        $this->assertSame(3, Testimonial::count());
+        $this->assertSame(4, Client::count());
+        Project::all()->each(function (Project $project): void {
             $this->assertTrue(MindanaoMap::contains($project->latitude, $project->longitude));
+            $this->assertFileExists(public_path(ltrim($project->image_url, '/')));
         });
-        $this->assertSame(6, Service::where('slug', 'like', 'demo-%')->whereNotNull('image_url')->count());
-        $this->assertSame(5, Testimonial::where('client_name', 'like', '[Demo]%')->whereNotNull('avatar_url')->count());
+        Service::all()->each(fn (Service $service) => $this->assertFileExists(public_path(ltrim($service->image_url, '/'))));
 
         $this->get(route('public.projects'))
             ->assertOk()
-            ->assertSee('[Demo] Bayline Transit Hub')
-            ->assertSee('images.unsplash.com', false);
+            ->assertSee('Two-storey residence, Visayan Village')
+            ->assertSee('/images/site/', false)
+            ->assertDontSee('[Demo]');
+    }
 
-        $this->get(route('public.clients'))
-            ->assertOk()
-            ->assertSee('placehold.co', false);
+    public function test_sample_content_seeder_refuses_to_run_in_production(): void
+    {
+        $this->app['env'] = 'production';
+
+        $this->app->make(\Database\Seeders\DemoContentSeeder::class)->run();
+
+        $this->assertSame(0, Project::count());
+        $this->assertSame(0, Testimonial::count());
     }
 
     public function test_admin_project_map_picker_lists_existing_pins_and_enforces_mindanao_bounds(): void
@@ -566,11 +625,11 @@ class PublicAndAdminCmsTest extends TestCase
         Bus::fake();
         Setting::create(['key' => 'contact_email', 'value' => 'hr@example.com']);
         config(['filesystems.default' => 's3']);
-        Storage::fake('local');
+        Storage::fake('documents');
         Storage::fake('s3');
         $job = Job::create(['title' => 'Site Engineer', 'is_archived' => false]);
 
-        $this->post(route('public.careers.apply'), [
+        $this->post(route('public.careers.apply'), $this->publicForm([
             'job_id' => $job->id,
             'name' => 'Applicant',
             'email' => 'applicant@example.com',
@@ -578,7 +637,7 @@ class PublicAndAdminCmsTest extends TestCase
             'message' => 'I would like to apply.',
             'resume' => UploadedFile::fake()->create('resume.pdf', 10, 'application/pdf'),
             'portfolio' => UploadedFile::fake()->create('portfolio.zip', 10, 'application/zip'),
-        ])->assertRedirect();
+        ]))->assertRedirect();
 
         $this->assertDatabaseHas('job_applications', [
             'job_id' => $job->id,
@@ -591,8 +650,8 @@ class PublicAndAdminCmsTest extends TestCase
         });
 
         $application = JobApplication::where('email', 'applicant@example.com')->firstOrFail();
-        Storage::disk('local')->assertExists($application->resume_path);
-        Storage::disk('local')->assertExists($application->portfolio_path);
+        Storage::disk('documents')->assertExists($application->resume_path);
+        Storage::disk('documents')->assertExists($application->portfolio_path);
         Storage::disk('s3')->assertMissing($application->resume_path);
         Storage::disk('s3')->assertMissing($application->portfolio_path);
     }
@@ -601,11 +660,11 @@ class PublicAndAdminCmsTest extends TestCase
     {
         $this->followingRedirects()
             ->from(route('public.careers'))
-            ->post(route('public.careers.apply'), [
+            ->post(route('public.careers.apply'), $this->publicForm([
                 'job_id' => 'general',
                 'name' => 'Applicant',
                 'email' => 'applicant@example.com',
-            ])
+            ]))
             ->assertOk()
             ->assertSee('value="Applicant"', false)
             ->assertSee('The resume field is required.');
@@ -712,18 +771,28 @@ class PublicAndAdminCmsTest extends TestCase
         Storage::shouldReceive('disk')->andThrow(new \RuntimeException('Disk unavailable.'));
 
         $this->from(route('public.contact', ['tab' => 'quote']))
-            ->post(route('public.quotation.submit'), [
+            ->post(route('public.quotation.submit'), $this->publicForm([
                 'name' => 'Client',
                 'email' => 'client@example.com',
                 'service_needed' => 'Structural design',
                 'project_location' => 'Davao City',
                 'description' => 'Two-storey building',
                 'attachment' => UploadedFile::fake()->create('plan.pdf', 10, 'application/pdf'),
-            ])
+            ]))
             ->assertRedirect()
             ->assertSessionHasErrors('quotation');
 
         $this->assertDatabaseMissing('quotation_requests', ['email' => 'client@example.com']);
+    }
+
+    public function test_contact_page_offers_the_published_services_and_preselects_one(): void
+    {
+        Service::create(['title' => 'Site Development']);
+
+        $this->get(route('public.contact', ['tab' => 'quote', 'service' => 'Site Development']))
+            ->assertOk()
+            ->assertSee('<option value="Site Development" selected>Site Development</option>', false)
+            ->assertSee('Other or not sure');
     }
 
     private function superAdmin(): User
