@@ -646,6 +646,15 @@ class PublicAndAdminCmsTest extends TestCase
         });
     }
 
+    public function test_non_numeric_record_ids_return_not_found(): void
+    {
+        $this->get('/projects/does-not-exist')->assertNotFound();
+        $this->get('/services/not-a-service')->assertNotFound();
+
+        $this->actingAs($this->superAdmin());
+        $this->get('/admin/users/abc/edit')->assertNotFound();
+    }
+
     public function test_every_routed_controller_action_exists(): void
     {
         foreach (Route::getRoutes() as $route) {
