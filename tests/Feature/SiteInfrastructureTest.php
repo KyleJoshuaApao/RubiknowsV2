@@ -340,10 +340,10 @@ class SiteInfrastructureTest extends TestCase
         $this->patch(route('admin.preview.publish', ['projects', $projectId]))->assertRedirect();
         $this->patch(route('admin.preview.publish-all', 'news'))->assertRedirect();
         $this->patch(route('admin.preview.publish-all', 'users'))->assertNotFound();
-        $this->get(route('public.home'))->assertSee('Dashboard');
+        $this->get(route('public.home'))->assertDontSee('>Dashboard<', false);
 
         \Illuminate\Support\Facades\Auth::logout();
-        $this->get(route('public.home'))->assertOk()->assertSee('Preview warehouse')->assertSee('Preview news')->assertSee('home-project-map')->assertDontSee('Dashboard');
+        $this->get(route('public.home'))->assertOk()->assertSee('Preview warehouse')->assertSee('Preview news')->assertSee('home-project-map')->assertDontSee('>Dashboard<', false);
     }
 
     public function test_admins_can_post_news_that_shows_on_the_home_page(): void

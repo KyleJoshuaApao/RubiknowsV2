@@ -88,9 +88,6 @@
                 </nav>
 
                 <div class="rk-header__actions">
-                    @auth
-                        <a class="rk-btn rk-btn--outline" href="{{ route('dashboard') }}">Dashboard</a>
-                    @endauth
                     @if($phone)
                         <a class="rk-header__phone" href="tel:{{ $phoneHref }}">
                             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" stroke-linejoin="round"/></svg>
@@ -113,9 +110,6 @@
                         <a href="{{ route($item['route']) }}" @if(request()->routeIs(...$item['active'])) aria-current="page" @endif>{{ $item['label'] }}</a>
                     @endforeach
                     <div class="rk-mobile-menu__actions">
-                        @auth
-                            <a class="rk-btn rk-btn--outline" href="{{ route('dashboard') }}">Dashboard</a>
-                        @endauth
                         <a class="rk-btn rk-btn--primary" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quote</a>
                         @if($phone)
                             <a class="rk-btn rk-btn--outline" href="tel:{{ $phoneHref }}">Call {{ $phone }}</a>
