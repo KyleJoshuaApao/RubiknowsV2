@@ -25,9 +25,18 @@ final class PublicContentCache
      *
      * @return array{projects: bool, gallery: bool, testimonials: bool, clients: bool, open_jobs: int}
      */
+    /**
+     * Admins also see preview content, so their copy of each cached page part
+     * is kept apart from the one visitors get.
+     */
+    public static function key(string $key): string
+    {
+        return PreviewMode::active() ? $key.':admin' : $key;
+    }
+
     public static function sections(): array
     {
-        return Cache::remember(self::SECTIONS, now()->addMinutes(10), fn (): array => [
+        return Cache::remember(self::key(self::SECTIONS), now()->addMinutes(10), fn (): array => [
             'projects' => Project::query()->exists(),
             'gallery' => GalleryMedia::query()->exists(),
             'testimonials' => Testimonial::query()->where('is_published', true)->exists(),
@@ -52,6 +61,7 @@ final class PublicContentCache
     {
         foreach ([self::HOME, self::PROJECT_MAP, self::FOOTER_SERVICES, self::SECTIONS] as $key) {
             Cache::forget($key);
+            Cache::forget($key.':admin');
         }
     }
 

@@ -34,7 +34,7 @@
                                         <img src="{{ \App\Support\MediaUrl::for($post->image_path) }}" alt="" class="h-14 w-20 object-cover border border-gray-200">
                                     @endif
                                     <div class="min-w-0">
-                                        <div class="text-sm font-black text-richblack-900">{{ $post->title ?: Str::limit($post->body, 60) }}</div>
+                                        <div class="text-sm font-black text-richblack-900">{{ $post->title ?: Str::limit($post->body, 60) }} @if($post->is_preview)<span class="ml-2 inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200" title="Only visible to signed-in admins">Preview</span>@endif</div>
                                         <a href="{{ $post->facebook_url }}" target="_blank" rel="noopener" class="text-xs text-blue-600 hover:underline">View on Facebook</a>
                                     </div>
                                 </div>

@@ -306,6 +306,26 @@ class SiteInfrastructureTest extends TestCase
         $this->assertStringContainsString('Licensed Civil Engineer', $job->fresh()->requirements);
     }
 
+    public function test_preview_content_is_only_shown_to_signed_in_admins(): void
+    {
+        DB::table('projects')->insert(['title' => 'Preview warehouse', 'slug' => 'preview-warehouse', 'status' => 'Featured', 'latitude' => 7.3, 'longitude' => 125.68, 'is_preview' => true, 'created_at' => now(), 'updated_at' => now()]);
+        DB::table('gallery_media')->insert(['title' => 'Preview photo', 'type' => 'Photo', 'url' => '/images/site/rebar-deck-1600.webp', 'is_preview' => true, 'created_at' => now(), 'updated_at' => now()]);
+        DB::table('news_posts')->insert(['title' => 'Preview news', 'body' => 'x', 'posted_at' => now()->subDay(), 'facebook_url' => 'https://facebook.com/x', 'is_published' => true, 'is_preview' => true, 'created_at' => now(), 'updated_at' => now()]);
+        $previewId = DB::table('projects')->where('slug', 'preview-warehouse')->value('id');
+
+        // Visitors: nothing from the preview rows, even after an admin warmed the cache.
+        $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]));
+        $this->get(route('public.home'))->assertOk()->assertSee('Preview warehouse')->assertSee('Preview news')->assertSee('home-project-map');
+        $this->get(route('public.gallery'))->assertSee('Preview photo');
+        $this->get(route('public.project-details', $previewId))->assertOk();
+
+        \Illuminate\Support\Facades\Auth::logout();
+        $this->get(route('public.home'))->assertOk()->assertDontSee('Preview warehouse')->assertDontSee('Preview news')->assertDontSee('home-project-map');
+        $this->get(route('public.gallery'))->assertDontSee('Preview photo');
+        $this->get(route('public.project-details', $previewId))->assertNotFound();
+        $this->get('/sitemap.xml')->assertDontSee('/projects/'.$previewId);
+    }
+
     public function test_admins_can_post_news_that_shows_on_the_home_page(): void
     {
         \Illuminate\Support\Facades\Storage::fake('media');
@@ -323,7 +343,7 @@ class SiteInfrastructureTest extends TestCase
         ])->assertRedirect(route('admin.news.index'))->assertSessionHasNoErrors();
 
         $post = \App\Models\NewsPost::firstOrFail();
-        \Illuminate\Support\Facades\Storage::disk('media')->assertExists($post->image_path);
+        $this->assertTrue(\Illuminate\Support\Facades\Storage::disk('media')->exists($post->image_path));
 
         $this->get(route('public.home'))
             ->assertOk()

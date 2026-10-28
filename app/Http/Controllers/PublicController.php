@@ -35,7 +35,7 @@ class PublicController extends Controller
 
     public function index()
     {
-        $home = Cache::remember(PublicContentCache::HOME, now()->addMinutes(5), function (): array {
+        $home = Cache::remember(PublicContentCache::key(PublicContentCache::HOME), now()->addMinutes(5), function (): array {
             $settings = Setting::whereIn('key', ['home_stats_bar', 'home_careers'])->pluck('value', 'key');
 
             $stats = json_decode((string) $settings->get('home_stats_bar', '[]'), true);
@@ -100,7 +100,7 @@ class PublicController extends Controller
             ->withQueryString();
 
         $mapProjects = Cache::remember(
-            PublicContentCache::PROJECT_MAP,
+            PublicContentCache::key(PublicContentCache::PROJECT_MAP),
             now()->addMinutes(5),
             fn () => Project::mapPins(self::MAP_COLUMNS)
         );

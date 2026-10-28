@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasPreviewContent;
 use App\Models\Concerns\RefreshesPublicContent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class NewsPost extends Model
 {
-    use RefreshesPublicContent;
+    use HasPreviewContent, RefreshesPublicContent;
 
     protected $fillable = [
         'title',

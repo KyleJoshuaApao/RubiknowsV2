@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="p-4 border-t border-gray-100">
-                            <h3 class="text-sm font-semibold text-gray-900 truncate" title="{{ $item->title }}">{{ $item->title }}</h3>
+                            <h3 class="text-sm font-semibold text-gray-900 truncate" title="{{ $item->title }}">{{ $item->title }} @if($item->is_preview)<span class="ml-2 inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200" title="Only visible to signed-in admins">Preview</span>@endif</h3>
                             <div class="flex items-center justify-between mt-2">
                                 <span class="text-xs text-gray-500">{{ $item->category }}</span>
                                 <span class="px-2 py-0.5 rounded text-[10px] font-medium {{ $item->type === 'Photo' ? 'bg-blue-50 text-blue-600' : 'bg-purple-50 text-purple-600' }}">{{ $item->type }}</span>
