@@ -25,9 +25,9 @@
                 ['label' => 'Services', 'route' => 'public.services', 'active' => ['public.services', 'public.service-details']],
                 $sections['projects'] ? ['label' => 'Projects', 'route' => 'public.projects', 'active' => ['public.projects', 'public.project-details']] : null,
                 ['label' => 'Gallery', 'route' => 'public.gallery', 'active' => ['public.gallery']],
-                ['label' => 'About', 'route' => 'public.about', 'active' => ['public.about']],
                 ['label' => 'Careers', 'route' => 'public.careers', 'active' => ['public.careers']],
                 ['label' => 'Contact', 'route' => 'public.contact', 'active' => ['public.contact']],
+                ['label' => 'About', 'route' => 'public.about', 'active' => ['public.about']],
             ]));
 
             $socialLinks = array_filter([
