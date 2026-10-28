@@ -44,6 +44,7 @@
 }
 
 .rk-header__actions { display: none; align-items: center; gap: 1.25rem; }
+.rk-header__actions .rk-btn { white-space: nowrap; }
 
 .rk-header__phone {
     display: none;
@@ -96,11 +97,14 @@
 
 @media (min-width: 1080px) {
     .rk-nav { display: flex; gap: 0.25rem; margin-left: auto; }
-    .rk-header__actions { display: flex; }
+    .rk-header__actions { display: flex; gap: 0.625rem; }
+    .rk-header__actions .rk-btn { padding-inline: 0.9rem; }
     .rk-menu-button, .rk-mobile-menu { display: none !important; }
 }
 
 @media (min-width: 1240px) {
+    .rk-header__actions { gap: 1.25rem; }
+    .rk-header__actions .rk-btn { padding-inline: 1.25rem; }
     .rk-header__phone { display: inline-flex; }
 }
 

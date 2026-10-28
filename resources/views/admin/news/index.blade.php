@@ -5,7 +5,8 @@
                 <h2 class="font-black text-3xl uppercase tracking-tighter text-richblack-900 leading-tight">News</h2>
                 <p class="text-sm font-bold uppercase tracking-widest text-gray-500 mt-2">Updates shown on the home page, linked to your Facebook posts.</p>
             </div>
-            <div class="mt-4 sm:mt-0">
+            <div class="mt-4 sm:mt-0 flex flex-wrap items-center gap-2">
+                <x-admin.publish-previews type="news" :model="\App\Models\NewsPost::class" />
                 <a href="{{ route('admin.news.create') }}" class="inline-flex items-center bg-brand-500 text-white px-4 py-2 shadow-sm hover:bg-brand-600 transition-all duration-200 font-medium text-sm">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Add News Post
@@ -34,7 +35,7 @@
                                         <img src="{{ \App\Support\MediaUrl::for($post->image_path) }}" alt="" class="h-14 w-20 object-cover border border-gray-200">
                                     @endif
                                     <div class="min-w-0">
-                                        <div class="text-sm font-black text-richblack-900">{{ $post->title ?: Str::limit($post->body, 60) }} @if($post->is_preview)<span class="ml-2 inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200" title="Only visible to signed-in admins">Preview</span>@endif</div>
+                                        <div class="text-sm font-black text-richblack-900">{{ $post->title ?: Str::limit($post->body, 60) }} <x-admin.preview-badge type="news" :item="$post" /></div>
                                         <a href="{{ $post->facebook_url }}" target="_blank" rel="noopener" class="text-xs text-blue-600 hover:underline">View on Facebook</a>
                                     </div>
                                 </div>

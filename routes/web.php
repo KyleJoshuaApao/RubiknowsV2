@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LiveEditorController;
 use App\Http\Controllers\Admin\NewsPostController;
+use App\Http\Controllers\Admin\PreviewContentController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\QuotationRequestController;
 use App\Http\Controllers\Admin\ServiceController;
@@ -67,6 +68,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
         Route::resource('clients', ClientController::class)->except(['show']);
         Route::resource('news', NewsPostController::class)->except(['show']);
+        Route::patch('preview/{type}/{id}', [PreviewContentController::class, 'publish'])->whereNumber('id')->name('preview.publish');
+        Route::patch('preview/{type}', [PreviewContentController::class, 'publishAll'])->name('preview.publish-all');
         // Super Admin routes
         Route::middleware(['superadmin'])->group(function () {
             Route::resource('users', UserController::class)->except(['show']);

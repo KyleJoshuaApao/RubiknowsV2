@@ -7,7 +7,8 @@
                 </h2>
                 <p class="text-sm font-bold uppercase tracking-widest text-gray-500 mt-2">Manage your past and ongoing projects.</p>
             </div>
-            <div class="mt-4 sm:mt-0">
+            <div class="mt-4 sm:mt-0 flex flex-wrap items-center gap-2">
+                <x-admin.publish-previews type="projects" :model="\App\Models\Project::class" />
                 <a href="{{ route('admin.projects.create') }}" class="inline-flex items-center bg-brand-500 text-white px-6 py-3 font-bold uppercase tracking-widest text-xs hover:bg-brand-600 transition-colors">
                     + Add Project
                 </a>
@@ -35,7 +36,7 @@
                                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                                     </div>
                                     <div class="ml-5">
-                                        <div class="text-base font-black text-richblack-900">{{ $project->title }} @if($project->is_preview)<span class="ml-2 inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-50 text-amber-700 border border-amber-200" title="Only visible to signed-in admins">Preview</span>@endif</div>
+                                        <div class="text-base font-black text-richblack-900">{{ $project->title }} <x-admin.preview-badge type="projects" :item="$project" /></div>
                                         <div class="text-xs font-bold uppercase tracking-widest text-gray-400 mt-1 truncate max-w-xs">{{ Str::limit($project->description, 40) }}</div>
                                     </div>
                                 </div>

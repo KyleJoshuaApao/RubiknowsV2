@@ -326,6 +326,26 @@ class SiteInfrastructureTest extends TestCase
         $this->get('/sitemap.xml')->assertDontSee('/projects/'.$previewId);
     }
 
+    public function test_admins_can_make_preview_content_public(): void
+    {
+        DB::table('projects')->insert(['title' => 'Preview warehouse', 'slug' => 'preview-warehouse', 'latitude' => 7.3, 'longitude' => 125.68, 'is_preview' => true, 'created_at' => now(), 'updated_at' => now()]);
+        DB::table('news_posts')->insert(['title' => 'Preview news', 'body' => 'x', 'posted_at' => now()->subDay(), 'facebook_url' => 'https://facebook.com/x', 'is_published' => true, 'is_preview' => true, 'created_at' => now(), 'updated_at' => now()]);
+        $projectId = DB::table('projects')->value('id');
+
+        $this->patch(route('admin.preview.publish', ['projects', $projectId]))->assertNotFound();
+
+        $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]));
+        $this->get(route('public.home'))->assertSee('Preview warehouse');
+        $this->get(route('admin.projects.index'))->assertSee('Make public');
+        $this->patch(route('admin.preview.publish', ['projects', $projectId]))->assertRedirect();
+        $this->patch(route('admin.preview.publish-all', 'news'))->assertRedirect();
+        $this->patch(route('admin.preview.publish-all', 'users'))->assertNotFound();
+        $this->get(route('public.home'))->assertSee('Dashboard');
+
+        \Illuminate\Support\Facades\Auth::logout();
+        $this->get(route('public.home'))->assertOk()->assertSee('Preview warehouse')->assertSee('Preview news')->assertSee('home-project-map')->assertDontSee('Dashboard');
+    }
+
     public function test_admins_can_post_news_that_shows_on_the_home_page(): void
     {
         \Illuminate\Support\Facades\Storage::fake('media');
