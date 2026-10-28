@@ -61,7 +61,7 @@
         <meta property="og:description" content="{{ $metaDescription }}">
         <meta property="og:image" content="{{ $shareImage }}">
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="theme-color" content="#1d1c19">
+        <meta name="theme-color" content="#0a0a0a">
         <script nonce="{{ Vite::cspNonce() }}" type="application/ld+json">{!! json_encode($organization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">

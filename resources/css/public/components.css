@@ -9,7 +9,7 @@
     min-height: min(40rem, calc(100svh - var(--rk-header-height)));
     overflow: hidden;
     background: var(--rk-dark);
-    color: #f3f1ec;
+    color: #f2f2f2;
 }
 
 .rk-hero__image {
@@ -28,8 +28,8 @@
     inset: 0;
     z-index: -1;
     background:
-        linear-gradient(90deg, rgba(20, 19, 17, 0.94) 0%, rgba(20, 19, 17, 0.82) 42%, rgba(20, 19, 17, 0.35) 78%, rgba(20, 19, 17, 0.2) 100%),
-        linear-gradient(0deg, rgba(20, 19, 17, 0.75) 0%, transparent 40%);
+        linear-gradient(90deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.82) 42%, rgba(0, 0, 0, 0.35) 78%, rgba(0, 0, 0, 0.2) 100%),
+        linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, transparent 40%);
 }
 
 .rk-hero::after {
@@ -65,7 +65,7 @@
 .rk-public .rk-hero__lede {
     max-width: 40rem;
     margin-top: 1.5rem;
-    color: #d9d5cc;
+    color: #d6d6d6;
     font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
     line-height: 1.55;
 }
@@ -82,7 +82,7 @@
 }
 
 .rk-facts div { display: flex; flex-direction: column-reverse; gap: 0.2rem; padding: 1.25rem 1.5rem 0 0; }
-.rk-facts dt { color: #c9c4b9; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.rk-facts dt { color: #bdbdbd; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 .rk-facts dd { margin: 0; color: var(--rk-gold); font-family: var(--rk-font-display); font-size: clamp(1.875rem, 3vw, 2.5rem); font-weight: 700; line-height: 1; }
 .rk-facts[hidden] { display: none; }
 
@@ -112,11 +112,11 @@
         linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
     background-size: 64px 64px;
-    color: #e9e6df;
+    color: #ececec;
 }
 
 .rk-public .rk-section--dark h2, .rk-public .rk-section--dark h3 { color: var(--rk-white); }
-.rk-public .rk-section--dark .rk-section-head__text p, .rk-public .rk-section--dark .rk-steps p { color: #bdb8ad; }
+.rk-public .rk-section--dark .rk-section-head__text p, .rk-public .rk-section--dark .rk-steps p { color: #b5b5b5; }
 .rk-section--dark .rk-steps li { border-top-color: var(--rk-gold); }
 .rk-section--dark .rk-steps li::before { color: var(--rk-gold); }
 
@@ -146,7 +146,7 @@
 }
 
 .rk-service-card::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 3px; background: var(--rk-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.2s ease; }
-.rk-service-card:hover { border-color: var(--rk-line-strong); box-shadow: 0 12px 28px -20px rgba(28, 27, 24, 0.5); }
+.rk-service-card:hover { border-color: var(--rk-line-strong); box-shadow: 0 12px 28px -20px rgba(0, 0, 0, 0.5); }
 .rk-service-card:hover::before { transform: scaleX(1); }
 .rk-public .rk-service-card h3 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.01em; }
 .rk-service-card__tag span { margin-right: 0.75rem; color: var(--rk-ink); font-family: var(--rk-font-display); font-size: 1rem; }
@@ -278,7 +278,7 @@
     overflow: hidden;
     border: 1px solid var(--rk-line);
     border-radius: var(--rk-radius);
-    background: #e8e5dd;
+    background: #ececec;
 }
 
 .rk-map__status { display: grid; height: 100%; place-items: center; color: var(--rk-muted); font-weight: 500; }
@@ -486,12 +486,12 @@
     display: grid;
     place-items: center;
     padding: 4rem 1rem 2rem;
-    background: rgba(20, 19, 17, 0.94);
+    background: rgba(0, 0, 0, 0.94);
 }
 
 .rk-lightbox figure { margin: 0; text-align: center; }
 .rk-lightbox img { max-width: min(100%, 72rem); max-height: 78vh; border-radius: 4px; }
-.rk-lightbox figcaption { margin-top: 0.85rem; color: #e9e6df; }
+.rk-lightbox figcaption { margin-top: 0.85rem; color: #ececec; }
 
 .rk-lightbox__close {
     position: absolute;
@@ -645,7 +645,7 @@
     cursor: pointer;
 }
 
-.rk-tabs button[aria-selected='true'] { background: var(--rk-white); color: var(--rk-ink); box-shadow: 0 1px 3px rgba(28, 27, 24, 0.12); }
+.rk-tabs button[aria-selected='true'] { background: var(--rk-white); color: var(--rk-ink); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
 
 /* Legal pages */
 

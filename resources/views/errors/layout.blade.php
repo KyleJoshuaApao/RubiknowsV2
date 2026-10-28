@@ -8,7 +8,7 @@
     <title>@yield('title') | RubiKnows</title>
     <link rel="icon" type="image/webp" href="/RK4.webp">
     <style>
-        :root { --ink: #1c1b18; --muted: #5f5b53; --line: #e4e0d7; --paper: #f7f5f0; --gold: #e0a92a; --gold-dark: #8a630a; }
+        :root { --ink: #111111; --muted: #5a5a5a; --line: #e5e5e5; --paper: #f5f5f5; --gold: #e0a92a; --gold-dark: #b8860b; }
         * { box-sizing: border-box; }
         body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--paper); color: var(--ink); font: 400 1.0625rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
         header { padding: 1.25rem clamp(1rem, 5vw, 3rem); border-bottom: 1px solid var(--line); background: #fff; }
