@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Client;
+use App\Models\ContactMessage;
 use App\Models\Job;
 use App\Models\Project;
 use App\Models\QuotationRequest;
@@ -158,18 +159,92 @@ class SecurityHardeningTest extends TestCase
             'service_needed' => 'Design',
             'project_location' => 'Davao',
             'description' => 'A new building.',
-            'attachment' => UploadedFile::fake()->create('brief.pdf', 10, 'application/pdf'),
+            'attachments' => [
+                UploadedFile::fake()->create('brief.pdf', 10, 'application/pdf'),
+                UploadedFile::fake()->image('site-photo.jpg'),
+                UploadedFile::fake()->create('floor-plan.dwg', 20, 'application/acad'),
+            ],
         ]))->assertSessionHasNoErrors();
 
         $quotation = QuotationRequest::firstOrFail();
-        Storage::disk('documents')->assertExists($quotation->attachment_path);
-        Storage::disk('media')->assertMissing($quotation->attachment_path);
+        $this->assertCount(3, $quotation->attachments);
+        $this->assertSame('site-photo.jpg', $quotation->attachments[1]['name']);
+        foreach ($quotation->attachments as $file) {
+            Storage::disk('documents')->assertExists($file['path']);
+            Storage::disk('media')->assertMissing($file['path']);
+        }
 
-        $this->get(route('admin.quotations.attachment.download', $quotation))->assertRedirect(route('login'));
+        // Guests get a plain "not found" rather than a pointer to the sign-in page.
+        $this->get(route('admin.quotations.files.download', [$quotation, 0]))->assertNotFound();
 
         $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]))
-            ->get(route('admin.quotations.attachment.download', $quotation))
-            ->assertOk();
+            ->get(route('admin.quotations.files.download', [$quotation, 1]))
+            ->assertOk()
+            ->assertDownload('site-photo.jpg');
+
+        $this->get(route('admin.quotations.show', $quotation))
+            ->assertSee('floor-plan.dwg')
+            ->assertSee(route('admin.quotations.files.download', [$quotation, 2]));
+    }
+
+    public function test_messages_can_carry_optional_files_that_are_removed_with_the_message(): void
+    {
+        Mail::fake();
+        Storage::fake('documents');
+
+        $this->post(route('public.contact.submit'), $this->publicForm([
+            'name' => 'Client',
+            'email' => 'client@example.com',
+            'subject' => 'Cracks in a wall',
+            'message' => 'Photos attached.',
+            'attachments' => [UploadedFile::fake()->image('crack.png'), UploadedFile::fake()->create('report.docx', 15)],
+        ]))->assertSessionHasNoErrors();
+
+        $message = ContactMessage::firstOrFail();
+        $this->assertCount(2, $message->attachments);
+        Mail::assertQueued(\App\Mail\NewContactMessageNotification::class, fn ($mail) => count($mail->attachments()) === 2);
+
+        $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]));
+        $this->get(route('admin.messages.files.download', [$message, 0]))->assertOk()->assertDownload('crack.png');
+        $this->delete(route('admin.messages.destroy', $message))->assertRedirect();
+
+        foreach ($message->attachments as $file) {
+            Storage::disk('documents')->assertMissing($file['path']);
+        }
+    }
+
+    public function test_messages_still_send_without_files(): void
+    {
+        Mail::fake();
+
+        $this->post(route('public.contact.submit'), $this->publicForm([
+            'name' => 'Client', 'email' => 'client@example.com', 'subject' => 'Hello', 'message' => 'Just a question.',
+        ]))->assertSessionHasNoErrors();
+
+        $this->assertNull(ContactMessage::firstOrFail()->attachments);
+    }
+
+    public function test_unsafe_or_oversized_attachments_are_refused(): void
+    {
+        Storage::fake('documents');
+        $form = fn (array $files) => $this->publicForm([
+            'name' => 'Client', 'email' => 'client@example.com', 'subject' => 'Files', 'message' => 'See attached.', 'attachments' => $files,
+        ]);
+
+        $this->post(route('public.contact.submit'), $form([UploadedFile::fake()->create('run.exe', 10)]))->assertSessionHasErrors('attachments.0');
+        $this->post(route('public.contact.submit'), $form([UploadedFile::fake()->create('huge.pdf', 20000)]))->assertSessionHasErrors('attachments.0');
+        $this->post(route('public.contact.submit'), $form(array_fill(0, 6, UploadedFile::fake()->create('a.pdf', 1))))->assertSessionHasErrors('attachments');
+
+        $this->assertDatabaseCount('contact_messages', 0);
+    }
+
+    public function test_the_sign_in_page_is_private(): void
+    {
+        $this->assertNotSame('login', config('auth.login_path'));
+        $this->get('/login')->assertNotFound();
+        $this->get(route('login'))->assertOk()->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+        $this->get(route('admin.services.index'))->assertNotFound()->assertDontSee(route('login'));
+        $this->get(route('public.home'))->assertHeaderMissing('X-Robots-Tag');
     }
 
     public function test_legacy_quotation_attachments_on_the_public_disk_still_download(): void

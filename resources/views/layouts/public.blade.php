@@ -193,7 +193,7 @@
                 <nav class="rk-footer__legal" aria-label="Legal">
                     <a href="{{ route('public.privacy') }}">Privacy policy</a>
                     <a href="{{ route('public.terms') }}">Terms of use</a>
-                    <a href="{{ auth()->check() ? route('dashboard') : route('login') }}">Staff login</a>
+                    @auth<a href="{{ route('dashboard') }}">Dashboard</a>@endauth
                 </nav>
             </div>
         </footer>

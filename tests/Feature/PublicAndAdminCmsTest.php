@@ -57,8 +57,8 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertOk()
             ->assertSee('Work with us')
             ->assertSee('Send your application')
-            ->assertSee('Staff login')
-            ->assertSee(route('login'))
+            ->assertDontSee('Staff login')
+            ->assertDontSee(route('login'))
             ->assertDontSee('Recent projects')
             ->assertDontSee('href="'.route('public.projects').'"', false)
             ->assertDontSee('href="'.route('public.gallery').'"', false);
@@ -777,7 +777,7 @@ class PublicAndAdminCmsTest extends TestCase
                 'service_needed' => 'Structural design',
                 'project_location' => 'Davao City',
                 'description' => 'Two-storey building',
-                'attachment' => UploadedFile::fake()->create('plan.pdf', 10, 'application/pdf'),
+                'attachments' => [UploadedFile::fake()->create('plan.pdf', 10, 'application/pdf')],
             ]))
             ->assertRedirect()
             ->assertSessionHasErrors('quotation');

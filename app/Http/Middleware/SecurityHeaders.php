@@ -27,6 +27,11 @@ class SecurityHeaders
         $response->headers->set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
         $response->headers->remove('X-Powered-By');
 
+        // Only the public website belongs in search results.
+        if (! $request->routeIs('public.*', 'sitemap', 'robots')) {
+            $response->headers->set('X-Robots-Tag', 'noindex, nofollow');
+        }
+
         if (app()->environment('production')) {
             $response->headers->set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
         }

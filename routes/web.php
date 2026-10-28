@@ -89,6 +89,8 @@ Route::middleware('auth')->group(function () {
         Route::get('applications/{application}/resume', [JobApplicationController::class, 'downloadResume'])->name('applications.resume.download');
         Route::get('applications/{application}/portfolio', [JobApplicationController::class, 'downloadPortfolio'])->name('applications.portfolio.download');
         Route::get('quotations/{quotation}/attachment', [QuotationRequestController::class, 'downloadAttachment'])->name('quotations.attachment.download');
+        Route::get('quotations/{quotation}/files/{index}', [QuotationRequestController::class, 'downloadFile'])->whereNumber('index')->name('quotations.files.download');
+        Route::get('messages/{message}/files/{index}', [ContactMessageController::class, 'downloadAttachment'])->whereNumber('index')->name('messages.files.download');
     });
 });
 

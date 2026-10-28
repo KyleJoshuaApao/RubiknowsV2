@@ -38,10 +38,7 @@ class QuotationRequestController extends Controller
 
     public function destroy(QuotationRequest $quotation)
     {
-        if ($disk = $quotation->attachmentDisk()) {
-            Storage::disk($disk)->delete($quotation->attachment_path);
-        }
-
+        $quotation->deleteAttachments();
         $quotation->delete();
 
         return redirect()->route('admin.quotations.index')->with('success', 'Quotation request deleted.');
@@ -63,5 +60,10 @@ class QuotationRequestController extends Controller
         abort_unless($disk, 404);
 
         return Storage::disk($disk)->download($quotation->attachment_path);
+    }
+
+    public function downloadFile(QuotationRequest $quotation, int $index)
+    {
+        return $this->downloadSubmissionFile($quotation, $index);
     }
 }

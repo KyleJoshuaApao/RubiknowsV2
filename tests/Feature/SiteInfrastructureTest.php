@@ -125,13 +125,13 @@ class SiteInfrastructureTest extends TestCase
             ->assertDontSee('<loc>'.route('public.projects').'</loc>', false);
     }
 
-    public function test_robots_txt_keeps_crawlers_out_of_the_admin_area(): void
+    public function test_robots_txt_points_to_the_sitemap_without_naming_private_pages(): void
     {
         $this->get('/robots.txt')
             ->assertOk()
-            ->assertSee('Disallow: /admin')
-            ->assertSee('Disallow: /login')
-            ->assertSee('Sitemap: '.route('sitemap'));
+            ->assertSee('Sitemap: '.route('sitemap'))
+            ->assertDontSee('admin')
+            ->assertDontSee(config('auth.login_path'));
     }
 
     public function test_hsts_is_only_sent_in_production(): void

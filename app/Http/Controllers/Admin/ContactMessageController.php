@@ -32,8 +32,14 @@ class ContactMessageController extends Controller
         return back()->with('success', 'Message status updated.');
     }
 
+    public function downloadAttachment(ContactMessage $message, int $index)
+    {
+        return $this->downloadSubmissionFile($message, $index);
+    }
+
     public function destroy(ContactMessage $message)
     {
+        $message->deleteAttachments();
         $message->delete();
 
         return redirect()->route('admin.messages.index')->with('success', 'Message deleted.');

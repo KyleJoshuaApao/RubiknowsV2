@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\SubmissionFiles;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreContactMessageRequest extends FormRequest
@@ -17,7 +18,16 @@ class StoreContactMessageRequest extends FormRequest
             'company' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
             'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'message' => 'required|string|max:10000',
+            ...SubmissionFiles::rules(),
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return SubmissionFiles::messages();
     }
 }

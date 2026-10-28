@@ -12,10 +12,11 @@ use Illuminate\Support\Facades\Route;
 
 // There is no public registration: super admins create accounts from Admin → Users.
 Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    // The sign-in page lives at a private path (ADMIN_LOGIN_PATH) and is never linked publicly.
+    Route::get(config('auth.login_path'), [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    Route::post(config('auth.login_path'), [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

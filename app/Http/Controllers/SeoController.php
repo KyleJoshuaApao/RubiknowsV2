@@ -46,14 +46,11 @@ class SeoController extends Controller
 
     public function robots(): Response
     {
+        // Private pages are kept out of search results with noindex headers rather
+        // than listed here, so this file does not point anyone at them.
         $lines = [
             'User-agent: *',
-            'Disallow: /admin',
-            'Disallow: /dashboard',
-            'Disallow: /profile',
-            'Disallow: /login',
-            'Disallow: /forgot-password',
-            'Disallow: /reset-password',
+            'Allow: /',
             '',
             'Sitemap: '.route('sitemap'),
         ];

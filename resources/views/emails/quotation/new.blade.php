@@ -98,14 +98,14 @@
                     </tr>
 
                     <!-- Attachments Notice -->
-                    @if($quotation->attachment_path)
+                    @if($quotation->attachmentList())
                     <tr>
                         <td style="padding: 0 40px 30px; background-color: #ffffff;">
                             <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 15px;">
                                 <tr>
                                     <td width="30" valign="top" style="font-size: 18px;">📎</td>
                                     <td style="font-size: 14px; color: #92400e;">
-                                        <strong>Attachment available:</strong> The client has securely uploaded a reference file. You can download it directly from the admin dashboard.
+                                        <strong>Files attached ({{ count($quotation->attachmentList()) }}):</strong> {{ collect($quotation->attachmentList())->pluck('name')->join(', ') }}. They are attached to this email when small enough, and can always be downloaded from the admin panel.
                                     </td>
                                 </tr>
                             </table>

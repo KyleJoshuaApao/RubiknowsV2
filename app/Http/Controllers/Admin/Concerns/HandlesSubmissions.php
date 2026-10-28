@@ -50,6 +50,17 @@ trait HandlesSubmissions
     }
 
     /**
+     * Download one of the files sent with a submission, under its original name.
+     */
+    protected function downloadSubmissionFile(Model $submission, int $index)
+    {
+        $file = $submission->attachmentList()[$index] ?? null;
+        abort_unless($file && $file['disk'], 404);
+
+        return \Illuminate\Support\Facades\Storage::disk($file['disk'])->download($file['path'], $file['name']);
+    }
+
+    /**
      * Delete the submissions selected in an index table.
      *
      * @param  class-string<Model>  $model
@@ -62,6 +73,11 @@ trait HandlesSubmissions
             return redirect()->route($indexRoute)->with('error', "No {$noun} selected.");
         }
 
+        $model::whereIn('id', $ids)->get()->each(function (Model $submission): void {
+            if (method_exists($submission, 'deleteAttachments')) {
+                $submission->deleteAttachments();
+            }
+        });
         $model::whereIn('id', $ids)->delete();
 
         // Query-builder deletes skip model events, so clear the badge counts here.

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAttachments;
 use App\Support\PublicContentCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class QuotationRequest extends Model
 {
-    use HasFactory;
+    use HasAttachments, HasFactory;
 
     /**
      * Attachments are private and served only through the authenticated
@@ -34,6 +35,7 @@ class QuotationRequest extends Model
         'timeline',
         'description',
         'attachment_path',
+        'attachments',
         'assigned_engineer_id',
         'status',
         'reply_message',
@@ -44,6 +46,7 @@ class QuotationRequest extends Model
     {
         return [
             'replied_at' => 'datetime',
+            'attachments' => 'array',
         ];
     }
 

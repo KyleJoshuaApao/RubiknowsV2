@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Mail\Concerns\AttachesSubmissionFiles;
 use App\Models\QuotationRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,7 +14,7 @@ use Illuminate\Queue\SerializesModels;
 
 class NewQuotationRequestNotification extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use AttachesSubmissionFiles, Queueable, SerializesModels;
 
     public function __construct(public QuotationRequest $quotation)
     {
@@ -38,8 +39,6 @@ class NewQuotationRequestNotification extends Mailable implements ShouldQueue
      */
     public function attachments(): array
     {
-        $disk = $this->quotation->attachmentDisk();
-
-        return $disk ? [Attachment::fromStorageDisk($disk, $this->quotation->attachment_path)] : [];
+        return $this->submissionAttachments($this->quotation->attachmentList());
     }
 }

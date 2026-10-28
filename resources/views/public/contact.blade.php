@@ -48,7 +48,7 @@
                 @error('form')<p class="rk-form-alert" role="alert">{{ $message }}</p>@enderror
 
                 <div id="panel-general" role="tabpanel" aria-labelledby="tab-general" x-show="tab === 'general'" @if($activeTab !== 'general') x-cloak @endif>
-                    <form class="rk-form" action="{{ route('public.contact.submit') }}" method="POST">
+                    <form class="rk-form" action="{{ route('public.contact.submit') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <x-public.spam-guard />
                         <input type="hidden" name="_tab" value="general">
@@ -86,6 +86,7 @@
                             <textarea class="rk-input" id="contact_message" name="message" rows="6" required>{{ old('_tab') === 'general' ? old('message') : '' }}</textarea>
                             @if(old('_tab') === 'general') @error('message')<p class="rk-field__error">{{ $message }}</p>@enderror @endif
                         </div>
+                        <x-public.file-field id="contact_attachments" label="Attach photos or documents" :show-errors="old('_tab') === 'general'" />
                         <p class="rk-field__hint">We use your details only to reply to you. See our <a href="{{ route('public.privacy') }}">privacy policy</a>.</p>
                         <div><button type="submit" class="rk-btn rk-btn--primary">Send message</button></div>
                     </form>
@@ -156,12 +157,7 @@
                                 <textarea class="rk-input" id="quote_description" name="description" rows="6" required placeholder="What do you want to build or fix? Floor area, number of storeys, and anything else you know.">{{ old('description') }}</textarea>
                                 @error('description')<p class="rk-field__error">{{ $message }}</p>@enderror
                             </div>
-                            <div class="rk-field">
-                                <label for="quote_attachment">Plans, sketches or photos <span class="rk-optional">(optional)</span></label>
-                                <input class="rk-input" id="quote_attachment" name="attachment" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip" aria-describedby="attachment-hint">
-                                <p class="rk-field__hint" id="attachment-hint">One file: PDF, DOC, JPG, PNG or ZIP, up to 10 MB.</p>
-                                @error('attachment')<p class="rk-field__error">{{ $message }}</p>@enderror
-                            </div>
+                            <x-public.file-field id="quote_attachments" label="Plans, sketches or site photos" :show-errors="old('_tab') === 'quote'" />
                         </fieldset>
                         <p class="rk-field__hint">We use your details only to prepare and follow up on your quotation. See our <a href="{{ route('public.privacy') }}">privacy policy</a>.</p>
                         <div><button type="submit" class="rk-btn rk-btn--primary">Send quotation request</button></div>

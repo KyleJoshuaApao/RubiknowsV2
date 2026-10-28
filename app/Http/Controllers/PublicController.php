@@ -19,6 +19,7 @@ use App\Models\Service;
 use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Support\PublicContentCache;
+use App\Support\SubmissionFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
@@ -152,7 +153,14 @@ class PublicController extends Controller
 
     public function submitContact(StoreContactMessageRequest $request)
     {
-        $message = ContactMessage::create($request->validated());
+        $message = $this->storeWithAttachments($request, 'messages', fn (array $attachments) => ContactMessage::create([
+            ...Arr::except($request->validated(), 'attachments'),
+            'attachments' => $attachments ?: null,
+        ]));
+
+        if (! $message) {
+            return $this->submissionFailed($request, 'form', 'We could not send your message. Please try again shortly.');
+        }
 
         $this->notifyAdmin(fn (string $admin) => Mail::to($admin)->queue(new NewContactMessageNotification($message)));
 
@@ -161,42 +169,50 @@ class PublicController extends Controller
 
     public function submitQuotation(StoreQuotationRequest $request)
     {
-        $disk = QuotationRequest::UPLOAD_DISK;
-        $attachmentPath = null;
+        $quotation = $this->storeWithAttachments($request, 'quotations', fn (array $attachments) => QuotationRequest::create([
+            ...Arr::except($request->validated(), 'attachments'),
+            'attachments' => $attachments ?: null,
+            'status' => 'Pending',
+        ]));
 
-        try {
-            // Stored privately; served only via the authenticated admin route.
-            if ($request->hasFile('attachment')) {
-                $attachmentPath = $request->file('attachment')->store('quotations', $disk);
-                if (! $attachmentPath) {
-                    throw new \RuntimeException('The attachment could not be stored.');
-                }
-            }
-
-            $quotation = QuotationRequest::create([
-                ...Arr::except($request->validated(), 'attachment'),
-                'attachment_path' => $attachmentPath,
-                'status' => 'Pending',
-            ]);
-        } catch (\Throwable $e) {
-            if ($attachmentPath) {
-                Storage::disk($disk)->delete($attachmentPath);
-            }
-
-            try {
-                report($e);
-            } catch (\Throwable) {
-                // The user-facing error below is still the correct response.
-            }
-
-            return back()
-                ->withInput($request->except('attachment'))
-                ->withErrors(['quotation' => 'We could not submit your request. Please try again shortly.']);
+        if (! $quotation) {
+            return $this->submissionFailed($request, 'quotation', 'We could not submit your request. Please try again shortly.');
         }
 
         $this->notifyAdmin(fn (string $admin) => Mail::to($admin)->queue(new NewQuotationRequestNotification($quotation)));
 
         return back()->with('success', 'Your quotation request has been submitted successfully. Our engineering team will review it and contact you soon.');
+    }
+
+    /**
+     * Store the optional files, then the record. On any failure nothing is kept.
+     */
+    private function storeWithAttachments($request, string $directory, callable $create)
+    {
+        $attachments = [];
+
+        try {
+            $attachments = SubmissionFiles::store($request->file('attachments', []), $directory);
+
+            return $create($attachments);
+        } catch (\Throwable $e) {
+            SubmissionFiles::delete($attachments);
+
+            try {
+                report($e);
+            } catch (\Throwable) {
+                // The user-facing error is still the correct response.
+            }
+
+            return null;
+        }
+    }
+
+    private function submissionFailed($request, string $field, string $message)
+    {
+        return back()
+            ->withInput($request->except('attachments'))
+            ->withErrors([$field => $message]);
     }
 
     public function applyForJob(StoreJobApplicationRequest $request)

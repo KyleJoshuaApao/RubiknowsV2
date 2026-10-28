@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAttachments;
 use App\Support\PublicContentCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ContactMessage extends Model
 {
-    use HasFactory;
+    use HasAttachments, HasFactory;
 
     protected static function booted(): void
     {
@@ -24,6 +25,7 @@ class ContactMessage extends Model
         'subject',
         'message',
         'attachment_path',
+        'attachments',
         'status',
         'reply_message',
         'replied_at',
@@ -33,6 +35,7 @@ class ContactMessage extends Model
     {
         return [
             'replied_at' => 'datetime',
+            'attachments' => 'array',
         ];
     }
 }

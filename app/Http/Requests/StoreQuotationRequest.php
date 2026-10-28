@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Support\SubmissionFiles;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreQuotationRequest extends FormRequest
@@ -21,7 +22,15 @@ class StoreQuotationRequest extends FormRequest
             'budget' => 'nullable|string|max:100',
             'timeline' => 'nullable|string|max:100',
             'description' => 'required|string|max:10000',
-            'attachment' => 'nullable|file|mimes:pdf,doc,docx,jpg,png,zip|max:10240',
+            ...SubmissionFiles::rules(),
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return SubmissionFiles::messages();
     }
 }

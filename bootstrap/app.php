@@ -4,7 +4,9 @@ use App\Http\Middleware\BlockSpamSubmissions;
 use App\Http\Middleware\CheckSuperAdmin;
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\SecurityHeaders;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
@@ -28,7 +30,13 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Visitors who are not signed in get a plain "not found" for admin pages,
+        // so the private sign-in address is never revealed by a redirect.
+        $exceptions->render(function (AuthenticationException $exception, Request $request) {
+            if (! $request->expectsJson()) {
+                return response()->view('errors.404', [], 404);
+            }
+        });
     })->create();
 
 $storagePath = $_ENV['APP_STORAGE'] ?? $_SERVER['APP_STORAGE'] ?? null;

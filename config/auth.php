@@ -6,6 +6,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Admin sign-in path
+    |--------------------------------------------------------------------------
+    |
+    | The staff sign-in page is not linked from the public site. Set a path of
+    | your own in production so it cannot be guessed from this repository.
+    |
+    */
+
+    'login_path' => trim((string) env('ADMIN_LOGIN_PATH', 'staff-sign-in'), '/') ?: 'staff-sign-in',
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Defaults
     |--------------------------------------------------------------------------
     |

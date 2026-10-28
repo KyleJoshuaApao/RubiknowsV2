@@ -77,6 +77,11 @@
                             <div style="background-color: #ffffff; border-left: 4px solid #18181b; padding: 15px 20px; font-size: 15px; color: #3f3f46; line-height: 1.7;">
                                 {!! nl2br(e($messageData->message)) !!}
                             </div>
+                            @if($messageData->attachmentList())
+                                <div style="margin-top: 16px; font-size: 14px; color: #92400e;">
+                                    <strong>Files attached ({{ count($messageData->attachmentList()) }}):</strong> {{ collect($messageData->attachmentList())->pluck('name')->join(', ') }}
+                                </div>
+                            @endif
                         </td>
                     </tr>
 
