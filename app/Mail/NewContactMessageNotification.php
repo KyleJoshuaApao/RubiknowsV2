@@ -7,6 +7,7 @@ use App\Models\ContactMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -22,8 +23,10 @@ class NewContactMessageNotification extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
+        // Replying from the inbox goes straight to the person who wrote in.
         return new Envelope(
-            subject: 'New Contact Message Notification',
+            replyTo: [new Address($this->messageData->email, $this->messageData->name)],
+            subject: 'New message: '.$this->messageData->subject,
         );
     }
 

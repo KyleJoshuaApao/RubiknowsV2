@@ -1,4 +1,5 @@
 import Alpine from 'alpinejs';
+import { startPublicMotion } from './motion';
 
 window.Alpine = Alpine;
 
@@ -12,3 +13,4 @@ window.__rkChartReady = document.getElementById('activityChart')
     : Promise.resolve(null);
 
 Alpine.start();
+startPublicMotion();

@@ -179,6 +179,49 @@ class SiteInfrastructureTest extends TestCase
         });
     }
 
+    public function test_mail_from_a_free_mailbox_uses_the_resend_shared_sender(): void
+    {
+        Http::fake(['api.resend.com/*' => Http::response(['id' => 'email_456'])]);
+        config([
+            'mail.default' => 'resend',
+            'mail.mailers.resend.key' => 're_test_key',
+            'mail.from.address' => 'rubiknows.office@gmail.com',
+            'mail.from.name' => 'RubiKnows',
+        ]);
+
+        $message = ContactMessage::create($this->contactMessage(['email' => 'owner@example.com', 'name' => 'Home Owner']));
+        Mail::to('office@example.com')->send(new NewContactMessageNotification($message));
+
+        $sent = Http::recorded()->first()[0];
+
+        $this->assertSame('"RubiKnows" <onboarding@resend.dev>', $sent['from']);
+        $this->assertSame(['"Home Owner" <owner@example.com>'], $sent['reply_to']);
+        $this->assertStringContainsString('New house', $sent['subject']);
+    }
+
+    public function test_a_resend_key_takes_over_from_an_unusable_smtp_setting(): void
+    {
+        $env = ['RESEND_API_KEY' => 're_live_key', 'MAIL_MAILER' => 'smtp'];
+        $previous = array_map(fn ($key) => $_SERVER[$key] ?? null, array_combine(array_keys($env), array_keys($env)));
+
+        foreach ($env as $key => $value) {
+            $_ENV[$key] = $_SERVER[$key] = $value;
+        }
+
+        try {
+            $config = require config_path('mail.php');
+        } finally {
+            foreach ($previous as $key => $value) {
+                unset($_ENV[$key], $_SERVER[$key]);
+                if ($value !== null) {
+                    $_ENV[$key] = $_SERVER[$key] = $value;
+                }
+            }
+        }
+
+        $this->assertSame('resend', $config['default']);
+    }
+
     public function test_uploads_switch_to_supabase_storage_when_keys_are_configured(): void
     {
         $env = [

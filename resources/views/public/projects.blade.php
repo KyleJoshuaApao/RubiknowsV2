@@ -18,7 +18,7 @@
             @endif
 
             @if($projects->isNotEmpty())
-                <div class="rk-project-grid">
+                <div class="rk-project-grid" data-reveal-stagger>
                     @foreach($projects as $project)
                         @include('public.partials.project-card', ['project' => $project])
                     @endforeach

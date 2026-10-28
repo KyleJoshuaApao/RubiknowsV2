@@ -9,7 +9,7 @@
             <div>
                 <h2 class="rk-subheading">Open positions</h2>
                 @if($jobs->isNotEmpty())
-                    <div class="rk-jobs">
+                    <div class="rk-jobs" data-reveal-stagger>
                         @foreach($jobs as $job)
                             @php($requirements = is_array($job->requirements) ? implode("\n", $job->requirements) : (string) $job->requirements)
                             <details class="rk-job" id="job-{{ $job->id }}" @if($loop->first && $jobs->count() === 1) open @endif>

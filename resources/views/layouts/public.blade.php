@@ -24,6 +24,7 @@
             $navItems = array_values(array_filter([
                 ['label' => 'Services', 'route' => 'public.services', 'active' => ['public.services', 'public.service-details']],
                 $sections['projects'] ? ['label' => 'Projects', 'route' => 'public.projects', 'active' => ['public.projects', 'public.project-details']] : null,
+                ['label' => 'Gallery', 'route' => 'public.gallery', 'active' => ['public.gallery']],
                 ['label' => 'About', 'route' => 'public.about', 'active' => ['public.about']],
                 ['label' => 'Careers', 'route' => 'public.careers', 'active' => ['public.careers']],
                 ['label' => 'Contact', 'route' => 'public.contact', 'active' => ['public.contact']],
@@ -66,6 +67,7 @@
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|inter:400,900&display=swap" rel="stylesheet">
+        <script nonce="{{ Vite::cspNonce() }}">if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('rk-motion');</script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('head')
         <style>[x-cloak] { display: none !important; }</style>
@@ -152,7 +154,7 @@
                     <ul>
                         <li><a href="{{ route('public.about') }}">About us</a></li>
                         @if($sections['projects'])<li><a href="{{ route('public.projects') }}">Projects</a></li>@endif
-                        @if($sections['gallery'])<li><a href="{{ route('public.gallery') }}">Gallery</a></li>@endif
+                        <li><a href="{{ route('public.gallery') }}">Gallery</a></li>
                         @if($sections['testimonials'])<li><a href="{{ route('public.testimonials') }}">Testimonials</a></li>@endif
                         @if($sections['clients'])<li><a href="{{ route('public.clients') }}">Clients and partners</a></li>@endif
                         <li><a href="{{ route('public.careers') }}">Careers</a></li>

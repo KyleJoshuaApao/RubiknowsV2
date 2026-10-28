@@ -45,18 +45,18 @@
     </section>
 
     <div class="rk-container">
-        <img class="rk-wide-image" src="/images/site/rebar-deck-1600.webp" srcset="/images/site/rebar-deck-800.webp 800w, /images/site/rebar-deck-1600.webp 1600w" sizes="(min-width: 1240px) 1200px, 100vw" width="1600" height="1060" alt="Site crew placing steel reinforcement on a concrete deck" loading="lazy">
+        <img data-reveal class="rk-wide-image" src="/images/site/rebar-deck-1600.webp" srcset="/images/site/rebar-deck-800.webp 800w, /images/site/rebar-deck-1600.webp 1600w" sizes="(min-width: 1240px) 1200px, 100vw" width="1600" height="1060" alt="Site crew placing steel reinforcement on a concrete deck" loading="lazy">
     </div>
 
     <section class="rk-section" aria-labelledby="values-title">
         <div class="rk-container">
-            <div class="rk-section-head">
+            <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="values-title">How we work</h2>
                     <p>Three habits we hold ourselves to on every job, large or small.</p>
                 </div>
             </div>
-            <div class="rk-values">
+            <div class="rk-values" data-reveal-stagger>
                 <div>
                     <h3>Straight answers</h3>
                     <p>We tell you what your project needs, what it will cost and how long it will take, even when the answer is not the one you hoped for.</p>
@@ -76,7 +76,7 @@
     <section class="rk-section rk-section--paper" aria-labelledby="faith-title">
         <div class="rk-container rk-split rk-split--center">
             <h2 id="faith-title">What guides us</h2>
-            <figure class="rk-verse">
+            <figure class="rk-verse" data-reveal>
                 <blockquote><p>“With God, all things are possible.”</p></blockquote>
                 <figcaption>Matthew 19:26</figcaption>
                 <p>Our work is shaped by faith, diligence and a belief that good buildings come from serving the people and communities who use them.</p>
@@ -86,13 +86,13 @@
 
     <section class="rk-section" aria-labelledby="leaders-title">
         <div class="rk-container">
-            <div class="rk-section-head">
+            <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="leaders-title">Leadership</h2>
                     <p>RubiKnows is owner-managed. The founders stay involved in every project, from the first estimate to turnover.</p>
                 </div>
             </div>
-            <ul class="rk-people">
+            <ul class="rk-people" data-reveal-stagger>
                 @foreach($leaders as $leader)
                     <li class="rk-person">
                         <span class="rk-person__initials" aria-hidden="true">{{ $leader['initials'] }}</span>

@@ -690,3 +690,150 @@
 .rk-facts--stacked dt { color: var(--rk-muted); }
 .rk-facts--stacked dd { color: var(--rk-ink); font-size: 1.75rem; }
 .rk-facts--stacked div { padding: 0 0 1rem; }
+
+/* Gallery mosaic: a mix of large, tall and standard tiles. */
+
+.rk-mosaic {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    grid-auto-rows: 15rem;
+    grid-auto-flow: dense;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+@media (min-width: 720px) {
+    .rk-mosaic__item:nth-child(7n + 1) { grid-column: span 2; grid-row: span 2; }
+    .rk-mosaic__item:nth-child(7n + 4) { grid-row: span 2; }
+    .rk-mosaic__item:nth-child(7n + 6) { grid-column: span 2; }
+}
+
+.rk-mosaic__item button {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: var(--rk-dark);
+    cursor: zoom-in;
+}
+
+.rk-mosaic__item img, .rk-mosaic__item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
+}
+
+.rk-mosaic__item button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0) 55%);
+    opacity: 0.55;
+    transition: opacity 0.3s ease;
+}
+
+.rk-mosaic__caption {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1;
+    display: grid;
+    gap: 0.15rem;
+    color: var(--rk-white);
+    font-family: var(--rk-font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    text-align: left;
+    transform: translateY(0.5rem);
+    opacity: 0.9;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.rk-mosaic__caption small { color: var(--rk-gold); font-family: var(--rk-font); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.rk-mosaic__item button:hover img, .rk-mosaic__item button:focus-visible img { transform: scale(1.05); }
+.rk-mosaic__item button:hover::after, .rk-mosaic__item button:focus-visible::after { opacity: 1; }
+.rk-mosaic__item button:hover .rk-mosaic__caption, .rk-mosaic__item button:focus-visible .rk-mosaic__caption { transform: translateY(0); opacity: 1; }
+.rk-mosaic__item button:focus-visible { outline: 3px solid var(--rk-gold); outline-offset: 3px; }
+
+.rk-mosaic__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--rk-gold);
+    transform: translate(-50%, -50%);
+}
+
+.rk-mosaic__play::after { content: ''; position: absolute; top: 50%; left: 54%; border-style: solid; border-width: 0.6rem 0 0.6rem 1rem; border-color: transparent transparent transparent var(--rk-ink); transform: translate(-50%, -50%); }
+
+.rk-filter button {
+    padding: 0.4rem 0.95rem;
+    border: 1px solid var(--rk-line-strong);
+    border-radius: 999px;
+    background: var(--rk-white);
+    color: var(--rk-ink);
+    font: 500 0.9375rem var(--rk-font);
+    cursor: pointer;
+}
+
+.rk-filter button:hover { border-color: var(--rk-ink); }
+.rk-filter button[aria-pressed='true'] { border-color: var(--rk-ink); background: var(--rk-ink); color: var(--rk-white); }
+
+/* Full-screen photo viewer */
+
+.rk-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 4.5rem clamp(0.5rem, 3vw, 2rem) 2rem;
+    background: rgba(0, 0, 0, 0.95);
+}
+
+.rk-viewer__figure { grid-column: 2; margin: 0; text-align: center; }
+.rk-viewer__figure img, .rk-viewer__figure video { max-width: 100%; max-height: 78vh; margin-inline: auto; }
+.rk-viewer__figure figcaption { display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; color: #e5e5e5; font-weight: 500; }
+.rk-viewer__figure figcaption small { color: var(--rk-gold); }
+
+.rk-viewer__close, .rk-viewer__nav {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    color: var(--rk-white);
+    font: 600 1rem var(--rk-font);
+    cursor: pointer;
+}
+
+.rk-viewer__close { position: absolute; top: 1rem; right: 1rem; padding: 0.5rem 1rem; }
+.rk-viewer__nav { width: 3rem; height: 3rem; border-radius: 50%; font-size: 1.25rem; }
+.rk-viewer__nav--prev { grid-column: 1; }
+.rk-viewer__nav--next { grid-column: 3; }
+.rk-viewer__close:hover, .rk-viewer__nav:hover { border-color: var(--rk-gold); color: var(--rk-gold); }
+
+/* Motion: hidden until animated in. If the script never runs, everything
+   appears anyway after a short delay. */
+
+.rk-motion [data-reveal],
+.rk-motion [data-reveal-stagger] > *,
+.rk-motion .rk-hero__copy > * {
+    opacity: 0;
+    animation: rk-reveal-fallback 0s 2.5s forwards;
+}
+
+@keyframes rk-reveal-fallback { to { opacity: 1; } }
+
+.rk-header { transition: box-shadow 0.25s ease; }
+.rk-header.is-scrolled { box-shadow: 0 8px 24px -18px rgba(0, 0, 0, 0.6); }

@@ -6,7 +6,7 @@
 @php($contact = \App\Support\ContactDetails::fromSettings())
 
 <section class="rk-cta" aria-labelledby="rk-cta-title">
-    <div class="rk-container rk-cta__grid">
+    <div class="rk-container rk-cta__grid" data-reveal>
         <div>
             <h2 id="rk-cta-title">{{ $title }}</h2>
             <p>{{ $text }}</p>

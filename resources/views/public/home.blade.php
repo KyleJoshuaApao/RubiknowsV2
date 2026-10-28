@@ -34,7 +34,7 @@
 
     <section class="rk-section" aria-labelledby="services-title">
         <div class="rk-container">
-            <div class="rk-section-head">
+            <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <p class="rk-kicker">01 — Services</p>
                     <h2 id="services-title">What we do</h2>
@@ -44,7 +44,7 @@
             </div>
 
             @if($services->isNotEmpty())
-                <div class="rk-service-grid">
+                <div class="rk-service-grid" data-reveal-stagger>
                     @foreach($services as $service)
                         <article class="rk-service-card">
                             <p class="rk-service-card__tag"><span>{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>{{ $service->category }}</p>
@@ -62,7 +62,7 @@
 
     <section class="rk-section rk-section--dark" aria-labelledby="process-title">
         <div class="rk-container">
-            <div class="rk-section-head">
+            <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <p class="rk-kicker">02 — Process</p>
                     <h2 id="process-title">How a project runs</h2>
@@ -76,7 +76,7 @@
     @if($featuredProjects->isNotEmpty())
         <section class="rk-section" aria-labelledby="projects-title">
             <div class="rk-container">
-                <div class="rk-section-head">
+                <div class="rk-section-head" data-reveal>
                     <div class="rk-section-head__text">
                         <p class="rk-kicker">03 — Projects</p>
                         <h2 id="projects-title">Recent projects</h2>
@@ -84,7 +84,7 @@
                     </div>
                     <a class="rk-arrow-link" href="{{ route('public.projects') }}">All projects</a>
                 </div>
-                <div class="rk-project-grid">
+                <div class="rk-project-grid" data-reveal-stagger>
                     @foreach($featuredProjects as $project)
                         @include('public.partials.project-card', ['project' => $project])
                     @endforeach
@@ -100,10 +100,10 @@
 
     <section class="rk-section {{ $featuredProjects->isNotEmpty() ? 'rk-section--paper' : '' }}" aria-labelledby="about-title">
         <div class="rk-container rk-feature">
-            <div class="rk-feature__media">
+            <div class="rk-feature__media" data-reveal>
                 <img src="/images/site/site-team-1600.webp" srcset="/images/site/site-team-800.webp 800w, /images/site/site-team-1600.webp 1600w" sizes="(min-width: 960px) 50vw, 100vw" width="1600" height="1066" alt="Engineers and site staff reviewing foundation work" loading="lazy">
             </div>
-            <div class="rk-feature__text">
+            <div class="rk-feature__text" data-reveal>
                 <p class="rk-kicker">Company</p>
                 <h2 id="about-title">Based in Tagum City</h2>
                 <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, from the first meeting to turnover, and we stay reachable after the work is done.</p>
@@ -116,7 +116,7 @@
     @if($testimonial)
         <section class="rk-section" aria-label="What clients say">
             <div class="rk-container">
-                <figure class="rk-quote">
+                <figure class="rk-quote" data-reveal>
                     <blockquote><p>{{ $testimonial->quote }}</p></blockquote>
                     <figcaption>
                         <strong>{{ $testimonial->client_name }}</strong>
@@ -129,7 +129,7 @@
 
     <section class="rk-section rk-section--tight" aria-labelledby="careers-title">
         <div class="rk-container">
-            <div class="rk-hiring">
+            <div class="rk-hiring" data-reveal>
                 <div>
                     <h2 id="careers-title" data-preview="careers-title">{{ $careersTitle }}</h2>
                     <p data-preview="careers-text">{{ $careersText }}</p>

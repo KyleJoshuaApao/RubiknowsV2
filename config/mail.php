@@ -14,8 +14,11 @@ return [
     |
     */
 
-    // With a Resend key present, mail goes out through Resend's HTTPS API.
-    'default' => env('MAIL_MAILER', env('RESEND_API_KEY') ? 'resend' : 'log'),
+    // With a Resend key present, mail goes out through Resend's HTTPS API. SMTP
+    // cannot connect from Render, so an SMTP setting is ignored in that case.
+    'default' => env('RESEND_API_KEY') && ! in_array(env('MAIL_MAILER'), ['log', 'array'], true)
+        ? 'resend'
+        : env('MAIL_MAILER', 'log'),
 
     /*
     |--------------------------------------------------------------------------

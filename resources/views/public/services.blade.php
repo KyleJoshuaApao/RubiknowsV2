@@ -7,7 +7,7 @@
     <section class="rk-section" aria-label="Service list">
         <div class="rk-container">
             @if($services->isNotEmpty())
-                <ul class="rk-service-list">
+                <ul class="rk-service-list" data-reveal-stagger>
                     @foreach($services as $service)
                         <li class="rk-service-row">
                             <div>
@@ -29,7 +29,7 @@
 
     <section class="rk-section rk-section--paper" aria-labelledby="process-title">
         <div class="rk-container">
-            <div class="rk-section-head">
+            <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="process-title">How a project runs</h2>
                     <p>Whatever the service, the work follows the same clear sequence.</p>

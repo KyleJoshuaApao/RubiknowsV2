@@ -74,7 +74,7 @@
                     <div class="rk-section-head__text"><h2 id="more-projects">More projects</h2></div>
                     <a class="rk-arrow-link" href="{{ route('public.projects') }}">All projects</a>
                 </div>
-                <div class="rk-project-grid">
+                <div class="rk-project-grid" data-reveal-stagger>
                     @foreach($moreProjects as $other)
                         @include('public.partials.project-card', ['project' => $other])
                     @endforeach

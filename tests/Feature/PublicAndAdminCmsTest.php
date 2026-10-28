@@ -61,7 +61,7 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertDontSee(route('login'))
             ->assertDontSee('Recent projects')
             ->assertDontSee('href="'.route('public.projects').'"', false)
-            ->assertDontSee('href="'.route('public.gallery').'"', false);
+            ->assertSee('href="'.route('public.gallery').'"', false);
     }
 
     public function test_public_services_page_links_to_each_service_detail_page(): void

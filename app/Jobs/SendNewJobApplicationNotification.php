@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Mail\Transport\ResendApiTransport;
 use App\Models\JobApplication;
+use Symfony\Component\Mime\Address;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -56,13 +58,13 @@ class SendNewJobApplicationNotification implements ShouldQueue
             throw new RuntimeException('Job application email delivery requires a valid MAIL_FROM_ADDRESS.');
         }
 
-        $fromName = trim((string) config('mail.from.name'));
-        $from = $fromName === '' ? $fromAddress : "{$fromName} <{$fromAddress}>";
+        $from = ResendApiTransport::sender(new Address($fromAddress, trim((string) config('mail.from.name'))));
 
         $payload = [
             'from' => $from,
             'to' => [$this->recipient],
-            'subject' => 'New Job Application Notification',
+            'reply_to' => [$application->email],
+            'subject' => 'New job application: '.($application->job?->title ?? 'General application'),
             'html' => view('emails.job.new', compact('application'))->render(),
         ];
 

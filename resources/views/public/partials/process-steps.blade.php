@@ -1,4 +1,4 @@
-<ol class="rk-steps">
+<ol class="rk-steps" data-reveal-stagger>
     <li>
         <h3>Talk to us</h3>
         <p>Call, message or visit the office. We listen to what you want to build, where, and on what budget.</p>

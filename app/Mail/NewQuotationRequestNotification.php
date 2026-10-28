@@ -7,6 +7,7 @@ use App\Models\QuotationRequest;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -23,7 +24,8 @@ class NewQuotationRequestNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Quotation Request Notification',
+            replyTo: [new Address($this->quotation->email, $this->quotation->name)],
+            subject: 'New quotation request: '.$this->quotation->service_needed.' ('.$this->quotation->project_location.')',
         );
     }
 
