@@ -13,6 +13,7 @@ use App\Models\ContactMessage;
 use App\Models\GalleryMedia;
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Models\NewsPost;
 use App\Models\Project;
 use App\Models\QuotationRequest;
 use App\Models\Service;
@@ -50,6 +51,7 @@ class PublicController extends Controller
                 'mapProjects' => Project::mapPins(self::MAP_COLUMNS),
                 'testimonial' => $this->publishedTestimonials()->first(),
                 'openJobs' => Job::where('is_archived', false)->latest()->take(3)->get(['id', 'title', 'type', 'location']),
+                'news' => NewsPost::visible()->take(3)->get(),
                 'homeStats' => array_values(array_filter(is_array($stats) ? $stats : [], fn ($stat) => is_array($stat) && filled($stat['value'] ?? null) && filled($stat['label'] ?? null))),
                 'homeCareers' => is_array($careers) ? array_filter($careers, 'filled') : [],
             ];

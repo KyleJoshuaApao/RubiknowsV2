@@ -142,6 +142,7 @@ return [
         \App\Models\Testimonial::class,
         \App\Models\Setting::class,
         \App\Models\Job::class,
+        \App\Models\NewsPost::class,
     ],
 
 ];

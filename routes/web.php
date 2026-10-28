@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\GalleryMediaController;
 use App\Http\Controllers\Admin\JobApplicationController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\LiveEditorController;
+use App\Http\Controllers\Admin\NewsPostController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\QuotationRequestController;
 use App\Http\Controllers\Admin\ServiceController;
@@ -65,6 +66,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('gallery', GalleryMediaController::class)->except(['show']);
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
         Route::resource('clients', ClientController::class)->except(['show']);
+        Route::resource('news', NewsPostController::class)->except(['show']);
         // Super Admin routes
         Route::middleware(['superadmin'])->group(function () {
             Route::resource('users', UserController::class)->except(['show']);

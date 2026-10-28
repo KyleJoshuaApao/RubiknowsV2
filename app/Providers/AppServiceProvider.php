@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         // reject them at the router and return a 404 instead of a 500.
         Route::patterns(array_fill_keys([
             'service', 'project', 'gallery', 'testimonial', 'client', 'user',
-            'job', 'application', 'message', 'quotation',
+            'job', 'application', 'message', 'quotation', 'news',
         ], '[0-9]+'));
     }
 }

@@ -837,3 +837,22 @@
 
 .rk-header { transition: box-shadow 0.25s ease; }
 .rk-header.is-scrolled { box-shadow: 0 8px 24px -18px rgba(0, 0, 0, 0.6); }
+
+/* News cards on the home page */
+
+.rk-news-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); }
+
+@media (min-width: 960px) {
+    .rk-news-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.rk-news-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--rk-line); background: var(--rk-white); }
+.rk-news-card__media { aspect-ratio: 16 / 10; overflow: hidden; background: var(--rk-dark); }
+.rk-news-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.rk-news-card:hover .rk-news-card__media img { transform: scale(1.04); }
+.rk-news-card__body { display: flex; flex: 1; flex-direction: column; gap: 0.6rem; padding: 1.25rem 1.5rem 1.5rem; }
+.rk-news-card time { color: var(--rk-muted); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.rk-news-card time::before { content: ''; display: inline-block; width: 1.25rem; height: 2px; margin-right: 0.5rem; vertical-align: middle; background: var(--rk-gold); }
+.rk-public .rk-news-card h3 { font-size: 1.25rem; }
+.rk-public .rk-news-card p { color: var(--rk-ink-soft); }
+.rk-news-card .rk-arrow-link { align-self: flex-start; margin-top: auto; padding-top: 0.5rem; }

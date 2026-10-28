@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Cache;
 
 final class PublicContentCache
 {
-    public const HOME = 'public-content:home:v2';
+    public const HOME = 'public-content:home:v3';
     public const PROJECT_MAP = 'public-content:project-map:v1';
     public const FOOTER_SERVICES = 'public-content:footer-services:v1';
     public const SECTIONS = 'public-content:sections:v1';

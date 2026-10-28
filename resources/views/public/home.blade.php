@@ -146,6 +146,37 @@
         </div>
     </section>
 
+    @if($news->isNotEmpty())
+        <section class="rk-section rk-section--paper" aria-labelledby="news-title">
+            <div class="rk-container">
+                <div class="rk-section-head" data-reveal>
+                    <div class="rk-section-head__text">
+                        <p class="rk-kicker">News</p>
+                        <h2 id="news-title">From the site</h2>
+                        <p>Progress updates and company news. Follow us on Facebook for the full stories.</p>
+                    </div>
+                </div>
+                <div class="rk-news-grid" data-reveal-stagger>
+                    @foreach($news as $post)
+                        <article class="rk-news-card">
+                            <div class="rk-news-card__media">
+                                @if($post->image_path)
+                                    <img src="{{ \App\Support\MediaUrl::for($post->image_path) }}" alt="" loading="lazy" decoding="async">
+                                @endif
+                            </div>
+                            <div class="rk-news-card__body">
+                                <time datetime="{{ $post->posted_at->toIso8601String() }}">{{ $post->posted_at->format('F j, Y · g:i A') }}</time>
+                                @if($post->title)<h3>{{ $post->title }}</h3>@endif
+                                <p>{{ Str::limit($post->body, 220) }}</p>
+                                <a class="rk-arrow-link" href="{{ $post->facebook_url }}" target="_blank" rel="noopener">Read on Facebook<span class="sr-only"> (opens in a new tab)</span></a>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
     <x-public.contact-band title="Planning a build?" />
 
     @if(request()->boolean('preview') && auth()->user()?->isAdmin())

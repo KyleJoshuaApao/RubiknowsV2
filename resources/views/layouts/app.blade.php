@@ -114,6 +114,16 @@
                             <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
                         @endif
                     </a>
+
+                    <a href="{{ route('admin.news.index') }}" class="group flex items-center px-4 py-3 text-sm font-bold transition-all duration-200 border-l-4 mt-0.5 {{ request()->routeIs('admin.news.*') ? 'border-brand-500 bg-white/5 text-white' : 'border-transparent text-gray-400 hover:bg-white/[0.04] hover:text-white' }}">
+                        <svg class="w-5 h-5 mr-3 flex-shrink-0 {{ request()->routeIs('admin.news.*') ? 'text-brand-500' : 'text-gray-500 group-hover:text-white' }} transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                        </svg>
+                        <span>News</span>
+                        @if(request()->routeIs('admin.news.*'))
+                            <span class="ml-auto w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        @endif
+                    </a>
                 </div>
 
                 <!-- Communications Section -->

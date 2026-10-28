@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Client;
 use App\Models\GalleryMedia;
 use App\Models\Job;
+use App\Models\NewsPost;
 use App\Models\Project;
 use App\Models\Service;
 use App\Models\Setting;
@@ -93,6 +94,14 @@ class DemoContentSeeder extends Seeder
                 ['name' => 'Northpoint Steel Fabricators', 'type' => 'Partner'],
             ] as $client) {
                 Client::updateOrCreate(['name' => $client['name']], $client);
+            }
+
+            foreach ([
+                ['title' => 'Roof slab poured at the Apokon commercial building', 'body' => 'Our team completed the third-floor roof slab this week, a day ahead of schedule. Curing continues while the masonry crew moves on to the second floor.', 'image_path' => $image('rebar-deck'), 'posted_at' => now()->subDays(2)->setTime(16, 30)],
+                ['title' => 'Groundbreaking in Visayan Village', 'body' => 'We broke ground on a new two-storey family home in Tagum City. Site clearing and layout are done; excavation for the footings starts on Monday.', 'image_path' => $image('column-works'), 'posted_at' => now()->subDays(9)->setTime(9, 15)],
+                ['title' => 'We are hiring a Site Foreman', 'body' => 'Join our Tagum City team. We are looking for an experienced foreman to lead our crews on residential and commercial projects.', 'image_path' => $image('site-team'), 'posted_at' => now()->subDays(16)->setTime(11, 0)],
+            ] as $post) {
+                NewsPost::updateOrCreate(['title' => $post['title']], [...$post, 'facebook_url' => 'https://www.facebook.com/', 'is_published' => true]);
             }
 
             Job::updateOrCreate(['title' => 'Site Foreman'], [

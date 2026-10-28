@@ -306,6 +306,60 @@ class SiteInfrastructureTest extends TestCase
         $this->assertStringContainsString('Licensed Civil Engineer', $job->fresh()->requirements);
     }
 
+    public function test_admins_can_post_news_that_shows_on_the_home_page(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('media');
+        $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]));
+
+        $this->get(route('admin.news.create'))->assertOk();
+
+        $this->post(route('admin.news.store'), [
+            'title' => 'Roof slab poured',
+            'body' => 'The roof slab at our Apokon project was poured today.',
+            'posted_at' => now()->subHour()->format('Y-m-d\TH:i'),
+            'facebook_url' => 'https://www.facebook.com/rubiknows/posts/123',
+            'image' => \Illuminate\Http\UploadedFile::fake()->image('slab.jpg'),
+            'is_published' => '1',
+        ])->assertRedirect(route('admin.news.index'))->assertSessionHasNoErrors();
+
+        $post = \App\Models\NewsPost::firstOrFail();
+        \Illuminate\Support\Facades\Storage::disk('media')->assertExists($post->image_path);
+
+        $this->get(route('public.home'))
+            ->assertOk()
+            ->assertSee('From the site')
+            ->assertSee('Roof slab poured')
+            ->assertSee('href="https://www.facebook.com/rubiknows/posts/123"', false)
+            ->assertSee($post->posted_at->format('F j, Y'));
+
+        $this->get(route('admin.news.edit', $post))->assertOk()->assertSee('Roof slab poured');
+        $this->delete(route('admin.news.destroy', $post))->assertRedirect();
+        $this->assertDatabaseCount('news_posts', 0);
+    }
+
+    public function test_news_links_must_point_to_facebook(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]));
+
+        $this->post(route('admin.news.store'), [
+            'body' => 'Update',
+            'posted_at' => now()->format('Y-m-d\TH:i'),
+            'facebook_url' => 'https://example.com/post',
+        ])->assertSessionHasErrors('facebook_url');
+    }
+
+    public function test_hidden_and_scheduled_news_stay_off_the_site(): void
+    {
+        \App\Models\NewsPost::create(['title' => 'Hidden post', 'body' => 'x', 'posted_at' => now()->subDay(), 'facebook_url' => 'https://facebook.com/a', 'is_published' => false]);
+        \App\Models\NewsPost::create(['title' => 'Future post', 'body' => 'x', 'posted_at' => now()->addDay(), 'facebook_url' => 'https://facebook.com/b', 'is_published' => true]);
+
+        $this->get(route('public.home'))
+            ->assertOk()
+            ->assertDontSee('From the site')
+            ->assertDontSee('Hidden post')
+            ->assertDontSee('Future post');
+    }
+
     public function test_job_requirements_accept_long_qualification_lists(): void
     {
         // A 255-character column made longer lists fail on Postgres.
