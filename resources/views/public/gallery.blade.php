@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Gallery</x-slot>
-    <x-slot name="description">Photos from RubiKnows construction sites and finished projects in Davao del Norte and across Mindanao.</x-slot>
+    <x-slot name="description">Photos from RUBIKNOWS construction sites and finished projects in Davao del Norte and across Mindanao.</x-slot>
 
     @php
         $items = $media->getCollection()->map(fn ($item) => [

@@ -38,7 +38,7 @@ trait HandlesSubmissions
                 $submission->name,
                 $data['reply_message'],
                 $subject,
-                $data['sender_name'] ?? 'The RubiKnows Team',
+                $data['sender_name'] ?? 'The RUBIKNOWS Team',
             ));
         } catch (\Exception $e) {
             Log::error('Mail Error (Reply): '.$e->getMessage());

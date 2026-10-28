@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Terms of use</x-slot>
-    <x-slot name="description">The terms that apply when you use the RubiKnows website, request a quotation or send us files.</x-slot>
+    <x-slot name="description">The terms that apply when you use the RUBIKNOWS website, request a quotation or send us files.</x-slot>
 
     @php
         $contact = \App\Support\ContactDetails::fromSettings();
@@ -33,7 +33,7 @@
 
             <article class="rk-prose">
                 <h2 id="about">About these terms</h2>
-                <p>These terms apply to your use of the RubiKnows website. By using the site you agree to them. If you do not agree, please do not use the site.</p>
+                <p>These terms apply to your use of the RUBIKNOWS website. By using the site you agree to them. If you do not agree, please do not use the site.</p>
 
                 <h2 id="information">Information on this website</h2>
                 <p>We publish information about our company, services and projects for general guidance. It is not engineering or construction advice for your particular situation. Advice that you can rely on is given only after we have assessed your project and agreed the work with you in writing.</p>
@@ -50,7 +50,7 @@
                 <p>Do not use the website to send spam, to try to gain unauthorised access to any part of it, or in any way that disrupts the site or affects other people's use of it. We may block access from anyone who misuses the site.</p>
 
                 <h2 id="ownership">Content and trademarks</h2>
-                <p>The RubiKnows name and logo, and the text and design of this website, belong to RubiKnows. Some photographs are used under licence from their owners. Please do not copy or reuse our content without written permission.</p>
+                <p>The RUBIKNOWS name and logo, and the text and design of this website, belong to RUBIKNOWS. Some photographs are used under licence from their owners. Please do not copy or reuse our content without written permission.</p>
 
                 <h2 id="liability">Liability</h2>
                 <p>To the extent the law allows, we are not responsible for losses arising from the use of general information published on this website. Nothing in these terms limits any liability that cannot be limited under Philippine law.</p>

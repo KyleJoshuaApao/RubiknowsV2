@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Careers</x-slot>
-    <x-slot name="description">Open positions at RubiKnows, an engineering and construction company in Tagum City, Davao del Norte. Apply online with your resume.</x-slot>
+    <x-slot name="description">Open positions at RUBIKNOWS, an engineering and construction company in Tagum City, Davao del Norte. Apply online with your resume.</x-slot>
 
     <x-public.page-header title="Careers" lede="Join an engineering and construction team based in Tagum City. We hire engineers, site staff and skilled workers who take pride in their work." :breadcrumbs="['Careers' => null]" />
 

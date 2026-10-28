@@ -76,7 +76,7 @@ class SendNewJobApplicationNotification implements ShouldQueue
         Http::acceptJson()
             ->withToken($apiKey)
             ->withHeaders([
-                'User-Agent' => 'RubiKnows/1.0',
+                'User-Agent' => 'RUBIKNOWS/1.0',
                 'Idempotency-Key' => "job-application-{$application->id}",
             ])
             ->timeout(15)

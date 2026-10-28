@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Clients and partners</x-slot>
-    <x-slot name="description">Clients, partners and sponsors who have worked with RubiKnows.</x-slot>
+    <x-slot name="description">Clients, partners and sponsors who have worked with RUBIKNOWS.</x-slot>
 
     <x-public.page-header title="Clients and partners" lede="Organisations that have trusted us with their projects, and the partners we work alongside." :breadcrumbs="['Clients and partners' => null]" />
 

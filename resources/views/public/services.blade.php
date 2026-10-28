@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Services</x-slot>
-    <x-slot name="description">Structural engineering, design and planning, general construction, site development, project management and technical consultancy from RubiKnows in Tagum City, Davao del Norte.</x-slot>
+    <x-slot name="description">Structural engineering, design and planning, general construction, site development, project management and technical consultancy from RUBIKNOWS in Tagum City, Davao del Norte.</x-slot>
 
     <x-public.page-header title="Services" lede="Engineering, design and construction under one roof. Hire us for the whole project or for the part where you need help." :breadcrumbs="['Services' => null]" />
 

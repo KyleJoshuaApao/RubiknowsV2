@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Job Application - RubiKnows</title>
+    <title>New Job Application - RUBIKNOWS</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #18181b;">
 
@@ -106,10 +106,10 @@
                     <tr>
                         <td style="padding: 30px 40px; background-color: #18181b; text-align: center;">
                             <p style="margin: 0 0 10px 0; font-size: 12px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px;">
-                                RubiKnows Engineering & Construction
+                                RUBIKNOWS Engineering & Construction
                             </p>
                             <p style="margin: 0; font-size: 12px; color: #71717a;">
-                                This is an automated notification from the RubiKnows HR system.<br>
+                                This is an automated notification from the RUBIKNOWS HR system.<br>
                                 Please do not reply directly to this email.
                             </p>
                         </td>

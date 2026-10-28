@@ -17,7 +17,7 @@ class AdminReplyNotification extends Mailable implements ShouldQueue
         public string $recipientName,
         public string $replyText,
         public string $subjectLine,
-        public string $senderName = 'The RubiKnows Team',
+        public string $senderName = 'The RUBIKNOWS Team',
     ) {
     }
 

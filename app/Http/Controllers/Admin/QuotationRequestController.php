@@ -51,7 +51,7 @@ class QuotationRequestController extends Controller
 
     public function reply(ReplyQuotationRequest $request, QuotationRequest $quotation)
     {
-        return $this->sendReply($quotation, $request->validated(), 'Update on your Quotation Request at RubiKnows');
+        return $this->sendReply($quotation, $request->validated(), 'Update on your Quotation Request at RUBIKNOWS');
     }
 
     public function downloadAttachment(QuotationRequest $quotation)

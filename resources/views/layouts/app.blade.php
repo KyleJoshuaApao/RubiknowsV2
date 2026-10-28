@@ -8,9 +8,9 @@
 
         <title>
             @isset($header)
-                {{ strip_tags($header) }} | RubiKnows Admin
+                {{ strip_tags($header) }} | RUBIKNOWS Admin
             @else
-                RubiKnows Admin Portal
+                RUBIKNOWS Admin Portal
             @endisset
         </title>
 
@@ -360,7 +360,7 @@
             <div class="flex-1 overflow-y-auto bg-white">
                 <div class="p-6 lg:p-8">
                     <!-- Alert System -->
-                    {{-- Flash toasts are rendered by the global RubiKnows toast system below --}}
+                    {{-- Flash toasts are rendered by the global RUBIKNOWS toast system below --}}
 
                     {{ $slot }}
                 </div>
@@ -415,14 +415,14 @@
                 <!-- Logo watermark -->
                 <div class="absolute bottom-3 left-6 flex items-center gap-1.5 opacity-30 select-none">
                     <x-logo class="h-4 w-auto" alt="" />
-                    <span class="text-[9px] font-bold tracking-widest text-gray-400 uppercase">RubiKnows</span>
+                    <span class="text-[9px] font-bold tracking-widest text-gray-400 uppercase">RUBIKNOWS</span>
                 </div>
             </div>
         </div>
 
         <script nonce="{{ Vite::cspNonce() }}">
         /* ================================================================
-           RubiKnows — Notification & Confirm System
+           RUBIKNOWS — Notification & Confirm System
            ================================================================ */
         (function () {
             'use strict';

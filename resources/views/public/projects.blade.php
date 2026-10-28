@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Projects</x-slot>
-    <x-slot name="description">Projects designed, built and managed by RubiKnows, an engineering and construction company in Tagum City, Davao del Norte.</x-slot>
+    <x-slot name="description">Projects designed, built and managed by RUBIKNOWS, an engineering and construction company in Tagum City, Davao del Norte.</x-slot>
 
     <x-public.page-header title="Projects" lede="Work we have designed, built or managed for clients in Davao del Norte and across Mindanao." :breadcrumbs="['Projects' => null]" />
 

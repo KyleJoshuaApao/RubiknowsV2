@@ -8,8 +8,8 @@
             $sections = \App\Support\PublicContentCache::sections();
             $footerServices = \App\Support\PublicContentCache::footerServices();
 
-            $companyName = $settings['company_name'] ?? 'RubiKnows';
-            $brandName = mb_strtoupper($companyName) === $companyName ? 'RubiKnows' : $companyName;
+            $companyName = $settings['company_name'] ?? 'RUBIKNOWS';
+            $brandName = 'RUBIKNOWS';
             $contact = \App\Support\ContactDetails::fromSettings();
             [$phone, $phoneHref, $email, $address] = [$contact->phone, $contact->phoneHref, $contact->email, $contact->address];
 

@@ -52,7 +52,7 @@ class ContactMessageController extends Controller
 
     public function reply(ReplyContactMessageRequest $request, ContactMessage $message)
     {
-        $subject = 'Re: '.($message->subject ?: 'Your inquiry at RubiKnows');
+        $subject = 'Re: '.($message->subject ?: 'Your inquiry at RUBIKNOWS');
 
         return $this->sendReply($message, $request->validated(), $subject);
     }

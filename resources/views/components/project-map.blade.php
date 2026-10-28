@@ -20,7 +20,7 @@
             <h2 id="{{ $id }}-title">{{ $title }}</h2>
             <p id="{{ $id }}-instructions">Select a pin to open the project. All mapped projects are also listed below the map.</p>
         </div>
-        <div id="{{ $id }}" class="rk-map__canvas" role="region" aria-label="Map of RubiKnows projects in Mindanao" aria-describedby="{{ $id }}-instructions" aria-busy="true" data-projects='@json($mapPoints)'>
+        <div id="{{ $id }}" class="rk-map__canvas" role="region" aria-label="Map of RUBIKNOWS projects in Mindanao" aria-describedby="{{ $id }}-instructions" aria-busy="true" data-projects='@json($mapPoints)'>
             <p id="{{ $id }}-status" class="rk-map__status" role="status">Loading map…</p>
         </div>
         <ul class="rk-map__list">

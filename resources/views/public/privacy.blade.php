@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Privacy policy</x-slot>
-    <x-slot name="description">How RubiKnows collects, uses, shares and protects personal information submitted through this website, and your rights under the Data Privacy Act of 2012.</x-slot>
+    <x-slot name="description">How RUBIKNOWS collects, uses, shares and protects personal information submitted through this website, and your rights under the Data Privacy Act of 2012.</x-slot>
 
     @php
         $contact = \App\Support\ContactDetails::fromSettings();
@@ -33,10 +33,10 @@
             </nav>
 
             <article class="rk-prose">
-                <p>This policy explains what personal information RubiKnows collects through this website, why we collect it, and how we look after it. We handle personal information in line with the Data Privacy Act of 2012 (Republic Act No. 10173) and its implementing rules.</p>
+                <p>This policy explains what personal information RUBIKNOWS collects through this website, why we collect it, and how we look after it. We handle personal information in line with the Data Privacy Act of 2012 (Republic Act No. 10173) and its implementing rules.</p>
 
                 <h2 id="who-we-are">Who we are</h2>
-                <p>RubiKnows is an engineering and construction company based in Tagum City, Davao del Norte{{ $address ? ' ('.$address.')' : '' }}. We decide how the information described in this policy is used, which makes us its personal information controller.</p>
+                <p>RUBIKNOWS is an engineering and construction company based in Tagum City, Davao del Norte{{ $address ? ' ('.$address.')' : '' }}. We decide how the information described in this policy is used, which makes us its personal information controller.</p>
 
                 <h2 id="what-we-collect">Information we collect</h2>
                 <p>We only collect what you choose to send us, plus basic technical information needed to run the site.</p>
@@ -58,7 +58,7 @@
                 <p>We do not sell your information, and we do not use it for advertising. We will only send you marketing messages if you have asked us to.</p>
 
                 <h2 id="sharing">Who we share it with</h2>
-                <p>Your information is seen only by the RubiKnows staff who need it to respond to you. We also use a small number of service providers who process information on our behalf and only on our instructions:</p>
+                <p>Your information is seen only by the RUBIKNOWS staff who need it to respond to you. We also use a small number of service providers who process information on our behalf and only on our instructions:</p>
                 <ul>
                     <li><strong>Render</strong>, which hosts this website.</li>
                     <li><strong>Supabase</strong>, which stores the website database and uploaded files.</li>

@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Contact us</x-slot>
-    <x-slot name="description">Contact RubiKnows in Tagum City, Davao del Norte. Call, email or send a message, or request a quotation for your project.</x-slot>
+    <x-slot name="description">Contact RUBIKNOWS in Tagum City, Davao del Norte. Call, email or send a message, or request a quotation for your project.</x-slot>
 
     @php
         $contact = \App\Support\ContactDetails::fromSettings();

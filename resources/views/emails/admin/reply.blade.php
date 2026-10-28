@@ -50,7 +50,7 @@
                     <tr>
                         <td align="left" style="padding: 10px 40px 50px; background-color: #ffffff;">
                             <p style="margin: 0 0 5px 0; font-size: 15px; font-weight: 600; color: #18181b;">Best regards,</p>
-                            <p style="margin: 0; font-size: 15px; color: #52525b;">{{ $senderName ?: 'The RubiKnows Team' }}</p>
+                            <p style="margin: 0; font-size: 15px; color: #52525b;">{{ $senderName ?: 'The RUBIKNOWS Team' }}</p>
                         </td>
                     </tr>
                     
@@ -58,7 +58,7 @@
                     <tr>
                         <td style="padding: 30px 40px; background-color: #18181b; text-align: center;">
                             <p style="margin: 0 0 10px 0; font-size: 12px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px;">
-                                RubiKnows Engineering & Construction
+                                RUBIKNOWS Engineering & Construction
                             </p>
                             <p style="margin: 0; font-size: 12px; color: #71717a;">
                                 Please reply directly to this email if you have any further questions.

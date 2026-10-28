@@ -7,7 +7,7 @@
         $storyTitle = trim((string) ($settings['about_story_title'] ?? '')) ?: 'Who we are';
         $storyContent = (string) ($settings['about_story_content'] ?? '');
         if (trim(strip_tags($storyContent)) === '') {
-            $storyContent = '<p>RubiKnows was started in '.e($established).' by Ruvelyn S. Rubinos and Kevin C. Rubinos to give property owners in Davao del Norte one team they can rely on for engineering and construction.</p>'
+            $storyContent = '<p>RUBIKNOWS was started in '.e($established).' by Ruvelyn S. Rubinos and Kevin C. Rubinos to give property owners in Davao del Norte one team they can rely on for engineering and construction.</p>'
                 .'<p>We design structures, prepare plans and estimates, build, and manage projects for clients who want their work done properly and explained clearly. Our office is in Magugpo West, Tagum City, and our projects take us across Mindanao.</p>'
                 .'<p>We keep our promises specific: an honest estimate, regular updates, and a site that is run safely and to plan.</p>';
         }
@@ -22,9 +22,9 @@
         ];
     @endphp
 
-    <x-slot name="description">RubiKnows is an engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}.</x-slot>
+    <x-slot name="description">RUBIKNOWS is an engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}.</x-slot>
 
-    <x-public.page-header title="About RubiKnows" lede="An engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}." :breadcrumbs="['About' => null]" />
+    <x-public.page-header title="About RUBIKNOWS" lede="An engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}." :breadcrumbs="['About' => null]" />
 
     <section class="rk-section" aria-labelledby="story-title">
         <div class="rk-container rk-split">
@@ -89,7 +89,7 @@
             <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="leaders-title">Leadership</h2>
-                    <p>RubiKnows is owner-managed. The founders stay involved in every project, from the first estimate to turnover.</p>
+                    <p>RUBIKNOWS is owner-managed. The founders stay involved in every project, from the first estimate to turnover.</p>
                 </div>
             </div>
             <ul class="rk-people" data-reveal-stagger>

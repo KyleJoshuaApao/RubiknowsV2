@@ -8,11 +8,11 @@
 
         <title>
             @if(request()->routeIs('login'))
-                Admin Login | RubiKnows
+                Admin Login | RUBIKNOWS
             @elseif(request()->routeIs('password.request'))
-                Forgot Password | RubiKnows
+                Forgot Password | RUBIKNOWS
             @else
-                RubiKnows
+                RUBIKNOWS
             @endif
         </title>
 
@@ -64,7 +64,7 @@
                         Welcome Back
                     </h2>
                     <p class="text-gray-600 mb-4">
-                        Sign in to continue to RubiKnows Admin Portal
+                        Sign in to continue to RUBIKNOWS Admin Portal
                     </p>
                 </div>
 
@@ -75,7 +75,7 @@
 
                 <!-- Footer -->
                 <div class="mt-6 text-center text-sm text-gray-500">
-                    &copy; {{ date('Y') }} RubiKnows Engineering. All rights reserved.
+                    &copy; {{ date('Y') }} RUBIKNOWS Engineering. All rights reserved.
                 </div>
             </div>
         </div>

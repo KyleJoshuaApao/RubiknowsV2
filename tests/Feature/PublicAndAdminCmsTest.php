@@ -380,7 +380,7 @@ class PublicAndAdminCmsTest extends TestCase
             ->assertOk()
             ->assertSee('home-project-map')
             ->assertSee('Where we have worked')
-            ->assertSee('Map of RubiKnows projects in Mindanao')
+            ->assertSee('Map of RUBIKNOWS projects in Mindanao')
             ->assertSee('Davao Civic Center')
             ->assertSee('sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=', false)
             ->assertSee(json_encode(route('public.project-details', $project)), false)

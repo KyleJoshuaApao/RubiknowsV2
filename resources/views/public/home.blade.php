@@ -17,8 +17,8 @@
         <div class="rk-container rk-hero__inner">
             <div class="rk-hero__copy">
                 <p class="rk-kicker">Engineering · Design · Construction</p>
-                <h1>Building design and construction <em>in Tagum City and across Mindanao</em></h1>
-                <p class="rk-hero__lede">RubiKnows plans, engineers and builds houses, commercial buildings and civil works. Bring us in early and we will help you get the design, permits, budget and construction right.</p>
+                <h1>Building design and construction <em>across Mindanao</em></h1>
+                <p class="rk-hero__lede">RUBIKNOWS plans, engineers and builds houses, commercial buildings and civil works. Bring us in early and we will help you get the design, permits, budget and construction right.</p>
                 <div class="rk-hero__actions">
                     <a class="rk-btn rk-btn--primary rk-btn--lg" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quotation</a>
                     <a class="rk-btn rk-btn--ghost rk-btn--lg" href="{{ route('public.services') }}">See our services</a>
@@ -108,7 +108,7 @@
                 <h2 id="about-title">Based in Tagum City</h2>
                 <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, from the first meeting to turnover, and we stay reachable after the work is done.</p>
                 <p>We are guided by faith, by honest work and by care for the families and communities who use what we build.</p>
-                <a class="rk-arrow-link" href="{{ route('public.about') }}">More about RubiKnows</a>
+                <a class="rk-arrow-link" href="{{ route('public.about') }}">More about RUBIKNOWS</a>
             </div>
         </div>
     </section>

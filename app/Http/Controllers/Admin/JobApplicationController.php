@@ -46,7 +46,7 @@ class JobApplicationController extends Controller
 
     public function reply(JobApplicationReplyRequest $request, JobApplication $application)
     {
-        return $this->sendReply($application, $request->validated(), 'Update regarding your application at RubiKnows');
+        return $this->sendReply($application, $request->validated(), 'Update regarding your application at RUBIKNOWS');
     }
 
     public function downloadResume(JobApplication $application)

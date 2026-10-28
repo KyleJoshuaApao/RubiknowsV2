@@ -1,6 +1,6 @@
 <x-public-layout>
     <x-slot name="title">Testimonials</x-slot>
-    <x-slot name="description">What clients say about working with RubiKnows on their engineering and construction projects.</x-slot>
+    <x-slot name="description">What clients say about working with RUBIKNOWS on their engineering and construction projects.</x-slot>
 
     <x-public.page-header title="Testimonials" lede="What clients say about working with us." :breadcrumbs="['Testimonials' => null]" />
 

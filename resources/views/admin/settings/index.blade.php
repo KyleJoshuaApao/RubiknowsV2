@@ -22,7 +22,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <x-input-label for="company_name" value="Company Name" />
-                            <x-text-input id="company_name" name="company_name" type="text" class="mt-1 block w-full" value="{{ $settings['company_name'] ?? 'RubiKnows' }}" />
+                            <x-text-input id="company_name" name="company_name" type="text" class="mt-1 block w-full" value="{{ $settings['company_name'] ?? 'RUBIKNOWS' }}" />
                         </div>
                         <div>
                             <x-input-label for="contact_email" value="Contact Email" />
