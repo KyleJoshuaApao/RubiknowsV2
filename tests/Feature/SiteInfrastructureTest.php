@@ -263,6 +263,25 @@ class SiteInfrastructureTest extends TestCase
         $this->assertStringContainsString('Licensed Civil Engineer', $job->fresh()->requirements);
     }
 
+    public function test_job_requirements_accept_long_qualification_lists(): void
+    {
+        // A 255-character column made longer lists fail on Postgres.
+        $this->assertSame('text', \Illuminate\Support\Facades\Schema::getColumnType('career_jobs', 'requirements'));
+
+        $this->actingAs(User::factory()->create(['role' => User::ROLE_ADMIN]));
+        $requirements = str_repeat("- Licensed Civil Engineer with site experience\n", 12);
+
+        $this->post(route('admin.jobs.store'), [
+            'title' => 'Project Engineer',
+            'type' => 'Full-time',
+            'location' => 'Tagum City',
+            'description' => 'Run projects from our Tagum City office.',
+            'requirements' => $requirements,
+        ])->assertSessionHasNoErrors();
+
+        $this->assertSame(trim($requirements), trim(Job::where('title', 'Project Engineer')->value('requirements') ? Job::first()->requirements : ''));
+    }
+
     public function test_phone_numbers_are_grouped_for_reading(): void
     {
         $this->assertSame('0945 411 6141', \App\Support\ContactDetails::formatPhone('09454116141'));

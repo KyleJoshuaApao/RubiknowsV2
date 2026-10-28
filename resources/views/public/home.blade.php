@@ -13,23 +13,22 @@
     @endphp
 
     <section class="rk-hero">
-        <div class="rk-container rk-hero__grid">
+        <img class="rk-hero__image" src="/images/site/column-works-1600.webp" srcset="/images/site/column-works-800.webp 800w, /images/site/column-works-1600.webp 1600w" sizes="100vw" width="1600" height="1166" alt="Construction workers fixing steel reinforcement for concrete columns" fetchpriority="high">
+        <div class="rk-container rk-hero__inner">
             <div class="rk-hero__copy">
-                <h1>Building design and construction in Tagum City and across Mindanao</h1>
+                <p class="rk-kicker">Engineering · Design · Construction</p>
+                <h1>Building design and construction <em>in Tagum City and across Mindanao</em></h1>
                 <p class="rk-hero__lede">RubiKnows plans, engineers and builds houses, commercial buildings and civil works. Bring us in early and we will help you get the design, permits, budget and construction right.</p>
                 <div class="rk-hero__actions">
                     <a class="rk-btn rk-btn--primary rk-btn--lg" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quotation</a>
-                    <a class="rk-btn rk-btn--outline rk-btn--lg" href="{{ route('public.services') }}">See our services</a>
+                    <a class="rk-btn rk-btn--ghost rk-btn--lg" href="{{ route('public.services') }}">See our services</a>
                 </div>
-                <dl class="rk-facts" data-preview="stats" @if(! $facts) hidden @endif>
-                    @foreach($facts as $fact)
-                        <div><dt>{{ $fact['label'] }}</dt><dd>{{ $fact['value'] }}</dd></div>
-                    @endforeach
-                </dl>
             </div>
-            <div class="rk-hero__media">
-                <img src="/images/site/column-works-1600.webp" srcset="/images/site/column-works-800.webp 800w, /images/site/column-works-1600.webp 1600w" sizes="(min-width: 960px) 46vw, 100vw" width="1600" height="1166" alt="Construction workers fixing steel reinforcement for concrete columns" fetchpriority="high">
-            </div>
+            <dl class="rk-facts" data-preview="stats" @if(! $facts) hidden @endif>
+                @foreach($facts as $fact)
+                    <div><dt>{{ $fact['label'] }}</dt><dd>{{ $fact['value'] }}</dd></div>
+                @endforeach
+            </dl>
         </div>
     </section>
 
@@ -37,6 +36,7 @@
         <div class="rk-container">
             <div class="rk-section-head">
                 <div class="rk-section-head__text">
+                    <p class="rk-kicker">01 — Services</p>
                     <h2 id="services-title">What we do</h2>
                     <p>Hire us for the whole project, from plans to turnover, or for the part where you need an engineer.</p>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="rk-service-grid">
                     @foreach($services as $service)
                         <article class="rk-service-card">
-                            @if($service->category)<p class="rk-service-card__tag">{{ $service->category }}</p>@endif
+                            <p class="rk-service-card__tag"><span>{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>{{ $service->category }}</p>
                             <h3><a href="{{ route('public.service-details', $service) }}">{{ $service->title }}</a></h3>
                             <p>{{ $service->short_description ?: Str::limit(strip_tags((string) $service->content), 140) }}</p>
                             <span class="rk-service-card__more" aria-hidden="true">Read more</span>
@@ -60,10 +60,11 @@
         </div>
     </section>
 
-    <section class="rk-section rk-section--paper" aria-labelledby="process-title">
+    <section class="rk-section rk-section--dark" aria-labelledby="process-title">
         <div class="rk-container">
             <div class="rk-section-head">
                 <div class="rk-section-head__text">
+                    <p class="rk-kicker">02 — Process</p>
                     <h2 id="process-title">How a project runs</h2>
                     <p>A clear sequence, so you always know what happens next and who is responsible for it.</p>
                 </div>
@@ -77,6 +78,7 @@
             <div class="rk-container">
                 <div class="rk-section-head">
                     <div class="rk-section-head__text">
+                        <p class="rk-kicker">03 — Projects</p>
                         <h2 id="projects-title">Recent projects</h2>
                         <p>A selection of the work we have designed, built or managed.</p>
                     </div>
@@ -102,6 +104,7 @@
                 <img src="/images/site/site-team-1600.webp" srcset="/images/site/site-team-800.webp 800w, /images/site/site-team-1600.webp 1600w" sizes="(min-width: 960px) 50vw, 100vw" width="1600" height="1066" alt="Engineers and site staff reviewing foundation work" loading="lazy">
             </div>
             <div class="rk-feature__text">
+                <p class="rk-kicker">Company</p>
                 <h2 id="about-title">Based in Tagum City</h2>
                 <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, from the first meeting to turnover, and we stay reachable after the work is done.</p>
                 <p>We are guided by faith, by honest work and by care for the families and communities who use what we build.</p>
