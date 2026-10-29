@@ -143,6 +143,8 @@ return [
         \App\Models\Setting::class,
         \App\Models\Job::class,
         \App\Models\NewsPost::class,
+        \App\Models\GalleryMedia::class,
+        \App\Models\Client::class,
     ],
 
 ];

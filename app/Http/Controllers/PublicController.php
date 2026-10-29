@@ -66,7 +66,8 @@ class PublicController extends Controller
     public function about()
     {
         return view('public.about', [
-            'testimonial' => PublicContentCache::page('about', fn () => $this->publishedTestimonials()->first()),
+            // Wrapped in an array because the cache never stores a bare null.
+            'testimonial' => PublicContentCache::page('about', fn () => [$this->publishedTestimonials()->first()])[0],
         ]);
     }
 
