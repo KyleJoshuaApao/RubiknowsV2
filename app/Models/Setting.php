@@ -50,7 +50,9 @@ class Setting extends Model
      */
     public static function getAdminEmail(): string
     {
-        $email = trim((string) static::getValue('contact_email', ''));
+        // Lowercase so Resend's own-address check matches however the address
+        // was typed in Admin → Settings (mailbox providers ignore case).
+        $email = strtolower(trim((string) static::getValue('contact_email', '')));
 
         return filter_var($email, FILTER_VALIDATE_EMAIL)
             ? $email
