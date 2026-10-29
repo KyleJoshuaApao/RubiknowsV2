@@ -11,10 +11,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
     && rm -rf /var/lib/apt/lists/*
 
-RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip intl
+RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip intl opcache
 
 # Align PHP's multipart limits with the largest validated admin/public uploads.
 COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 RUN a2enmod rewrite headers deflate expires
 

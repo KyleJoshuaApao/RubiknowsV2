@@ -22,9 +22,8 @@ php artisan storage:link --force
 # Apply additive schema changes before caching views/configuration.
 php artisan migrate --force
 
-# Cache configuration for optimal production performance
-php artisan config:cache
-php artisan view:cache
+# Cache configuration, routes, events and views for optimal production performance
+php artisan optimize
 
 # Fix permissions on cached files so Apache can read/write them
 php artisan storage:link --force
@@ -33,10 +32,12 @@ chmod -R 775 bootstrap/cache storage
 
 # Process queued notifications without blocking public form submissions.
 # Restart the worker if it ever exits (crash, memory limit, max-time) so
-# notifications never silently stop being sent.
+# notifications never silently stop being sent. It runs as www-data so cache
+# files it writes stay writable by Apache, and polls every 5s to leave the CPU
+# for page requests.
 (
   while true; do
-    php artisan queue:work --no-interaction --sleep=1 --tries=3 --backoff=60 --timeout=60 --max-time=3600
+    runuser -u www-data -- php artisan queue:work --no-interaction --sleep=5 --tries=3 --backoff=60 --timeout=60 --max-time=3600
     echo "queue:work exited with status $?; restarting in 5s" >&2
     sleep 5
   done

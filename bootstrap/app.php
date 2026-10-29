@@ -49,8 +49,6 @@ $app->booting(function ($app) {
     if ($_ENV['APP_STORAGE'] ?? $_SERVER['APP_STORAGE'] ?? false) {
         $app['config']->set('app.maintenance.driver', 'file');
         $app['config']->set('session.driver', 'cookie');
-        // The database store survives between requests, so rate limits hold.
-        $app['config']->set('cache.default', 'database');
     }
 });
 
