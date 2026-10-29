@@ -18,6 +18,7 @@ final class PublicContentCache
     public const SECTIONS = 'public-content:sections:v1';
     public const SITE_SETTINGS = 'site_settings';
     public const ADMIN_NOTIFICATION_COUNTS = 'admin:notification-counts:v1';
+    public const PAGES_GENERATION = 'public-content:pages:generation';
 
     /**
      * Which optional public sections have content, so navigation never links
@@ -55,6 +56,18 @@ final class PublicContentCache
     }
 
     /**
+     * Data for one public page, so visitors are served without a database
+     * round trip. Keys carry a generation number that every content change
+     * bumps, which clears paginated and filtered variants all at once.
+     */
+    public static function page(string $name, \Closure $callback): mixed
+    {
+        $generation = (int) Cache::get(self::PAGES_GENERATION, 0);
+
+        return Cache::remember(self::key("public-content:pages:{$generation}:{$name}"), now()->addMinutes(10), $callback);
+    }
+
+    /**
      * Clear everything derived from CMS content shown on public pages.
      */
     public static function forgetPublicContent(): void
@@ -63,6 +76,8 @@ final class PublicContentCache
             Cache::forget($key);
             Cache::forget($key.':admin');
         }
+
+        Cache::forever(self::PAGES_GENERATION, (int) Cache::get(self::PAGES_GENERATION, 0) + 1);
     }
 
     public static function forgetHome(): void

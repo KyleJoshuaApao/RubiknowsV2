@@ -21,7 +21,10 @@ use App\Models\Setting;
 use App\Models\Testimonial;
 use App\Support\PublicContentCache;
 use App\Support\SubmissionFiles;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -63,14 +66,14 @@ class PublicController extends Controller
     public function about()
     {
         return view('public.about', [
-            'testimonial' => $this->publishedTestimonials()->first(),
+            'testimonial' => PublicContentCache::page('about', fn () => $this->publishedTestimonials()->first()),
         ]);
     }
 
     public function services()
     {
         return view('public.services', [
-            'services' => $this->orderedServices()->get(),
+            'services' => PublicContentCache::page('services', fn () => $this->orderedServices()->get()),
         ]);
     }
 
@@ -84,20 +87,20 @@ class PublicController extends Controller
 
     public function projects(Request $request)
     {
-        $categories = Project::query()
+        $categories = PublicContentCache::page('project-categories', fn () => Project::query()
             ->whereNotNull('category_id')
             ->where('category_id', '!=', '')
             ->distinct()
             ->orderBy('category_id')
-            ->pluck('category_id');
+            ->pluck('category_id'));
 
         $category = $categories->contains($request->query('category')) ? $request->query('category') : null;
 
-        $projects = Project::query()
-            ->when($category, fn ($query) => $query->where('category_id', $category))
-            ->latest()
-            ->paginate(12)
-            ->withQueryString();
+        $projects = $this->cachedPaginate(
+            'projects:'.md5((string) $category),
+            Project::query()->when($category, fn ($query) => $query->where('category_id', $category))->latest(),
+            12,
+        )->appends(array_filter(['category' => $category]));
 
         $mapProjects = Cache::remember(
             PublicContentCache::key(PublicContentCache::PROJECT_MAP),
@@ -118,30 +121,32 @@ class PublicController extends Controller
 
     public function gallery()
     {
-        $media = GalleryMedia::latest()->paginate(24);
+        $media = $this->cachedPaginate('gallery', GalleryMedia::latest(), 24);
 
         return view('public.gallery', compact('media'));
     }
 
     public function testimonials()
     {
-        $testimonials = $this->publishedTestimonials()->paginate(12);
+        $testimonials = $this->cachedPaginate('testimonials', $this->publishedTestimonials(), 12);
 
         return view('public.testimonials', compact('testimonials'));
     }
 
     public function clients()
     {
-        $clients = Client::where('type', 'Client')->latest()->paginate(20);
-        $partners = Client::where('type', 'Partner')->latest()->get();
-        $sponsors = Client::where('type', 'Sponsor')->latest()->get();
+        $clients = $this->cachedPaginate('clients', Client::where('type', 'Client')->latest(), 20);
+        [$partners, $sponsors] = PublicContentCache::page('client-partners', fn () => [
+            Client::where('type', 'Partner')->latest()->get(),
+            Client::where('type', 'Sponsor')->latest()->get(),
+        ]);
 
         return view('public.clients', compact('clients', 'partners', 'sponsors'));
     }
 
     public function careers()
     {
-        $jobs = Job::where('is_archived', false)->latest()->paginate(10);
+        $jobs = $this->cachedPaginate('careers', Job::where('is_archived', false)->latest(), 10);
 
         return view('public.careers', compact('jobs'));
     }
@@ -149,7 +154,7 @@ class PublicController extends Controller
     public function contact()
     {
         return view('public.contact', [
-            'serviceOptions' => $this->orderedServices()->pluck('title'),
+            'serviceOptions' => PublicContentCache::page('service-options', fn () => $this->orderedServices()->pluck('title')),
         ]);
     }
 
@@ -277,6 +282,24 @@ class PublicController extends Controller
     private function orderedServices()
     {
         return Service::query()->orderByDesc('is_featured')->oldest('id');
+    }
+
+    /**
+     * Paginate through the public page cache. Only the rows and total are
+     * cached; the paginator is rebuilt for each request so its links match it.
+     */
+    private function cachedPaginate(string $name, Builder $query, int $perPage): LengthAwarePaginator
+    {
+        $page = Paginator::resolveCurrentPage();
+
+        [$items, $total] = PublicContentCache::page("{$name}:page-{$page}", fn (): array => [
+            (clone $query)->forPage($page, $perPage)->get(),
+            $query->toBase()->getCountForPagination(),
+        ]);
+
+        return new LengthAwarePaginator($items, $total, $perPage, $page, [
+            'path' => Paginator::resolveCurrentPath(),
+        ]);
     }
 
     /**
