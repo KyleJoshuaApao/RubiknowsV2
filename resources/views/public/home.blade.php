@@ -78,12 +78,10 @@
     </section>
 
     <section class="rk-section rk-section--dark" aria-labelledby="process-title">
-        <div class="rk-container">
-            <div class="rk-section-head" data-reveal>
-                <div class="rk-section-head__text">
-                    <h2 id="process-title">How a project runs</h2>
-                    <p>This is how most of our jobs go, from your first call to the day we hand over the keys.</p>
-                </div>
+        <div class="rk-container rk-process">
+            <div class="rk-section-head__text" data-reveal>
+                <h2 id="process-title">How a project runs</h2>
+                <p>This is how most of our jobs go, from your first call to the day we hand over the keys.</p>
             </div>
             @include('public.partials.process-steps')
         </div>

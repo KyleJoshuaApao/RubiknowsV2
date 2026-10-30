@@ -44,11 +44,11 @@
 
 .rk-public .rk-hero h1 {
     color: var(--rk-white);
-    font-size: clamp(2.375rem, 4.6vw, 4.25rem);
-    line-height: 0.95;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
 }
 
-.rk-public .rk-hero h1 em { display: block; color: var(--rk-gold); font-style: normal; }
+.rk-public .rk-hero h1 em { display: block; font-style: normal; }
 
 .rk-public .rk-hero__lede {
     max-width: 40rem;
@@ -60,18 +60,20 @@
 
 .rk-hero__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
 
-/* Key facts along the bottom of the hero */
+/* Key facts: a quiet line under the hero copy */
 
 .rk-facts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
     margin: 0;
+    padding-top: 1.25rem;
     border-top: 1px solid rgba(255, 255, 255, 0.22);
 }
 
-.rk-facts div { display: flex; flex-direction: column-reverse; gap: 0.2rem; padding: 1.25rem 1.5rem 0 0; }
-.rk-facts dt { color: #bdbdbd; font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-.rk-facts dd { margin: 0; color: var(--rk-gold); font-family: var(--rk-font-display); font-size: clamp(1.875rem, 3vw, 2.5rem); font-weight: 700; line-height: 1; }
+.rk-facts div { display: flex; flex-direction: row-reverse; align-items: baseline; gap: 0.5rem; }
+.rk-facts dt { color: #bdbdbd; font-size: 0.9375rem; }
+.rk-facts dd { margin: 0; color: var(--rk-white); font-size: 0.9375rem; font-weight: 600; }
 .rk-facts[hidden] { display: none; }
 
 /* Section label: gold rule, index and name, as on a drawing sheet. */
@@ -101,8 +103,8 @@
 
 .rk-public .rk-section--dark h2, .rk-public .rk-section--dark h3 { color: var(--rk-white); }
 .rk-public .rk-section--dark .rk-section-head__text p, .rk-public .rk-section--dark .rk-steps p { color: #b5b5b5; }
-.rk-section--dark .rk-steps li { border-top-color: var(--rk-gold); }
-.rk-section--dark .rk-steps li::before { color: var(--rk-gold); }
+.rk-section--dark .rk-steps li { border-top-color: var(--rk-dark-line); }
+.rk-section--dark .rk-steps li::before { color: var(--rk-dark-muted); }
 
 
 .rk-facts--stacked { flex-direction: column; gap: 1rem; max-width: 18rem; padding-top: 1.25rem; margin-top: 1.75rem; }
@@ -132,7 +134,7 @@
 .rk-service-card::before { content: ''; position: absolute; top: -1px; left: -1px; right: -1px; height: 3px; background: var(--rk-gold); transform: scaleX(0); transform-origin: left; transition: transform 0.2s ease; }
 .rk-service-card:hover { border-color: var(--rk-line-strong); }
 .rk-service-card:hover::before { transform: scaleX(1); }
-.rk-public .rk-service-card h3 { font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.01em; }
+.rk-public .rk-service-card h3 { font-size: 1.5rem; }
 .rk-service-card__tag span { margin-right: 0.75rem; color: var(--rk-ink); font-family: var(--rk-font-display); font-size: 1rem; }
 .rk-service-card:focus-within { border-color: var(--rk-ink); }
 .rk-service-card h3 a { color: inherit; text-decoration: none; }
@@ -179,20 +181,26 @@
     counter-reset: step;
 }
 
-@media (min-width: 720px) { .rk-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1080px) { .rk-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.rk-steps { gap: 0; }
 
-.rk-steps li { padding-top: 1.25rem; border-top: 2px solid var(--rk-ink); counter-increment: step; }
+.rk-steps li { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); column-gap: 1rem; padding-block: 1.25rem; border-top: 1px solid var(--rk-line-strong); counter-increment: step; }
+.rk-steps li > * { grid-column: 2; }
 
 .rk-steps li::before {
-    content: counter(step, decimal-leading-zero);
-    display: block;
-    margin-bottom: 0.75rem;
-    color: var(--rk-gold-text);
-    font-family: var(--rk-font-display);
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1;
+    content: counter(step) '.';
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    color: var(--rk-muted);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+/* Home page: heading on the left, the steps listed beside it */
+.rk-process { display: grid; gap: 2rem 4rem; }
+
+@media (min-width: 960px) {
+    .rk-process { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; }
 }
 
 .rk-public .rk-steps h3 { margin-bottom: 0.5rem; font-size: 1.25rem; }
@@ -222,7 +230,7 @@
 .rk-project-card h3 a { color: inherit; text-decoration: none; }
 .rk-project-card h3 a::after { content: ''; position: absolute; inset: 0; }
 .rk-project-card:hover h3 { text-decoration: underline; text-decoration-color: var(--rk-gold); }
-.rk-public .rk-project-card__tag { color: var(--rk-gold-text); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.rk-public .rk-project-card__tag { color: var(--rk-muted); font-size: 0.875rem; }
 .rk-public .rk-project-card__meta { color: var(--rk-muted); font-size: 0.9375rem; }
 
 .rk-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 2rem; padding: 0; list-style: none; }
@@ -324,7 +332,7 @@
 .rk-quote figcaption { display: grid; gap: 0.15rem; margin-top: 1.25rem; color: var(--rk-muted); }
 .rk-quote figcaption strong { color: var(--rk-ink); font-weight: 600; }
 
-.rk-public .rk-brand-h2 { font-family: var(--rk-font-condensed); font-size: clamp(2.75rem, 5.4vw, 5.25rem); font-weight: 800; line-height: 0.92; }
+.rk-public .rk-brand-h2 { font-family: var(--rk-font-condensed); font-size: clamp(2.75rem, 5.4vw, 5.25rem); font-weight: 800; line-height: 0.98; }
 
 /* Services as an unfolded cube (home page) */
 
@@ -342,7 +350,7 @@
     transition: background 0.15s ease;
 }
 
-.rk-public .rk-face h3 { color: inherit; font-family: var(--rk-font-condensed); font-size: 1.75rem; font-weight: 700; line-height: 1; text-transform: uppercase; }
+.rk-public .rk-face h3 { color: inherit; font-size: 1.5rem; line-height: 1.1; }
 .rk-face h3 a { color: inherit; text-decoration: none; }
 .rk-face h3 a::after { content: ''; position: absolute; inset: 0; }
 .rk-face h3 a:focus-visible { outline: none; }
@@ -358,7 +366,7 @@
 .rk-public .rk-face:hover p, .rk-public .rk-face:focus-within p { color: var(--rk-ink); }
 
 .rk-net__ask { display: grid; justify-items: start; gap: 0.85rem; margin-top: 1.5rem; padding: 2rem; border-left: 3px solid var(--rk-gold); background: #e7e7e4; }
-.rk-public .rk-net__ask h3 { font-family: var(--rk-font-condensed); font-size: 1.875rem; font-weight: 700; line-height: 1; text-transform: uppercase; }
+.rk-public .rk-net__ask h3 { font-size: 1.5rem; }
 .rk-public .rk-net__ask p { color: var(--rk-muted); }
 
 @media (min-width: 640px) {
@@ -399,7 +407,7 @@
 .rk-hiring__card { display: grid; justify-items: start; gap: 1rem; padding: 2rem; background: var(--rk-dark); color: var(--rk-white); }
 .rk-public .rk-hiring__status { color: var(--rk-gold); font-size: 0.875rem; font-weight: 600; }
 .rk-hiring__jobs { display: grid; gap: 1rem; margin: 0 0 0.5rem; padding: 0; list-style: none; }
-.rk-hiring__jobs a { color: var(--rk-white); font-family: var(--rk-font-condensed); font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; line-height: 1; text-decoration: none; text-transform: uppercase; }
+.rk-hiring__jobs a { color: var(--rk-white); font-family: var(--rk-font-condensed); font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; line-height: 1.05; text-decoration: none; }
 .rk-hiring__jobs a:hover { color: var(--rk-gold); }
 .rk-hiring__jobs span { display: block; margin-top: 0.4rem; color: var(--rk-dark-muted); }
 .rk-public .rk-hiring__none { color: var(--rk-dark-muted); }
@@ -414,7 +422,7 @@
     .rk-cta__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); align-items: center; }
 }
 
-.rk-public .rk-cta__title { color: var(--rk-white); font-family: var(--rk-font-condensed); font-size: clamp(3.5rem, 8.6vw, 8.75rem); font-weight: 800; line-height: 0.92; }
+.rk-public .rk-cta__title { color: var(--rk-white); font-family: var(--rk-font-condensed); font-size: clamp(3.25rem, 7.4vw, 7.5rem); font-weight: 800; line-height: 0.98; }
 .rk-cta__title em { display: block; color: var(--rk-gold); font-style: normal; }
 .rk-public .rk-cta__text { max-width: 36rem; margin-top: 1.75rem; color: #c9c9c3; font-size: 1.1875rem; }
 .rk-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
