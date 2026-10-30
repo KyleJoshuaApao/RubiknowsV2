@@ -8,7 +8,7 @@
             filled($settings['about_experience_years'] ?? null) ? ['value' => $settings['about_experience_years'].'+', 'label' => 'Years in practice'] : null,
             filled($settings['about_projects_count'] ?? null) ? ['value' => $settings['about_projects_count'].'+', 'label' => 'Projects completed'] : null,
         ]));
-        $careersTitle = $homeCareers['title'] ?? 'Built by people who know.';
+        $careersTitle = $homeCareers['title'] ?? 'Work with us';
         $careersText = $homeCareers['description'] ?? 'We are always glad to hear from engineers, foremen and skilled workers who take pride in their work.';
     @endphp
 
@@ -16,9 +16,8 @@
         <img class="rk-hero__image" src="/images/site/column-works-1600.webp" srcset="/images/site/column-works-800.webp 800w, /images/site/column-works-1600.webp 1600w" sizes="100vw" width="1600" height="1166" alt="Construction workers fixing steel reinforcement for concrete columns" fetchpriority="high">
         <div class="rk-container rk-hero__inner">
             <div class="rk-hero__copy">
-                <p class="rk-kicker">Engineering · Design · Construction</p>
                 <h1>Building design and construction <em>across Mindanao</em></h1>
-                <p class="rk-hero__lede">RUBIKNOWS plans, engineers and builds houses, commercial buildings and civil works. Bring us in early and we will help you get the design, permits, budget and construction right.</p>
+                <p class="rk-hero__lede">RUBIKNOWS plans, engineers and builds houses, commercial buildings and civil works. It costs far less to fix a drawing than a building, so talk to us before you start.</p>
                 <div class="rk-hero__actions">
                     <a class="rk-btn rk-btn--primary rk-btn--lg" href="{{ route('public.contact', ['tab' => 'quote']) }}">Request a quotation</a>
                     <a class="rk-btn rk-btn--ghost rk-btn--lg" href="{{ route('public.services') }}">See our services</a>
@@ -34,15 +33,12 @@
 
     <section class="rk-section rk-section--paper rk-net-section" aria-labelledby="services-title">
         <div class="rk-container">
-            <div class="rk-brand-head" data-reveal>
-                <div>
-                    <p class="rk-mark-label"><x-public.cube-mark :lit="1" />01 / Services</p>
-                    <h2 id="services-title" class="rk-brand-h2">Six faces of <span>every build.</span></h2>
+            <div class="rk-section-head" data-reveal>
+                <div class="rk-section-head__text">
+                    <h2 id="services-title">What we do</h2>
+                    <p>Hire us for the whole job, from the first drawing to turnover, or only for the part where you need an engineer.</p>
                 </div>
-                <div class="rk-brand-head__aside">
-                    <p>A building is a puzzle with six sides. Most contractors solve one or two. We handle all six — or just the face you need — and make sure they line up.</p>
-                    <a class="rk-arrow-link" href="{{ route('public.services') }}">All services</a>
-                </div>
+                <a class="rk-arrow-link" href="{{ route('public.services') }}">All services</a>
             </div>
 
             @if($services->count() === 6)
@@ -52,20 +48,15 @@
                     @foreach($services as $service)
                         @php($slot = $slots[$loop->index])
                         <article class="rk-face rk-face--{{ $slot }}">
-                            <p class="rk-face__tag"><span>F{{ $loop->iteration }}</span><span>{{ $slot === 'core' ? 'The core' : $service->category }}</span></p>
-                            <x-public.service-icon :title="$service->title" />
                             <h3><a href="{{ route('public.service-details', $service) }}">{{ $service->title }}</a></h3>
                             <p>{{ $service->short_description ?: Str::limit(strip_tags((string) $service->content), 120) }}</p>
                             <span class="rk-face__more" aria-hidden="true">Read more</span>
                         </article>
                     @endforeach
 
-                    <p class="rk-net__note">Fold along the dashed lines. Every service connects to the next — that is how a build closes up without gaps.</p>
-                    <p class="rk-net__fig">Fig. 2 — The RUBIKNOWS net.<br>Six services. One cube.</p>
                     <div class="rk-net__ask">
-                        <p class="rk-net__ask-label">Not sure where to start?</p>
-                        <h3>Talk to an engineer first.</h3>
-                        <p>Tell us what you want to build. We will tell you which faces it needs.</p>
+                        <h3>Not sure what you need?</h3>
+                        <p>Tell us what you want to build and we will tell you where to start.</p>
                         <a class="rk-btn rk-btn--dark" href="{{ route('public.contact') }}">Send a message</a>
                     </div>
                 </div>
@@ -90,9 +81,8 @@
         <div class="rk-container">
             <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
-                    <p class="rk-kicker">02 — Process</p>
                     <h2 id="process-title">How a project runs</h2>
-                    <p>A clear sequence, so you always know what happens next and who is responsible for it.</p>
+                    <p>This is how most of our jobs go, from your first call to the day we hand over the keys.</p>
                 </div>
             </div>
             @include('public.partials.process-steps')
@@ -104,13 +94,12 @@
             <div class="rk-container">
                 <div class="rk-section-head" data-reveal>
                     <div class="rk-section-head__text">
-                        <p class="rk-kicker">03 — Projects</p>
                         <h2 id="projects-title">Recent projects</h2>
                         <p>A selection of the work we have designed, built or managed.</p>
                     </div>
                     <a class="rk-arrow-link" href="{{ route('public.projects') }}">All projects</a>
                 </div>
-                <div class="rk-project-grid" data-reveal-stagger>
+                <div class="rk-project-grid rk-project-grid--lead" data-reveal-stagger>
                     @foreach($featuredProjects as $project)
                         @include('public.partials.project-card', ['project' => $project])
                     @endforeach
@@ -130,10 +119,9 @@
                 <img src="/images/site/site-team-1600.webp" srcset="/images/site/site-team-800.webp 800w, /images/site/site-team-1600.webp 1600w" sizes="(min-width: 960px) 50vw, 100vw" width="1600" height="1066" alt="Engineers and site staff reviewing foundation work" loading="lazy">
             </div>
             <div class="rk-feature__text" data-reveal>
-                <p class="rk-kicker">Company</p>
                 <h2 id="about-title">Based in Tagum City</h2>
                 <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, from the first meeting to turnover, and we stay reachable after the work is done.</p>
-                <p>We are guided by faith, by honest work and by care for the families and communities who use what we build.</p>
+                <p>Faith guides how we work. We build every house as if our own family were moving in.</p>
                 <a class="rk-arrow-link" href="{{ route('public.about') }}">More about RUBIKNOWS</a>
             </div>
         </div>
@@ -157,7 +145,6 @@
         <div class="rk-hiring__ruler" aria-hidden="true"></div>
         <div class="rk-container rk-hiring__grid" data-reveal>
             <div>
-                <p class="rk-mark-label"><x-public.cube-mark :lit="8" />Careers</p>
                 <h2 id="careers-title" class="rk-brand-h2" data-preview="careers-title">{{ $careersTitle }}</h2>
                 <p class="rk-hiring__text" data-preview="careers-text">{{ $careersText }}</p>
             </div>
@@ -187,28 +174,22 @@
             <div class="rk-container">
                 <div class="rk-section-head" data-reveal>
                     <div class="rk-section-head__text">
-                        <p class="rk-kicker">News</p>
                         <h2 id="news-title">From the site</h2>
                         <p>Progress updates and company news. Follow us on Facebook for the full stories.</p>
                     </div>
                 </div>
-                <div class="rk-news-grid" data-reveal-stagger>
+                <ul class="rk-news-list" data-reveal>
                     @foreach($news as $post)
-                        <article class="rk-news-card">
-                            <div class="rk-news-card__media">
-                                @if($post->image_path)
-                                    <img src="{{ \App\Support\MediaUrl::for($post->image_path) }}" alt="" loading="lazy" decoding="async">
-                                @endif
-                            </div>
-                            <div class="rk-news-card__body">
-                                <time datetime="{{ $post->posted_at->toIso8601String() }}">{{ $post->posted_at->format('F j, Y · g:i A') }}</time>
+                        <li class="rk-news-row">
+                            <time datetime="{{ $post->posted_at->toIso8601String() }}">{{ $post->posted_at->format('M j, Y') }}</time>
+                            <div>
                                 @if($post->title)<h3>{{ $post->title }}</h3>@endif
-                                <p>{{ Str::limit($post->body, 220) }}</p>
-                                <a class="rk-arrow-link" href="{{ $post->facebook_url }}" target="_blank" rel="noopener">Read on Facebook<span class="sr-only"> (opens in a new tab)</span></a>
+                                <p>{{ Str::limit($post->body, 180) }}</p>
                             </div>
-                        </article>
+                            <a class="rk-arrow-link" href="{{ $post->facebook_url }}" target="_blank" rel="noopener">Read on Facebook<span class="sr-only"> (opens in a new tab)</span></a>
+                        </li>
                     @endforeach
-                </div>
+                </ul>
             </div>
         </section>
     @endif

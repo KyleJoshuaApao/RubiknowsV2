@@ -9,7 +9,6 @@
 <section class="rk-cta" aria-labelledby="rk-cta-title">
     <div class="rk-container rk-cta__grid" data-reveal>
         <div>
-            <p class="rk-mark-label"><x-public.cube-mark :lit="9" />Start a project</p>
             <h2 id="rk-cta-title" class="rk-cta__title">{{ $title }}@if($accent) <em>{{ $accent }}</em>@endif</h2>
             <p class="rk-cta__text">{{ $text }}</p>
             <div class="rk-cta__actions">
