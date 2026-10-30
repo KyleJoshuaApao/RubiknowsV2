@@ -340,49 +340,168 @@
 .rk-quote figcaption { display: grid; gap: 0.15rem; margin-top: 1.25rem; color: var(--rk-muted); }
 .rk-quote figcaption strong { color: var(--rk-ink); font-weight: 600; }
 
-/* Careers strip on the home page */
+/* Brand marker: a 3x3 cube with one lit square beside a drawing-style label. */
 
-.rk-hiring {
+.rk-public .rk-mark-label {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem 2.5rem;
-    padding: clamp(1.5rem, 4vw, 2.25rem);
-    border: 1px solid var(--rk-line);
-    border-radius: var(--rk-radius);
-    background: var(--rk-paper);
+    gap: 0.875rem;
+    margin-bottom: 1.5rem;
+    color: var(--rk-muted);
+    font-family: var(--rk-font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
-.rk-hiring > div { max-width: 46rem; }
-.rk-public .rk-hiring h2 { font-size: clamp(1.5rem, 2.4vw, 1.875rem); }
-.rk-public .rk-hiring p { margin-top: 0.5rem; color: var(--rk-muted); }
-.rk-hiring__jobs { display: grid; gap: 0.35rem; margin: 1rem 0 0; padding: 0; list-style: none; }
-.rk-hiring__jobs a { color: var(--rk-ink); font-weight: 600; }
-.rk-hiring__jobs span { margin-left: 0.6rem; color: var(--rk-muted); font-size: 0.9375rem; }
+.rk-cube-mark { display: grid; grid-template-columns: repeat(3, 8px); gap: 2px; flex: none; }
+.rk-cube-mark span { width: 8px; height: 8px; border: 1px solid currentColor; opacity: 0.45; }
+.rk-cube-mark span.is-lit { border-color: var(--rk-gold); background: var(--rk-gold); opacity: 1; }
 
-/* Contact band */
+.rk-public .rk-brand-h2 { font-family: var(--rk-font-condensed); font-size: clamp(2.75rem, 5.4vw, 5.25rem); font-weight: 800; line-height: 0.92; }
+.rk-public .rk-brand-h2 span { color: var(--rk-gold-deep); }
 
-.rk-cta { background: var(--rk-dark); color: var(--rk-dark-muted); }
-
-.rk-cta__grid {
-    display: grid;
-    gap: 2.5rem;
-    padding-block: clamp(3.25rem, 6vw, 4.75rem);
-}
+.rk-brand-head { display: grid; gap: 1.5rem 4rem; margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.rk-brand-head__aside { display: grid; gap: 1.25rem; justify-items: start; }
+.rk-public .rk-brand-head__aside p { max-width: 32rem; color: var(--rk-muted); font-size: 1.125rem; line-height: 1.65; }
 
 @media (min-width: 960px) {
-    .rk-cta__grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 4rem; align-items: center; }
+    .rk-brand-head { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: end; }
 }
 
-.rk-public .rk-cta h2 { color: var(--rk-white); }
-.rk-public .rk-cta p { max-width: 36rem; margin-top: 0.85rem; font-size: 1.125rem; }
-.rk-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.75rem; }
-.rk-cta__details { display: grid; gap: 1.25rem; margin: 0; }
-.rk-cta__details dt { color: var(--rk-dark-muted); font-size: 0.875rem; }
-.rk-cta__details dd { margin: 0.15rem 0 0; color: var(--rk-white); font-size: 1.125rem; font-weight: 600; }
+/* Services as an unfolded cube (home page) */
+
+.rk-net { display: grid; grid-template-columns: minmax(0, 1fr); }
+
+.rk-face {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin: -0.5px;
+    padding: 1.75rem;
+    border: 1px dashed rgba(17, 17, 17, 0.32);
+    background: var(--rk-white);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rk-public .rk-face__tag { display: flex; justify-content: space-between; gap: 1rem; color: var(--rk-muted); font-family: var(--rk-font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.rk-face__icon { width: 2.5rem; height: 2.5rem; margin-top: auto; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.rk-public .rk-face h3 { color: inherit; font-family: var(--rk-font-condensed); font-size: 1.75rem; font-weight: 700; line-height: 1; text-transform: uppercase; }
+.rk-face h3 a { color: inherit; text-decoration: none; }
+.rk-face h3 a::after { content: ''; position: absolute; inset: 0; }
+.rk-face h3 a:focus-visible { outline: none; }
+.rk-public .rk-face p:not(.rk-face__tag) { color: var(--rk-muted); font-size: 0.9375rem; line-height: 1.5; }
+.rk-face__more { font-family: var(--rk-font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.rk-face__more::after { content: ' →'; }
+
+.rk-face--core { border-style: solid; border-color: var(--rk-dark); background: var(--rk-dark); color: var(--rk-white); }
+.rk-public .rk-face--core p:not(.rk-face__tag), .rk-public .rk-face--core .rk-face__tag { color: var(--rk-dark-muted); }
+.rk-face--core .rk-face__icon { stroke: var(--rk-gold); }
+
+.rk-face:hover, .rk-face:focus-within { z-index: 1; background: var(--rk-gold); color: var(--rk-ink); transform: translateY(-6px); box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.6); }
+.rk-face:focus-within { outline: 3px solid var(--rk-ink); outline-offset: 2px; }
+.rk-public .rk-face:hover p, .rk-public .rk-face:hover .rk-face__tag,
+.rk-public .rk-face:focus-within p, .rk-public .rk-face:focus-within .rk-face__tag { color: var(--rk-ink); }
+.rk-face--core:hover .rk-face__icon, .rk-face--core:focus-within .rk-face__icon { stroke: var(--rk-ink); }
+
+.rk-net__note, .rk-net__fig { display: none; }
+.rk-public .rk-net__note, .rk-public .rk-net__fig { color: var(--rk-muted); font-family: var(--rk-font-mono); font-size: 0.75rem; letter-spacing: 0.08em; line-height: 1.7; text-transform: uppercase; }
+
+.rk-net__ask { display: grid; justify-items: start; gap: 1rem; margin-top: 1.5rem; padding: 2rem; border-left: 3px solid var(--rk-gold); background: #e7e7e4; }
+.rk-public .rk-net__ask-label { color: var(--rk-gold-deep); font-family: var(--rk-font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.rk-public .rk-net__ask h3 { font-family: var(--rk-font-condensed); font-size: 1.875rem; font-weight: 700; line-height: 1; text-transform: uppercase; }
+.rk-public .rk-net__ask p:not(.rk-net__ask-label) { color: var(--rk-muted); }
+
+@media (min-width: 640px) {
+    .rk-net { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .rk-net__ask { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1080px) {
+    .rk-net { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .rk-face { aspect-ratio: 1; }
+    .rk-face--top { grid-area: 1 / 2; }
+    .rk-face--left { grid-area: 2 / 1; }
+    .rk-face--core { grid-area: 2 / 2; }
+    .rk-face--right { grid-area: 2 / 3; }
+    .rk-face--end { grid-area: 2 / 4; }
+    .rk-face--bottom { grid-area: 3 / 2; }
+    .rk-net__note { display: flex; grid-area: 1 / 3 / 2 / 5; align-self: end; align-items: flex-end; gap: 1rem; max-width: 28rem; padding: 0 0 1.75rem 2.5rem; }
+    .rk-net__note::before { content: ''; flex: none; width: 3.5rem; height: 3.5rem; border-bottom: 1.5px dashed var(--rk-gold-deep); border-left: 1.5px dashed var(--rk-gold-deep); border-bottom-left-radius: 100%; }
+    .rk-net__fig { display: block; grid-area: 3 / 1; padding: 1.75rem 1.75rem 0 0; }
+    .rk-net__ask { grid-area: 3 / 3 / 4 / 5; align-self: start; margin: 2.5rem 0 0 2.5rem; }
+}
+
+/* Careers band on the home page: gold, with a tape-measure edge */
+
+.rk-hiring { background: var(--rk-gold); color: var(--rk-ink); }
+
+.rk-hiring__ruler {
+    height: 30px;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.35);
+    background-image:
+        repeating-linear-gradient(90deg, var(--rk-ink) 0 1px, transparent 1px 12px),
+        repeating-linear-gradient(90deg, var(--rk-ink) 0 1.5px, transparent 1.5px 60px);
+    background-repeat: repeat-x;
+    background-size: 100% 10px, 100% 22px;
+}
+
+.rk-hiring__grid { display: grid; gap: 2.5rem; padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+
+@media (min-width: 960px) {
+    .rk-hiring__grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); gap: 4rem; align-items: center; }
+}
+
+.rk-public .rk-hiring .rk-mark-label, .rk-public .rk-hiring .rk-brand-h2 { color: var(--rk-ink); }
+.rk-hiring .rk-cube-mark span.is-lit { border-color: var(--rk-ink); background: var(--rk-ink); }
+.rk-public .rk-hiring__text { max-width: 32rem; margin-top: 1.25rem; font-size: 1.1875rem; line-height: 1.6; }
+
+.rk-hiring__card { display: grid; justify-items: start; gap: 1rem; padding: 2rem; background: var(--rk-dark); color: var(--rk-white); }
+.rk-public .rk-hiring__status { color: var(--rk-gold); font-family: var(--rk-font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.rk-hiring__jobs { display: grid; gap: 1rem; margin: 0 0 0.5rem; padding: 0; list-style: none; }
+.rk-hiring__jobs a { color: var(--rk-white); font-family: var(--rk-font-condensed); font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 700; line-height: 1; text-decoration: none; text-transform: uppercase; }
+.rk-hiring__jobs a:hover { color: var(--rk-gold); }
+.rk-hiring__jobs span { display: block; margin-top: 0.4rem; color: var(--rk-dark-muted); }
+.rk-public .rk-hiring__none { color: var(--rk-dark-muted); }
+
+/* Contact band: "Bring us the puzzle" */
+
+.rk-cta { overflow: hidden; background: var(--rk-dark); color: var(--rk-dark-muted); }
+
+.rk-cta__grid { display: grid; gap: 3rem; padding-block: clamp(4rem, 9vw, 8rem); }
+
+@media (min-width: 960px) {
+    .rk-cta__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); align-items: center; }
+}
+
+.rk-public .rk-cta .rk-mark-label { color: var(--rk-dark-muted); }
+.rk-public .rk-cta__title { color: var(--rk-white); font-family: var(--rk-font-condensed); font-size: clamp(3.5rem, 8.6vw, 8.75rem); font-weight: 800; line-height: 0.92; }
+.rk-cta__title em { display: block; color: var(--rk-gold); font-style: normal; }
+.rk-public .rk-cta__text { max-width: 36rem; margin-top: 1.75rem; color: #c9c9c3; font-size: 1.1875rem; }
+.rk-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
+
+.rk-cta__details { display: flex; flex-wrap: wrap; gap: 1.25rem 2.5rem; margin: 2.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid rgba(224, 169, 42, 0.26); }
+.rk-cta__details dt { color: var(--rk-dark-muted); font-family: var(--rk-font-mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.rk-cta__details dd { margin: 0.35rem 0 0; color: var(--rk-white); font-family: var(--rk-font-mono); font-size: 0.9375rem; }
 .rk-cta__details a { color: var(--rk-white); text-decoration: none; }
-.rk-cta__details a:hover { text-decoration: underline; text-decoration-color: var(--rk-gold); }
+.rk-cta__details a:hover { color: var(--rk-gold); }
+
+.rk-cta__cube { width: 100%; max-width: 14rem; animation: rk-cube-float 6s ease-in-out infinite; }
+.rk-cta__cube path, .rk-cta__cube polygon { fill: none; stroke: var(--rk-gold); stroke-linejoin: round; }
+.rk-cta__cube .is-edge { stroke-width: 1.6; }
+.rk-cta__cube .is-grid { stroke-width: 1; stroke-opacity: 0.55; }
+.rk-cta__cube .is-solved { fill: var(--rk-gold); stroke: none; }
+.rk-cta__cube .is-half { fill: var(--rk-gold); fill-opacity: 0.35; stroke: none; }
+
+@media (min-width: 960px) {
+    .rk-cta__cube { max-width: 26rem; justify-self: center; }
+}
+
+@keyframes rk-cube-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+}
 
 /* About page */
 

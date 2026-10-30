@@ -66,7 +66,7 @@
         <script nonce="{{ Vite::cspNonce() }}" type="application/ld+json">{!! json_encode($organization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
         <link rel="icon" type="image/webp" href="{{ asset('RK4.webp') }}">
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|inter:400,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.bunny.net/css?family=barlow:400,500,600,700|barlow-semi-condensed:500,600,700|barlow-condensed:700,800|ibm-plex-mono:400,500|inter:400,900&display=swap" rel="stylesheet">
         <script nonce="{{ Vite::cspNonce() }}">if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('rk-motion');</script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('head')

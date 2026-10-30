@@ -8,7 +8,7 @@
             filled($settings['about_experience_years'] ?? null) ? ['value' => $settings['about_experience_years'].'+', 'label' => 'Years in practice'] : null,
             filled($settings['about_projects_count'] ?? null) ? ['value' => $settings['about_projects_count'].'+', 'label' => 'Projects completed'] : null,
         ]));
-        $careersTitle = $homeCareers['title'] ?? 'Work with us';
+        $careersTitle = $homeCareers['title'] ?? 'Built by people who know.';
         $careersText = $homeCareers['description'] ?? 'We are always glad to hear from engineers, foremen and skilled workers who take pride in their work.';
     @endphp
 
@@ -32,18 +32,44 @@
         </div>
     </section>
 
-    <section class="rk-section" aria-labelledby="services-title">
+    <section class="rk-section rk-section--paper rk-net-section" aria-labelledby="services-title">
         <div class="rk-container">
-            <div class="rk-section-head" data-reveal>
-                <div class="rk-section-head__text">
-                    <p class="rk-kicker">01 — Services</p>
-                    <h2 id="services-title">What we do</h2>
-                    <p>Hire us for the whole project, from plans to turnover, or for the part where you need an engineer.</p>
+            <div class="rk-brand-head" data-reveal>
+                <div>
+                    <p class="rk-mark-label"><x-public.cube-mark :lit="1" />01 / Services</p>
+                    <h2 id="services-title" class="rk-brand-h2">Six faces of <span>every build.</span></h2>
                 </div>
-                <a class="rk-arrow-link" href="{{ route('public.services') }}">All services</a>
+                <div class="rk-brand-head__aside">
+                    <p>A building is a puzzle with six sides. Most contractors solve one or two. We handle all six — or just the face you need — and make sure they line up.</p>
+                    <a class="rk-arrow-link" href="{{ route('public.services') }}">All services</a>
+                </div>
             </div>
 
-            @if($services->isNotEmpty())
+            @if($services->count() === 6)
+                {{-- The six services laid out as an unfolded cube; the first (featured) one is the centre face. --}}
+                @php($slots = ['core', 'top', 'left', 'right', 'end', 'bottom'])
+                <div class="rk-net" data-reveal>
+                    @foreach($services as $service)
+                        @php($slot = $slots[$loop->index])
+                        <article class="rk-face rk-face--{{ $slot }}">
+                            <p class="rk-face__tag"><span>F{{ $loop->iteration }}</span><span>{{ $slot === 'core' ? 'The core' : $service->category }}</span></p>
+                            <x-public.service-icon :title="$service->title" />
+                            <h3><a href="{{ route('public.service-details', $service) }}">{{ $service->title }}</a></h3>
+                            <p>{{ $service->short_description ?: Str::limit(strip_tags((string) $service->content), 120) }}</p>
+                            <span class="rk-face__more" aria-hidden="true">Read more</span>
+                        </article>
+                    @endforeach
+
+                    <p class="rk-net__note">Fold along the dashed lines. Every service connects to the next — that is how a build closes up without gaps.</p>
+                    <p class="rk-net__fig">Fig. 2 — The RUBIKNOWS net.<br>Six services. One cube.</p>
+                    <div class="rk-net__ask">
+                        <p class="rk-net__ask-label">Not sure where to start?</p>
+                        <h3>Talk to an engineer first.</h3>
+                        <p>Tell us what you want to build. We will tell you which faces it needs.</p>
+                        <a class="rk-btn rk-btn--dark" href="{{ route('public.contact') }}">Send a message</a>
+                    </div>
+                </div>
+            @elseif($services->isNotEmpty())
                 <div class="rk-service-grid" data-reveal-stagger>
                     @foreach($services as $service)
                         <article class="rk-service-card">
@@ -127,21 +153,31 @@
         </section>
     @endif
 
-    <section class="rk-section rk-section--tight" aria-labelledby="careers-title">
-        <div class="rk-container">
-            <div class="rk-hiring" data-reveal>
-                <div>
-                    <h2 id="careers-title" data-preview="careers-title">{{ $careersTitle }}</h2>
-                    <p data-preview="careers-text">{{ $careersText }}</p>
-                    @if($openJobs->isNotEmpty())
-                        <ul class="rk-hiring__jobs">
-                            @foreach($openJobs as $job)
-                                <li><a href="{{ route('public.careers') }}#job-{{ $job->id }}">{{ $job->title }}</a>@if($job->location || $job->type)<span>{{ collect([$job->type, $job->location])->filter()->join(' · ') }}</span>@endif</li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-                <a class="rk-btn rk-btn--dark" href="{{ route('public.careers') }}">{{ $openJobs->isNotEmpty() ? 'See open positions' : 'Send your application' }}</a>
+    <section class="rk-hiring" aria-labelledby="careers-title">
+        <div class="rk-hiring__ruler" aria-hidden="true"></div>
+        <div class="rk-container rk-hiring__grid" data-reveal>
+            <div>
+                <p class="rk-mark-label"><x-public.cube-mark :lit="8" />Careers</p>
+                <h2 id="careers-title" class="rk-brand-h2" data-preview="careers-title">{{ $careersTitle }}</h2>
+                <p class="rk-hiring__text" data-preview="careers-text">{{ $careersText }}</p>
+            </div>
+            <div class="rk-hiring__card">
+                @if($openJobs->isNotEmpty())
+                    <p class="rk-hiring__status">Now hiring · {{ $openJobs->count() }} {{ Str::plural('opening', $openJobs->count()) }}</p>
+                    <ul class="rk-hiring__jobs">
+                        @foreach($openJobs as $job)
+                            <li>
+                                <a href="{{ route('public.careers') }}#job-{{ $job->id }}">{{ $job->title }}</a>
+                                @if($job->location || $job->type)<span>{{ collect([$job->type, $job->location])->filter()->join(' · ') }}</span>@endif
+                            </li>
+                        @endforeach
+                    </ul>
+                    <a class="rk-btn rk-btn--primary" href="{{ route('public.careers') }}">See open positions</a>
+                @else
+                    <p class="rk-hiring__status">No openings right now</p>
+                    <p class="rk-hiring__none">Send us your details anyway. We keep good people in mind for the next project.</p>
+                    <a class="rk-btn rk-btn--primary" href="{{ route('public.careers') }}">Send your application</a>
+                @endif
             </div>
         </div>
     </section>
@@ -177,7 +213,7 @@
         </section>
     @endif
 
-    <x-public.contact-band title="Planning a build?" />
+    <x-public.contact-band title="Bring us" accent="the puzzle." />
 
     @if(request()->boolean('preview') && auth()->user()?->isAdmin())
         @push('scripts')

@@ -55,7 +55,7 @@ class PublicAndAdminCmsTest extends TestCase
     {
         $this->get(route('public.home'))
             ->assertOk()
-            ->assertSee('Work with us')
+            ->assertSee('Built by people who know.')
             ->assertSee('Send your application')
             ->assertDontSee('Staff login')
             ->assertDontSee(route('login'))
