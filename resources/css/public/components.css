@@ -334,7 +334,6 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
     gap: 0.75rem;
     margin: -0.5px;
     padding: 1.75rem;
@@ -348,7 +347,7 @@
 .rk-face h3 a::after { content: ''; position: absolute; inset: 0; }
 .rk-face h3 a:focus-visible { outline: none; }
 .rk-public .rk-face p { color: var(--rk-muted); font-size: 0.9375rem; line-height: 1.5; }
-.rk-face__more { font-size: 0.9375rem; font-weight: 600; }
+.rk-face__more { margin-top: auto; padding-top: 0.25rem; font-size: 0.9375rem; font-weight: 600; }
 .rk-face__more::after { content: ' →'; }
 
 .rk-face--core { border-style: solid; border-color: var(--rk-dark); background: var(--rk-dark); color: var(--rk-white); }
@@ -369,7 +368,6 @@
 
 @media (min-width: 1080px) {
     .rk-net { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .rk-face { aspect-ratio: 1; }
     .rk-face--top { grid-area: 1 / 2; }
     .rk-face--left { grid-area: 2 / 1; }
     .rk-face--core { grid-area: 2 / 2; }
