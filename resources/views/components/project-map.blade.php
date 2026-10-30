@@ -130,6 +130,11 @@
                                 label.textContent = point.title;
                                 if (asLinks) label.href = point.url;
                                 item.appendChild(label);
+                                if (point.location) {
+                                    const place = document.createElement('small');
+                                    place.textContent = point.location;
+                                    item.appendChild(place);
+                                }
                                 list.appendChild(item);
                             });
                             return list;
@@ -148,11 +153,19 @@
                                 keyboard: true,
                             }).addTo(pins);
 
+                            // Beside the pin, on whichever side has room, so a long list is not cut off.
+                            const shown = 6;
                             const tip = document.createElement('div');
                             const heading = document.createElement('strong');
                             heading.textContent = group.length + ' projects here';
-                            tip.append(heading, projectList(group, false));
-                            marker.bindTooltip(tip, { direction: 'top', offset: [0, -16], className: 'rk-map__tip' });
+                            tip.append(heading, projectList(group.slice(0, shown), false));
+                            if (group.length > shown) {
+                                const more = document.createElement('p');
+                                more.className = 'rk-map__more-note';
+                                more.textContent = 'and ' + (group.length - shown) + ' more, click to zoom in';
+                                tip.appendChild(more);
+                            }
+                            marker.bindTooltip(tip, { direction: 'auto', offset: [0, 0], opacity: 1, className: 'rk-map__tip' });
 
                             onActivate(marker, group.length + ' projects here. Zoom in to see them.', function () {
                                 // Projects at the very same spot never separate, so list them instead.

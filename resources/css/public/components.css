@@ -298,11 +298,24 @@
     cursor: pointer;
 }
 
-/* Scoped to the canvas so it outranks leaflet.css, which loads later and sets nowrap. */
-.rk-map__canvas .rk-map__tip { max-width: 18rem; white-space: normal; }
-.rk-map__group { margin: 0.35rem 0 0; padding-left: 1rem; }
-.rk-map__group li + li { margin-top: 0.2rem; }
-.rk-map__group a { color: var(--rk-ink); font-weight: 600; }
+/* Scoped to the canvas so it outranks leaflet.css, which loads later. */
+.rk-map__canvas .leaflet-tooltip.rk-map__tip {
+    width: max-content;
+    max-width: 17rem;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--rk-line-strong);
+    border-radius: 4px;
+    box-shadow: 0 8px 20px -10px rgba(0, 0, 0, 0.4);
+    font-family: var(--rk-font);
+    white-space: normal;
+}
+
+.rk-map__tip strong { display: block; margin-bottom: 0.5rem; color: var(--rk-muted); font-size: 0.8125rem; font-weight: 600; }
+.rk-map__group { display: grid; gap: 0.5rem; margin: 0; padding: 0; list-style: none; font-size: 0.875rem; line-height: 1.35; }
+.rk-map__group li { display: grid; padding-left: 0.6rem; border-left: 2px solid var(--rk-gold); }
+.rk-map__group span, .rk-map__group a { color: var(--rk-ink); font-weight: 600; }
+.rk-map__group small { color: var(--rk-muted); font-size: 0.8125rem; }
+.rk-public .rk-map__more-note { margin-top: 0.5rem; color: var(--rk-muted); font-size: 0.8125rem; }
 
 .rk-map__canvas .leaflet-control-zoom { border: 1px solid var(--rk-line-strong); border-radius: 4px; box-shadow: none; }
 .rk-map__canvas .leaflet-control-zoom a { color: var(--rk-ink); }
