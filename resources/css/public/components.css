@@ -487,7 +487,7 @@
 .rk-cta__details a { color: var(--rk-white); text-decoration: none; }
 .rk-cta__details a:hover { color: var(--rk-gold); }
 
-.rk-cta__cube { width: 100%; max-width: 14rem; animation: rk-cube-float 6s ease-in-out infinite; }
+.rk-cta__cube { width: 100%; max-width: 14rem; animation: rk-cube-float 10s ease-in-out infinite; }
 .rk-cta__cube path, .rk-cta__cube polygon { fill: none; stroke: var(--rk-gold); stroke-linejoin: round; }
 .rk-cta__cube .is-edge { stroke-width: 1.6; }
 .rk-cta__cube .is-grid { stroke-width: 1; stroke-opacity: 0.55; }
@@ -500,7 +500,7 @@
 
 @keyframes rk-cube-float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-14px); }
+    50% { transform: translateY(-5px); }
 }
 
 /* About page */
