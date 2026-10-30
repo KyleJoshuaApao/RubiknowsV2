@@ -2,7 +2,7 @@
     <x-slot name="title">Services</x-slot>
     <x-slot name="description">Structural engineering, design and planning, general construction, site development, project management and technical consultancy from RUBIKNOWS in Tagum City, Davao del Norte.</x-slot>
 
-    <x-public.page-header title="Services" lede="Engineering, design and construction under one roof. Hire us for the whole project or for the part where you need help." :breadcrumbs="['Services' => null]" />
+    <x-public.page-header title="Services" lede="Hire us for the whole project, or only for the part where you need an engineer." :breadcrumbs="['Services' => null]" />
 
     <section class="rk-section" aria-label="Service list">
         <div class="rk-container">
@@ -32,7 +32,6 @@
             <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="process-title">How a project runs</h2>
-                    <p>Whatever the service, the work follows the same clear sequence.</p>
                 </div>
             </div>
             @include('public.partials.process-steps')
@@ -43,7 +42,7 @@
         <div class="rk-container rk-split rk-split--center">
             <h2 id="unsure-title">Not sure which service you need?</h2>
             <div class="rk-prose">
-                <p>Most clients come to us with a lot, a sketch, or an existing building and a question. That is enough to start. Tell us what you have and what you want to achieve, and we will recommend the right next step, whether that is a site visit, a structural assessment or a full design-and-build package.</p>
+                <p>Most clients come to us with a lot or a sketch and a question. That is enough to start. Tell us what you have and we will suggest the next step.</p>
             </div>
         </div>
     </section>

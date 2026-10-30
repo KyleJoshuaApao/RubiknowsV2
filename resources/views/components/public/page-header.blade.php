@@ -2,9 +2,10 @@
     'title',
     'lede' => null,
     'breadcrumbs' => [],
+    'tone' => 'dark',
 ])
 
-<section {{ $attributes->merge(['class' => 'rk-page-header']) }}>
+<section {{ $attributes->class(['rk-page-header', 'rk-page-header--light' => $tone === 'light']) }}>
     <div class="rk-container">
         @if($breadcrumbs)
             <nav aria-label="Breadcrumb">

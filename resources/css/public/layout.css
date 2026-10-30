@@ -131,6 +131,13 @@
 .rk-page-header .rk-breadcrumb, .rk-page-header .rk-breadcrumb a { color: #9a9a9a; }
 .rk-page-header .rk-breadcrumb a:hover, .rk-page-header .rk-breadcrumb [aria-current='page'] { color: var(--rk-gold); }
 
+/* Light header: most inner pages open on white and get to the content sooner. */
+.rk-page-header--light { padding-block: clamp(2.5rem, 5vw, 3.5rem) clamp(1.5rem, 3vw, 2rem); border-bottom: 0; background-color: var(--rk-white); color: var(--rk-ink); }
+.rk-public .rk-page-header--light h1 { color: var(--rk-ink); }
+.rk-public .rk-page-header--light .rk-lede { color: var(--rk-muted); }
+.rk-page-header--light .rk-breadcrumb, .rk-page-header--light .rk-breadcrumb a { color: var(--rk-muted); }
+.rk-page-header--light .rk-breadcrumb a:hover, .rk-page-header--light .rk-breadcrumb [aria-current='page'] { color: var(--rk-ink); }
+
 .rk-breadcrumb {
     display: flex;
     flex-wrap: wrap;

@@ -10,7 +10,7 @@
         $serviceChoices = $serviceOptions->push('Other or not sure')->unique()->values();
     @endphp
 
-    <x-public.page-header title="Contact us" lede="Call, email or visit the office, or send us the details of your project using the form." :breadcrumbs="['Contact' => null]" />
+    <x-public.page-header tone="light" title="Contact us" :breadcrumbs="['Contact' => null]" />
 
     <section class="rk-section">
         <div class="rk-container rk-contact-grid" x-data="{ tab: @js($activeTab) }">

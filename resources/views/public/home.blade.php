@@ -9,7 +9,7 @@
             filled($settings['about_projects_count'] ?? null) ? ['value' => $settings['about_projects_count'].'+', 'label' => 'Projects completed'] : null,
         ]));
         $careersTitle = $homeCareers['title'] ?? 'Work with us';
-        $careersText = $homeCareers['description'] ?? 'We are always glad to hear from engineers, foremen and skilled workers who take pride in their work.';
+        $careersText = $homeCareers['description'] ?? 'We are always glad to hear from good engineers and site workers.';
     @endphp
 
     <section class="rk-hero">
@@ -36,7 +36,6 @@
             <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="services-title">What we do</h2>
-                    <p>Hire us for the whole job, from the first drawing to turnover, or only for the part where you need an engineer.</p>
                 </div>
                 <a class="rk-arrow-link" href="{{ route('public.services') }}">All services</a>
             </div>
@@ -54,11 +53,6 @@
                         </article>
                     @endforeach
 
-                    <div class="rk-net__ask">
-                        <h3>Not sure what you need?</h3>
-                        <p>Tell us what you want to build and we will tell you where to start.</p>
-                        <a class="rk-btn rk-btn--dark" href="{{ route('public.contact') }}">Send a message</a>
-                    </div>
                 </div>
             @elseif($services->isNotEmpty())
                 <div class="rk-service-grid" data-reveal-stagger>
@@ -77,23 +71,12 @@
         </div>
     </section>
 
-    <section class="rk-section rk-section--dark" aria-labelledby="process-title">
-        <div class="rk-container rk-process">
-            <div class="rk-section-head__text" data-reveal>
-                <h2 id="process-title">How a project runs</h2>
-                <p>This is how most of our jobs go, from your first call to the day we hand over the keys.</p>
-            </div>
-            @include('public.partials.process-steps')
-        </div>
-    </section>
-
     @if($featuredProjects->isNotEmpty())
         <section class="rk-section" aria-labelledby="projects-title">
             <div class="rk-container">
                 <div class="rk-section-head" data-reveal>
                     <div class="rk-section-head__text">
                         <h2 id="projects-title">Recent projects</h2>
-                        <p>A selection of the work we have designed, built or managed.</p>
                     </div>
                     <a class="rk-arrow-link" href="{{ route('public.projects') }}">All projects</a>
                 </div>
@@ -118,7 +101,7 @@
             </div>
             <div class="rk-feature__text" data-reveal>
                 <h2 id="about-title">Based in Tagum City</h2>
-                <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, from the first meeting to turnover, and we stay reachable after the work is done.</p>
+                <p>Our office is in Magugpo West, Tagum City, close to the sites we build on. You deal directly with the engineers responsible for your project, and we stay reachable after the work is done.</p>
                 <p>Faith guides how we work. We build every house as if our own family were moving in.</p>
                 <a class="rk-arrow-link" href="{{ route('public.about') }}">More about RUBIKNOWS</a>
             </div>
@@ -173,7 +156,6 @@
                 <div class="rk-section-head" data-reveal>
                     <div class="rk-section-head__text">
                         <h2 id="news-title">From the site</h2>
-                        <p>Progress updates and company news. Follow us on Facebook for the full stories.</p>
                     </div>
                 </div>
                 <ul class="rk-news-list" data-reveal>
@@ -192,7 +174,7 @@
         </section>
     @endif
 
-    <x-public.contact-band title="Bring us" accent="the puzzle." />
+    <x-public.contact-band :featured="true" title="Bring us" accent="the puzzle." />
 
     @if(request()->boolean('preview') && auth()->user()?->isAdmin())
         @push('scripts')

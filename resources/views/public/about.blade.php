@@ -11,32 +11,24 @@
                 .'<p>We design structures, prepare plans and estimates, build, and manage projects for clients who want their work done properly and explained clearly. Our office is in Magugpo West, Tagum City, and our projects take us across Mindanao.</p>'
                 .'<p>We keep our promises specific: an honest estimate, regular updates, and a site that is run safely and to plan.</p>';
         }
-        $facts = array_values(array_filter([
-            filled($established) ? ['value' => $established, 'label' => 'Established'] : null,
-            filled($settings['about_experience_years'] ?? null) ? ['value' => $settings['about_experience_years'].'+', 'label' => 'Years in practice'] : null,
-            filled($settings['about_projects_count'] ?? null) ? ['value' => $settings['about_projects_count'].'+', 'label' => 'Projects completed'] : null,
-        ]));
         $leaders = [
             ['name' => 'Ruvelyn S. Rubinos', 'initials' => 'RSR', 'role' => 'Founder and Owner'],
             ['name' => 'Kevin C. Rubinos', 'initials' => 'KCR', 'role' => 'Founder and Owner'],
         ];
     @endphp
 
-    <x-slot name="description">RUBIKNOWS is an engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}.</x-slot>
+    <x-slot name="description">RUBIKNOWS is an engineering and construction company in Tagum City, Davao del Norte, started in {{ $established }}.</x-slot>
 
-    <x-public.page-header title="About RUBIKNOWS" lede="An engineering and construction company in Tagum City, Davao del Norte, working with homeowners, businesses and institutions since {{ $established }}." :breadcrumbs="['About' => null]" />
+    <x-public.page-header tone="light" title="About RUBIKNOWS" lede="An engineering and construction company in Tagum City, started in {{ $established }}." :breadcrumbs="['About' => null]" />
+
+    <div class="rk-container">
+        <img class="rk-wide-image" src="/images/site/rebar-deck-1600.webp" srcset="/images/site/rebar-deck-800.webp 800w, /images/site/rebar-deck-1600.webp 1600w" sizes="(min-width: 1240px) 1200px, 100vw" width="1600" height="1060" alt="Site crew placing steel reinforcement on a concrete deck">
+    </div>
 
     <section class="rk-section" aria-labelledby="story-title">
         <div class="rk-container rk-split">
             <div>
                 <h2 id="story-title">{{ $storyTitle }}</h2>
-                @if($facts)
-                    <dl class="rk-facts rk-facts--stacked">
-                        @foreach($facts as $fact)
-                            <div><dt>{{ $fact['label'] }}</dt><dd>{{ $fact['value'] }}</dd></div>
-                        @endforeach
-                    </dl>
-                @endif
             </div>
             <div class="rk-prose">
                 {!! \App\Support\SafeHtml::clean($storyContent) !!}
@@ -44,16 +36,11 @@
         </div>
     </section>
 
-    <div class="rk-container">
-        <img data-reveal class="rk-wide-image" src="/images/site/rebar-deck-1600.webp" srcset="/images/site/rebar-deck-800.webp 800w, /images/site/rebar-deck-1600.webp 1600w" sizes="(min-width: 1240px) 1200px, 100vw" width="1600" height="1060" alt="Site crew placing steel reinforcement on a concrete deck" loading="lazy">
-    </div>
-
     <section class="rk-section" aria-labelledby="values-title">
         <div class="rk-container">
             <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="values-title">How we work</h2>
-                    <p>Three habits we hold ourselves to on every job, large or small.</p>
                 </div>
             </div>
             <div class="rk-values" data-reveal-stagger>
@@ -79,7 +66,7 @@
             <figure class="rk-verse" data-reveal>
                 <blockquote><p>“With God, all things are possible.”</p></blockquote>
                 <figcaption>Matthew 19:26</figcaption>
-                <p>Our work is shaped by faith, diligence and a belief that good buildings come from serving the people and communities who use them.</p>
+                <p>Our faith shapes how we work and how we treat the people we build for.</p>
             </figure>
         </div>
     </section>
@@ -89,7 +76,7 @@
             <div class="rk-section-head" data-reveal>
                 <div class="rk-section-head__text">
                     <h2 id="leaders-title">Leadership</h2>
-                    <p>RUBIKNOWS is owner-managed. The founders stay involved in every project, from the first estimate to turnover.</p>
+                    <p>The two founders run the company and stay involved in every project.</p>
                 </div>
             </div>
             <ul class="rk-people" data-reveal-stagger>
@@ -120,5 +107,5 @@
         </section>
     @endif
 
-    <x-public.contact-band title="Talk to the team" text="Tell us about the project you have in mind. We will arrange a call or a site visit and give you an honest view of what it will take." />
+    <x-public.contact-band title="Talk to the team" />
 </x-public-layout>

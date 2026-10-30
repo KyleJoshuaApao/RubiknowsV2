@@ -196,12 +196,6 @@
     line-height: 1.25;
 }
 
-/* Home page: heading on the left, the steps listed beside it */
-.rk-process { display: grid; gap: 2rem 4rem; }
-
-@media (min-width: 960px) {
-    .rk-process { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); align-items: start; }
-}
 
 .rk-public .rk-steps h3 { margin-bottom: 0.5rem; font-size: 1.25rem; }
 .rk-public .rk-steps p { color: var(--rk-muted); }
@@ -365,13 +359,9 @@
 .rk-face:focus-within { outline: 3px solid var(--rk-ink); outline-offset: 2px; }
 .rk-public .rk-face:hover p, .rk-public .rk-face:focus-within p { color: var(--rk-ink); }
 
-.rk-net__ask { display: grid; justify-items: start; gap: 0.85rem; margin-top: 1.5rem; padding: 2rem; border-left: 3px solid var(--rk-gold); background: #e7e7e4; }
-.rk-public .rk-net__ask h3 { font-size: 1.5rem; }
-.rk-public .rk-net__ask p { color: var(--rk-muted); }
 
 @media (min-width: 640px) {
     .rk-net { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .rk-net__ask { grid-column: 1 / -1; }
 }
 
 @media (min-width: 1080px) {
@@ -382,7 +372,6 @@
     .rk-face--right { grid-area: 2 / 3; }
     .rk-face--end { grid-area: 2 / 4; }
     .rk-face--bottom { grid-area: 3 / 2; }
-    .rk-net__ask { grid-area: 3 / 3 / 4 / 5; align-self: start; margin: 2.5rem 0 0 2.5rem; }
 }
 
 /* Careers band on the home page: gold, with a tape-measure edge */
@@ -427,11 +416,11 @@
 .rk-public .rk-cta__text { max-width: 36rem; margin-top: 1.75rem; color: #c9c9c3; font-size: 1.1875rem; }
 .rk-cta__actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.25rem; }
 
-.rk-cta__details { display: flex; flex-wrap: wrap; gap: 1.25rem 2.5rem; margin: 2.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid rgba(224, 169, 42, 0.26); }
-.rk-cta__details dt { color: var(--rk-dark-muted); font-size: 0.875rem; }
-.rk-cta__details dd { margin: 0.2rem 0 0; color: var(--rk-white); font-size: 1.0625rem; font-weight: 600; }
-.rk-cta__details a { color: var(--rk-white); text-decoration: none; }
-.rk-cta__details a:hover { color: var(--rk-gold); }
+/* Other pages end on one plain line instead of the big band. */
+.rk-cta-line { border-top: 1px solid var(--rk-line); background: var(--rk-paper); }
+.rk-cta-line__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.25rem 2rem; padding-block: clamp(2rem, 4vw, 2.75rem); }
+.rk-public .rk-cta-line h2 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.rk-cta-line .rk-cta__actions { margin-top: 0; }
 
 .rk-cta__cube { width: 100%; max-width: 14rem; animation: rk-cube-float 14s ease-in-out infinite; }
 .rk-cta__cube path, .rk-cta__cube polygon { fill: none; stroke: var(--rk-gold); stroke-linejoin: round; }

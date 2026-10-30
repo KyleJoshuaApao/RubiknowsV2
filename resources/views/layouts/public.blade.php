@@ -146,7 +146,7 @@
                     <a class="rk-brand" href="{{ route('public.home') }}" aria-label="{{ $brandName }} home">
                         <x-logo :dark="true" textSize="text-[1.6rem]" class="h-11 w-auto" />
                     </a>
-                    <p>Engineering, design and construction from Tagum City, Davao del Norte. Serving homeowners, businesses and institutions across Mindanao{{ !empty($settings['about_est_year']) ? ' since '.$settings['about_est_year'] : '' }}.</p>
+                    <p>Engineering and construction from Tagum City, Davao del Norte{{ !empty($settings['about_est_year']) ? ', since '.$settings['about_est_year'] : '' }}.</p>
                 </div>
 
                 <div>

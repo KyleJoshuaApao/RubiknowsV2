@@ -12,7 +12,7 @@
         $categories = $items->pluck('category')->filter()->unique()->values();
     @endphp
 
-    <x-public.page-header title="Gallery" lede="Photos from our sites, from the first excavation to the finished building." :breadcrumbs="['Gallery' => null]" />
+    <x-public.page-header tone="light" title="Gallery" :breadcrumbs="['Gallery' => null]" />
 
     <section class="rk-section" x-data="rkGallery(@js($items))" @keydown.window="onKey($event)">
         <div class="rk-container">
