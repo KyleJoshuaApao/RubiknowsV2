@@ -284,6 +284,8 @@
     .rk-public *, .rk-public *::before, .rk-public *::after {
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
+        /* Without this, endless animations replay every 0.01ms and jitter. */
+        animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
     }
 }
