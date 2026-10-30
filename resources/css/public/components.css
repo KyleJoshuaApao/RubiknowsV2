@@ -381,15 +381,11 @@
 
 .rk-hiring { background: var(--rk-gold); color: var(--rk-ink); }
 
-.rk-hiring__ruler {
-    height: 30px;
-    border-bottom: 1px solid rgba(17, 17, 17, 0.35);
-    background-image:
-        repeating-linear-gradient(90deg, var(--rk-ink) 0 1px, transparent 1px 12px),
-        repeating-linear-gradient(90deg, var(--rk-ink) 0 1.5px, transparent 1.5px 60px);
-    background-repeat: repeat-x;
-    background-size: 100% 10px, 100% 22px;
-}
+.rk-ruler { height: 46px; overflow: hidden; border-bottom: 1px solid rgba(17, 17, 17, 0.35); }
+.rk-ruler svg { display: block; }
+.rk-ruler path { stroke: var(--rk-ink); stroke-width: 1; }
+.rk-ruler text { fill: var(--rk-ink); font-family: var(--rk-font-display); font-size: 13px; font-weight: 600; text-anchor: middle; }
+.rk-ruler text.is-dm { fill: var(--rk-danger); font-size: 15px; font-weight: 700; }
 
 .rk-hiring__grid { display: grid; gap: 2.5rem; padding-block: clamp(3.5rem, 7vw, 5.5rem); }
 

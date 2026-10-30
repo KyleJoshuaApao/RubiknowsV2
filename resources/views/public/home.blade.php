@@ -142,7 +142,7 @@
     @endif
 
     <section class="rk-hiring" aria-labelledby="careers-title">
-        <div class="rk-hiring__ruler" aria-hidden="true"></div>
+        @include('public.partials.tape-ruler')
         <div class="rk-container rk-hiring__grid" data-reveal>
             <div>
                 <h2 id="careers-title" class="rk-brand-h2" data-preview="careers-title">{{ $careersTitle }}</h2>
