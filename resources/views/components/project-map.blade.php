@@ -23,11 +23,14 @@
         <div id="{{ $id }}" class="rk-map__canvas" role="region" aria-label="Map of RUBIKNOWS projects in Mindanao" aria-describedby="{{ $id }}-instructions" aria-busy="true" data-projects='@json($mapPoints)'>
             <p id="{{ $id }}-status" class="rk-map__status" role="status">Loading map…</p>
         </div>
-        <ul class="rk-map__list">
-            @foreach($mapPoints as $point)
-                <li><a href="{{ $point['url'] }}">{{ $point['title'] }}</a>@if($point['location'])<span>{{ $point['location'] }}</span>@endif</li>
-            @endforeach
-        </ul>
+        <details class="rk-map__more">
+            <summary>All mapped projects ({{ $mapPoints->count() }})</summary>
+            <ul class="rk-map__list">
+                @foreach($mapPoints as $point)
+                    <li><a href="{{ $point['url'] }}">{{ $point['title'] }}</a>@if($point['location'])<span>{{ $point['location'] }}</span>@endif</li>
+                @endforeach
+            </ul>
+        </details>
     </section>
 
     @push('scripts')
@@ -103,21 +106,84 @@
                         }).addTo(map);
 
                         const icon = L.divIcon({ className: 'rk-map__marker', html: '<span class="rk-map__pin"></span>', iconSize: [22, 22], iconAnchor: [11, 11] });
+                        const pins = L.layerGroup().addTo(map);
 
-                        points.forEach(function (point) {
-                            const marker = L.marker([point.latitude, point.longitude], { icon: icon, title: point.title, keyboard: true }).addTo(map);
-                            marker.bindTooltip(point.title, { direction: 'top', offset: [0, -10] });
-                            marker.on('click', function () { window.location.assign(point.url); });
+                        function onActivate(marker, label, action) {
+                            marker.on('click', action);
                             const element = marker.getElement();
-                            if (element) {
-                                element.setAttribute('aria-label', 'Open project: ' + point.title);
-                                element.addEventListener('keydown', function (event) {
-                                    if (event.key !== 'Enter' && event.key !== ' ') return;
-                                    event.preventDefault();
-                                    window.location.assign(point.url);
-                                });
-                            }
-                        });
+                            if (!element) return;
+                            element.setAttribute('aria-label', label);
+                            element.addEventListener('keydown', function (event) {
+                                if (event.key !== 'Enter' && event.key !== ' ') return;
+                                event.preventDefault();
+                                action();
+                            });
+                        }
+
+                        // Titles come from the CMS, so lists are built as text nodes, never HTML.
+                        function projectList(group, asLinks) {
+                            const list = document.createElement('ul');
+                            list.className = 'rk-map__group';
+                            group.forEach(function (point) {
+                                const item = document.createElement('li');
+                                const label = document.createElement(asLinks ? 'a' : 'span');
+                                label.textContent = point.title;
+                                if (asLinks) label.href = point.url;
+                                item.appendChild(label);
+                                list.appendChild(item);
+                            });
+                            return list;
+                        }
+
+                        function addPin(point) {
+                            const marker = L.marker([point.latitude, point.longitude], { icon: icon, title: point.title, keyboard: true }).addTo(pins);
+                            marker.bindTooltip(point.title, { direction: 'top', offset: [0, -10] });
+                            onActivate(marker, 'Open project: ' + point.title, function () { window.location.assign(point.url); });
+                        }
+
+                        function addGroup(group) {
+                            const bounds = L.latLngBounds(group.map(point => [point.latitude, point.longitude]));
+                            const marker = L.marker(bounds.getCenter(), {
+                                icon: L.divIcon({ className: 'rk-map__marker', html: '<span class="rk-map__cluster">' + group.length + '</span>', iconSize: [34, 34], iconAnchor: [17, 17] }),
+                                keyboard: true,
+                            }).addTo(pins);
+
+                            const tip = document.createElement('div');
+                            const heading = document.createElement('strong');
+                            heading.textContent = group.length + ' projects here';
+                            tip.append(heading, projectList(group, false));
+                            marker.bindTooltip(tip, { direction: 'top', offset: [0, -16], className: 'rk-map__tip' });
+
+                            onActivate(marker, group.length + ' projects here. Zoom in to see them.', function () {
+                                // Projects at the very same spot never separate, so list them instead.
+                                if (map.getZoom() >= map.getMaxZoom() || bounds.getNorthEast().equals(bounds.getSouthWest())) {
+                                    marker.closeTooltip();
+                                    marker.bindPopup(projectList(group, true), { className: 'rk-map__tip' }).openPopup();
+                                    return;
+                                }
+                                map.fitBounds(bounds.pad(0.5), { maxZoom: map.getMaxZoom(), padding: [40, 40] });
+                            });
+                        }
+
+                        // Pins that would overlap at the current zoom merge into one numbered pin,
+                        // which splits back into single pins as the map zooms in.
+                        function drawPins() {
+                            pins.clearLayers();
+                            const groups = [];
+                            points.forEach(function (point) {
+                                const at = map.latLngToLayerPoint([point.latitude, point.longitude]);
+                                const near = groups.find(group => group.at.distanceTo(at) < 44);
+                                if (near) {
+                                    near.points.push(point);
+                                } else {
+                                    groups.push({ at: at, points: [point] });
+                                }
+                            });
+                            groups.forEach(group => group.points.length === 1 ? addPin(group.points[0]) : addGroup(group.points));
+                        }
+
+                        map.on('zoomend', drawPins);
+                        drawPins();
 
                         container.dataset.ready = 'true';
                         container.setAttribute('aria-busy', 'false');

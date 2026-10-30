@@ -282,13 +282,38 @@
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
 }
 
+/* Several nearby projects shown as one numbered pin */
+.rk-map__cluster {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 3px solid var(--rk-ink);
+    border-radius: 50%;
+    background: var(--rk-gold);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    color: var(--rk-ink);
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Scoped to the canvas so it outranks leaflet.css, which loads later and sets nowrap. */
+.rk-map__canvas .rk-map__tip { max-width: 18rem; white-space: normal; }
+.rk-map__group { margin: 0.35rem 0 0; padding-left: 1rem; }
+.rk-map__group li + li { margin-top: 0.2rem; }
+.rk-map__group a { color: var(--rk-ink); font-weight: 600; }
+
 .rk-map__canvas .leaflet-control-zoom { border: 1px solid var(--rk-line-strong); border-radius: 4px; box-shadow: none; }
 .rk-map__canvas .leaflet-control-zoom a { color: var(--rk-ink); }
+
+.rk-map__more summary { width: fit-content; padding-block: 0.5rem; color: var(--rk-ink); font-weight: 600; cursor: pointer; }
+.rk-map__more summary:hover { text-decoration: underline; text-decoration-color: var(--rk-gold); }
 
 .rk-map__list {
     display: grid;
     gap: 0.75rem 2rem;
-    margin: 0.5rem 0 0;
+    margin: 0.75rem 0 0;
     padding: 0;
     list-style: none;
     font-size: 0.9375rem;
